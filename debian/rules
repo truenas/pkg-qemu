@@ -45,7 +45,7 @@ config-host.mak: configure
 	CFLAGS="$(CFLAGS)" ./configure \
 		--prefix=/usr \
 		--disable-blobs \
-		--disable-strip \
+		--disable-strip \
 		$(conf_arch)
 
 setup-source: patch
