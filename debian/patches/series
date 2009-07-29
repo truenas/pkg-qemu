@@ -1,3 +1,2 @@
-65_kfreebsd.patch 
-70_versatile_memsize.patch
+65_kfreebsd.patch
 security/leftover.patch
