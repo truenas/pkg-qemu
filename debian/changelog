@@ -1,4 +1,4 @@
-qemu (0.11~rc0-1) experimental; urgency=low
+qemu (0.10.50+git20090729-1) experimental; urgency=low
 
   [ Josh Triplett ]
   * Remove myself from Uploaders.
