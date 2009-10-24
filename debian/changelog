@@ -1,3 +1,13 @@
+qemu (0.11.0-1) UNRELEASED; urgency=low
+
+  [ Aurelien Jarno ]
+  * New upstream version.
+    - Documents virtio NIC. Closes: #541182.
+    - Increase the maximum TCG op a target instruction op can expand to.
+      Closes: #530645, #542297.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 24 Oct 2009 21:51:55 +0200
+
 qemu (0.10.50+git20090729-1) experimental; urgency=low
 
   [ Josh Triplett ]
