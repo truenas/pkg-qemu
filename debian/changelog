@@ -6,8 +6,12 @@ qemu (0.11.0-1) UNRELEASED; urgency=low
     - Increase the maximum TCG op a target instruction op can expand to.
       Closes: #530645, #542297.
   * Drop 65_kfreebsd.patch.
+  * Split the qemu package and use out of tree building. Based on a patch
+    from Vagrant Cascadian. Closes: #524774.
+  * Only recommends debootstrap for qemu-user and qemu-user static. Closes:
+    #543356.
 
- -- Aurelien Jarno <aurel32@debian.org>  Sat, 24 Oct 2009 22:23:59 +0200
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 25 Oct 2009 00:56:19 +0200
 
 qemu (0.10.50+git20090729-1) experimental; urgency=low
 

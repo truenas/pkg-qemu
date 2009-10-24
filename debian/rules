@@ -3,6 +3,8 @@
 # $Id: rules 391 2009-03-07 05:21:19Z aurel32 $
 #
 
+# Compiler flags
+LDFLAGS = -Wl,--as-needed
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS = -O0
 endif
@@ -38,7 +40,9 @@ configure-stamp: configure
 	# system build
 	mkdir -p $(CURDIR)/system-build
 	cd $(CURDIR)/system-build && \
-		CFLAGS="$(CFLAGS)" ../configure \
+		../configure \
+			--extra-cflags="$(CFLAGS)" \
+			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
 			--disable-blobs \
 			--disable-strip \
@@ -51,7 +55,9 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user build
 	mkdir -p $(CURDIR)/user-build
 	cd $(CURDIR)/user-build && \
-		CFLAGS="$(CFLAGS)" ../configure \
+		../configure \
+			--extra-cflags="$(CFLAGS)" \
+			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
 			--disable-blobs \
 			--disable-strip \
@@ -61,7 +67,9 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# static user build
 	mkdir -p $(CURDIR)/user-static-build
 	cd $(CURDIR)/user-static-build && \
-		CFLAGS="$(CFLAGS)" ../configure \
+		../configure \
+			--extra-cflags="$(CFLAGS)" \
+			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
 			--disable-blobs \
 			--disable-strip \
