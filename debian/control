@@ -6,7 +6,7 @@ Uploaders: Aurelien Jarno <aurel32@debian.org>, Riku Voipio <riku.voipio@iki.fi>
 Build-Depends: debhelper (>= 5), quilt (>= 0.40), nasm, device-tree-compiler,
  libx11-dev, libsdl1.2-dev (>> 1.2.1), libncurses5-dev, zlib1g-dev,
  texi2html, sharutils, libgnutls-dev, libesd0-dev, libbrlapi-dev, etherboot,
- libpulse-dev,
+ libpulse-dev, libcurl4-gnutls-dev, libgnutls-dev, libsasl2-dev,
  libvdeplug2-dev [!kfreebsd-i386 !kfreebsd-amd64],
  libfreebsd-dev [kfreebsd-i386 kfreebsd-amd64],
  libasound2-dev [!kfreebsd-i386 !kfreebsd-amd64],

@@ -11,8 +11,10 @@ qemu (0.11.0-1) UNRELEASED; urgency=low
   * Only recommends debootstrap for qemu-user and qemu-user static. Closes:
     #543356.
   * Remove /usr/share/qemu/proll.elf. Closes: bug#542247. 
+  * Add build-depends on libcurl4-gnutls-dev, libgnutls-dev and libsasl2-dev
+    to enable new upstream features.
 
- -- Aurelien Jarno <aurel32@debian.org>  Sun, 25 Oct 2009 01:08:45 +0200
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 25 Oct 2009 01:09:51 +0200
 
 qemu (0.10.50+git20090729-1) experimental; urgency=low
 
