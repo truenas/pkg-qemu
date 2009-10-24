@@ -18,36 +18,92 @@ Vcs-Browser: http://git.debian.org/?p=users/riku/qemu.git
 Vcs-Git: git://git.debian.org/users/riku/qemu.git
 
 Package: qemu
-Architecture: amd64 arm armel hppa i386 powerpc sparc kfreebsd-i386 kfreebsd-amd64 ppc64
-Depends: ${shlibs:Depends}, ${misc:Depends}, vgabios (>= 0.6c-1), bochsbios (>= 2.3.7+20090416-1),
- openhackware, openbios-ppc (>= 1.0-1), openbios-sparc (>= 1.0-1)
-Recommends: debootstrap, sharutils, vde2
-Suggests: sudo, samba, kqemu-source
+Architecture: all
+Depends: qemu-system, qemu-user [linux-any], qemu-utils
 Description: fast processor emulator
  QEMU is a fast processor emulator: currently the package supports
- ARM, CRIS, i386, M68k (ColdFire), MIPS, PowerPC, SH4, SPARc and x86-64 
- emulation. By using dynamic translation it achieves reasonable speed 
- while being easy to port on new host CPUs. QEMU has two operating modes:
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs. QEMU has
+ two operating modes:
  .
   * User mode emulation: QEMU can launch Linux processes compiled for
     one CPU on another CPU.
   * Full system emulation: QEMU emulates a full system, including a
     processor and various peripherals. It enables easier testing and
     debugging of system code. It can also be used to provide virtual
-    hosting of several virtual PC on a single server.
+    hosting of several virtual machines on a single server.
  .
  As QEMU requires no host kernel patches to run, it is very safe and
  easy to use.
+ .
+ This package is a meta-package depending on all qemu-related packages.
+
+Package: qemu-system
+Architecture: amd64 arm armel hppa i386 powerpc sparc kfreebsd-i386 kfreebsd-amd64 ppc64
+Depends: ${shlibs:Depends}, ${misc:Depends}, vgabios (>= 0.6c-1), bochsbios (>= 2.3.7+20090416-1),
+ openhackware, openbios-ppc (>= 1.0-1), openbios-sparc (>= 1.0-1)
+Recommends: vde2, qemu-utils
+Suggests: samba, kqemu-source
+Description: QEMU full system emulation binaries
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This package provides the full system emulation binaries. In this mode
+ QEMU emulates a full system, including a processor and various
+ peripherals. It enables easier testing and debugging of system code.
+ It can also be used to provide virtual hosting of several virtual
+ machines on a single server.
+
+Package: qemu-user
+Architecture: amd64 arm armel hppa i386 powerpc sparc ppc64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: debootstrap
+Suggests: sudo
+Description: QEMU user mode emulation binaries
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This package provides the user mode emulation binaries. In this mode
+ QEMU can launch Linux processes compiled for one CPU on another CPU.
+
+Package: qemu-user-static
+Architecture: amd64 arm armel hppa i386 powerpc sparc ppc64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: debootstrap
+Suggests: sudo
+Description: QEMU user mode emulation binaries (static version)
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This package provides the user mode emulation binaries, built
+ statically. In this mode QEMU can launch Linux processes compiled for
+ one CPU on another CPU.
+
+Package: qemu-utils
+Architecture: amd64 arm armel hppa i386 powerpc sparc kfreebsd-i386 kfreebsd-amd64 ppc64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: QEMU utilities
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This package provides qemu related utilities:
+  * qemu-img: QEMU disk image utility
+  * qemu-io:  QEMU disk exerciser
+  * qemu-nbd: QEMU disk network block device server
 
 Package: libqemu-dev
 Architecture: amd64 arm armel hppa i386 powerpc sparc kfreebsd-i386 kfreebsd-amd64 ppc64
 Section: libdevel
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: static libraries and headers for QEMU
- QEMU is a fast processor emulator: currently the package supports
- ARM, CRIS, i386, M68k (ColdFire), MIPS, PowerPC, SH4, SPARc and x86-64 
- emulation. By using dynamic translation it achieves reasonable speed 
- while being easy to port on new host CPUs.
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
  .
  This package provides header files and static libraries suitable to
  emulate the various CPU supported by QEMU directly in an application.
