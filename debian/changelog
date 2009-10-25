@@ -13,8 +13,9 @@ qemu (0.11.0-1) UNRELEASED; urgency=low
   * Remove /usr/share/qemu/proll.elf. Closes: bug#542247. 
   * Add build-depends on libcurl4-gnutls-dev, libgnutls-dev and libsasl2-dev
     to enable new upstream features.
+  * Bump Standards-Version to 3.8.3 (no changes).
 
- -- Aurelien Jarno <aurel32@debian.org>  Sun, 25 Oct 2009 01:09:51 +0200
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 25 Oct 2009 02:07:45 +0200
 
 qemu (0.10.50+git20090729-1) experimental; urgency=low
 
