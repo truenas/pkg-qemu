@@ -14,8 +14,8 @@ Build-Depends: debhelper (>= 5), quilt (>= 0.40), nasm, device-tree-compiler,
  libgpmg1-dev [amd64 arm armel hppa i386 powerpc sparc ppc64]
 Standards-Version: 3.8.3
 Homepage: http://www.qemu.org/
-Vcs-Browser: http://git.debian.org/?p=users/riku/qemu.git
-Vcs-Git: git://git.debian.org/users/riku/qemu.git
+Vcs-Browser: http://git.debian.org/?p=pkg-qemu/qemu.git
+Vcs-Git: git://git.debian.org/pkg-qemu/qemu.git
 
 Package: qemu
 Architecture: all
