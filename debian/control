@@ -18,7 +18,7 @@ Vcs-Browser: http://git.debian.org/?p=pkg-qemu/qemu.git
 Vcs-Git: git://git.debian.org/pkg-qemu/qemu.git
 
 Package: qemu
-Architecture: all
+Architecture: amd64 arm armel hppa i386 powerpc sparc kfreebsd-i386 kfreebsd-amd64 ppc64
 Depends: qemu-system, qemu-user [linux-any], qemu-utils
 Description: fast processor emulator
  QEMU is a fast processor emulator: currently the package supports
