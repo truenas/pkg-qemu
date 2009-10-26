@@ -1,4 +1,4 @@
-qemu (0.11.0-1) UNRELEASED; urgency=low
+qemu (0.11.0-1) unstable; urgency=low
 
   [ Aurelien Jarno ]
   * New upstream version.
@@ -19,7 +19,7 @@ qemu (0.11.0-1) UNRELEASED; urgency=low
   * Add Vagrant Cascadian <vagrant@freegeek.org> to uploaders, and set
     DM-Upload-Allowed to yes.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 26 Oct 2009 09:32:04 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 26 Oct 2009 10:17:57 +0000
 
 qemu (0.10.50+git20090729-1) experimental; urgency=low
 
