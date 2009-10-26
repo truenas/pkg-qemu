@@ -136,18 +136,8 @@ endif
 
 	dh_install --list-missing
 
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs -i
-	dh_installchangelogs -i Changelog
-	dh_link -i
-	dh_compress -i
-	dh_fixperms -i
-	dh_installdeb -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
+binary-indep:
+# Nothing to do.
 
 binary-arch: build install
 	dh_testdir
