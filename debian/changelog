@@ -1,3 +1,10 @@
+qemu (0.11.0-2) UNRELEASED; urgency=low
+
+  * Move qemu-user.1 and qemu-make-debian-root.8 to the qemu-user
+    package.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 01 Nov 2009 20:59:22 +0100
+
 qemu (0.11.0-1) unstable; urgency=low
 
   [ Aurelien Jarno ]
