@@ -79,6 +79,18 @@ qemu (0.10.50+git20090729-1) experimental; urgency=low
 
  -- Riku Voipio <riku.voipio@iki.fi>  Wed, 29 Jul 2009 13:28:05 +0300
 
+qemu (0.10.6-1) unstable; urgency=low
+
+  [ Josh Triplett ]
+  * Remove myself from Uploaders.
+  
+  [ Aurelien Jarno ]
+  * New upstream version.
+  * Bump Standards-Version to 3.8.2 (no changes).
+  * Update debian/watch (closes: bug#538781).
+
+ -- Aurelien Jarno <aurel32@debian.org>  Fri, 31 Jul 2009 15:25:36 +0200
+
 qemu (0.10.5-1) unstable; urgency=low
 
   * New upstream version.
