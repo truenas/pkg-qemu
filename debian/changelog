@@ -1,3 +1,9 @@
+qemu (0.11.0-4) UNRELEASED; urgency=low
+
+  * Default to alsa before OSS. Closes: #451234. 
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 17 Nov 2009 17:43:04 +0100
+
 qemu (0.11.0-3) unstable; urgency=low
 
   * qemu-system, qemu-user: fix conflicts version. Closes: #556627.
