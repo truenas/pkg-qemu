@@ -3,8 +3,9 @@ qemu (0.11.0-2) UNRELEASED; urgency=low
   * Move qemu-user.1 and qemu-make-debian-root.8 to the qemu-user
     package.
   * Add build-depends on uuid-dev.
+  * Use a specific install file for qemu-utils on GNU/kFreeBSD.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 16 Nov 2009 18:08:04 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 17 Nov 2009 07:50:20 +0100
 
 qemu (0.11.0-1) unstable; urgency=low
 
