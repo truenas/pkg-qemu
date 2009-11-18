@@ -1,4 +1,4 @@
-qemu (0.11.0-4) UNRELEASED; urgency=low
+qemu (0.11.0-4) unstable; urgency=low
 
   [ Aurelien Jarno ]
   * Update from stable-0.11 branch. 
@@ -7,7 +7,7 @@ qemu (0.11.0-4) UNRELEASED; urgency=low
   [ Vagrant Cascadian ]
   * Updated Vcs-Git to a url more likely to work with debcommit.
 
- -- Aurelien Jarno <aurel32@debian.org>  Wed, 18 Nov 2009 16:25:44 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 18 Nov 2009 16:26:17 +0100
 
 qemu (0.11.0-3) unstable; urgency=low
 
