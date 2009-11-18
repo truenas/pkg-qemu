@@ -1,3 +1,11 @@
+qemu (0.11.0-5) unstable; urgency=low
+
+  * Change the Conflicts: into Replaces: to handle the move of /etc/ifup
+    from one package to another correctly. Tighten the version. Closes:
+    #556627.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 18 Nov 2009 16:30:39 +0000
+
 qemu (0.11.0-4) unstable; urgency=low
 
   [ Aurelien Jarno ]
