@@ -44,6 +44,7 @@ Package: qemu-system
 Architecture: amd64 arm armel hppa i386 powerpc sparc kfreebsd-i386 kfreebsd-amd64 ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}, vgabios (>= 0.6c-1), bochsbios (>= 2.3.7+20090416-1),
  openhackware, openbios-ppc (>= 1.0-1), openbios-sparc (>= 1.0-1)
+Conflicts: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Recommends: vde2, qemu-utils
 Suggests: samba, kqemu-source
@@ -61,6 +62,7 @@ Description: QEMU full system emulation binaries
 Package: qemu-user
 Architecture: amd64 arm armel hppa i386 powerpc sparc ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Recommends: debootstrap
 Suggests: sudo
@@ -89,7 +91,7 @@ Description: QEMU user mode emulation binaries (static version)
 Package: qemu-utils
 Architecture: amd64 arm armel hppa i386 powerpc sparc kfreebsd-i386 kfreebsd-amd64 ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Conflicts: kvm (<= 85+dfsg-4.1)
+Conflicts: kvm (<= 85+dfsg-4.1), qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Description: QEMU utilities
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,

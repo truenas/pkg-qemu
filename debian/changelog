@@ -1,9 +1,14 @@
 qemu (0.11.0-7) UNRELEASED; urgency=low
 
+  [ Aurelien Jarno ]
   * Drop build-depends on libfreebsd-dev on GNU/kFreeBSD.
   * qemu: suggests qemu-user-static.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 23 Nov 2009 12:23:29 +0100
+  [ Vagrant Cascadian ]
+  * qemu-utils, qemu-user, qemu-system: Set both Conflicts and Replaces for
+    older versions of qemu to ensure proper upgrade path.
+
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 23 Nov 2009 15:49:06 -0800
 
 qemu (0.11.0-6) unstable; urgency=low
 
