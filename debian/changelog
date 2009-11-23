@@ -7,8 +7,10 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   [ Vagrant Cascadian ]
   * qemu-utils, qemu-user, qemu-system: Set both Conflicts and Replaces for
     older versions of qemu to ensure proper upgrade path.
+  * Add versioned build-dep on linux-libc-dev to ensure that KVM support is
+    enabled. 
 
- -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 23 Nov 2009 15:49:06 -0800
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 23 Nov 2009 15:52:04 -0800
 
 qemu (0.11.0-6) unstable; urgency=low
 
