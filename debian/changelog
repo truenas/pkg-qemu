@@ -9,8 +9,10 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
     older versions of qemu to ensure proper upgrade path.
   * Add versioned build-dep on linux-libc-dev to ensure that KVM support is
     enabled. 
+  * qemu-system: Lower dependencies on vgabios, bochsbios, openhackware,
+    openbios-ppc and openbios-sparc to recommends. Closes: #436094.
 
- -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 23 Nov 2009 15:52:04 -0800
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 23 Nov 2009 16:36:25 -0800
 
 qemu (0.11.0-6) unstable; urgency=low
 
