@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 5), quilt (>= 0.40), nasm, device-tree-compiler,
  libasound2-dev [!kfreebsd-i386 !kfreebsd-amd64],
  libbluetooth-dev [!kfreebsd-i386 !kfreebsd-amd64],
  libgpmg1-dev [amd64 arm armel hppa i386 powerpc sparc ppc64],
- linux-libc-dev (>= 2.6.30) [linux-any]
+ linux-libc-dev (>= 2.6.30) [amd64 i386 powerpc ppc64]
 Standards-Version: 3.8.3
 Homepage: http://www.qemu.org/
 Vcs-Browser: http://git.debian.org/?p=pkg-qemu/qemu.git
