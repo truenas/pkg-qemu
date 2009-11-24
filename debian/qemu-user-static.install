@@ -1,3 +1,6 @@
+debian/binfmts /usr/share
+debian/qemu-binfmt /usr/lib/qemu-user-static
+debian/qemu-binfmt.conf /etc
 debian/tmp/usr/bin/qemu-alpha-static
 debian/tmp/usr/bin/qemu-armeb-static
 debian/tmp/usr/bin/qemu-arm-static

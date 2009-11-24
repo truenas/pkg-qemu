@@ -78,7 +78,7 @@ Description: QEMU user mode emulation binaries
 Package: qemu-user-static
 Architecture: amd64 arm armel hppa i386 powerpc sparc ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: debootstrap
+Recommends: debootstrap, binfmt-support
 Suggests: sudo
 Description: QEMU user mode emulation binaries (static version)
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,

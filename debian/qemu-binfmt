@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# QEMU binfmt wrapper
+# Copyright 2009 Aurelien Jarno <aurlien@aurel32.net>, GPLv2.
+#
+
+set -e
+
+ARGS=
+CONFFILE=/etc/qemu-binfmt.conf
+
+# Detect the architecture from the filename.
+ARCH=${0#*qemu-binfmt-}
+if [ -z "$ARCH" ] || [ "$ARCH" = "$0" ] ; then
+	echo "Unknown architecture"
+	exit 1
+fi
+
+# Source and parse the configuration file if it exists.
+if [ -f $CONFFILE ] ; then
+	. $CONFFILE
+fi
+if [ -n "$STACK_SIZE" ] ; then
+	ARGS="$ARGS -s $STACK_SIZE"
+fi
+if [ -n "$PREFIX" ] ; then
+	ARGS="$ARGS -L $(echo $PREFIX | sed -e s/%ARCH%/$ARCH/g)"
+fi
+if [ -n "$EXTRA_OPTS" ] ; then
+	ARGS="$ARGS $EXTRA_OPTS"
+fi
+
+# Execute the binary through qemu
+/usr/bin/qemu-$ARCH-static $ARGS $@

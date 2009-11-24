@@ -3,6 +3,8 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   [ Aurelien Jarno ]
   * Drop build-depends on libfreebsd-dev on GNU/kFreeBSD.
   * qemu: suggests qemu-user-static.
+  * qemu-user-static: register QEMU with binfmt mecanism. Closes: 
+    #306637.
 
   [ Vagrant Cascadian ]
   * qemu-utils, qemu-user, qemu-system: Set both Conflicts and Replaces for
@@ -12,7 +14,7 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   * qemu-system: Lower dependencies on vgabios, bochsbios, openhackware,
     openbios-ppc and openbios-sparc to recommends. Closes: #436094.
 
- -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 23 Nov 2009 16:36:25 -0800
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 24 Nov 2009 13:48:06 +0100
 
 qemu (0.11.0-6) unstable; urgency=low
 

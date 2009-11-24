@@ -134,6 +134,10 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	done
 endif
 
+	# Make qemu-binfmt executable
+	chmod 755 $(CURDIR)/debian/qemu-binfmt
+
+	# Install files in the various packages
 	dh_install -s --list-missing
 
 binary-indep:

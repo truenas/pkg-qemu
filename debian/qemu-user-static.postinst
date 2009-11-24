@@ -1,0 +1,24 @@
+#!/bin/sh -e
+
+if [ configure = "$1" ] && [ -x /usr/sbin/update-binfmts ]; then
+	update-binfmts --import qemu-alpha
+	update-binfmts --import qemu-arm
+	update-binfmts --import qemu-armeb
+	update-binfmts --import qemu-cris
+	update-binfmts --import qemu-i386
+	update-binfmts --import qemu-m68k
+	update-binfmts --import qemu-microblaze
+	update-binfmts --import qemu-mips
+	update-binfmts --import qemu-mipsel
+	update-binfmts --import qemu-ppc
+	update-binfmts --import qemu-ppc64
+	update-binfmts --import qemu-ppc64abi32
+	update-binfmts --import qemu-sh4
+	update-binfmts --import qemu-sh4eb
+	update-binfmts --import qemu-sparc
+	update-binfmts --import qemu-sparc32plus
+	update-binfmts --import qemu-sparc64
+	update-binfmts --import qemu-x86_64
+fi
+
+#DEBHELPER#

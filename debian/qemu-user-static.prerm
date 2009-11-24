@@ -1,0 +1,24 @@
+#!/bin/sh -e
+
+if [ "$1" = remove ] && [ -x /usr/sbin/update-binfmts ]; then
+	update-binfmts --package qemu-user-static --remove qemu-alpha /usr/lib/qemu-user-static/qemu-binfmt-alpha
+	update-binfmts --package qemu-user-static --remove qemu-arm /usr/lib/qemu-user-static/qemu-binfmt-arm
+	update-binfmts --package qemu-user-static --remove qemu-armeb /usr/lib/qemu-user-static/qemu-binfmt-armeb
+	update-binfmts --package qemu-user-static --remove qemu-cris /usr/lib/qemu-user-static/qemu-binfmt-cris
+	update-binfmts --package qemu-user-static --remove qemu-i386 /usr/lib/qemu-user-static/qemu-binfmt-i386
+	update-binfmts --package qemu-user-static --remove qemu-m68k /usr/lib/qemu-user-static/qemu-binfmt-m68k
+	update-binfmts --package qemu-user-static --remove qemu-microblaze /usr/lib/qemu-user-static/qemu-binfmt-microblaze
+	update-binfmts --package qemu-user-static --remove qemu-mips /usr/lib/qemu-user-static/qemu-binfmt-mips
+	update-binfmts --package qemu-user-static --remove qemu-mipsel /usr/lib/qemu-user-static/qemu-binfmt-mipsel
+	update-binfmts --package qemu-user-static --remove qemu-ppc /usr/lib/qemu-user-static/qemu-binfmt-ppc
+	update-binfmts --package qemu-user-static --remove qemu-ppc64 /usr/lib/qemu-user-static/qemu-binfmt-ppc64
+	update-binfmts --package qemu-user-static --remove qemu-ppc64abi32 /usr/lib/qemu-user-static/qemu-binfmt-ppc64abi32
+	update-binfmts --package qemu-user-static --remove qemu-sh4 /usr/lib/qemu-user-static/qemu-binfmt-sh4
+	update-binfmts --package qemu-user-static --remove qemu-sh4eb /usr/lib/qemu-user-static/qemu-binfmt-sh4eb
+	update-binfmts --package qemu-user-static --remove qemu-sparc /usr/lib/qemu-user-static/qemu-binfmt-sparc
+	update-binfmts --package qemu-user-static --remove qemu-sparc32plus /usr/lib/qemu-user-static/qemu-binfmt-sparc32plus
+	update-binfmts --package qemu-user-static --remove qemu-sparc64 /usr/lib/qemu-user-static/qemu-binfmt-sparc64
+	update-binfmts --package qemu-user-static --remove qemu-x86_64 /usr/lib/qemu-user-static/qemu-binfmt-x86_64
+fi
+
+#DEBHELPER#
