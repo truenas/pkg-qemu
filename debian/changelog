@@ -12,9 +12,10 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   * Add versioned build-dep on linux-libc-dev to ensure that KVM support is
     enabled. 
   * qemu-system: Lower dependencies on vgabios, bochsbios, openhackware,
-    openbios-ppc and openbios-sparc to recommends. Closes: #436094.
+    openbios-ppc and openbios-sparc to recommends. Conflict with versions that
+    are incompatible. Closes: #436094.
 
- -- Aurelien Jarno <aurel32@debian.org>  Tue, 24 Nov 2009 13:48:06 +0100
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Thu, 26 Nov 2009 11:07:24 -0800
 
 qemu (0.11.0-6) unstable; urgency=low
 
