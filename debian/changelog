@@ -14,6 +14,8 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   * qemu-system: Lower dependencies on vgabios, bochsbios, openhackware,
     openbios-ppc and openbios-sparc to recommends. Conflict with versions that
     are incompatible. Closes: #436094.
+  * qemu-utils: Tighten the versioned conflicts with kvm, as not all older
+    versions actually conflict.
 
  -- Vagrant Cascadian <vagrant@freegeek.org>  Thu, 26 Nov 2009 11:07:24 -0800
 
