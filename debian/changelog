@@ -7,6 +7,8 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   * qemu-user-static: register QEMU with binfmt mecanism. Closes: 
     #306637.
   * Bump conflicts on openbios-ppc to (<< 1.0+svn505-1).
+  * Add 01-binutils-gold.diff to fix FTBFS with binutils-gold. Closes:
+    #556301.
 
   [ Vagrant Cascadian ]
   * qemu-utils, qemu-user, qemu-system: Set both Conflicts and Replaces for
@@ -19,7 +21,7 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   * qemu-utils: Tighten the versioned conflicts with kvm, as not all older
     versions actually conflict.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 30 Nov 2009 23:14:47 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 30 Nov 2009 23:52:23 +0000
 
 qemu (0.11.0-6) unstable; urgency=low
 
