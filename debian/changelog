@@ -1,6 +1,7 @@
 qemu (0.11.0-7) UNRELEASED; urgency=low
 
   [ Aurelien Jarno ]
+  * Update from stable-0.11 branch.
   * Drop build-depends on libfreebsd-dev on GNU/kFreeBSD.
   * qemu: suggests qemu-user-static.
   * qemu-user-static: register QEMU with binfmt mecanism. Closes: 
@@ -18,7 +19,7 @@ qemu (0.11.0-7) UNRELEASED; urgency=low
   * qemu-utils: Tighten the versioned conflicts with kvm, as not all older
     versions actually conflict.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 30 Nov 2009 22:49:26 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 30 Nov 2009 23:14:47 +0100
 
 qemu (0.11.0-6) unstable; urgency=low
 
