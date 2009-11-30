@@ -15,6 +15,7 @@ NJOBS := -j $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 endif
 
 # Architecture/system specific configuration
+DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 DEB_HOST_ARCH_CPU = $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
 
@@ -30,6 +31,30 @@ ifeq ($(DEB_HOST_ARCH_CPU),i386)
 endif
 ifeq ($(DEB_HOST_ARCH_CPU),sparc)
        conf_arch += --cpu=sparc
+endif
+
+# binfmt support
+ALL_BINFMT_TARGETS=alpha arm armeb cris i386 m68k microblaze mips mipsel ppc ppc64 ppc64abi32 sh4 sh4eb sparc sparc32plus sparc64 x86_64
+ifeq ($(DEB_HOST_ARCH),amd64)
+BINFMT_TARGETS=$(filter-out i386 x86_64, $(ALL_BINFMT_TARGETS))
+endif
+ifneq (,$(findstring $(DEB_HOST_ARCH), arm armel))
+BINFMT_TARGETS=$(filter-out arm, $(ALL_BINFMT_TARGETS))
+endif
+ifeq ($(DEB_HOST_ARCH),i386)
+BINFMT_TARGETS=$(filter-out i386, $(ALL_BINFMT_TARGETS))
+endif
+ifeq ($(DEB_HOST_ARCH),powerpc)
+BINFMT_TARGETS=$(filter-out ppc, $(ALL_BINFMT_TARGETS))
+endif
+ifeq ($(DEB_HOST_ARCH),ppc64)
+BINFMT_TARGETS=$(filter-out ppc ppc64 ppc64abi32 , $(ALL_BINFMT_TARGETS))
+endif
+ifeq ($(DEB_HOST_ARCH),sparc)
+BINFMT_TARGETS=$(filter-out sparc sparc32plus sparc64, $(ALL_BINFMT_TARGETS))
+endif
+ifeq ($(BINFMT_TARGETS),)
+BINFMT_TARGETS=$(ALL_BINFMT_TARGETS)
 endif
 
 include /usr/share/quilt/quilt.make
@@ -132,10 +157,18 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	for target in $(CURDIR)/user-static-build/*-*-user/qemu-* ; do \
 		install -m 755 $$target $(CURDIR)/debian/tmp/usr/bin/$$(basename $$target)-static ; \
 	done
-endif
 
-	# Make qemu-binfmt executable
+	# binfmt support
 	chmod 755 $(CURDIR)/debian/qemu-binfmt
+	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=$(BINFMT_TARGETS)/g' \
+		$(CURDIR)/debian/qemu-user-static.prerm \
+		$(CURDIR)/debian/qemu-user-static.postinst
+
+	for target in $(BINFMT_TARGETS) ; do \
+		install -m 644 $(CURDIR)/debian/binfmts/qemu-$$target \
+			$(CURDIR)/debian/qemu-user-static/usr/share/binfmts ; \
+	done
+endif
 
 	# Install files in the various packages
 	dh_install -s --list-missing
