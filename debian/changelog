@@ -75,6 +75,7 @@ qemu (0.11.0-1) unstable; urgency=low
     - Increase the maximum TCG op a target instruction op can expand to.
       Closes: #530645, #542297.
     - KVM is enabled by default. Closes: #520894.
+    - Fix CVE-2009-3616.  Closes: #553589.
   * Drop 65_kfreebsd.patch.
   * Split the qemu package and use out of tree building. Based on a patch
     from Vagrant Cascadian. Closes: #524774.
