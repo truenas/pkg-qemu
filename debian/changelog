@@ -1,7 +1,7 @@
 qemu (0.11.1-1) UNRELEASED; urgency=low
 
   [ Aurelien Jarno ]
-  * New usptream version.
+  * New upstream version.
   * Drop build-depends on libfreebsd-dev on GNU/kFreeBSD.
   * qemu: suggests qemu-user-static.
   * qemu-user-static: register QEMU with binfmt mecanism. Closes: 
