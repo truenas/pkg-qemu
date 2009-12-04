@@ -20,8 +20,11 @@ qemu (0.11.1-1) UNRELEASED; urgency=low
     are incompatible. Closes: #436094.
   * qemu-utils: Tighten the versioned conflicts with kvm, as not all older
     versions actually conflict.
+  * qemu-make-debian-root: Apply modified patch from Nicolas Boulenguez that
+    documents usage of -s, exits on error, and mentiones that it is normally
+    run as root. Closes: #447034. 
 
- -- Aurelien Jarno <aurel32@debian.org>  Wed, 02 Dec 2009 21:52:26 +0100
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Fri, 04 Dec 2009 14:36:39 -0800
 
 qemu (0.11.0-6) unstable; urgency=low
 
