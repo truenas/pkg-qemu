@@ -160,7 +160,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 
 	# binfmt support
 	chmod 755 $(CURDIR)/debian/qemu-binfmt
-	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=$(BINFMT_TARGETS)/g' \
+	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=\"$(BINFMT_TARGETS)\"/g' \
 		$(CURDIR)/debian/qemu-user-static.prerm \
 		$(CURDIR)/debian/qemu-user-static.postinst
 
