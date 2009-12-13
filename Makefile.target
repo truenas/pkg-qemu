@@ -431,7 +431,7 @@ ifdef CONFIG_ESD
 LIBS += -lesd
 endif
 ifdef CONFIG_PA
-LIBS += -lpulse-simple
+LIBS += -lpulse-simple -lpulse
 endif
 ifdef CONFIG_DSOUND
 LIBS += -lole32 -ldxguid

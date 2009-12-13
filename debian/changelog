@@ -9,6 +9,7 @@ qemu (0.11.1-1) UNRELEASED; urgency=low
   * Bump conflicts on openbios-ppc to (<< 1.0+svn505-1).
   * Add 01-binutils-gold.diff to fix FTBFS with binutils-gold. Closes:
     #556301.
+  * Add sparc64 support.
 
   [ Vagrant Cascadian ]
   * qemu-utils, qemu-user, qemu-system: Set both Conflicts and Replaces for
@@ -24,7 +25,7 @@ qemu (0.11.1-1) UNRELEASED; urgency=low
     documents usage of -s, exits on error, and mentions that it is normally
     run as root. Closes: #447034. 
 
- -- Vagrant Cascadian <vagrant@freegeek.org>  Fri, 04 Dec 2009 14:36:39 -0800
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 13 Dec 2009 16:11:08 +0100
 
 qemu (0.11.0-6) unstable; urgency=low
 

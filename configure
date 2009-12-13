@@ -1043,7 +1043,7 @@ for drv in $audio_drv_list; do
     ;;
 
     pa)
-    audio_drv_probe $drv pulse/simple.h -lpulse-simple \
+    audio_drv_probe $drv pulse/simple.h "-lpulse-simple -lpulse" \
         "pa_simple *s = NULL; pa_simple_free(s); return 0;"
     ;;
 
