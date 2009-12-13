@@ -26,13 +26,6 @@ ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
        conf_arch += --audio-drv-list=oss,sdl,esd,pa
 endif
 
-ifeq ($(DEB_HOST_ARCH_CPU),i386)
-       conf_arch += --cpu=i386
-endif
-ifeq ($(DEB_HOST_ARCH_CPU),sparc)
-       conf_arch += --cpu=sparc
-endif
-
 # binfmt support
 ALL_BINFMT_TARGETS=alpha arm armeb cris i386 m68k microblaze mips mipsel ppc ppc64 ppc64abi32 sh4 sh4eb sparc sparc32plus sparc64 x86_64
 ifeq ($(DEB_HOST_ARCH),amd64)
