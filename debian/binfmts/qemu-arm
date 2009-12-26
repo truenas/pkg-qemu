@@ -1,5 +1,5 @@
 package qemu-user-static
-interpreter /usr/lib/qemu-user-static/qemu-binfmt-arm
+interpreter /usr/bin/qemu-arm-static
 flags: OC
 offset 0
 magic \x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00

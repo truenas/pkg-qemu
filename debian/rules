@@ -80,6 +80,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--interp-prefix=/etc/qemu-binfmt/%M \
 			--disable-blobs \
 			--disable-strip \
 			--disable-system \
@@ -92,6 +93,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--interp-prefix=/etc/qemu-binfmt/%M \
 			--disable-blobs \
 			--disable-strip \
 			--disable-system \
@@ -155,7 +157,6 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	done
 
 	# binfmt support
-	chmod 755 $(CURDIR)/debian/qemu-binfmt
 	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=\"$(BINFMT_TARGETS)\"/g' \
 		$(CURDIR)/debian/qemu-user-static.prerm \
 		$(CURDIR)/debian/qemu-user-static.postinst
