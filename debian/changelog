@@ -10,6 +10,7 @@ qemu (0.11.1-1) UNRELEASED; urgency=low
   * Add 01-binutils-gold.diff to fix FTBFS with binutils-gold. Closes:
     #556301.
   * Add sparc64 support.
+  * Use new roms location in etherboot package.
 
   [ Vagrant Cascadian ]
   * qemu-utils, qemu-user, qemu-system: Set both Conflicts and Replaces for
@@ -25,7 +26,7 @@ qemu (0.11.1-1) UNRELEASED; urgency=low
     documents usage of -s, exits on error, and mentions that it is normally
     run as root. Closes: #447034. 
 
- -- Aurelien Jarno <aurel32@debian.org>  Sun, 13 Dec 2009 16:11:08 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 26 Dec 2009 19:49:27 +0000
 
 qemu (0.11.0-6) unstable; urgency=low
 
