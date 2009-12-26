@@ -415,8 +415,7 @@ static void bochs_bios_write(void *opaque, uint32_t addr, uint32_t val)
     case 0x400:
     case 0x401:
         fprintf(stderr, "BIOS panic at rombios.c, line %d\n", val);
-        /* according to documentation, these can be safely ignored */
-        break;
+        exit(1);
     case 0x402:
     case 0x403:
 #ifdef DEBUG_BIOS
@@ -439,9 +438,8 @@ static void bochs_bios_write(void *opaque, uint32_t addr, uint32_t val)
         /* LGPL'ed VGA BIOS messages */
     case 0x501:
     case 0x502:
-        /* according to documentation, these can be safely ignored */
         fprintf(stderr, "VGA BIOS panic, line %d\n", val);
-        break;
+        exit(1);
     case 0x500:
     case 0x503:
 #ifdef DEBUG_BIOS
