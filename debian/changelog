@@ -1,8 +1,9 @@
 qemu (0.11.1-2) UNRELEASED; urgency=low
 
   * Add versioned build-depends on etherboot.
+  * Add PXE boot support for virtio network adapters.
 
- -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 28 Dec 2009 10:50:12 -0800
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 28 Dec 2009 14:53:33 -0800
 
 qemu (0.11.1-1) unstable; urgency=low
 
