@@ -1,8 +1,8 @@
 qemu (0.11.1-2) UNRELEASED; urgency=low
 
-  * Add versioned build-depdepends on etherboot.
+  * Add versioned build-depends on etherboot.
 
- -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 28 Dec 2009 10:37:02 -0800
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Mon, 28 Dec 2009 10:50:12 -0800
 
 qemu (0.11.1-1) unstable; urgency=low
 
