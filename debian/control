@@ -90,7 +90,7 @@ Description: QEMU user mode emulation binaries (static version)
 Package: qemu-utils
 Architecture: amd64 arm armel hppa i386 powerpc sparc sparc64 kfreebsd-i386 kfreebsd-amd64 ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: debootstrap
+Suggests: debootstrap
 Conflicts: kvm (= 85+dfsg-4.1), qemu (<< 0.11.0-2), qemu-user (<<0.11.1-2)
 Replaces: qemu (<< 0.11.0-2), qemu-user (<<0.11.1-2)
 Description: QEMU utilities
