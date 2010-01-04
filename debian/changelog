@@ -5,8 +5,9 @@ qemu (0.11.1-2) UNRELEASED; urgency=low
   * Move qemu-make-debian-root to qemu-utils package, as it only produces disk
     images not useable by qemu-user. Lower recommends on debootstrap to
     suggests. Add Conflicts and Replaces on older versions of qemu-user.
+  * Register /usr/bin/qemu with the alternatives system. Closes: #413840. 
 
- -- Vagrant Cascadian <vagrant@freegeek.org>  Sun, 03 Jan 2010 01:42:43 -0800
+ -- Vagrant Cascadian <vagrant@freegeek.org>  Sun, 03 Jan 2010 20:32:39 -0800
 
 qemu (0.11.1-1) unstable; urgency=low
 
