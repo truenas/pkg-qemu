@@ -1,9 +1,15 @@
-qemu (0.11.1-3) UNRELEASED; urgency=low
+qemu (0.12.3dfsg-1) UNRELEASED; urgency=low
 
+  * New upstream version.
   * Remove second libgnutls-dev from build depends.
   * Update debian/watch with current location of tarball releases.
+  * Drop binutils-gold patch, applied upstream.
+  * Switch from bochsbios to seabios. Update bios.bin symlink and
+    recommends/conflicts.
+  * Bump Standards-Version to 3.8.4 (no changes).
+  * Update my email address to vagrant@debian.org.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 14 Feb 2010 22:55:16 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 26 Feb 2010 13:24:34 -0800
 
 qemu (0.11.1-2) unstable; urgency=low
 
