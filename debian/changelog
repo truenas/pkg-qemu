@@ -1,6 +1,8 @@
 qemu (0.12.3dfsg-1) UNRELEASED; urgency=low
 
-  * New upstream version.
+  * New upstream version:
+    - Fix access to block devices on GNU/kFreeBSD. Closes: #558447.
+    - Correctly update clock when waking up from sleep. Closes: #414165.
   * Remove second libgnutls-dev from build depends.
   * Update debian/watch with current location of tarball releases.
   * Drop binutils-gold patch, applied upstream.
