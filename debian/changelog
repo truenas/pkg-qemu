@@ -17,6 +17,7 @@ qemu (0.12.3+dfsg-1) UNRELEASED; urgency=low
   [ Aurelien Jarno ]
   * Create a kvm group in postinst and set the group of /dev/kvm to kvm.
     Closes: #570544.
+  * Add mips and mipsel to the list of supported architectures.
 
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 27 Feb 2010 09:31:52 +0100
 
