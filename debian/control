@@ -20,7 +20,7 @@ Vcs-Git: git://git.debian.org/git/pkg-qemu/qemu.git
 
 Package: qemu
 Architecture: amd64 arm armel hppa i386 mips mipsel powerpc sparc sparc64 kfreebsd-i386 kfreebsd-amd64 ppc64
-Depends: ${misc:Depends}, qemu-system, qemu-user [linux-any], qemu-utils
+Depends: ${misc:Depends}, qemu-system (>= ${source:Version}), qemu-user (>= ${source:Version}) [linux-any], qemu-utils (>= ${source:Version})
 Suggests: qemu-user-static [linux-any]
 Description: fast processor emulator
  QEMU is a fast processor emulator: currently the package supports
@@ -91,8 +91,8 @@ Package: qemu-utils
 Architecture: amd64 arm armel hppa i386 mips mipsel powerpc sparc sparc64 kfreebsd-i386 kfreebsd-amd64 ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: debootstrap
-Conflicts: kvm (= 85+dfsg-4.1), qemu (<< 0.11.0-2), qemu-user (<<0.11.1-2)
-Replaces: qemu (<< 0.11.0-2), qemu-user (<<0.11.1-2)
+Conflicts: kvm (= 85+dfsg-4.1), qemu (<< 0.11.0-2), qemu-user (<< 0.11.1-2)
+Replaces: qemu (<< 0.11.0-2), qemu-user (<< 0.11.1-2)
 Description: QEMU utilities
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
  SPARC and x86-64 emulation. By using dynamic translation it achieves
