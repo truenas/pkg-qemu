@@ -4,6 +4,9 @@ qemu (0.12.3+dfsg-1) UNRELEASED; urgency=low
   * New upstream version:
     - Fix access to block devices on GNU/kFreeBSD. Closes: #558447.
     - Correctly update clock when waking up from sleep. Closes: #414165.
+    - Slirp works with other network interfaces. Closes: #407702.
+    - Add the possibility to specify a host to bind to with the -redir
+      option. Closes: #366847.
   * Indicate repackaged upstream tarball by adding "+dfsg" to the version.
     Closes: #388740.
   * Remove second libgnutls-dev from build depends.
