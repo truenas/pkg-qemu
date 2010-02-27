@@ -23,6 +23,8 @@ qemu (0.12.3+dfsg-1) UNRELEASED; urgency=low
   * Add mips and mipsel to the list of supported architectures.
   * Add patches/01_redir_doc.patch to fix a mistake in the redirection
     documentation.
+  * Add patches/02_kfreebsd.patch to use the legacy USB stack on
+    GNU/kFreeBSD.
 
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 27 Feb 2010 11:40:32 +0100
 
