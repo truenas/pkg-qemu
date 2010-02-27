@@ -26,9 +26,10 @@ qemu (0.12.3+dfsg-1) UNRELEASED; urgency=low
   * Add patches/02_kfreebsd.patch to use the legacy USB stack on
     GNU/kFreeBSD.
   * Force the depends from qemu on qemu-system, qemu-user and qemu-utils
-    to  (>= {source:Version}).
+    to (>= {source:Version}).
+  * Update openbios related conflicts.
 
- -- Aurelien Jarno <aurel32@debian.org>  Sat, 27 Feb 2010 13:50:01 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 27 Feb 2010 23:59:28 +0100
 
 qemu (0.11.1-2) unstable; urgency=low
 
