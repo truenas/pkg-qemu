@@ -1,4 +1,4 @@
-qemu (0.12.3+dfsg-1) UNRELEASED; urgency=low
+qemu (0.12.3+dfsg-1) unstable; urgency=low
 
   [ Vagrant Cascadian ]
   * New upstream version:
@@ -30,7 +30,7 @@ qemu (0.12.3+dfsg-1) UNRELEASED; urgency=low
     to (>= {source:Version}).
   * Update openbios related conflicts.
 
- -- Aurelien Jarno <aurel32@debian.org>  Sat, 27 Feb 2010 23:59:28 +0100
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 07 Mar 2010 09:20:43 -0800
 
 qemu (0.11.1-2) unstable; urgency=low
 
