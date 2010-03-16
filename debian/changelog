@@ -1,4 +1,4 @@
-qemu (0.12.3+dfsg-2~20100307~1) UNRELEASED; urgency=low
+qemu (0.12.3+dfsg-2) UNRELEASED; urgency=low
 
   [ Aurelien Jarno ]
   * Disable KVM support on PowerPC, as it needs at least 2.6.33 kernel
@@ -6,8 +6,10 @@ qemu (0.12.3+dfsg-2~20100307~1) UNRELEASED; urgency=low
 
   [ Vagrant Cascadian ]
   * Support pselect for linux-user arm target. Patch by Michael Casadevall. 
+  * Add symlink for seabios's linuxboot.bin to fix -kernel option. Thanks to
+    Sami Liedes. Closes: #574174.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 07 Mar 2010 19:21:38 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Tue, 16 Mar 2010 15:15:16 -0700
 
 qemu (0.12.3+dfsg-1) unstable; urgency=low
 
