@@ -1,4 +1,4 @@
-qemu (0.12.3+dfsg-2) UNRELEASED; urgency=low
+qemu (0.12.3+dfsg-2) unstable; urgency=low
 
   [ Aurelien Jarno ]
   * Disable KVM support on PowerPC, as it needs at least 2.6.33 kernel
@@ -13,7 +13,7 @@ qemu (0.12.3+dfsg-2) UNRELEASED; urgency=low
     recommends/conflicts, to ensure a proper upgrade path. Closes: #573397.
     Reopens: #436094.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Fri, 19 Mar 2010 09:03:48 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 19 Mar 2010 09:31:29 -0700
 
 qemu (0.12.3+dfsg-1) unstable; urgency=low
 
