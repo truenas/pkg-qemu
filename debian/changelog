@@ -1,8 +1,10 @@
 qemu (0.12.3+dfsg-3) UNRELEASEAD; urgency=low
 
   * Add symlink for seabios's multiboot.bin.
+  * Change configure-stamp depends to non-phony target $(QUILT_STAMPFN).
+    Closes: #574444.
 
- -- Aurelien Jarno <aurel32@debian.org>  Fri, 19 Mar 2010 20:13:59 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Fri, 19 Mar 2010 20:29:20 +0100
 
 qemu (0.12.3+dfsg-2) unstable; urgency=low
 
