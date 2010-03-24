@@ -5,8 +5,9 @@ qemu (0.12.3+dfsg-3) UNRELEASEAD; urgency=low
     Closes: #574444.
   * Fix a crash in cmd646 bmdma code that can be triggered by the guest. 
     Closes: #574539.
+  * Explain that KQEMU support has been removed in qemu-system.NEWS.
 
- -- Aurelien Jarno <aurel32@debian.org>  Fri, 19 Mar 2010 22:57:13 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 24 Mar 2010 23:21:19 +0100
 
 qemu (0.12.3+dfsg-2) unstable; urgency=low
 
