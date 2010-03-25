@@ -6,8 +6,10 @@ qemu (0.12.3+dfsg-3) UNRELEASEAD; urgency=low
   * Fix a crash in cmd646 bmdma code that can be triggered by the guest. 
     Closes: #574539.
   * Explain that KQEMU support has been removed in qemu-system.NEWS.
+  * Build-Conflicts with oss4-dev, as this package install a broken
+    <linux/soundcard.h> header. Closes: #575320.
 
- -- Aurelien Jarno <aurel32@debian.org>  Wed, 24 Mar 2010 23:21:19 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Thu, 25 Mar 2010 12:09:53 +0100
 
 qemu (0.12.3+dfsg-2) unstable; urgency=low
 
