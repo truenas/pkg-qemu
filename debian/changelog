@@ -1,4 +1,4 @@
-qemu (0.12.3+dfsg-3) UNRELEASEAD; urgency=low
+qemu (0.12.3+dfsg-3) unstable; urgency=low
 
   * Add symlink for seabios's multiboot.bin.
   * Change configure-stamp depends to non-phony target $(QUILT_STAMPFN).
@@ -9,7 +9,7 @@ qemu (0.12.3+dfsg-3) UNRELEASEAD; urgency=low
   * Build-Conflicts with oss4-dev, as this package install a broken
     <linux/soundcard.h> header. Closes: #575320.
 
- -- Aurelien Jarno <aurel32@debian.org>  Thu, 25 Mar 2010 12:09:53 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 03 Apr 2010 17:07:23 +0200
 
 qemu (0.12.3+dfsg-2) unstable; urgency=low
 
