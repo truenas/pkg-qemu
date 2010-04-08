@@ -2,4 +2,5 @@
 02_kfreebsd.patch
 03_support_pselect_in_linux_user_arm.patch
 04_cmd646.patch
+05_bochs_vbe.diff
 security/leftover.patch
