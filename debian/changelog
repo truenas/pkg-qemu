@@ -5,6 +5,7 @@ qemu (0.12.4+dfsg-2) UNRELEASED; urgency=low
     Closes: #552406.
 
   [ Aurelien Jarno ]
+  * Add 99_stable.diff to update from the stable branch.
   * Use --with-pkgversion to set the packaging version.
 
  -- Aurelien Jarno <aurel32@debian.org>  Wed, 02 Jun 2010 17:24:19 +0200
