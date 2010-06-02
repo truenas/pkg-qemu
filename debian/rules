@@ -3,6 +3,9 @@
 # $Id: rules 391 2009-03-07 05:21:19Z aurel32 $
 #
 
+# Packaging version
+DEB_VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
+
 # Compiler flags
 LDFLAGS = -Wl,--as-needed
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -66,6 +69,7 @@ configure-stamp: configure $(QUILT_STAMPFN)
 	mkdir -p $(CURDIR)/system-build
 	cd $(CURDIR)/system-build && \
 		../configure \
+			--with-pkgversion="Debian $(DEB_VERSION)" \
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
@@ -81,6 +85,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	mkdir -p $(CURDIR)/user-build
 	cd $(CURDIR)/user-build && \
 		../configure \
+			--with-pkgversion="Debian $(DEB_VERSION)" \
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
@@ -94,6 +99,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	mkdir -p $(CURDIR)/user-static-build
 	cd $(CURDIR)/user-static-build && \
 		../configure \
+			--with-pkgversion="Debian $(DEB_VERSION)" \
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \

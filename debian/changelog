@@ -1,9 +1,13 @@
 qemu (0.12.4+dfsg-2) UNRELEASED; urgency=low
 
+  [ Vagrant Cascadian ]
   * qemu-system: Depend on etherboot-qemu package for PXE roms.
     Closes: #552406.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 30 May 2010 11:48:48 -0700
+  [ Aurelien Jarno ]
+  * Use --with-pkgversion to set the packaging version.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 02 Jun 2010 17:24:19 +0200
 
 qemu (0.12.4+dfsg-1) unstable; urgency=low
 
