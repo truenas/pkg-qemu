@@ -98,9 +98,6 @@ struct BlockDriver {
     int (*bdrv_load_vmstate)(BlockDriverState *bs, uint8_t *buf,
                              int64_t pos, int size);
 
-    int (*bdrv_change_backing_file)(BlockDriverState *bs,
-        const char *backing_file, const char *backing_fmt);
-
     /* removable device specific */
     int (*bdrv_is_inserted)(BlockDriverState *bs);
     int (*bdrv_media_changed)(BlockDriverState *bs);
@@ -130,8 +127,6 @@ struct BlockDriverState {
     int64_t total_sectors; /* if we are reading a disk image, give its
                               size in sectors */
     int read_only; /* if true, the media is read only */
-    int keep_read_only; /* if true, the media was requested to stay read only */
-    int open_flags; /* flags used to open the file, re-used for re-open */
     int removable; /* if true, the media can be removed */
     int locked;    /* if true, the media cannot temporarily be ejected */
     int encrypted; /* if true, the media is encrypted */
@@ -177,7 +172,6 @@ struct BlockDriverState {
     int type;
     char device_name[32];
     unsigned long *dirty_bitmap;
-    int64_t dirty_count;
     BlockDriverState *next;
     void *private;
 };
@@ -203,32 +197,5 @@ extern BlockDriverState *bdrv_first;
 #ifdef _WIN32
 int is_windows_drive(const char *filename);
 #endif
-
-struct DriveInfo;
-
-typedef struct BlockConf {
-    struct DriveInfo *dinfo;
-    uint16_t physical_block_size;
-    uint16_t min_io_size;
-    uint32_t opt_io_size;
-} BlockConf;
-
-static inline unsigned int get_physical_block_exp(BlockConf *conf)
-{
-    unsigned int exp = 0, size;
-
-    for (size = conf->physical_block_size; size > 512; size >>= 1) {
-        exp++;
-    }
-
-    return exp;
-}
-
-#define DEFINE_BLOCK_PROPERTIES(_state, _conf)                          \
-    DEFINE_PROP_DRIVE("drive", _state, _conf.dinfo),                    \
-    DEFINE_PROP_UINT16("physical_block_size", _state,                   \
-                       _conf.physical_block_size, 512),                 \
-    DEFINE_PROP_UINT16("min_io_size", _state, _conf.min_io_size, 512),  \
-    DEFINE_PROP_UINT32("opt_io_size", _state, _conf.opt_io_size, 512)
 
 #endif /* BLOCK_INT_H */

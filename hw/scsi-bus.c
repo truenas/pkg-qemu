@@ -374,7 +374,6 @@ static const char *scsi_command_name(uint8_t cmd)
     static const char *names[] = {
         [ TEST_UNIT_READY          ] = "TEST_UNIT_READY",
         [ REZERO_UNIT              ] = "REZERO_UNIT",
-        /* REWIND and REZERO_UNIT use the same operation code */
         [ REQUEST_SENSE            ] = "REQUEST_SENSE",
         [ FORMAT_UNIT              ] = "FORMAT_UNIT",
         [ READ_BLOCK_LIMITS        ] = "READ_BLOCK_LIMITS",
@@ -410,7 +409,7 @@ static const char *scsi_command_name(uint8_t cmd)
         [ SEARCH_LOW               ] = "SEARCH_LOW",
         [ SET_LIMITS               ] = "SET_LIMITS",
         [ PRE_FETCH                ] = "PRE_FETCH",
-        /* READ_POSITION and PRE_FETCH use the same operation code */
+        [ READ_POSITION            ] = "READ_POSITION",
         [ SYNCHRONIZE_CACHE        ] = "SYNCHRONIZE_CACHE",
         [ LOCK_UNLOCK_CACHE        ] = "LOCK_UNLOCK_CACHE",
         [ READ_DEFECT_DATA         ] = "READ_DEFECT_DATA",
@@ -444,6 +443,7 @@ static const char *scsi_command_name(uint8_t cmd)
         [ SEND_VOLUME_TAG          ] = "SEND_VOLUME_TAG",
         [ WRITE_LONG_2             ] = "WRITE_LONG_2",
 
+        [ REWIND                   ] = "REWIND",
         [ REPORT_DENSITY_SUPPORT   ] = "REPORT_DENSITY_SUPPORT",
         [ GET_CONFIGURATION        ] = "GET_CONFIGURATION",
         [ READ_16                  ] = "READ_16",

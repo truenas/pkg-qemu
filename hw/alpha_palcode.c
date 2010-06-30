@@ -1060,17 +1060,8 @@ void call_pal (CPUState *env, int palcode)
 {
     target_long ret;
 
+    qemu_log("%s: palcode %02x\n", __func__, palcode);
     switch (palcode) {
-    case 0x80:
-        /* BPT */
-        qemu_log("BPT\n");
-        /* FIXME: Sends SIGTRAP, si_code=TRAP_BRKPT.  */
-        exit(1);
-    case 0x81:
-        /* BUGCHK */
-        qemu_log("BUGCHK\n");
-        /* FIXME: Sends SIGTRAP, si_code=SI_FAULT.  */
-        exit(1);
     case 0x83:
         /* CALLSYS */
         qemu_log("CALLSYS n " TARGET_FMT_ld "\n", env->ir[0]);
@@ -1085,37 +1076,19 @@ void call_pal (CPUState *env, int palcode)
             env->ir[IR_V0] = -ret;
         }
         break;
-    case 0x86:
-        /* IMB */
-        qemu_log("IMB\n");
-        /* ??? We can probably elide the code using page_unprotect that is
-           checking for self-modifying code.  Instead we could simply call
-           tb_flush here.  Until we work out the changes required to turn
-           off the extra write protection, this can be a no-op.  */
-        break;
     case 0x9E:
         /* RDUNIQUE */
+        env->ir[IR_V0] = env->unique;
         qemu_log("RDUNIQUE: " TARGET_FMT_lx "\n", env->unique);
-        /* Handled in the translator for usermode.  */
-        abort();
+        break;
     case 0x9F:
         /* WRUNIQUE */
-        qemu_log("WRUNIQUE: " TARGET_FMT_lx "\n", env->ir[IR_A0]);
-        /* Handled in the translator for usermode.  */
-        abort();
-    case 0xAA:
-        /* GENTRAP */
-        qemu_log("GENTRAP: " TARGET_FMT_lx "\n", env->ir[IR_A0]);
-        /* FIXME: This is supposed to send a signal:
-           SIGFPE:
-             GEN_INTOVF, GEN_INTDIV, GEN_FLTOVF, GEN_FLTDIV,
-             GEN_FLTUND, GEN_FLTINV, GEN_FLTINE, GEN_ROPRAND
-           SIGTRAP:
-             others
-           with various settings of si_code.  */
-        exit(1);
+        env->unique = env->ir[IR_A0];
+        qemu_log("WRUNIQUE: " TARGET_FMT_lx "\n", env->unique);
+        break;
     default:
-        qemu_log("%s: unhandled palcode %02x\n", __func__, palcode);
+        qemu_log("%s: unhandled palcode %02x\n",
+                    __func__, palcode);
         exit(1);
     }
 }

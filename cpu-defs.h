@@ -197,7 +197,6 @@ typedef struct CPUWatchpoint {
     const char *cpu_model_str;                                          \
     struct KVMState *kvm_state;                                         \
     struct kvm_run *kvm_run;                                            \
-    int kvm_fd;                                                         \
-    int kvm_vcpu_dirty;
+    int kvm_fd;
 
 #endif

@@ -76,17 +76,21 @@ static int set_sparse(int fd)
 static int raw_open(BlockDriverState *bs, const char *filename, int flags)
 {
     BDRVRawState *s = bs->opaque;
-    int access_flags;
+    int access_flags, create_flags;
     DWORD overlapped;
 
     s->type = FTYPE_FILE;
 
-    if (flags & BDRV_O_RDWR) {
+    if ((flags & BDRV_O_ACCESS) == O_RDWR) {
         access_flags = GENERIC_READ | GENERIC_WRITE;
     } else {
         access_flags = GENERIC_READ;
     }
-
+    if (flags & BDRV_O_CREAT) {
+        create_flags = CREATE_ALWAYS;
+    } else {
+        create_flags = OPEN_EXISTING;
+    }
     overlapped = FILE_ATTRIBUTE_NORMAL;
     if ((flags & BDRV_O_NOCACHE))
         overlapped |= FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH;
@@ -94,7 +98,7 @@ static int raw_open(BlockDriverState *bs, const char *filename, int flags)
         overlapped |= FILE_FLAG_WRITE_THROUGH;
     s->hfile = CreateFile(filename, access_flags,
                           FILE_SHARE_READ, NULL,
-                          OPEN_EXISTING, overlapped, NULL);
+                          create_flags, overlapped, NULL);
     if (s->hfile == INVALID_HANDLE_VALUE) {
         int err = GetLastError();
 
@@ -333,7 +337,7 @@ static int hdev_open(BlockDriverState *bs, const char *filename, int flags)
     }
     s->type = find_device_type(bs, filename);
 
-    if (flags & BDRV_O_RDWR) {
+    if ((flags & BDRV_O_ACCESS) == O_RDWR) {
         access_flags = GENERIC_READ | GENERIC_WRITE;
     } else {
         access_flags = GENERIC_READ;

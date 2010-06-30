@@ -99,14 +99,13 @@ static int pending_cpus;
 /* Make sure everything is in a consistent state for calling fork().  */
 void fork_start(void)
 {
+    mmap_fork_start();
     pthread_mutex_lock(&tb_lock);
     pthread_mutex_lock(&exclusive_lock);
-    mmap_fork_start();
 }
 
 void fork_end(int child)
 {
-    mmap_fork_end(child);
     if (child) {
         /* Child processes created by fork() only have a single thread.
            Discard information about the parent threads.  */
@@ -123,6 +122,7 @@ void fork_end(int child)
         pthread_mutex_unlock(&exclusive_lock);
         pthread_mutex_unlock(&tb_lock);
     }
+    mmap_fork_end(child);
 }
 
 /* Wait for pending exclusive operations to complete.  The exclusive lock
@@ -548,8 +548,6 @@ static int do_strex(CPUARMState *env)
     case 3:
         segv = get_user_u32(val, addr);
         break;
-    default:
-        abort();
     }
     if (segv) {
         env->cp15.c6_data = addr;
@@ -1070,9 +1068,9 @@ static inline uint64_t cpu_ppc_get_tb (CPUState *env)
     return 0;
 }
 
-uint64_t cpu_ppc_load_tbl (CPUState *env)
+uint32_t cpu_ppc_load_tbl (CPUState *env)
 {
-    return cpu_ppc_get_tb(env);
+    return cpu_ppc_get_tb(env) & 0xFFFFFFFF;
 }
 
 uint32_t cpu_ppc_load_tbu (CPUState *env)
@@ -1080,9 +1078,9 @@ uint32_t cpu_ppc_load_tbu (CPUState *env)
     return cpu_ppc_get_tb(env) >> 32;
 }
 
-uint64_t cpu_ppc_load_atbl (CPUState *env)
+uint32_t cpu_ppc_load_atbl (CPUState *env)
 {
-    return cpu_ppc_get_tb(env);
+    return cpu_ppc_get_tb(env) & 0xFFFFFFFF;
 }
 
 uint32_t cpu_ppc_load_atbu (CPUState *env)
@@ -1099,12 +1097,12 @@ uint32_t cpu_ppc601_load_rtcl (CPUState *env)
 }
 
 /* XXX: to be fixed */
-int ppc_dcr_read (ppc_dcr_t *dcr_env, int dcrn, uint32_t *valp)
+int ppc_dcr_read (ppc_dcr_t *dcr_env, int dcrn, target_ulong *valp)
 {
     return -1;
 }
 
-int ppc_dcr_write (ppc_dcr_t *dcr_env, int dcrn, uint32_t val)
+int ppc_dcr_write (ppc_dcr_t *dcr_env, int dcrn, target_ulong val)
 {
     return -1;
 }
@@ -2553,10 +2551,6 @@ int main(int argc, char **argv, char **envp)
     }
 
     cpu_model = NULL;
-#if defined(cpudef_setup)
-    cpudef_setup(); /* parse cpu definitions in target config file (TBD) */
-#endif
-
     optind = 1;
     for(;;) {
         if (optind >= argc)
@@ -2628,8 +2622,8 @@ int main(int argc, char **argv, char **envp)
             cpu_model = argv[optind++];
             if (cpu_model == NULL || strcmp(cpu_model, "?") == 0) {
 /* XXX: implement xxx_cpu_list for targets that still miss it */
-#if defined(cpu_list_id)
-                cpu_list_id(stdout, &fprintf, "");
+#if defined(cpu_list)
+                    cpu_list(stdout, &fprintf);
 #endif
                 exit(1);
             }
@@ -2690,7 +2684,7 @@ int main(int argc, char **argv, char **envp)
 #endif
 #elif defined(TARGET_PPC)
 #ifdef TARGET_PPC64
-        cpu_model = "970";
+        cpu_model = "970fx";
 #else
         cpu_model = "750";
 #endif
@@ -3054,8 +3048,10 @@ int main(int argc, char **argv, char **envp)
         for(i = 0; i < 28; i++) {
             env->ir[i] = ((abi_ulong *)regs)[i];
         }
-        env->ir[IR_SP] = regs->usp;
+        env->ipr[IPR_USP] = regs->usp;
+        env->ir[30] = regs->usp;
         env->pc = regs->pc;
+        env->unique = regs->unique;
     }
 #elif defined(TARGET_CRIS)
     {

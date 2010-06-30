@@ -66,6 +66,7 @@ typedef struct {
     uint16_t keyctlclr;
     uint16_t pad0;
     uint16_t pad1;
+    uint16_t powoff;
     uint16_t verreg;
     uint16_t inport;
     uint16_t outport;
@@ -127,7 +128,7 @@ static uint32_t r2d_fpga_read(void *opaque, target_phys_addr_t addr)
     case PA_OUTPORT:
 	return s->outport;
     case PA_POWOFF:
-	return 0x00;
+	return s->powoff;
     case PA_VERREG:
 	return 0x10;
     }
@@ -149,10 +150,8 @@ r2d_fpga_write(void *opaque, target_phys_addr_t addr, uint32_t value)
 	s->outport = value;
 	break;
     case PA_POWOFF:
-        if (value & 1) {
-            qemu_system_shutdown_request();
-        }
-        break;
+	s->powoff = value;
+	break;
     case PA_VERREG:
 	/* Discard writes */
 	break;

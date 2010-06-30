@@ -26,7 +26,7 @@
 #include "loader.h"
 #include "elf.h"
 #include "hw/virtio.h"
-#include "hw/virtio-serial.h"
+#include "hw/virtio-console.h"
 #include "hw/sysbus.h"
 #include "kvm.h"
 
@@ -101,7 +101,6 @@ static int s390_virtio_device_init(VirtIOS390Device *dev, VirtIODevice *vdev)
     bus->dev_offs += dev_len;
 
     virtio_bind_device(vdev, &virtio_s390_bindings, dev);
-    dev->host_features = vdev->get_features(vdev, dev->host_features);
     s390_virtio_device_sync(dev);
 
     return 0;
@@ -123,7 +122,7 @@ static int s390_virtio_blk_init(VirtIOS390Device *dev)
 {
     VirtIODevice *vdev;
 
-    vdev = virtio_blk_init((DeviceState *)dev, dev->block.dinfo);
+    vdev = virtio_blk_init((DeviceState *)dev, dev->dinfo);
     if (!vdev) {
         return -1;
     }
@@ -131,7 +130,7 @@ static int s390_virtio_blk_init(VirtIOS390Device *dev)
     return s390_virtio_device_init(dev, vdev);
 }
 
-static int s390_virtio_serial_init(VirtIOS390Device *dev)
+static int s390_virtio_console_init(VirtIOS390Device *dev)
 {
     VirtIOS390Bus *bus;
     VirtIODevice *vdev;
@@ -139,7 +138,7 @@ static int s390_virtio_serial_init(VirtIOS390Device *dev)
 
     bus = DO_UPCAST(VirtIOS390Bus, bus, dev->qdev.parent_bus);
 
-    vdev = virtio_serial_init((DeviceState *)dev, dev->max_virtserial_ports);
+    vdev = virtio_console_init((DeviceState *)dev);
     if (!vdev) {
         return -1;
     }
@@ -223,7 +222,9 @@ static void s390_virtio_device_sync(VirtIOS390Device *dev)
     cur_offs += num_vq * VIRTIO_VQCONFIG_LEN;
 
     /* Sync feature bitmap */
-    stl_phys(cur_offs, dev->host_features);
+    if (dev->vdev->get_features) {
+        stl_phys(cur_offs, dev->vdev->get_features(dev->vdev));
+    }
 
     dev->feat_offs = cur_offs + dev->feat_len;
     cur_offs += dev->feat_len * 2;
@@ -250,7 +251,7 @@ void s390_virtio_device_update_status(VirtIOS390Device *dev)
     if (vdev->set_features) {
         vdev->set_features(vdev, features);
     }
-    vdev->guest_features = features;
+    vdev->features = features;
 }
 
 VirtIOS390Device *s390_virtio_bus_console(VirtIOS390Bus *bus)
@@ -309,17 +310,10 @@ static void virtio_s390_notify(void *opaque, uint16_t vector)
     kvm_s390_virtio_irq(s390_cpu_addr2state(0), 0, token);
 }
 
-static unsigned virtio_s390_get_features(void *opaque)
-{
-    VirtIOS390Device *dev = (VirtIOS390Device*)opaque;
-    return dev->host_features;
-}
-
 /**************** S390 Virtio Bus Device Descriptions *******************/
 
 static const VirtIOBindings virtio_s390_bindings = {
     .notify = virtio_s390_notify,
-    .get_features = virtio_s390_get_features,
 };
 
 static VirtIOS390DeviceInfo s390_virtio_net = {
@@ -337,19 +331,16 @@ static VirtIOS390DeviceInfo s390_virtio_blk = {
     .qdev.name = "virtio-blk-s390",
     .qdev.size = sizeof(VirtIOS390Device),
     .qdev.props = (Property[]) {
-        DEFINE_BLOCK_PROPERTIES(VirtIOS390Device, block),
+        DEFINE_PROP_DRIVE("drive", VirtIOS390Device, dinfo),
         DEFINE_PROP_END_OF_LIST(),
     },
 };
 
-static VirtIOS390DeviceInfo s390_virtio_serial = {
-    .init = s390_virtio_serial_init,
-    .qdev.name = "virtio-serial-s390",
-    .qdev.alias = "virtio-serial",
+static VirtIOS390DeviceInfo s390_virtio_console = {
+    .init = s390_virtio_console_init,
+    .qdev.name = "virtio-console-s390",
     .qdev.size = sizeof(VirtIOS390Device),
     .qdev.props = (Property[]) {
-        DEFINE_PROP_UINT32("max_ports", VirtIOS390Device, max_virtserial_ports,
-                           31),
         DEFINE_PROP_END_OF_LIST(),
     },
 };
@@ -373,7 +364,7 @@ static void s390_virtio_bus_register_withprop(VirtIOS390DeviceInfo *info)
 
 static void s390_virtio_register(void)
 {
-    s390_virtio_bus_register_withprop(&s390_virtio_serial);
+    s390_virtio_bus_register_withprop(&s390_virtio_console);
     s390_virtio_bus_register_withprop(&s390_virtio_blk);
     s390_virtio_bus_register_withprop(&s390_virtio_net);
 }

@@ -11,8 +11,6 @@
 #define QEMU_WARN_UNUSED_RESULT
 #endif
 
-#define QEMU_BUILD_BUG_ON(x) typedef char __build_bug_on__##__LINE__[(x)?-1:1];
-
 /* Hack around the mess dyngen-exec.h causes: We need QEMU_NORETURN in files that
    cannot include the following headers without conflicts. This condition has
    to be removed once dyngen is gone. */
@@ -167,12 +165,9 @@ void qemu_mutex_lock_iothread(void);
 void qemu_mutex_unlock_iothread(void);
 
 int qemu_open(const char *name, int flags, ...);
-ssize_t qemu_write_full(int fd, const void *buf, size_t count)
-    QEMU_WARN_UNUSED_RESULT;
 void qemu_set_cloexec(int fd);
 
 #ifndef _WIN32
-int qemu_eventfd(int pipefd[2]);
 int qemu_pipe(int pipefd[2]);
 #endif
 
@@ -227,8 +222,6 @@ typedef struct uWireSlave uWireSlave;
 typedef struct I2SCodec I2SCodec;
 typedef struct DeviceState DeviceState;
 typedef struct SSIBus SSIBus;
-
-typedef uint64_t pcibus_t;
 
 /* CPU save/load.  */
 void cpu_save(QEMUFile *f, void *opaque);

@@ -47,4 +47,14 @@ static inline int cpu_halted(CPUState *env) {
 #include "softmmu_exec.h"
 #endif
 
+static inline void regs_to_env(void)
+{
+    /* XXXXX */
+}
+
+static inline void env_to_regs(void)
+{
+    /* XXXXX */
+}
+
 #endif				/* _EXEC_SH4_H */

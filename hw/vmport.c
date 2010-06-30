@@ -25,7 +25,6 @@
 #include "isa.h"
 #include "pc.h"
 #include "sysemu.h"
-#include "kvm.h"
 
 //#define VMPORT_DEBUG
 
@@ -58,8 +57,6 @@ static uint32_t vmport_ioport_read(void *opaque, uint32_t addr)
     CPUState *env = cpu_single_env;
     unsigned char command;
     uint32_t eax;
-
-    cpu_synchronize_state(env);
 
     eax = env->regs[R_EAX];
     if (eax != VMPORT_MAGIC)

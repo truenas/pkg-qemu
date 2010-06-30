@@ -38,14 +38,14 @@
 
 #define FW_CFG_SIZE 2
 
-typedef struct FWCfgEntry {
+typedef struct _FWCfgEntry {
     uint32_t len;
     uint8_t *data;
     void *callback_opaque;
     FWCfgCallback callback;
 } FWCfgEntry;
 
-struct FWCfgState {
+struct _FWCfgState {
     FWCfgEntry entries[2][FW_CFG_MAX_ENTRY];
     FWCfgFiles *files;
     uint16_t cur_entry;
@@ -179,7 +179,7 @@ static int get_uint32_as_uint16(QEMUFile *f, void *pv, size_t size)
 
 static void put_unused(QEMUFile *f, void *pv, size_t size)
 {
-    fprintf(stderr, "uint32_as_uint16 is only used for backward compatibilty.\n");
+    fprintf(stderr, "uint32_as_uint16 is only used for backward compatibility.\n");
     fprintf(stderr, "This functions shouldn't be called.\n");
 }
 

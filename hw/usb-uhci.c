@@ -71,7 +71,7 @@
 #define NB_PORTS 2
 
 #ifdef DEBUG
-#define DPRINTF printf
+#define dprintf printf
 
 static const char *pid2str(int pid)
 {
@@ -84,7 +84,7 @@ static const char *pid2str(int pid)
 }
 
 #else
-#define DPRINTF(...)
+#define dprintf(...)
 #endif
 
 #ifdef DEBUG_DUMP_DATA
@@ -112,7 +112,6 @@ typedef struct UHCIAsync {
     uint32_t  td;
     uint32_t  token;
     int8_t    valid;
-    uint8_t   isoc;
     uint8_t   done;
     uint8_t   buffer[2048];
 } UHCIAsync;
@@ -132,7 +131,6 @@ typedef struct UHCIState {
     uint32_t fl_base_addr; /* frame list base address */
     uint8_t sof_timing;
     uint8_t status2; /* bit 0 and 1 are used to generate UHCI_STS_USBINT */
-    int64_t expire_time;
     QEMUTimer *frame_timer;
     UHCIPort ports[NB_PORTS];
 
@@ -166,7 +164,6 @@ static UHCIAsync *uhci_async_alloc(UHCIState *s)
     async->td    = 0;
     async->token = 0;
     async->done  = 0;
-    async->isoc  = 0;
     async->next  = NULL;
 
     return async;
@@ -201,7 +198,7 @@ static void uhci_async_unlink(UHCIState *s, UHCIAsync *async)
 
 static void uhci_async_cancel(UHCIState *s, UHCIAsync *async)
 {
-    DPRINTF("uhci: cancel td 0x%x token 0x%x done %u\n",
+    dprintf("uhci: cancel td 0x%x token 0x%x done %u\n",
            async->td, async->token, async->done);
 
     if (!async->done)
@@ -332,7 +329,7 @@ static void uhci_reset(void *opaque)
     int i;
     UHCIPort *port;
 
-    DPRINTF("uhci: full reset\n");
+    dprintf("uhci: full reset\n");
 
     pci_conf = s->dev.config;
 
@@ -430,7 +427,7 @@ static void uhci_ioport_writew(void *opaque, uint32_t addr, uint32_t val)
     UHCIState *s = opaque;
 
     addr &= 0x1f;
-    DPRINTF("uhci: writew port=0x%04x val=0x%04x\n", addr, val);
+    dprintf("uhci: writew port=0x%04x val=0x%04x\n", addr, val);
 
     switch(addr) {
     case 0x00:
@@ -541,7 +538,7 @@ static uint32_t uhci_ioport_readw(void *opaque, uint32_t addr)
         break;
     }
 
-    DPRINTF("uhci: readw port=0x%04x val=0x%04x\n", addr, val);
+    dprintf("uhci: readw port=0x%04x val=0x%04x\n", addr, val);
 
     return val;
 }
@@ -551,7 +548,7 @@ static void uhci_ioport_writel(void *opaque, uint32_t addr, uint32_t val)
     UHCIState *s = opaque;
 
     addr &= 0x1f;
-    DPRINTF("uhci: writel port=0x%04x val=0x%08x\n", addr, val);
+    dprintf("uhci: writel port=0x%04x val=0x%08x\n", addr, val);
 
     switch(addr) {
     case 0x08:
@@ -642,7 +639,7 @@ static int uhci_broadcast_packet(UHCIState *s, USBPacket *p)
 {
     int i, ret;
 
-    DPRINTF("uhci: packet enter. pid %s addr 0x%02x ep %d len %d\n",
+    dprintf("uhci: packet enter. pid %s addr 0x%02x ep %d len %d\n",
            pid2str(p->pid), p->devaddr, p->devep, p->len);
     if (p->pid == USB_TOKEN_OUT || p->pid == USB_TOKEN_SETUP)
         dump_data(p->data, p->len);
@@ -656,7 +653,7 @@ static int uhci_broadcast_packet(UHCIState *s, USBPacket *p)
             ret = dev->info->handle_packet(dev, p);
     }
 
-    DPRINTF("uhci: packet exit. ret %d len %d\n", ret, p->len);
+    dprintf("uhci: packet exit. ret %d len %d\n", ret, p->len);
     if (p->pid == USB_TOKEN_IN && ret > 0)
         dump_data(p->data, ret);
 
@@ -680,9 +677,6 @@ static int uhci_complete_td(UHCIState *s, UHCI_TD *td, UHCIAsync *async, uint32_
 
     ret = async->packet.len;
 
-    if (td->ctrl & TD_CTRL_IOC)
-        *int_mask |= 0x01;
-
     if (td->ctrl & TD_CTRL_IOS)
         td->ctrl &= ~TD_CTRL_ACTIVE;
 
@@ -696,6 +690,8 @@ static int uhci_complete_td(UHCIState *s, UHCI_TD *td, UHCIAsync *async, uint32_
        here.  The docs are somewhat unclear, but win2k relies on this
        behavior.  */
     td->ctrl &= ~(TD_CTRL_ACTIVE | TD_CTRL_NAK);
+    if (td->ctrl & TD_CTRL_IOC)
+        *int_mask |= 0x01;
 
     if (pid == USB_TOKEN_IN) {
         if (len > max_len) {
@@ -712,7 +708,7 @@ static int uhci_complete_td(UHCIState *s, UHCI_TD *td, UHCIAsync *async, uint32_
         if ((td->ctrl & TD_CTRL_SPD) && len < max_len) {
             *int_mask |= 0x02;
             /* short packet: do not update QH */
-            DPRINTF("uhci: short packet. td 0x%x token 0x%x\n", async->td, async->token);
+            dprintf("uhci: short packet. td 0x%x token 0x%x\n", async->td, async->token);
             return 1;
         }
     }
@@ -753,6 +749,8 @@ out:
         if (err == 0) {
             td->ctrl &= ~TD_CTRL_ACTIVE;
             s->status |= UHCI_STS_USBERR;
+            if (td->ctrl & TD_CTRL_IOC)
+                *int_mask |= 0x01;
             uhci_update_irq(s);
         }
     }
@@ -765,25 +763,13 @@ static int uhci_handle_td(UHCIState *s, uint32_t addr, UHCI_TD *td, uint32_t *in
 {
     UHCIAsync *async;
     int len = 0, max_len;
-    uint8_t pid, isoc;
-    uint32_t token;
+    uint8_t pid;
 
     /* Is active ? */
     if (!(td->ctrl & TD_CTRL_ACTIVE))
         return 1;
 
-    /* token field is not unique for isochronous requests,
-     * so use the destination buffer 
-     */
-    if (td->ctrl & TD_CTRL_IOS) {
-        token = td->buffer;
-        isoc = 1;
-    } else {
-        token = td->token;
-        isoc = 0;
-    }
-
-    async = uhci_async_find_td(s, addr, token);
+    async = uhci_async_find_td(s, addr, td->token);
     if (async) {
         /* Already submitted */
         async->valid = 32;
@@ -800,13 +786,9 @@ static int uhci_handle_td(UHCIState *s, uint32_t addr, UHCI_TD *td, uint32_t *in
     if (!async)
         return 1;
 
-    /* valid needs to be large enough to handle 10 frame delay
-     * for initial isochronous requests
-     */
-    async->valid = 32;
+    async->valid = 10;
     async->td    = addr;
-    async->token = token;
-    async->isoc  = isoc;
+    async->token = td->token;
 
     max_len = ((td->token >> 21) + 1) & 0x7ff;
     pid = td->token & 0xff;
@@ -858,33 +840,11 @@ static void uhci_async_complete(USBPacket *packet, void *opaque)
     UHCIState *s = opaque;
     UHCIAsync *async = (UHCIAsync *) packet;
 
-    DPRINTF("uhci: async complete. td 0x%x token 0x%x\n", async->td, async->token);
+    dprintf("uhci: async complete. td 0x%x token 0x%x\n", async->td, async->token);
 
-    if (async->isoc) {
-        UHCI_TD td;
-        uint32_t link = async->td;
-        uint32_t int_mask = 0, val;
-        int len;
- 
-        cpu_physical_memory_read(link & ~0xf, (uint8_t *) &td, sizeof(td));
-        le32_to_cpus(&td.link);
-        le32_to_cpus(&td.ctrl);
-        le32_to_cpus(&td.token);
-        le32_to_cpus(&td.buffer);
+    async->done = 1;
 
-        uhci_async_unlink(s, async);
-        len = uhci_complete_td(s, &td, async, &int_mask);
-        s->pending_int_mask |= int_mask;
-
-        /* update the status bits of the TD */
-        val = cpu_to_le32(td.ctrl);
-        cpu_physical_memory_write((link & ~0xf) + 4,
-                                  (const uint8_t *)&val, sizeof(val));
-        uhci_async_free(s, async);
-    } else {
-        async->done = 1;
-        uhci_process_frame(s);
-    }
+    uhci_process_frame(s);
 }
 
 static int is_valid(uint32_t link)
@@ -940,7 +900,7 @@ static void uhci_process_frame(UHCIState *s)
 
     frame_addr = s->fl_base_addr + ((s->frnum & 0x3ff) << 2);
 
-    DPRINTF("uhci: processing frame %d addr 0x%x\n" , s->frnum, frame_addr);
+    dprintf("uhci: processing frame %d addr 0x%x\n" , s->frnum, frame_addr);
 
     cpu_physical_memory_read(frame_addr, (uint8_t *)&link, 4);
     le32_to_cpus(&link);
@@ -962,7 +922,7 @@ static void uhci_process_frame(UHCIState *s)
                  * are already done, and async completion handler will re-process 
                  * the frame when something is ready.
                  */
-                DPRINTF("uhci: detected loop. qh 0x%x\n", link);
+                dprintf("uhci: detected loop. qh 0x%x\n", link);
                 break;
             }
 
@@ -970,7 +930,7 @@ static void uhci_process_frame(UHCIState *s)
             le32_to_cpus(&qh.link);
             le32_to_cpus(&qh.el_link);
 
-            DPRINTF("uhci: QH 0x%x load. link 0x%x elink 0x%x\n",
+            dprintf("uhci: QH 0x%x load. link 0x%x elink 0x%x\n",
                     link, qh.link, qh.el_link);
 
             if (!is_valid(qh.el_link)) {
@@ -992,7 +952,7 @@ static void uhci_process_frame(UHCIState *s)
         le32_to_cpus(&td.token);
         le32_to_cpus(&td.buffer);
 
-        DPRINTF("uhci: TD 0x%x load. link 0x%x ctrl 0x%x token 0x%x qh 0x%x\n", 
+        dprintf("uhci: TD 0x%x load. link 0x%x ctrl 0x%x token 0x%x qh 0x%x\n", 
                 link, td.link, td.ctrl, td.token, curr_qh);
 
         old_td_ctrl = td.ctrl;
@@ -1010,7 +970,7 @@ static void uhci_process_frame(UHCIState *s)
         }
 
         if (ret == 2 || ret == 1) {
-            DPRINTF("uhci: TD 0x%x %s. link 0x%x ctrl 0x%x token 0x%x qh 0x%x\n",
+            dprintf("uhci: TD 0x%x %s. link 0x%x ctrl 0x%x token 0x%x qh 0x%x\n",
                     link, ret == 2 ? "pend" : "skip",
                     td.link, td.ctrl, td.token, curr_qh);
 
@@ -1020,7 +980,7 @@ static void uhci_process_frame(UHCIState *s)
 
         /* completed TD */
 
-        DPRINTF("uhci: TD 0x%x done. link 0x%x ctrl 0x%x token 0x%x qh 0x%x\n", 
+        dprintf("uhci: TD 0x%x done. link 0x%x ctrl 0x%x token 0x%x qh 0x%x\n", 
                 link, td.link, td.ctrl, td.token, curr_qh);
 
         link = td.link;
@@ -1035,7 +995,7 @@ static void uhci_process_frame(UHCIState *s)
             if (!depth_first(link)) {
                /* done with this QH */
 
-               DPRINTF("uhci: QH 0x%x done. link 0x%x elink 0x%x\n",
+               dprintf("uhci: QH 0x%x done. link 0x%x elink 0x%x\n",
                        curr_qh, qh.link, qh.el_link);
 
                curr_qh = 0;
@@ -1046,15 +1006,13 @@ static void uhci_process_frame(UHCIState *s)
         /* go to the next entry */
     }
 
-    s->pending_int_mask |= int_mask;
+    s->pending_int_mask = int_mask;
 }
 
 static void uhci_frame_timer(void *opaque)
 {
     UHCIState *s = opaque;
-
-    /* prepare the timer for the next frame */
-    s->expire_time += (get_ticks_per_sec() / FRAME_TIMER_FREQ);
+    int64_t expire_time;
 
     if (!(s->cmd & UHCI_CMD_RS)) {
         /* Full stop */
@@ -1062,7 +1020,7 @@ static void uhci_frame_timer(void *opaque)
         /* set hchalted bit in status - UHCI11D 2.1.2 */
         s->status |= UHCI_STS_HCHALTED;
 
-        DPRINTF("uhci: halted\n");
+        dprintf("uhci: halted\n");
         return;
     }
 
@@ -1072,12 +1030,11 @@ static void uhci_frame_timer(void *opaque)
         s->status  |= UHCI_STS_USBINT;
         uhci_update_irq(s);
     }
-    s->pending_int_mask = 0;
 
     /* Start new frame */
     s->frnum = (s->frnum + 1) & 0x7ff;
 
-    DPRINTF("uhci: new frame #%u\n" , s->frnum);
+    dprintf("uhci: new frame #%u\n" , s->frnum);
 
     uhci_async_validate_begin(s);
 
@@ -1085,7 +1042,10 @@ static void uhci_frame_timer(void *opaque)
 
     uhci_async_validate_end(s);
 
-    qemu_mod_timer(s->frame_timer, s->expire_time);
+    /* prepare the timer for the next frame */
+    expire_time = qemu_get_clock(vm_clock) +
+        (get_ticks_per_sec() / FRAME_TIMER_FREQ);
+    qemu_mod_timer(s->frame_timer, expire_time);
 }
 
 static void uhci_map(PCIDevice *pci_dev, int region_num,
@@ -1106,12 +1066,11 @@ static int usb_uhci_common_initfn(UHCIState *s)
     uint8_t *pci_conf = s->dev.config;
     int i;
 
-    pci_conf[PCI_REVISION_ID] = 0x01; // revision number
-    pci_conf[PCI_CLASS_PROG] = 0x00;
+    pci_conf[0x08] = 0x01; // revision number
+    pci_conf[0x09] = 0x00;
     pci_config_set_class(pci_conf, PCI_CLASS_SERIAL_USB);
     pci_conf[PCI_HEADER_TYPE] = PCI_HEADER_TYPE_NORMAL; // header_type
-    /* TODO: reset value should be 0. */
-    pci_conf[PCI_INTERRUPT_PIN] = 4; // interrupt pin 3
+    pci_conf[0x3d] = 4; // interrupt pin 3
     pci_conf[0x60] = 0x10; // release number
 
     usb_bus_new(&s->bus, &s->dev.qdev);
@@ -1119,8 +1078,6 @@ static int usb_uhci_common_initfn(UHCIState *s)
         usb_register_port(&s->bus, &s->ports[i].port, s, i, uhci_attach);
     }
     s->frame_timer = qemu_new_timer(vm_clock, uhci_frame_timer, s);
-    s->expire_time = qemu_get_clock(vm_clock) +
-        (get_ticks_per_sec() / FRAME_TIMER_FREQ);
     s->num_ports_vmstate = NB_PORTS;
 
     qemu_register_reset(uhci_reset, s);

@@ -22,9 +22,14 @@
 #include "softfloat.h"
 #include "helper.h"
 
+void helper_tb_flush (void)
+{
+    tb_flush(env);
+}
+
 /*****************************************************************************/
 /* Exceptions processing helpers */
-void QEMU_NORETURN helper_excp (int excp, int error)
+void helper_excp (int excp, int error)
 {
     env->exception_index = excp;
     env->error_code = error;
@@ -39,12 +44,49 @@ uint64_t helper_load_pcc (void)
 
 uint64_t helper_load_fpcr (void)
 {
-    return cpu_alpha_load_fpcr (env);
+    uint64_t ret = 0;
+#ifdef CONFIG_SOFTFLOAT
+    ret |= (uint64_t)env->fp_status.float_exception_flags << 52;
+    if (env->fp_status.float_exception_flags)
+        ret |= 1ULL << 63;
+    env->ipr[IPR_EXC_SUM] &= ~0x3E;
+    env->ipr[IPR_EXC_SUM] |= env->fp_status.float_exception_flags << 1;
+#endif
+    switch (env->fp_status.float_rounding_mode) {
+    case float_round_nearest_even:
+        ret |= 2ULL << 58;
+        break;
+    case float_round_down:
+        ret |= 1ULL << 58;
+        break;
+    case float_round_up:
+        ret |= 3ULL << 58;
+        break;
+    case float_round_to_zero:
+        break;
+    }
+    return ret;
 }
 
 void helper_store_fpcr (uint64_t val)
 {
-    cpu_alpha_store_fpcr (env, val);
+#ifdef CONFIG_SOFTFLOAT
+    set_float_exception_flags((val >> 52) & 0x3F, &FP_STATUS);
+#endif
+    switch ((val >> 58) & 3) {
+    case 0:
+        set_float_rounding_mode(float_round_to_zero, &FP_STATUS);
+        break;
+    case 1:
+        set_float_rounding_mode(float_round_down, &FP_STATUS);
+        break;
+    case 2:
+        set_float_rounding_mode(float_round_nearest_even, &FP_STATUS);
+        break;
+    case 3:
+        set_float_rounding_mode(float_round_up, &FP_STATUS);
+        break;
+    }
 }
 
 static spinlock_t intr_cpu_lock = SPIN_LOCK_UNLOCKED;
@@ -78,7 +120,7 @@ uint64_t helper_addqv (uint64_t op1, uint64_t op2)
     uint64_t tmp = op1;
     op1 += op2;
     if (unlikely((tmp ^ op2 ^ (-1ULL)) & (tmp ^ op1) & (1ULL << 63))) {
-        helper_excp(EXCP_ARITH, EXC_M_IOV);
+        helper_excp(EXCP_ARITH, EXCP_ARITH_OVERFLOW);
     }
     return op1;
 }
@@ -88,7 +130,7 @@ uint64_t helper_addlv (uint64_t op1, uint64_t op2)
     uint64_t tmp = op1;
     op1 = (uint32_t)(op1 + op2);
     if (unlikely((tmp ^ op2 ^ (-1UL)) & (tmp ^ op1) & (1UL << 31))) {
-        helper_excp(EXCP_ARITH, EXC_M_IOV);
+        helper_excp(EXCP_ARITH, EXCP_ARITH_OVERFLOW);
     }
     return op1;
 }
@@ -98,7 +140,7 @@ uint64_t helper_subqv (uint64_t op1, uint64_t op2)
     uint64_t res;
     res = op1 - op2;
     if (unlikely((op1 ^ op2) & (res ^ op1) & (1ULL << 63))) {
-        helper_excp(EXCP_ARITH, EXC_M_IOV);
+        helper_excp(EXCP_ARITH, EXCP_ARITH_OVERFLOW);
     }
     return res;
 }
@@ -108,7 +150,7 @@ uint64_t helper_sublv (uint64_t op1, uint64_t op2)
     uint32_t res;
     res = op1 - op2;
     if (unlikely((op1 ^ op2) & (res ^ op1) & (1UL << 31))) {
-        helper_excp(EXCP_ARITH, EXC_M_IOV);
+        helper_excp(EXCP_ARITH, EXCP_ARITH_OVERFLOW);
     }
     return res;
 }
@@ -118,7 +160,7 @@ uint64_t helper_mullv (uint64_t op1, uint64_t op2)
     int64_t res = (int64_t)op1 * (int64_t)op2;
 
     if (unlikely((int32_t)res != res)) {
-        helper_excp(EXCP_ARITH, EXC_M_IOV);
+        helper_excp(EXCP_ARITH, EXCP_ARITH_OVERFLOW);
     }
     return (int64_t)((int32_t)res);
 }
@@ -130,7 +172,7 @@ uint64_t helper_mulqv (uint64_t op1, uint64_t op2)
     muls64(&tl, &th, op1, op2);
     /* If th != 0 && th != -1, then we had an overflow */
     if (unlikely((th + 1) > 1)) {
-        helper_excp(EXCP_ARITH, EXC_M_IOV);
+        helper_excp(EXCP_ARITH, EXCP_ARITH_OVERFLOW);
     }
     return tl;
 }
@@ -175,6 +217,39 @@ static inline uint64_t byte_zap(uint64_t op, uint8_t mskb)
     return op & ~mask;
 }
 
+uint64_t helper_mskbl(uint64_t val, uint64_t mask)
+{
+    return byte_zap(val, 0x01 << (mask & 7));
+}
+
+uint64_t helper_insbl(uint64_t val, uint64_t mask)
+{
+    val <<= (mask & 7) * 8;
+    return byte_zap(val, ~(0x01 << (mask & 7)));
+}
+
+uint64_t helper_mskwl(uint64_t val, uint64_t mask)
+{
+    return byte_zap(val, 0x03 << (mask & 7));
+}
+
+uint64_t helper_inswl(uint64_t val, uint64_t mask)
+{
+    val <<= (mask & 7) * 8;
+    return byte_zap(val, ~(0x03 << (mask & 7)));
+}
+
+uint64_t helper_mskll(uint64_t val, uint64_t mask)
+{
+    return byte_zap(val, 0x0F << (mask & 7));
+}
+
+uint64_t helper_insll(uint64_t val, uint64_t mask)
+{
+    val <<= (mask & 7) * 8;
+    return byte_zap(val, ~(0x0F << (mask & 7)));
+}
+
 uint64_t helper_zap(uint64_t val, uint64_t mask)
 {
     return byte_zap(val, mask);
@@ -183,6 +258,50 @@ uint64_t helper_zap(uint64_t val, uint64_t mask)
 uint64_t helper_zapnot(uint64_t val, uint64_t mask)
 {
     return byte_zap(val, ~mask);
+}
+
+uint64_t helper_mskql(uint64_t val, uint64_t mask)
+{
+    return byte_zap(val, 0xFF << (mask & 7));
+}
+
+uint64_t helper_insql(uint64_t val, uint64_t mask)
+{
+    val <<= (mask & 7) * 8;
+    return byte_zap(val, ~(0xFF << (mask & 7)));
+}
+
+uint64_t helper_mskwh(uint64_t val, uint64_t mask)
+{
+    return byte_zap(val, (0x03 << (mask & 7)) >> 8);
+}
+
+uint64_t helper_inswh(uint64_t val, uint64_t mask)
+{
+    val >>= 64 - ((mask & 7) * 8);
+    return byte_zap(val, ~((0x03 << (mask & 7)) >> 8));
+}
+
+uint64_t helper_msklh(uint64_t val, uint64_t mask)
+{
+    return byte_zap(val, (0x0F << (mask & 7)) >> 8);
+}
+
+uint64_t helper_inslh(uint64_t val, uint64_t mask)
+{
+    val >>= 64 - ((mask & 7) * 8);
+    return byte_zap(val, ~((0x0F << (mask & 7)) >> 8));
+}
+
+uint64_t helper_mskqh(uint64_t val, uint64_t mask)
+{
+    return byte_zap(val, (0xFF << (mask & 7)) >> 8);
+}
+
+uint64_t helper_insqh(uint64_t val, uint64_t mask)
+{
+    val >>= 64 - ((mask & 7) * 8);
+    return byte_zap(val, ~((0xFF << (mask & 7)) >> 8));
 }
 
 uint64_t helper_cmpbge (uint64_t op1, uint64_t op2)
@@ -198,174 +317,6 @@ uint64_t helper_cmpbge (uint64_t op1, uint64_t op2)
             res |= 1 << i;
     }
     return res;
-}
-
-uint64_t helper_minub8 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    uint8_t opa, opb, opr;
-    int i;
-
-    for (i = 0; i < 8; ++i) {
-        opa = op1 >> (i * 8);
-        opb = op2 >> (i * 8);
-        opr = opa < opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 8);
-    }
-    return res;
-}
-
-uint64_t helper_minsb8 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    int8_t opa, opb;
-    uint8_t opr;
-    int i;
-
-    for (i = 0; i < 8; ++i) {
-        opa = op1 >> (i * 8);
-        opb = op2 >> (i * 8);
-        opr = opa < opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 8);
-    }
-    return res;
-}
-
-uint64_t helper_minuw4 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    uint16_t opa, opb, opr;
-    int i;
-
-    for (i = 0; i < 4; ++i) {
-        opa = op1 >> (i * 16);
-        opb = op2 >> (i * 16);
-        opr = opa < opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 16);
-    }
-    return res;
-}
-
-uint64_t helper_minsw4 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    int16_t opa, opb;
-    uint16_t opr;
-    int i;
-
-    for (i = 0; i < 4; ++i) {
-        opa = op1 >> (i * 16);
-        opb = op2 >> (i * 16);
-        opr = opa < opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 16);
-    }
-    return res;
-}
-
-uint64_t helper_maxub8 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    uint8_t opa, opb, opr;
-    int i;
-
-    for (i = 0; i < 8; ++i) {
-        opa = op1 >> (i * 8);
-        opb = op2 >> (i * 8);
-        opr = opa > opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 8);
-    }
-    return res;
-}
-
-uint64_t helper_maxsb8 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    int8_t opa, opb;
-    uint8_t opr;
-    int i;
-
-    for (i = 0; i < 8; ++i) {
-        opa = op1 >> (i * 8);
-        opb = op2 >> (i * 8);
-        opr = opa > opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 8);
-    }
-    return res;
-}
-
-uint64_t helper_maxuw4 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    uint16_t opa, opb, opr;
-    int i;
-
-    for (i = 0; i < 4; ++i) {
-        opa = op1 >> (i * 16);
-        opb = op2 >> (i * 16);
-        opr = opa > opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 16);
-    }
-    return res;
-}
-
-uint64_t helper_maxsw4 (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    int16_t opa, opb;
-    uint16_t opr;
-    int i;
-
-    for (i = 0; i < 4; ++i) {
-        opa = op1 >> (i * 16);
-        opb = op2 >> (i * 16);
-        opr = opa > opb ? opa : opb;
-        res |= (uint64_t)opr << (i * 16);
-    }
-    return res;
-}
-
-uint64_t helper_perr (uint64_t op1, uint64_t op2)
-{
-    uint64_t res = 0;
-    uint8_t opa, opb, opr;
-    int i;
-
-    for (i = 0; i < 8; ++i) {
-        opa = op1 >> (i * 8);
-        opb = op2 >> (i * 8);
-        if (opa >= opb)
-            opr = opa - opb;
-        else
-            opr = opb - opa;
-        res += opr;
-    }
-    return res;
-}
-
-uint64_t helper_pklb (uint64_t op1)
-{
-    return (op1 & 0xff) | ((op1 >> 24) & 0xff00);
-}
-
-uint64_t helper_pkwb (uint64_t op1)
-{
-    return ((op1 & 0xff)
-            | ((op1 >> 8) & 0xff00)
-            | ((op1 >> 16) & 0xff0000)
-            | ((op1 >> 24) & 0xff000000));
-}
-
-uint64_t helper_unpkbl (uint64_t op1)
-{
-    return (op1 & 0xff) | ((op1 & 0xff00) << 24);
-}
-
-uint64_t helper_unpkbw (uint64_t op1)
-{
-    return ((op1 & 0xff)
-            | ((op1 & 0xff00) << 8)
-            | ((op1 & 0xff0000) << 16)
-            | ((op1 & 0xff000000) << 24));
 }
 
 /* Floating point helpers */
@@ -625,57 +576,37 @@ uint64_t helper_sqrtg (uint64_t a)
 
 
 /* S floating (single) */
-
-/* Taken from linux/arch/alpha/kernel/traps.c, s_mem_to_reg.  */
-static inline uint64_t float32_to_s_int(uint32_t fi)
-{
-    uint32_t frac = fi & 0x7fffff;
-    uint32_t sign = fi >> 31;
-    uint32_t exp_msb = (fi >> 30) & 1;
-    uint32_t exp_low = (fi >> 23) & 0x7f;
-    uint32_t exp;
-
-    exp = (exp_msb << 10) | exp_low;
-    if (exp_msb) {
-        if (exp_low == 0x7f)
-            exp = 0x7ff;
-    } else {
-        if (exp_low != 0x00)
-            exp |= 0x380;
-    }
-
-    return (((uint64_t)sign << 63)
-            | ((uint64_t)exp << 52)
-            | ((uint64_t)frac << 29));
-}
-
 static inline uint64_t float32_to_s(float32 fa)
 {
     CPU_FloatU a;
-    a.f = fa;
-    return float32_to_s_int(a.l);
-}
+    uint64_t r;
 
-static inline uint32_t s_to_float32_int(uint64_t a)
-{
-    return ((a >> 32) & 0xc0000000) | ((a >> 29) & 0x3fffffff);
+    a.f = fa;
+
+    r = (((uint64_t)(a.l & 0xc0000000)) << 32) | (((uint64_t)(a.l & 0x3fffffff)) << 29);
+    if (((a.l & 0x7f800000) != 0x7f800000) && (!(a.l & 0x40000000)))
+        r |= 0x7ll << 59;
+    return r;
 }
 
 static inline float32 s_to_float32(uint64_t a)
 {
     CPU_FloatU r;
-    r.l = s_to_float32_int(a);
+    r.l = ((a >> 32) & 0xc0000000) | ((a >> 29) & 0x3fffffff);
     return r.f;
 }
 
 uint32_t helper_s_to_memory (uint64_t a)
 {
-    return s_to_float32_int(a);
+    /* Memory format is the same as float32 */
+    float32 fa = s_to_float32(a);
+    return *(uint32_t*)(&fa);
 }
 
 uint64_t helper_memory_to_s (uint32_t a)
 {
-    return float32_to_s_int(a);
+    /* Memory format is the same as float32 */
+    return float32_to_s(*(float32*)(&a));
 }
 
 uint64_t helper_adds (uint64_t a, uint64_t b)
@@ -904,6 +835,37 @@ uint64_t helper_cmpglt(uint64_t a, uint64_t b)
         return 0;
 }
 
+uint64_t helper_cmpfeq (uint64_t a)
+{
+    return !(a & 0x7FFFFFFFFFFFFFFFULL);
+}
+
+uint64_t helper_cmpfne (uint64_t a)
+{
+    return (a & 0x7FFFFFFFFFFFFFFFULL);
+}
+
+uint64_t helper_cmpflt (uint64_t a)
+{
+    return (a & 0x8000000000000000ULL) && (a & 0x7FFFFFFFFFFFFFFFULL);
+}
+
+uint64_t helper_cmpfle (uint64_t a)
+{
+    return (a & 0x8000000000000000ULL) || !(a & 0x7FFFFFFFFFFFFFFFULL);
+}
+
+uint64_t helper_cmpfgt (uint64_t a)
+{
+    return !(a & 0x8000000000000000ULL) && (a & 0x7FFFFFFFFFFFFFFFULL);
+}
+
+uint64_t helper_cmpfge (uint64_t a)
+{
+    return !(a & 0x8000000000000000ULL) || !(a & 0x7FFFFFFFFFFFFFFFULL);
+}
+
+
 /* Floating point format conversion */
 uint64_t helper_cvtts (uint64_t a)
 {
@@ -974,9 +936,7 @@ uint64_t helper_cvtqg (uint64_t a)
 
 uint64_t helper_cvtlq (uint64_t a)
 {
-    int32_t lo = a >> 29;
-    int32_t hi = a >> 32;
-    return (lo & 0x3FFFFFFF) | (hi & 0xc0000000);
+    return (int64_t)((int32_t)((a >> 32) | ((a >> 29) & 0x3FFFFFFF)));
 }
 
 static inline uint64_t __helper_cvtql(uint64_t a, int s, int v)
@@ -987,7 +947,7 @@ static inline uint64_t __helper_cvtql(uint64_t a, int s, int v)
     r |= ((uint64_t)(a & 0x7FFFFFFF)) << 29;
 
     if (v && (int64_t)((int32_t)r) != (int64_t)r) {
-        helper_excp(EXCP_ARITH, EXC_M_IOV);
+        helper_excp(EXCP_ARITH, EXCP_ARITH_OVERFLOW);
     }
     if (s) {
         /* TODO */

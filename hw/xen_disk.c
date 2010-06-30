@@ -613,7 +613,7 @@ static int blk_init(struct XenDevice *xendev)
 	qflags = BDRV_O_RDWR;
     } else {
 	mode   = O_RDONLY;
-	qflags = 0;
+	qflags = BDRV_O_RDONLY;
 	info  |= VDISK_READONLY;
     }
 

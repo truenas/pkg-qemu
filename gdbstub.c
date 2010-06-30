@@ -1014,7 +1014,7 @@ static int cpu_gdb_write_register(CPUState *env, uint8_t *mem_buf, int n)
     if (n < 8) {
         /* D0-D7 */
         env->dregs[n] = tmp;
-    } else if (n < 16) {
+    } else if (n < 8) {
         /* A0-A7 */
         env->aregs[n - 8] = tmp;
     } else {
@@ -1053,7 +1053,7 @@ static int cpu_gdb_read_register(CPUState *env, uint8_t *mem_buf, int n)
     case 34: GET_REGL(env->active_tc.HI[0]);
     case 35: GET_REGL(env->CP0_BadVAddr);
     case 36: GET_REGL((int32_t)env->CP0_Cause);
-    case 37: GET_REGL(env->active_tc.PC | !!(env->hflags & MIPS_HFLAG_M16));
+    case 37: GET_REGL(env->active_tc.PC);
     case 72: GET_REGL(0); /* fp */
     case 89: GET_REGL((int32_t)env->CP0_PRid);
     }
@@ -1114,14 +1114,7 @@ static int cpu_gdb_write_register(CPUState *env, uint8_t *mem_buf, int n)
     case 34: env->active_tc.HI[0] = tmp; break;
     case 35: env->CP0_BadVAddr = tmp; break;
     case 36: env->CP0_Cause = tmp; break;
-    case 37:
-        env->active_tc.PC = tmp & ~(target_ulong)1;
-        if (tmp & 1) {
-            env->hflags |= MIPS_HFLAG_M16;
-        } else {
-            env->hflags &= ~(MIPS_HFLAG_M16);
-        }
-        break;
+    case 37: env->active_tc.PC = tmp; break;
     case 72: /* fp, ignored */ break;
     default: 
 	if (n > 89)
@@ -1249,45 +1242,9 @@ static int cpu_gdb_write_register(CPUState *env, uint8_t *mem_buf, int n)
 
 #define NUM_CORE_REGS 49
 
-static int
-read_register_crisv10(CPUState *env, uint8_t *mem_buf, int n)
-{
-    if (n < 15) {
-        GET_REG32(env->regs[n]);
-    }
-
-    if (n == 15) {
-        GET_REG32(env->pc);
-    }
-
-    if (n < 32) {
-        switch (n) {
-        case 16:
-            GET_REG8(env->pregs[n - 16]);
-            break;
-        case 17:
-            GET_REG8(env->pregs[n - 16]);
-            break;
-        case 20:
-        case 21:
-            GET_REG16(env->pregs[n - 16]);
-            break;
-        default:
-            if (n >= 23) {
-                GET_REG32(env->pregs[n - 16]);
-            }
-            break;
-        }
-    }
-    return 0;
-}
-
 static int cpu_gdb_read_register(CPUState *env, uint8_t *mem_buf, int n)
 {
     uint8_t srs;
-
-    if (env->pregs[PR_VR] < 32)
-        return read_register_crisv10(env, mem_buf, n);
 
     srs = env->pregs[PR_SRS];
     if (n < 16) {
@@ -1343,72 +1300,52 @@ static int cpu_gdb_write_register(CPUState *env, uint8_t *mem_buf, int n)
 }
 #elif defined (TARGET_ALPHA)
 
-#define NUM_CORE_REGS 67
+#define NUM_CORE_REGS 65
 
 static int cpu_gdb_read_register(CPUState *env, uint8_t *mem_buf, int n)
 {
-    uint64_t val;
-    CPU_DoubleU d;
-
-    switch (n) {
-    case 0 ... 30:
-        val = env->ir[n];
-        break;
-    case 32 ... 62:
-        d.d = env->fir[n - 32];
-        val = d.ll;
-        break;
-    case 63:
-        val = cpu_alpha_load_fpcr(env);
-        break;
-    case 64:
-        val = env->pc;
-        break;
-    case 66:
-        val = env->unique;
-        break;
-    case 31:
-    case 65:
-        /* 31 really is the zero register; 65 is unassigned in the
-           gdb protocol, but is still required to occupy 8 bytes. */
-        val = 0;
-        break;
-    default:
-        return 0;
+    if (n < 31) {
+       GET_REGL(env->ir[n]);
     }
-    GET_REGL(val);
+    else if (n == 31) {
+       GET_REGL(0);
+    }
+    else if (n<63) {
+       uint64_t val;
+
+       val = *((uint64_t *)&env->fir[n-32]);
+       GET_REGL(val);
+    }
+    else if (n==63) {
+       GET_REGL(env->fpcr);
+    }
+    else if (n==64) {
+       GET_REGL(env->pc);
+    }
+    else {
+       GET_REGL(0);
+    }
+
+    return 0;
 }
 
 static int cpu_gdb_write_register(CPUState *env, uint8_t *mem_buf, int n)
 {
-    target_ulong tmp = ldtul_p(mem_buf);
-    CPU_DoubleU d;
+    target_ulong tmp;
+    tmp = ldtul_p(mem_buf);
 
-    switch (n) {
-    case 0 ... 30:
+    if (n < 31) {
         env->ir[n] = tmp;
-        break;
-    case 32 ... 62:
-        d.ll = tmp;
-        env->fir[n - 32] = d.d;
-        break;
-    case 63:
-        cpu_alpha_store_fpcr(env, tmp);
-        break;
-    case 64:
-        env->pc = tmp;
-        break;
-    case 66:
-        env->unique = tmp;
-        break;
-    case 31:
-    case 65:
-        /* 31 really is the zero register; 65 is unassigned in the
-           gdb protocol, but is still required to occupy 8 bytes. */
-        break;
-    default:
-        return 0;
     }
+
+    if (n > 31 && n < 63) {
+        env->fir[n - 32] = ldfl_p(mem_buf);
+    }
+
+    if (n == 64 ) {
+       env->pc=tmp;
+    }
+
     return 8;
 }
 #elif defined (TARGET_S390X)
@@ -1721,12 +1658,7 @@ static void gdb_set_cpu_pc(GDBState *s, target_ulong pc)
 #elif defined (TARGET_SH4)
     s->c_cpu->pc = pc;
 #elif defined (TARGET_MIPS)
-    s->c_cpu->active_tc.PC = pc & ~(target_ulong)1;
-    if (pc & 1) {
-        s->c_cpu->hflags |= MIPS_HFLAG_M16;
-    } else {
-        s->c_cpu->hflags &= ~(MIPS_HFLAG_M16);
-    }
+    s->c_cpu->active_tc.PC = pc;
 #elif defined (TARGET_MICROBLAZE)
     s->c_cpu->sregs[SR_PC] = pc;
 #elif defined (TARGET_CRIS)

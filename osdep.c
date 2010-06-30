@@ -28,18 +28,13 @@
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
-
-/* Needed early for CONFIG_BSD etc. */
-#include "config-host.h"
-
 #ifdef CONFIG_SOLARIS
 #include <sys/types.h>
 #include <sys/statvfs.h>
 #endif
 
-#ifdef CONFIG_EVENTFD
-#include <sys/eventfd.h>
-#endif
+/* Needed early for CONFIG_BSD etc. */
+#include "config-host.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -57,11 +52,6 @@
 static void *oom_check(void *ptr)
 {
     if (ptr == NULL) {
-#if defined(_WIN32)
-        fprintf(stderr, "Failed to allocate memory: %lu\n", GetLastError());
-#else
-        fprintf(stderr, "Failed to allocate memory: %s\n", strerror(errno));
-#endif
         abort();
     }
     return ptr;
@@ -101,11 +91,8 @@ void *qemu_memalign(size_t alignment, size_t size)
     int ret;
     void *ptr;
     ret = posix_memalign(&ptr, alignment, size);
-    if (ret != 0) {
-        fprintf(stderr, "Failed to allocate %zu B: %s\n",
-                size, strerror(ret));
+    if (ret != 0)
         abort();
-    }
     return ptr;
 #elif defined(CONFIG_BSD)
     return oom_check(valloc(size));
@@ -146,16 +133,25 @@ int qemu_create_pidfile(const char *filename)
         return -1;
 #else
     HANDLE file;
+    DWORD flags;
     OVERLAPPED overlap;
     BOOL ret;
-    memset(&overlap, 0, sizeof(overlap));
 
-    file = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ, NULL,
+    /* Open for writing with no sharing. */
+    file = CreateFile(filename, GENERIC_WRITE, 0, NULL,
 		      OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
     if (file == INVALID_HANDLE_VALUE)
       return -1;
 
+    flags = LOCKFILE_EXCLUSIVE_LOCK | LOCKFILE_FAIL_IMMEDIATELY;
+    overlap.hEvent = 0;
+    /* Lock 1 byte. */
+    ret = LockFileEx(file, flags, 0, 0, 1, &overlap);
+    if (ret == 0)
+      return -1;
+
+    /* Write PID to file. */
     len = snprintf(buffer, sizeof(buffer), "%ld\n", (long)getpid());
     ret = WriteFileEx(file, (LPCVOID)buffer, (DWORD)len,
 		      &overlap, NULL);
@@ -256,62 +252,7 @@ int qemu_open(const char *name, int flags, ...)
     return ret;
 }
 
-/*
- * A variant of write(2) which handles partial write.
- *
- * Return the number of bytes transferred.
- * Set errno if fewer than `count' bytes are written.
- */
-ssize_t qemu_write_full(int fd, const void *buf, size_t count)
-{
-    ssize_t ret = 0;
-    ssize_t total = 0;
-
-    while (count) {
-        ret = write(fd, buf, count);
-        if (ret < 0) {
-            if (errno == EINTR)
-                continue;
-            break;
-        }
-
-        count -= ret;
-        buf += ret;
-        total += ret;
-    }
-
-    return total;
-}
-
 #ifndef _WIN32
-/*
- * Creates an eventfd that looks like a pipe and has EFD_CLOEXEC set.
- */
-int qemu_eventfd(int fds[2])
-{
-#ifdef CONFIG_EVENTFD
-    int ret;
-
-    ret = eventfd(0, 0);
-    if (ret >= 0) {
-        fds[0] = ret;
-        qemu_set_cloexec(ret);
-        if ((fds[1] = dup(ret)) == -1) {
-            close(ret);
-            return -1;
-        }
-        qemu_set_cloexec(fds[1]);
-        return 0;
-    }
-
-    if (errno != ENOSYS) {
-        return -1;
-    }
-#endif
-
-    return qemu_pipe(fds);
-}
-
 /*
  * Creates a pipe with FD_CLOEXEC set on both file descriptors
  */

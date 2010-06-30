@@ -95,7 +95,7 @@ struct sun4m_hwdef {
     target_phys_addr_t iommu_base, slavio_base;
     target_phys_addr_t intctl_base, counter_base, nvram_base, ms_kb_base;
     target_phys_addr_t serial_base, fd_base;
-    target_phys_addr_t afx_base, idreg_base, dma_base, esp_base, le_base;
+    target_phys_addr_t idreg_base, dma_base, esp_base, le_base;
     target_phys_addr_t tcx_base, cs_base, apc_base, aux1_base, aux2_base;
     target_phys_addr_t ecc_base;
     uint32_t ecc_version;
@@ -164,9 +164,9 @@ static int fw_cfg_boot_set(void *opaque, const char *boot_device)
     return 0;
 }
 
-static void nvram_init(M48t59State *nvram, uint8_t *macaddr,
-                       const char *cmdline, const char *boot_devices,
-                       ram_addr_t RAM_size, uint32_t kernel_size,
+static void nvram_init(m48t59_t *nvram, uint8_t *macaddr, const char *cmdline,
+                       const char *boot_devices, ram_addr_t RAM_size,
+                       uint32_t kernel_size,
                        int width, int height, int depth,
                        int nvram_machine_id, const char *arch)
 {
@@ -600,41 +600,6 @@ static void idreg_register_devices(void)
 
 device_init(idreg_register_devices);
 
-/* SS-5 TCX AFX register */
-static void afx_init(target_phys_addr_t addr)
-{
-    DeviceState *dev;
-    SysBusDevice *s;
-
-    dev = qdev_create(NULL, "tcx_afx");
-    qdev_init_nofail(dev);
-    s = sysbus_from_qdev(dev);
-
-    sysbus_mmio_map(s, 0, addr);
-}
-
-static int afx_init1(SysBusDevice *dev)
-{
-    ram_addr_t afx_offset;
-
-    afx_offset = qemu_ram_alloc(4);
-    sysbus_init_mmio(dev, 4, afx_offset | IO_MEM_RAM);
-    return 0;
-}
-
-static SysBusDeviceInfo afx_info = {
-    .init = afx_init1,
-    .qdev.name  = "tcx_afx",
-    .qdev.size  = sizeof(SysBusDevice),
-};
-
-static void afx_register_devices(void)
-{
-    sysbus_register_withprop(&afx_info);
-}
-
-device_init(afx_register_devices);
-
 /* Boot PROM (OpenBIOS) */
 static void prom_init(target_phys_addr_t addr, const char *bios_name)
 {
@@ -756,8 +721,8 @@ static void ram_register_devices(void)
 
 device_init(ram_register_devices);
 
-static void cpu_devinit(const char *cpu_model, unsigned int id,
-                        uint64_t prom_addr, qemu_irq **cpu_irqs)
+static CPUState *cpu_devinit(const char *cpu_model, unsigned int id,
+                             uint64_t prom_addr, qemu_irq **cpu_irqs)
 {
     CPUState *env;
 
@@ -776,6 +741,8 @@ static void cpu_devinit(const char *cpu_model, unsigned int id,
     }
     *cpu_irqs = qemu_allocate_irqs(cpu_set_irq, env, MAX_PILS);
     env->prom_addr = prom_addr;
+
+    return env;
 }
 
 static void sun4m_hw_init(const struct sun4m_hwdef *hwdef, ram_addr_t RAM_size,
@@ -784,6 +751,7 @@ static void sun4m_hw_init(const struct sun4m_hwdef *hwdef, ram_addr_t RAM_size,
                           const char *kernel_cmdline,
                           const char *initrd_filename, const char *cpu_model)
 {
+    CPUState *envs[MAX_CPUS];
     unsigned int i;
     void *iommu, *espdma, *ledma, *nvram;
     qemu_irq *cpu_irqs[MAX_CPUS], slavio_irq[32], slavio_cpu_irq[MAX_CPUS],
@@ -800,7 +768,7 @@ static void sun4m_hw_init(const struct sun4m_hwdef *hwdef, ram_addr_t RAM_size,
         cpu_model = hwdef->default_cpu_model;
 
     for(i = 0; i < smp_cpus; i++) {
-        cpu_devinit(cpu_model, i, hwdef->slavio_base, &cpu_irqs[i]);
+        envs[i] = cpu_devinit(cpu_model, i, hwdef->slavio_base, &cpu_irqs[i]);
     }
 
     for (i = smp_cpus; i < MAX_CPUS; i++)
@@ -825,10 +793,6 @@ static void sun4m_hw_init(const struct sun4m_hwdef *hwdef, ram_addr_t RAM_size,
 
     if (hwdef->idreg_base) {
         idreg_init(hwdef->idreg_base);
-    }
-
-    if (hwdef->afx_base) {
-        afx_init(hwdef->afx_base);
     }
 
     iommu = iommu_init(hwdef->iommu_base, hwdef->iommu_version,
@@ -914,9 +878,6 @@ static void sun4m_hw_init(const struct sun4m_hwdef *hwdef, ram_addr_t RAM_size,
     if (kernel_cmdline) {
         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_CMDLINE, CMDLINE_ADDR);
         pstrcpy_targphys("cmdline", CMDLINE_ADDR, TARGET_PAGE_SIZE, kernel_cmdline);
-        fw_cfg_add_bytes(fw_cfg, FW_CFG_CMDLINE_DATA,
-                         (uint8_t*)strdup(kernel_cmdline),
-                         strlen(kernel_cmdline) + 1);
     } else {
         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_CMDLINE, 0);
     }
@@ -959,7 +920,6 @@ static const struct sun4m_hwdef sun4m_hwdefs[] = {
         .esp_base     = 0x78800000,
         .le_base      = 0x78c00000,
         .apc_base     = 0x6a000000,
-        .afx_base     = 0x6e000000,
         .aux1_base    = 0x71900000,
         .aux2_base    = 0x71910000,
         .nvram_machine_id = 0x80,
@@ -1405,6 +1365,7 @@ static void sun4d_hw_init(const struct sun4d_hwdef *hwdef, ram_addr_t RAM_size,
                           const char *kernel_cmdline,
                           const char *initrd_filename, const char *cpu_model)
 {
+    CPUState *envs[MAX_CPUS];
     unsigned int i;
     void *iounits[MAX_IOUNITS], *espdma, *ledma, *nvram;
     qemu_irq *cpu_irqs[MAX_CPUS], sbi_irq[32], sbi_cpu_irq[MAX_CPUS],
@@ -1419,7 +1380,7 @@ static void sun4d_hw_init(const struct sun4d_hwdef *hwdef, ram_addr_t RAM_size,
         cpu_model = hwdef->default_cpu_model;
 
     for(i = 0; i < smp_cpus; i++) {
-        cpu_devinit(cpu_model, i, hwdef->slavio_base, &cpu_irqs[i]);
+        envs[i] = cpu_devinit(cpu_model, i, hwdef->slavio_base, &cpu_irqs[i]);
     }
 
     for (i = smp_cpus; i < MAX_CPUS; i++)
@@ -1499,9 +1460,6 @@ static void sun4d_hw_init(const struct sun4d_hwdef *hwdef, ram_addr_t RAM_size,
     if (kernel_cmdline) {
         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_CMDLINE, CMDLINE_ADDR);
         pstrcpy_targphys("cmdline", CMDLINE_ADDR, TARGET_PAGE_SIZE, kernel_cmdline);
-        fw_cfg_add_bytes(fw_cfg, FW_CFG_CMDLINE_DATA,
-                         (uint8_t*)strdup(kernel_cmdline),
-                         strlen(kernel_cmdline) + 1);
     } else {
         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_CMDLINE, 0);
     }
@@ -1596,6 +1554,7 @@ static void sun4c_hw_init(const struct sun4c_hwdef *hwdef, ram_addr_t RAM_size,
                           const char *kernel_cmdline,
                           const char *initrd_filename, const char *cpu_model)
 {
+    CPUState *env;
     void *iommu, *espdma, *ledma, *nvram;
     qemu_irq *cpu_irqs, slavio_irq[8], espdma_irq, ledma_irq;
     qemu_irq esp_reset;
@@ -1610,7 +1569,7 @@ static void sun4c_hw_init(const struct sun4c_hwdef *hwdef, ram_addr_t RAM_size,
     if (!cpu_model)
         cpu_model = hwdef->default_cpu_model;
 
-    cpu_devinit(cpu_model, 0, hwdef->slavio_base, &cpu_irqs);
+    env = cpu_devinit(cpu_model, 0, hwdef->slavio_base, &cpu_irqs);
 
     /* set up devices */
     ram_init(0, RAM_size, hwdef->max_mem);
@@ -1689,9 +1648,6 @@ static void sun4c_hw_init(const struct sun4c_hwdef *hwdef, ram_addr_t RAM_size,
     if (kernel_cmdline) {
         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_CMDLINE, CMDLINE_ADDR);
         pstrcpy_targphys("cmdline", CMDLINE_ADDR, TARGET_PAGE_SIZE, kernel_cmdline);
-        fw_cfg_add_bytes(fw_cfg, FW_CFG_CMDLINE_DATA,
-                         (uint8_t*)strdup(kernel_cmdline),
-                         strlen(kernel_cmdline) + 1);
     } else {
         fw_cfg_add_i32(fw_cfg, FW_CFG_KERNEL_CMDLINE, 0);
     }

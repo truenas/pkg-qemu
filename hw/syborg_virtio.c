@@ -25,7 +25,6 @@
 #include "syborg.h"
 #include "sysbus.h"
 #include "virtio.h"
-#include "virtio-net.h"
 #include "sysemu.h"
 
 //#define DEBUG_SYBORG_VIRTIO
@@ -67,7 +66,6 @@ typedef struct {
     uint32_t int_enable;
     uint32_t id;
     NICConf nic;
-    uint32_t host_features;
 } SyborgVirtIOProxy;
 
 static uint32_t syborg_virtio_readl(void *opaque, target_phys_addr_t offset)
@@ -88,10 +86,11 @@ static uint32_t syborg_virtio_readl(void *opaque, target_phys_addr_t offset)
         ret = s->id;
         break;
     case SYBORG_VIRTIO_HOST_FEATURES:
-        ret = s->host_features;
+        ret = vdev->get_features(vdev);
+        ret |= vdev->binding->get_features(s);
         break;
     case SYBORG_VIRTIO_GUEST_FEATURES:
-        ret = vdev->guest_features;
+        ret = vdev->features;
         break;
     case SYBORG_VIRTIO_QUEUE_BASE:
         ret = virtio_queue_get_addr(vdev, vdev->queue_sel);
@@ -133,7 +132,7 @@ static void syborg_virtio_writel(void *opaque, target_phys_addr_t offset,
     case SYBORG_VIRTIO_GUEST_FEATURES:
         if (vdev->set_features)
             vdev->set_features(vdev, value);
-        vdev->guest_features = value;
+        vdev->features = value;
         break;
     case SYBORG_VIRTIO_QUEUE_BASE:
         if (value == 0)
@@ -245,8 +244,9 @@ static void syborg_virtio_update_irq(void *opaque, uint16_t vector)
 
 static unsigned syborg_virtio_get_features(void *opaque)
 {
-    SyborgVirtIOProxy *proxy = opaque;
-    return proxy->host_features;
+    unsigned ret = 0;
+    ret |= (1 << VIRTIO_F_NOTIFY_ON_EMPTY);
+    return ret;
 }
 
 static VirtIOBindings syborg_virtio_bindings = {
@@ -272,8 +272,6 @@ static int syborg_virtio_init(SyborgVirtIOProxy *proxy, VirtIODevice *vdev)
     qemu_register_reset(virtio_reset, vdev);
 
     virtio_bind_device(vdev, &syborg_virtio_bindings, proxy);
-    proxy->host_features |= (0x1 << VIRTIO_F_NOTIFY_ON_EMPTY);
-    proxy->host_features = vdev->get_features(vdev, proxy->host_features);
     return 0;
 }
 
@@ -294,7 +292,6 @@ static SysBusDeviceInfo syborg_virtio_net_info = {
     .qdev.size  = sizeof(SyborgVirtIOProxy),
     .qdev.props = (Property[]) {
         DEFINE_NIC_PROPERTIES(SyborgVirtIOProxy, nic),
-        DEFINE_VIRTIO_NET_FEATURES(SyborgVirtIOProxy, host_features),
         DEFINE_PROP_END_OF_LIST(),
     }
 };

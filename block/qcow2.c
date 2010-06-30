@@ -332,8 +332,8 @@ typedef struct QCowAIOCB {
     QEMUIOVector *qiov;
     uint8_t *buf;
     void *orig_buf;
-    int remaining_sectors;
-    int cur_nr_sectors;	/* number of sectors in current iteration */
+    int nb_sectors;
+    int n;
     uint64_t cluster_offset;
     uint8_t *cluster_data;
     BlockDriverAIOCB *hd_aiocb;
@@ -399,38 +399,38 @@ static void qcow_aio_read_cb(void *opaque, int ret)
     } else {
         if (s->crypt_method) {
             qcow2_encrypt_sectors(s, acb->sector_num, acb->buf, acb->buf,
-                            acb->cur_nr_sectors, 0,
+                            acb->n, 0,
                             &s->aes_decrypt_key);
         }
     }
 
-    acb->remaining_sectors -= acb->cur_nr_sectors;
-    acb->sector_num += acb->cur_nr_sectors;
-    acb->buf += acb->cur_nr_sectors * 512;
+    acb->nb_sectors -= acb->n;
+    acb->sector_num += acb->n;
+    acb->buf += acb->n * 512;
 
-    if (acb->remaining_sectors == 0) {
+    if (acb->nb_sectors == 0) {
         /* request completed */
         ret = 0;
         goto done;
     }
 
     /* prepare next AIO request */
-    acb->cur_nr_sectors = acb->remaining_sectors;
-    acb->cluster_offset = qcow2_get_cluster_offset(bs, acb->sector_num << 9,
-                                                   &acb->cur_nr_sectors);
+    acb->n = acb->nb_sectors;
+    acb->cluster_offset =
+        qcow2_get_cluster_offset(bs, acb->sector_num << 9, &acb->n);
     index_in_cluster = acb->sector_num & (s->cluster_sectors - 1);
 
     if (!acb->cluster_offset) {
         if (bs->backing_hd) {
             /* read from the base image */
             n1 = qcow2_backing_read1(bs->backing_hd, acb->sector_num,
-                               acb->buf, acb->cur_nr_sectors);
+                               acb->buf, acb->n);
             if (n1 > 0) {
                 acb->hd_iov.iov_base = (void *)acb->buf;
-                acb->hd_iov.iov_len = acb->cur_nr_sectors * 512;
+                acb->hd_iov.iov_len = acb->n * 512;
                 qemu_iovec_init_external(&acb->hd_qiov, &acb->hd_iov, 1);
                 acb->hd_aiocb = bdrv_aio_readv(bs->backing_hd, acb->sector_num,
-                                    &acb->hd_qiov, acb->cur_nr_sectors,
+                                    &acb->hd_qiov, acb->n,
 				    qcow_aio_read_cb, acb);
                 if (acb->hd_aiocb == NULL)
                     goto done;
@@ -441,7 +441,7 @@ static void qcow_aio_read_cb(void *opaque, int ret)
             }
         } else {
             /* Note: in this case, no need to wait */
-            memset(acb->buf, 0, 512 * acb->cur_nr_sectors);
+            memset(acb->buf, 0, 512 * acb->n);
             ret = qcow_schedule_bh(qcow_aio_read_bh, acb);
             if (ret < 0)
                 goto done;
@@ -450,8 +450,8 @@ static void qcow_aio_read_cb(void *opaque, int ret)
         /* add AIO support for compressed blocks ? */
         if (qcow2_decompress_cluster(s, acb->cluster_offset) < 0)
             goto done;
-        memcpy(acb->buf, s->cluster_cache + index_in_cluster * 512,
-               512 * acb->cur_nr_sectors);
+        memcpy(acb->buf,
+               s->cluster_cache + index_in_cluster * 512, 512 * acb->n);
         ret = qcow_schedule_bh(qcow_aio_read_bh, acb);
         if (ret < 0)
             goto done;
@@ -462,14 +462,15 @@ static void qcow_aio_read_cb(void *opaque, int ret)
         }
 
         acb->hd_iov.iov_base = (void *)acb->buf;
-        acb->hd_iov.iov_len = acb->cur_nr_sectors * 512;
+        acb->hd_iov.iov_len = acb->n * 512;
         qemu_iovec_init_external(&acb->hd_qiov, &acb->hd_iov, 1);
         acb->hd_aiocb = bdrv_aio_readv(s->hd,
                             (acb->cluster_offset >> 9) + index_in_cluster,
-                            &acb->hd_qiov, acb->cur_nr_sectors,
-                            qcow_aio_read_cb, acb);
-        if (acb->hd_aiocb == NULL)
+                            &acb->hd_qiov, acb->n, qcow_aio_read_cb, acb);
+        if (acb->hd_aiocb == NULL) {
+            ret = -EIO;
             goto done;
+        }
     }
 
     return;
@@ -501,8 +502,8 @@ static QCowAIOCB *qcow_aio_setup(BlockDriverState *bs,
     } else {
         acb->buf = (uint8_t *)qiov->iov->iov_base;
     }
-    acb->remaining_sectors = nb_sectors;
-    acb->cur_nr_sectors = 0;
+    acb->nb_sectors = nb_sectors;
+    acb->n = 0;
     acb->cluster_offset = 0;
     acb->l2meta.nb_clusters = 0;
     QLIST_INIT(&acb->l2meta.dependent_requests);
@@ -570,24 +571,24 @@ static void qcow_aio_write_cb(void *opaque, int ret)
     if (ret < 0)
         goto done;
 
-    acb->remaining_sectors -= acb->cur_nr_sectors;
-    acb->sector_num += acb->cur_nr_sectors;
-    acb->buf += acb->cur_nr_sectors * 512;
+    acb->nb_sectors -= acb->n;
+    acb->sector_num += acb->n;
+    acb->buf += acb->n * 512;
 
-    if (acb->remaining_sectors == 0) {
+    if (acb->nb_sectors == 0) {
         /* request completed */
         ret = 0;
         goto done;
     }
 
     index_in_cluster = acb->sector_num & (s->cluster_sectors - 1);
-    n_end = index_in_cluster + acb->remaining_sectors;
+    n_end = index_in_cluster + acb->nb_sectors;
     if (s->crypt_method &&
         n_end > QCOW_MAX_CRYPT_CLUSTERS * s->cluster_sectors)
         n_end = QCOW_MAX_CRYPT_CLUSTERS * s->cluster_sectors;
 
     ret = qcow2_alloc_cluster_offset(bs, acb->sector_num << 9,
-        index_in_cluster, n_end, &acb->cur_nr_sectors, &acb->l2meta);
+        index_in_cluster, n_end, &acb->n, &acb->l2meta);
     if (ret < 0) {
         goto done;
     }
@@ -609,23 +610,29 @@ static void qcow_aio_write_cb(void *opaque, int ret)
                                              s->cluster_size);
         }
         qcow2_encrypt_sectors(s, acb->sector_num, acb->cluster_data, acb->buf,
-                        acb->cur_nr_sectors, 1, &s->aes_encrypt_key);
+                        acb->n, 1, &s->aes_encrypt_key);
         src_buf = acb->cluster_data;
     } else {
         src_buf = acb->buf;
     }
     acb->hd_iov.iov_base = (void *)src_buf;
-    acb->hd_iov.iov_len = acb->cur_nr_sectors * 512;
+    acb->hd_iov.iov_len = acb->n * 512;
     qemu_iovec_init_external(&acb->hd_qiov, &acb->hd_iov, 1);
     acb->hd_aiocb = bdrv_aio_writev(s->hd,
                                     (acb->cluster_offset >> 9) + index_in_cluster,
-                                    &acb->hd_qiov, acb->cur_nr_sectors,
+                                    &acb->hd_qiov, acb->n,
                                     qcow_aio_write_cb, acb);
-    if (acb->hd_aiocb == NULL)
-        goto done;
+    if (acb->hd_aiocb == NULL) {
+        ret = -EIO;
+        goto fail;
+    }
 
     return;
 
+fail:
+    if (acb->l2meta.nb_clusters != 0) {
+        QLIST_REMOVE(&acb->l2meta, next_in_flight);
+    }
 done:
     if (acb->qiov->niov > 1)
         qemu_vfree(acb->orig_buf);
@@ -659,105 +666,6 @@ static void qcow_close(BlockDriverState *bs)
     qemu_free(s->cluster_data);
     qcow2_refcount_close(bs);
     bdrv_delete(s->hd);
-}
-
-/*
- * Updates the variable length parts of the qcow2 header, i.e. the backing file
- * name and all extensions. qcow2 was not designed to allow such changes, so if
- * we run out of space (we can only use the first cluster) this function may
- * fail.
- *
- * Returns 0 on success, -errno in error cases.
- */
-static int qcow2_update_ext_header(BlockDriverState *bs,
-    const char *backing_file, const char *backing_fmt)
-{
-    size_t backing_file_len = 0;
-    size_t backing_fmt_len = 0;
-    BDRVQcowState *s = bs->opaque;
-    QCowExtension ext_backing_fmt = {0, 0};
-    int ret;
-
-    /* Backing file format doesn't make sense without a backing file */
-    if (backing_fmt && !backing_file) {
-        return -EINVAL;
-    }
-
-    /* Prepare the backing file format extension if needed */
-    if (backing_fmt) {
-        ext_backing_fmt.len = cpu_to_be32(strlen(backing_fmt));
-        ext_backing_fmt.magic = cpu_to_be32(QCOW_EXT_MAGIC_BACKING_FORMAT);
-        backing_fmt_len = ((sizeof(ext_backing_fmt)
-            + strlen(backing_fmt) + 7) & ~7);
-    }
-
-    /* Check if we can fit the new header into the first cluster */
-    if (backing_file) {
-        backing_file_len = strlen(backing_file);
-    }
-
-    size_t header_size = sizeof(QCowHeader) + backing_file_len
-        + backing_fmt_len;
-
-    if (header_size > s->cluster_size) {
-        return -ENOSPC;
-    }
-
-    /* Rewrite backing file name and qcow2 extensions */
-    size_t ext_size = header_size - sizeof(QCowHeader);
-    uint8_t buf[ext_size];
-    size_t offset = 0;
-    size_t backing_file_offset = 0;
-
-    if (backing_file) {
-        if (backing_fmt) {
-            int padding = backing_fmt_len -
-                (sizeof(ext_backing_fmt) + strlen(backing_fmt));
-
-            memcpy(buf + offset, &ext_backing_fmt, sizeof(ext_backing_fmt));
-            offset += sizeof(ext_backing_fmt);
-
-            memcpy(buf + offset, backing_fmt, strlen(backing_fmt));
-            offset += strlen(backing_fmt);
-
-            memset(buf + offset, 0, padding);
-            offset += padding;
-        }
-
-        memcpy(buf + offset, backing_file, backing_file_len);
-        backing_file_offset = sizeof(QCowHeader) + offset;
-    }
-
-    ret = bdrv_pwrite(s->hd, sizeof(QCowHeader), buf, ext_size);
-    if (ret < 0) {
-        goto fail;
-    }
-
-    /* Update header fields */
-    uint64_t be_backing_file_offset = cpu_to_be64(backing_file_offset);
-    uint32_t be_backing_file_size = cpu_to_be32(backing_file_len);
-
-    ret = bdrv_pwrite(s->hd, offsetof(QCowHeader, backing_file_offset),
-        &be_backing_file_offset, sizeof(uint64_t));
-    if (ret < 0) {
-        goto fail;
-    }
-
-    ret = bdrv_pwrite(s->hd, offsetof(QCowHeader, backing_file_size),
-        &be_backing_file_size, sizeof(uint32_t));
-    if (ret < 0) {
-        goto fail;
-    }
-
-    ret = 0;
-fail:
-    return ret;
-}
-
-static int qcow2_change_backing_file(BlockDriverState *bs,
-    const char *backing_file, const char *backing_fmt)
-{
-    return qcow2_update_ext_header(bs, backing_file, backing_fmt);
 }
 
 static int get_bits_from_size(size_t size)
@@ -845,7 +753,7 @@ static int qcow_create2(const char *filename, int64_t total_size,
     uint64_t tmp, offset;
     QCowCreateState s1, *s = &s1;
     QCowExtension ext_bf = {0, 0};
-    int ret;
+
 
     memset(s, 0, sizeof(*s));
 
@@ -928,11 +836,7 @@ static int qcow_create2(const char *filename, int64_t total_size,
         ref_clusters * s->cluster_size);
 
     /* write all the data */
-    ret = qemu_write_full(fd, &header, sizeof(header));
-    if (ret != sizeof(header)) {
-        ret = -1;
-        goto exit;
-    }
+    write(fd, &header, sizeof(header));
     if (backing_file) {
         if (backing_format_len) {
             char zero[16];
@@ -941,70 +845,39 @@ static int qcow_create2(const char *filename, int64_t total_size,
             memset(zero, 0, sizeof(zero));
             cpu_to_be32s(&ext_bf.magic);
             cpu_to_be32s(&ext_bf.len);
-            ret = qemu_write_full(fd, &ext_bf, sizeof(ext_bf));
-            if (ret != sizeof(ext_bf)) {
-                ret = -1;
-                goto exit;
-            }
-            ret = qemu_write_full(fd, backing_format, backing_format_len);
-            if (ret != backing_format_len) {
-                ret = -1;
-                goto exit;
-            }
+            write(fd, &ext_bf, sizeof(ext_bf));
+            write(fd, backing_format, backing_format_len);
             if (padding > 0) {
-                ret = qemu_write_full(fd, zero, padding);
-                if (ret != padding) {
-                    ret = -1;
-                    goto exit;
-                }
+                write(fd, zero, padding);
             }
         }
-        ret = qemu_write_full(fd, backing_file, backing_filename_len);
-        if (ret != backing_filename_len) {
-            ret = -1;
-            goto exit;
-        }
+        write(fd, backing_file, backing_filename_len);
     }
     lseek(fd, s->l1_table_offset, SEEK_SET);
     tmp = 0;
     for(i = 0;i < l1_size; i++) {
-        ret = qemu_write_full(fd, &tmp, sizeof(tmp));
-        if (ret != sizeof(tmp)) {
-            ret = -1;
-            goto exit;
-        }
+        write(fd, &tmp, sizeof(tmp));
     }
     lseek(fd, s->refcount_table_offset, SEEK_SET);
-    ret = qemu_write_full(fd, s->refcount_table, s->cluster_size);
-    if (ret != s->cluster_size) {
-        ret = -1;
-        goto exit;
-    }
+    write(fd, s->refcount_table, s->cluster_size);
 
     lseek(fd, s->refcount_block_offset, SEEK_SET);
-    ret = qemu_write_full(fd, s->refcount_block,
-		    ref_clusters * s->cluster_size);
-    if (ret != ref_clusters * s->cluster_size) {
-        ret = -1;
-        goto exit;
-    }
+    write(fd, s->refcount_block, ref_clusters * s->cluster_size);
 
-    ret = 0;
-exit:
     qemu_free(s->refcount_table);
     qemu_free(s->refcount_block);
     close(fd);
 
     /* Preallocate metadata */
-    if (ret == 0 && prealloc) {
+    if (prealloc) {
         BlockDriverState *bs;
         bs = bdrv_new("");
-        bdrv_open(bs, filename, BDRV_O_CACHE_WB | BDRV_O_RDWR);
+        bdrv_open(bs, filename, BDRV_O_CACHE_WB);
         preallocate(bs);
         bdrv_close(bs);
     }
 
-    return ret;
+    return 0;
 }
 
 static int qcow_create(const char *filename, QEMUOptionParameter *options)
@@ -1149,14 +1022,6 @@ static void qcow_flush(BlockDriverState *bs)
     bdrv_flush(s->hd);
 }
 
-static BlockDriverAIOCB *qcow_aio_flush(BlockDriverState *bs,
-         BlockDriverCompletionFunc *cb, void *opaque)
-{
-     BDRVQcowState *s = bs->opaque;
-
-     return bdrv_aio_flush(s->hd, cb, opaque);
-}
-
 static int64_t qcow_vm_state_offset(BDRVQcowState *s)
 {
 	return (int64_t)s->l1_vm_state_index << (s->cluster_bits + s->l2_bits);
@@ -1272,7 +1137,6 @@ static BlockDriver bdrv_qcow2 = {
 
     .bdrv_aio_readv	= qcow_aio_readv,
     .bdrv_aio_writev	= qcow_aio_writev,
-    .bdrv_aio_flush	= qcow_aio_flush,
     .bdrv_write_compressed = qcow_write_compressed,
 
     .bdrv_snapshot_create   = qcow2_snapshot_create,
@@ -1283,8 +1147,6 @@ static BlockDriver bdrv_qcow2 = {
 
     .bdrv_save_vmstate    = qcow_save_vmstate,
     .bdrv_load_vmstate    = qcow_load_vmstate,
-
-    .bdrv_change_backing_file   = qcow2_change_backing_file,
 
     .create_options = qcow_create_options,
     .bdrv_check = qcow_check,

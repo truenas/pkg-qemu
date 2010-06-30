@@ -1173,22 +1173,6 @@ static int tty_serial_ioctl(CharDriverState *chr, int cmd, void *arg)
     return 0;
 }
 
-static void qemu_chr_close_tty(CharDriverState *chr)
-{
-    FDCharDriver *s = chr->opaque;
-    int fd = -1;
-
-    if (s) {
-        fd = s->fd_in;
-    }
-
-    fd_chr_close(chr);
-
-    if (fd >= 0) {
-        close(fd);
-    }
-}
-
 static CharDriverState *qemu_chr_open_tty(QemuOpts *opts)
 {
     const char *filename = qemu_opt_get(opts, "path");
@@ -1206,7 +1190,7 @@ static CharDriverState *qemu_chr_open_tty(QemuOpts *opts)
         return NULL;
     }
     chr->chr_ioctl = tty_serial_ioctl;
-    chr->chr_close = qemu_chr_close_tty;
+    qemu_chr_generic_open(chr);
     return chr;
 }
 #else  /* ! __linux__ && ! __sun__ */
@@ -2333,8 +2317,7 @@ QemuOpts *qemu_chr_parse_compat(const char *label, const char *filename)
         qemu_opt_set(opts, "backend", "udp");
         if (sscanf(p, "%64[^:]:%32[^@,]%n", host, port, &pos) < 2) {
             host[0] = 0;
-            if (sscanf(p, ":%32[^,]%n", port, &pos) < 1) {
-                fprintf(stderr, "udp #1\n");
+            if (sscanf(p, ":%32[^@,]%n", port, &pos) < 1) {
                 goto fail;
             }
         }
@@ -2345,7 +2328,6 @@ QemuOpts *qemu_chr_parse_compat(const char *label, const char *filename)
             if (sscanf(p, "%64[^:]:%32[^,]%n", host, port, &pos) < 2) {
                 host[0] = 0;
                 if (sscanf(p, ":%32[^,]%n", port, &pos) < 1) {
-                    fprintf(stderr, "udp #2\n");
                     goto fail;
                 }
             }
@@ -2373,7 +2355,6 @@ QemuOpts *qemu_chr_parse_compat(const char *label, const char *filename)
     }
 
 fail:
-    fprintf(stderr, "%s: fail on \"%s\"\n", __FUNCTION__, filename);
     qemu_opts_del(opts);
     return NULL;
 }

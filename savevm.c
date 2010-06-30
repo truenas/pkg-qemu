@@ -339,7 +339,8 @@ static int file_put_buffer(void *opaque, const uint8_t *buf,
 {
     QEMUFileStdio *s = opaque;
     fseek(s->stdio_file, pos, SEEK_SET);
-    return fwrite(buf, 1, size, s->stdio_file);
+    fwrite(buf, 1, size, s->stdio_file);
+    return size;
 }
 
 static int file_get_buffer(void *opaque, uint8_t *buf, int64_t pos, int size)

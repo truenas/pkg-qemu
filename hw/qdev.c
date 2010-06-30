@@ -153,37 +153,6 @@ static int set_property(const char *name, const char *value, void *opaque)
     return 0;
 }
 
-int qdev_device_help(QemuOpts *opts)
-{
-    const char *driver;
-    DeviceInfo *info;
-    char msg[256];
-    Property *prop;
-
-    driver = qemu_opt_get(opts, "driver");
-    if (driver && !strcmp(driver, "?")) {
-        for (info = device_info_list; info != NULL; info = info->next) {
-            qdev_print_devinfo(info, msg, sizeof(msg));
-            qemu_error("%s\n", msg);
-        }
-        return 1;
-    }
-
-    if (!qemu_opt_get(opts, "?")) {
-        return 0;
-    }
-
-    info = qdev_find_info(NULL, driver);
-    if (!info) {
-        return 0;
-    }
-
-    for (prop = info->props; prop && prop->name; prop++) {
-        qemu_error("%s.%s=%s\n", info->name, prop->name, prop->info->name);
-    }
-    return 1;
-}
-
 DeviceState *qdev_device_add(QemuOpts *opts)
 {
     const char *driver, *path, *id;
@@ -194,6 +163,14 @@ DeviceState *qdev_device_add(QemuOpts *opts)
     driver = qemu_opt_get(opts, "driver");
     if (!driver) {
         qemu_error("-device: no driver specified\n");
+        return NULL;
+    }
+    if (strcmp(driver, "?") == 0) {
+        char msg[256];
+        for (info = device_info_list; info != NULL; info = info->next) {
+            qdev_print_devinfo(info, msg, sizeof(msg));
+            qemu_error("%s\n", msg);
+        }
         return NULL;
     }
 
@@ -344,9 +321,13 @@ void qdev_machine_creation_done(void)
 CharDriverState *qdev_init_chardev(DeviceState *dev)
 {
     static int next_serial;
-
-    /* FIXME: This function needs to go away: use chardev properties!  */
-    return serial_hds[next_serial++];
+    static int next_virtconsole;
+    /* FIXME: This is a nasty hack that needs to go away.  */
+    if (strncmp(dev->info->name, "virtio", 6) == 0) {
+        return virtcon_hds[next_virtconsole++];
+    } else {
+        return serial_hds[next_serial++];
+    }
 }
 
 BusState *qdev_get_parent_bus(DeviceState *dev)
@@ -749,11 +730,8 @@ void do_device_add(Monitor *mon, const QDict *qdict)
 
     opts = qemu_opts_parse(&qemu_device_opts,
                            qdict_get_str(qdict, "config"), "driver");
-    if (opts) {
-        if (qdev_device_help(opts) || qdev_device_add(opts) == NULL) {
-            qemu_opts_del(opts);
-        }
-    }
+    if (opts)
+        qdev_device_add(opts);
 }
 
 void do_device_del(Monitor *mon, const QDict *qdict)

@@ -750,7 +750,6 @@ static int qcow_create(const char *filename, QEMUOptionParameter *options)
     int64_t total_size = 0;
     const char *backing_file = NULL;
     int flags = 0;
-    int ret;
 
     /* Read out options */
     while (options && options->name) {
@@ -802,34 +801,17 @@ static int qcow_create(const char *filename, QEMUOptionParameter *options)
     }
 
     /* write all the data */
-    ret = qemu_write_full(fd, &header, sizeof(header));
-    if (ret != sizeof(header)) {
-        ret = -1;
-        goto exit;
-    }
-
+    write(fd, &header, sizeof(header));
     if (backing_file) {
-        ret = qemu_write_full(fd, backing_file, backing_filename_len);
-        if (ret != backing_filename_len) {
-            ret = -1;
-            goto exit;
-        }
-
+        write(fd, backing_file, backing_filename_len);
     }
     lseek(fd, header_size, SEEK_SET);
     tmp = 0;
     for(i = 0;i < l1_size; i++) {
-        ret = qemu_write_full(fd, &tmp, sizeof(tmp));
-        if (ret != sizeof(tmp)) {
-            ret = -1;
-            goto exit;
-        }
+        write(fd, &tmp, sizeof(tmp));
     }
-
-    ret = 0;
-exit:
     close(fd);
-    return ret;
+    return 0;
 }
 
 static int qcow_make_empty(BlockDriverState *bs)
@@ -918,14 +900,6 @@ static void qcow_flush(BlockDriverState *bs)
     bdrv_flush(s->hd);
 }
 
-static BlockDriverAIOCB *qcow_aio_flush(BlockDriverState *bs,
-        BlockDriverCompletionFunc *cb, void *opaque)
-{
-    BDRVQcowState *s = bs->opaque;
-
-    return bdrv_aio_flush(s->hd, cb, opaque);
-}
-
 static int qcow_get_info(BlockDriverState *bs, BlockDriverInfo *bdi)
 {
     BDRVQcowState *s = bs->opaque;
@@ -966,7 +940,6 @@ static BlockDriver bdrv_qcow = {
     .bdrv_make_empty	= qcow_make_empty,
     .bdrv_aio_readv	= qcow_aio_readv,
     .bdrv_aio_writev	= qcow_aio_writev,
-    .bdrv_aio_flush	= qcow_aio_flush,
     .bdrv_write_compressed = qcow_write_compressed,
     .bdrv_get_info	= qcow_get_info,
 

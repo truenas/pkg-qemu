@@ -2455,55 +2455,6 @@ static int cp15_user_ok(uint32_t insn)
     return 0;
 }
 
-static int cp15_tls_load_store(CPUState *env, DisasContext *s, uint32_t insn, uint32_t rd)
-{
-    TCGv tmp;
-    int cpn = (insn >> 16) & 0xf;
-    int cpm = insn & 0xf;
-    int op = ((insn >> 5) & 7) | ((insn >> 18) & 0x38);
-
-    if (!arm_feature(env, ARM_FEATURE_V6K))
-        return 0;
-
-    if (!(cpn == 13 && cpm == 0))
-        return 0;
-
-    if (insn & ARM_CP_RW_BIT) {
-        switch (op) {
-        case 2:
-            tmp = load_cpu_field(cp15.c13_tls1);
-            break;
-        case 3:
-            tmp = load_cpu_field(cp15.c13_tls2);
-            break;
-        case 4:
-            tmp = load_cpu_field(cp15.c13_tls3);
-            break;
-        default:
-            return 0;
-        }
-        store_reg(s, rd, tmp);
-
-    } else {
-        tmp = load_reg(s, rd);
-        switch (op) {
-        case 2:
-            store_cpu_field(tmp, cp15.c13_tls1);
-            break;
-        case 3:
-            store_cpu_field(tmp, cp15.c13_tls2);
-            break;
-        case 4:
-            store_cpu_field(tmp, cp15.c13_tls3);
-            break;
-        default:
-            dead_tmp(tmp);
-            return 0;
-        }
-    }
-    return 1;
-}
-
 /* Disassemble system coprocessor (cp15) instruction.  Return nonzero if
    instruction is not defined.  */
 static int disas_cp15_insn(CPUState *env, DisasContext *s, uint32_t insn)
@@ -2538,10 +2489,6 @@ static int disas_cp15_insn(CPUState *env, DisasContext *s, uint32_t insn)
         return 0;
     }
     rd = (insn >> 12) & 0xf;
-
-    if (cp15_tls_load_store(env, s, insn, rd))
-        return 0;
-
     tmp2 = tcg_const_i32(insn);
     if (insn & ARM_CP_RW_BIT) {
         tmp = new_tmp();
@@ -6675,7 +6622,7 @@ static void disas_arm_insn(CPUState * env, DisasContext *s)
                                 gen_store_exclusive(s, rd, rm, 15, addr, 2);
                                 break;
                             case 1: /*  strexd */
-                                gen_store_exclusive(s, rd, rm, rm + 1, addr, 3);
+                                gen_store_exclusive(s, rd, rm, rm + 1, addr, 2);
                                 break;
                             case 2: /*  strexb */
                                 gen_store_exclusive(s, rd, rm, 15, addr, 0);
@@ -7999,16 +7946,8 @@ static int disas_thumb2_insn(CPUState *env, DisasContext *s, uint16_t insn_hw1)
                         gen_bx(s, tmp);
                         break;
                     case 5: /* Exception return.  */
-                        if (IS_USER(s)) {
-                            goto illegal_op;
-                        }
-                        if (rn != 14 || rd != 15) {
-                            goto illegal_op;
-                        }
-                        tmp = load_reg(s, rn);
-                        tcg_gen_subi_i32(tmp, tmp, insn & 0xff);
-                        gen_exception_return(s, tmp);
-                        break;
+                        /* Unpredictable in user mode.  */
+                        goto illegal_op;
                     case 6: /* mrs cpsr.  */
                         tmp = new_tmp();
                         if (IS_M(env)) {
@@ -8904,7 +8843,7 @@ static void disas_thumb_insn(CPUState *env, DisasContext *s)
                     shift = CPSR_A | CPSR_I | CPSR_F;
                 else
                     shift = 0;
-                gen_set_psr_im(s, ((insn & 7) << 6), 0, shift);
+                gen_set_psr_im(s, shift, 0, ((insn & 7) << 6) & shift);
             }
             break;
 

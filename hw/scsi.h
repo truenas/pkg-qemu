@@ -3,7 +3,6 @@
 
 #include "qdev.h"
 #include "block.h"
-#include "block_int.h"
 
 #define SCSI_CMD_BUF_SIZE     16
 
@@ -50,7 +49,7 @@ struct SCSIDevice
 {
     DeviceState qdev;
     uint32_t id;
-    BlockConf conf;
+    DriveInfo *dinfo;
     SCSIDeviceInfo *info;
     QTAILQ_HEAD(, SCSIRequest) requests;
     int blocksize;

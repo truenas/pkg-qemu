@@ -24,12 +24,7 @@
 #include "cpu.h"
 #include "gdbstub.h"
 #include "host-utils.h"
-#include "hw/pc.h"
 
-#ifdef CONFIG_KVM_PARA
-#include <linux/kvm_para.h>
-#endif
-//
 //#define DEBUG_KVM
 
 #ifdef DEBUG_KVM
@@ -100,18 +95,12 @@ uint32_t kvm_arch_get_supported_cpuid(CPUState *env, uint32_t function, int reg)
                 break;
             case R_EDX:
                 ret = cpuid->entries[i].edx;
-                switch (function) {
-                case 1:
-                    /* KVM before 2.6.30 misreports the following features */
-                    ret |= CPUID_MTRR | CPUID_PAT | CPUID_MCE | CPUID_MCA;
-                    break;
-                case 0x80000001:
+                if (function == 0x80000001) {
                     /* On Intel, kvm returns cpuid according to the Intel spec,
                      * so add missing bits according to the AMD spec:
                      */
                     cpuid_1_edx = kvm_arch_get_supported_cpuid(env, 1, R_EDX);
                     ret |= cpuid_1_edx & 0xdfeff7ff;
-                    break;
                 }
                 break;
             }
@@ -145,36 +134,6 @@ static void kvm_trim_features(uint32_t *features, uint32_t supported)
     }
 }
 
-#ifdef CONFIG_KVM_PARA
-struct kvm_para_features {
-        int cap;
-        int feature;
-} para_features[] = {
-#ifdef KVM_CAP_CLOCKSOURCE
-        { KVM_CAP_CLOCKSOURCE, KVM_FEATURE_CLOCKSOURCE },
-#endif
-#ifdef KVM_CAP_NOP_IO_DELAY
-        { KVM_CAP_NOP_IO_DELAY, KVM_FEATURE_NOP_IO_DELAY },
-#endif
-#ifdef KVM_CAP_PV_MMU
-        { KVM_CAP_PV_MMU, KVM_FEATURE_MMU_OP },
-#endif
-        { -1, -1 }
-};
-
-static int get_para_features(CPUState *env)
-{
-        int i, features = 0;
-
-        for (i = 0; i < ARRAY_SIZE(para_features) - 1; i++) {
-                if (kvm_check_extension(env->kvm_state, para_features[i].cap))
-                        features |= (1 << para_features[i].feature);
-        }
-
-        return features;
-}
-#endif
-
 int kvm_arch_init_vcpu(CPUState *env)
 {
     struct {
@@ -183,10 +142,6 @@ int kvm_arch_init_vcpu(CPUState *env)
     } __attribute__((packed)) cpuid_data;
     uint32_t limit, i, j, cpuid_i;
     uint32_t unused;
-    struct kvm_cpuid_entry2 *c;
-#ifdef KVM_CPUID_SIGNATURE
-    uint32_t signature[3];
-#endif
 
     env->mp_state = KVM_MP_STATE_RUNNABLE;
 
@@ -205,27 +160,10 @@ int kvm_arch_init_vcpu(CPUState *env)
 
     cpuid_i = 0;
 
-#ifdef CONFIG_KVM_PARA
-    /* Paravirtualization CPUIDs */
-    memcpy(signature, "KVMKVMKVM\0\0\0", 12);
-    c = &cpuid_data.entries[cpuid_i++];
-    memset(c, 0, sizeof(*c));
-    c->function = KVM_CPUID_SIGNATURE;
-    c->eax = 0;
-    c->ebx = signature[0];
-    c->ecx = signature[1];
-    c->edx = signature[2];
-
-    c = &cpuid_data.entries[cpuid_i++];
-    memset(c, 0, sizeof(*c));
-    c->function = KVM_CPUID_FEATURES;
-    c->eax = env->cpuid_kvm_features & get_para_features(env);
-#endif
-
     cpu_x86_cpuid(env, 0, 0, &limit, &unused, &unused, &unused);
 
     for (i = 0; i <= limit; i++) {
-        c = &cpuid_data.entries[cpuid_i++];
+        struct kvm_cpuid_entry2 *c = &cpuid_data.entries[cpuid_i++];
 
         switch (i) {
         case 2: {
@@ -275,7 +213,7 @@ int kvm_arch_init_vcpu(CPUState *env)
     cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
 
     for (i = 0x80000000; i <= limit; i++) {
-        c = &cpuid_data.entries[cpuid_i++];
+        struct kvm_cpuid_entry2 *c = &cpuid_data.entries[cpuid_i++];
 
         c->function = i;
         c->flags = 0;
@@ -360,13 +298,6 @@ int kvm_arch_init(KVMState *s, int smp_cpus)
      * as unavaible memory.  FIXME, need to ensure the e820 map deals with
      * this?
      */
-    /*
-     * Tell fw_cfg to notify the BIOS to reserve the range.
-     */
-    if (e820_add_entry(0xfffbc000, 0x4000, E820_RESERVED) < 0) {
-        perror("e820_add_entry() table is full");
-        exit(1);
-    }
     return kvm_vm_ioctl(s, KVM_SET_TSS_ADDR, 0xfffbd000);
 }
                     
@@ -804,9 +735,6 @@ static int kvm_put_vcpu_events(CPUState *env)
     events.nmi.masked = !!(env->hflags2 & HF2_NMI_MASK);
 
     events.sipi_vector = env->sipi_vector;
-
-    events.flags =
-        KVM_VCPUEVENT_VALID_NMI_PENDING | KVM_VCPUEVENT_VALID_SIPI_VECTOR;
 
     return kvm_vcpu_ioctl(env, KVM_SET_VCPU_EVENTS, &events);
 #else

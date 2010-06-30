@@ -68,9 +68,9 @@ typedef int USBScanFunc(void *opaque, int bus_num, int addr, int class_id,
 //#define DEBUG
 
 #ifdef DEBUG
-#define DPRINTF printf
+#define dprintf printf
 #else
-#define DPRINTF(...)
+#define dprintf(...)
 #endif
 
 #define USBDBG_DEVOPENED "husb: opened %s/devices\n"
@@ -113,7 +113,7 @@ struct ctrl_struct {
     uint16_t offset;
     uint8_t  state;
     struct   usb_ctrlrequest req;
-    uint8_t  buffer[8192];
+    uint8_t  buffer[2048];
 };
 
 struct USBAutoFilter {
@@ -234,13 +234,13 @@ static void async_complete(void *opaque)
                 return;
             }
 
-            DPRINTF("husb: async. reap urb failed errno %d\n", errno);
+            dprintf("husb: async. reap urb failed errno %d\n", errno);
             return;
         }
 
         p = aurb->packet;
 
-	DPRINTF("husb: async completed. aurb %p status %d alen %d\n", 
+	dprintf("husb: async completed. aurb %p status %d alen %d\n", 
                 aurb, aurb->urb.status, aurb->urb.actual_length);
 
 	if (p) {
@@ -273,14 +273,14 @@ static void async_cancel(USBPacket *unused, void *opaque)
     AsyncURB *aurb = opaque;
     USBHostDevice *s = aurb->hdev;
 
-    DPRINTF("husb: async cancel. aurb %p\n", aurb);
+    dprintf("husb: async cancel. aurb %p\n", aurb);
 
     /* Mark it as dead (see async_complete above) */
     aurb->packet = NULL;
 
     int r = ioctl(s->fd, USBDEVFS_DISCARDURB, aurb);
     if (r < 0) {
-        DPRINTF("husb: async. discard urb failed errno %d\n", errno);
+        dprintf("husb: async. discard urb failed errno %d\n", errno);
     }
 }
 
@@ -293,7 +293,7 @@ static int usb_host_claim_interfaces(USBHostDevice *dev, int configuration)
     if (configuration == 0) /* address state - ignore */
         return 1;
 
-    DPRINTF("husb: claiming interfaces. config %d\n", configuration);
+    dprintf("husb: claiming interfaces. config %d\n", configuration);
 
     i = 0;
     dev_descr_len = dev->descr[0];
@@ -303,7 +303,7 @@ static int usb_host_claim_interfaces(USBHostDevice *dev, int configuration)
 
     i += dev_descr_len;
     while (i < dev->descr_len) {
-        DPRINTF("husb: i is %d, descr_len is %d, dl %d, dt %d\n", i, dev->descr_len,
+        dprintf("husb: i is %d, descr_len is %d, dl %d, dt %d\n", i, dev->descr_len,
                dev->descr[i], dev->descr[i+1]);
 
         if (dev->descr[i+1] != USB_DT_CONFIG) {
@@ -370,7 +370,7 @@ static int usb_host_release_interfaces(USBHostDevice *s)
 {
     int ret, i;
 
-    DPRINTF("husb: releasing interfaces\n");
+    dprintf("husb: releasing interfaces\n");
 
     for (i = 0; i < s->ninterfaces; i++) {
         ret = ioctl(s->fd, USBDEVFS_RELEASEINTERFACE, &i);
@@ -387,7 +387,7 @@ static void usb_host_handle_reset(USBDevice *dev)
 {
     USBHostDevice *s = DO_UPCAST(USBHostDevice, dev, dev);
 
-    DPRINTF("husb: reset device %u.%u\n", s->bus_num, s->addr);
+    dprintf("husb: reset device %u.%u\n", s->bus_num, s->addr);
 
     ioctl(s->fd, USBDEVFS_RESET);
 
@@ -424,7 +424,7 @@ static int usb_host_handle_data(USBHostDevice *s, USBPacket *p)
     if (is_halted(s, p->devep)) {
 	ret = ioctl(s->fd, USBDEVFS_CLEAR_HALT, &urb->endpoint);
         if (ret < 0) {
-            DPRINTF("husb: failed to clear halt. ep 0x%x errno %d\n", 
+            dprintf("husb: failed to clear halt. ep 0x%x errno %d\n", 
                    urb->endpoint, errno);
             return USB_RET_NAK;
         }
@@ -449,10 +449,10 @@ static int usb_host_handle_data(USBHostDevice *s, USBPacket *p)
 
     ret = ioctl(s->fd, USBDEVFS_SUBMITURB, urb);
 
-    DPRINTF("husb: data submit. ep 0x%x len %u aurb %p\n", urb->endpoint, p->len, aurb);
+    dprintf("husb: data submit. ep 0x%x len %u aurb %p\n", urb->endpoint, p->len, aurb);
 
     if (ret < 0) {
-        DPRINTF("husb: submit failed. errno %d\n", errno);
+        dprintf("husb: submit failed. errno %d\n", errno);
         async_free(aurb);
 
         switch(errno) {
@@ -478,7 +478,7 @@ static int ctrl_error(void)
 
 static int usb_host_set_address(USBHostDevice *s, int addr)
 {
-    DPRINTF("husb: ctrl set addr %u\n", addr);
+    dprintf("husb: ctrl set addr %u\n", addr);
     s->dev.addr = addr;
     return 0;
 }
@@ -489,7 +489,7 @@ static int usb_host_set_config(USBHostDevice *s, int config)
 
     int ret = ioctl(s->fd, USBDEVFS_SETCONFIGURATION, &config);
  
-    DPRINTF("husb: ctrl set config %d ret %d errno %d\n", config, ret, errno);
+    dprintf("husb: ctrl set config %d ret %d errno %d\n", config, ret, errno);
     
     if (ret < 0)
         return ctrl_error();
@@ -507,7 +507,7 @@ static int usb_host_set_interface(USBHostDevice *s, int iface, int alt)
     si.altsetting = alt;
     ret = ioctl(s->fd, USBDEVFS_SETINTERFACE, &si);
     
-    DPRINTF("husb: ctrl set iface %d altset %d ret %d errno %d\n", 
+    dprintf("husb: ctrl set iface %d altset %d ret %d errno %d\n", 
     	iface, alt, ret, errno);
     
     if (ret < 0)
@@ -531,7 +531,7 @@ static int usb_host_handle_control(USBHostDevice *s, USBPacket *p)
     value = le16_to_cpu(s->ctrl.req.wValue);
     index = le16_to_cpu(s->ctrl.req.wIndex);
 
-    DPRINTF("husb: ctrl type 0x%x req 0x%x val 0x%x index %u len %u\n",
+    dprintf("husb: ctrl type 0x%x req 0x%x val 0x%x index %u len %u\n",
         s->ctrl.req.bRequestType, s->ctrl.req.bRequest, value, index, 
         s->ctrl.len);
 
@@ -580,10 +580,10 @@ static int usb_host_handle_control(USBHostDevice *s, USBPacket *p)
 
     ret = ioctl(s->fd, USBDEVFS_SUBMITURB, urb);
 
-    DPRINTF("husb: submit ctrl. len %u aurb %p\n", urb->buffer_length, aurb);
+    dprintf("husb: submit ctrl. len %u aurb %p\n", urb->buffer_length, aurb);
 
     if (ret < 0) {
-        DPRINTF("husb: submit failed. errno %d\n", errno);
+        dprintf("husb: submit failed. errno %d\n", errno);
         async_free(aurb);
 
         switch(errno) {
@@ -786,7 +786,7 @@ static int usb_linux_update_endp_table(USBHostDevice *s)
 
     if (descriptors[i + 1] != USB_DT_CONFIG ||
         descriptors[i + 5] != configuration) {
-        DPRINTF("invalid descriptor data - configuration\n");
+        dprintf("invalid descriptor data - configuration\n");
         return 1;
     }
     i += descriptors[i];
@@ -847,7 +847,7 @@ static int usb_linux_update_endp_table(USBHostDevice *s)
                 type = USBDEVFS_URB_TYPE_INTERRUPT;
                 break;
             default:
-                DPRINTF("usb_host: malformed endpoint type\n");
+                dprintf("usb_host: malformed endpoint type\n");
                 type = USBDEVFS_URB_TYPE_BULK;
             }
             s->endp_table[(devep & 0xf) - 1].type = type;
@@ -882,7 +882,7 @@ static int usb_host_open(USBHostDevice *dev, int bus_num,
         perror(buf);
         goto fail;
     }
-    DPRINTF("husb: opened %s\n", buf);
+    dprintf("husb: opened %s\n", buf);
 
     dev->bus_num = bus_num;
     dev->addr = addr;
@@ -1007,9 +1007,11 @@ USBDevice *usb_host_device_open(const char *devname)
 {
     struct USBAutoFilter filter;
     USBDevice *dev;
+    USBHostDevice *s;
     char *p;
 
     dev = usb_create(NULL /* FIXME */, "usb-host");
+    s = DO_UPCAST(USBHostDevice, dev, dev);
 
     if (strstr(devname, "auto:")) {
         if (parse_filter(devname, &filter) < 0)
@@ -1199,8 +1201,9 @@ static int usb_host_read_file(char *line, size_t line_size, const char *device_f
              device_file);
     f = fopen(filename, "r");
     if (f) {
-        ret = fgets(line, line_size, f) != NULL;
+        fgets(line, line_size, f);
         fclose(f);
+        ret = 1;
 #if 0
     } else {
         if (mon)
@@ -1313,7 +1316,7 @@ static int usb_host_scan(void *opaque, USBScanFunc *func)
             strcpy(devpath, USBDEVBUS_PATH);
             usb_fs_type = USB_FS_SYS;
             closedir(dir);
-            DPRINTF(USBDBG_DEVOPENED, USBSYSBUS_PATH);
+            dprintf(USBDBG_DEVOPENED, USBSYSBUS_PATH);
             goto found_devices;
         }
         f = fopen(USBPROCBUS_PATH "/devices", "r");
@@ -1322,7 +1325,7 @@ static int usb_host_scan(void *opaque, USBScanFunc *func)
             strcpy(devpath, USBPROCBUS_PATH);
             usb_fs_type = USB_FS_PROC;
             fclose(f);
-            DPRINTF(USBDBG_DEVOPENED, USBPROCBUS_PATH);
+            dprintf(USBDBG_DEVOPENED, USBPROCBUS_PATH);
             goto found_devices;
         }
         /* try additional methods if an access method hasn't been found yet */
@@ -1332,7 +1335,7 @@ static int usb_host_scan(void *opaque, USBScanFunc *func)
             strcpy(devpath, USBDEVBUS_PATH);
             usb_fs_type = USB_FS_DEV;
             fclose(f);
-            DPRINTF(USBDBG_DEVOPENED, USBDEVBUS_PATH);
+            dprintf(USBDBG_DEVOPENED, USBDEVBUS_PATH);
             goto found_devices;
         }
     found_devices:
@@ -1399,7 +1402,7 @@ static int usb_host_auto_scan(void *opaque, int bus_num, int addr,
         if (s->fd != -1)
             return 0;
 
-        DPRINTF("husb: auto open: bus_num %d addr %d\n", bus_num, addr);
+        dprintf("husb: auto open: bus_num %d addr %d\n", bus_num, addr);
 
 	usb_host_open(s, bus_num, addr, product_name);
     }

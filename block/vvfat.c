@@ -868,8 +868,7 @@ static int init_directories(BDRVVVFATState* s,
     {
 	direntry_t* entry=array_get_next(&(s->directory));
 	entry->attributes=0x28; /* archive | volume label */
-	memcpy(entry->name,"QEMU VVF",8);
-	memcpy(entry->extension,"AT ",3);
+	snprintf((char*)entry->name,11,"QEMU VVFAT");
     }
 
     /* Now build FAT, and write back information into directory */
@@ -2257,11 +2256,7 @@ static int commit_one_file(BDRVVVFATState* s,
 	c = c1;
     }
 
-    if (ftruncate(fd, size)) {
-        perror("ftruncate()");
-        close(fd);
-        return -4;
-    }
+    ftruncate(fd, size);
     close(fd);
 
     return commit_mappings(s, first_cluster, dir_index);
@@ -2792,7 +2787,7 @@ static int enable_write_target(BDRVVVFATState *s)
     if (bdrv_create(bdrv_qcow, s->qcow_filename, options) < 0)
 	return -1;
     s->qcow = bdrv_new("");
-    if (s->qcow == NULL || bdrv_open(s->qcow, s->qcow_filename, BDRV_O_RDWR) < 0)
+    if (s->qcow == NULL || bdrv_open(s->qcow, s->qcow_filename, 0) < 0)
 	return -1;
 
 #ifndef _WIN32

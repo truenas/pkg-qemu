@@ -511,6 +511,7 @@ void HELPER(set_cp15)(CPUState *env, uint32_t insn, uint32_t val)
 uint32_t HELPER(get_cp15)(CPUState *env, uint32_t insn)
 {
     cpu_abort(env, "cp15 insn %08x\n", insn);
+    return 0;
 }
 
 /* These should probably raise undefined insn exceptions.  */
@@ -824,10 +825,11 @@ void do_interrupt(CPUARMState *env)
     env->spsr = cpsr_read(env);
     /* Clear IT bits.  */
     env->condexec_bits = 0;
-    /* Switch to the new mode, and to the correct instruction set.  */
+    /* Switch to the new mode, and switch to Arm mode.  */
+    /* ??? Thumb interrupt handlers not implemented.  */
     env->uncached_cpsr = (env->uncached_cpsr & ~CPSR_M) | new_mode;
     env->uncached_cpsr |= mask;
-    env->thumb = (env->cp15.c1_sys & (1 << 30)) != 0;
+    env->thumb = 0;
     env->regs[14] = env->regs[15] + offset;
     env->regs[15] = addr;
     env->interrupt_request |= CPU_INTERRUPT_EXITTB;
@@ -1489,6 +1491,15 @@ void HELPER(set_cp15)(CPUState *env, uint32_t insn, uint32_t val)
               tlb_flush(env, 0);
             env->cp15.c13_context = val;
             break;
+        case 2:
+            env->cp15.c13_tls1 = val;
+            break;
+        case 3:
+            env->cp15.c13_tls2 = val;
+            break;
+        case 4:
+            env->cp15.c13_tls3 = val;
+            break;
         default:
             goto bad_reg;
         }
@@ -1768,6 +1779,12 @@ uint32_t HELPER(get_cp15)(CPUState *env, uint32_t insn)
             return env->cp15.c13_fcse;
         case 1:
             return env->cp15.c13_context;
+        case 2:
+            return env->cp15.c13_tls1;
+        case 3:
+            return env->cp15.c13_tls2;
+        case 4:
+            return env->cp15.c13_tls3;
         default:
             goto bad_reg;
         }

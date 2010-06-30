@@ -53,7 +53,7 @@ typedef struct FWCfgFiles {
 
 typedef void (*FWCfgCallback)(void *opaque, uint8_t *data);
 
-typedef struct FWCfgState FWCfgState;
+typedef struct _FWCfgState FWCfgState;
 int fw_cfg_add_bytes(FWCfgState *s, uint16_t key, uint8_t *data, uint32_t len);
 int fw_cfg_add_i16(FWCfgState *s, uint16_t key, uint16_t value);
 int fw_cfg_add_i32(FWCfgState *s, uint16_t key, uint32_t value);

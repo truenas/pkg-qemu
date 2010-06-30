@@ -86,7 +86,6 @@ typedef struct DisasContext {
 	target_ulong pc, ppc;
 
 	/* Decoder.  */
-	unsigned int (*decoder)(struct DisasContext *dc);
 	uint32_t ir;
 	uint32_t opcode;
 	unsigned int op1;
@@ -94,11 +93,6 @@ typedef struct DisasContext {
 	unsigned int zsize, zzsize;
 	unsigned int mode;
 	unsigned int postinc;
-
-	unsigned int size;
-	unsigned int src;
-	unsigned int dst;
-	unsigned int cond;
 
 	int update_cc;
 	int cc_op;
@@ -114,8 +108,6 @@ typedef struct DisasContext {
 	int flags_x;
 
 	int clear_x; /* Clear x after this insn?  */
-	int clear_prefix; /* Clear prefix after this insn?  */
-	int clear_locked_irq; /* Clear the irq lockout.  */
 	int cpustate_changed;
 	unsigned int tb_flags; /* tb dependent flags.  */
 	int is_jmp;
@@ -225,12 +217,6 @@ static inline void t_gen_mov_preg_TN(DisasContext *dc, int r, TCGv tn)
 			dc->cpustate_changed = 1;
 		tcg_gen_mov_tl(cpu_PR[r], tn);
 	}
-}
-
-static void cris_lock_irq(DisasContext *dc)
-{
-	dc->clear_locked_irq = 0;
-	t_gen_mov_env_TN(locked_irq, tcg_const_tl(1));
 }
 
 static inline void t_gen_raise_exception(uint32_t index)
@@ -344,24 +330,6 @@ static void t_gen_cris_dstep(TCGv d, TCGv a, TCGv b)
 	tcg_gen_brcond_tl(TCG_COND_LTU, d, b, l1);
 	tcg_gen_sub_tl(d, d, b);
 	gen_set_label(l1);
-}
-
-static void t_gen_cris_mstep(TCGv d, TCGv a, TCGv b, TCGv ccs)
-{
-	TCGv t;
-
-	/* 
-	 * d <<= 1
-	 * if (n)
-	 *    d += s;
-	 */
-	t = tcg_temp_new();
-	tcg_gen_shli_tl(d, a, 1);
-	tcg_gen_shli_tl(t, ccs, 31 - 3);
-	tcg_gen_sari_tl(t, t, 31);
-	tcg_gen_and_tl(t, t, b);
-	tcg_gen_add_tl(d, d, t);
-	tcg_temp_free(t);
 }
 
 /* Extended arithmetics on CRIS.  */
@@ -666,7 +634,7 @@ static void cris_evaluate_flags(DisasContext *dc)
 		if (dc->flags_x)
 			tcg_gen_ori_tl(cpu_PR[PR_CCS], 
 				       cpu_PR[PR_CCS], X_FLAG);
-		else if (dc->cc_op == CC_OP_FLAGS)
+		else
 			tcg_gen_andi_tl(cpu_PR[PR_CCS], 
 					cpu_PR[PR_CCS], ~X_FLAG);
         }
@@ -806,9 +774,6 @@ static void cris_alu_op_exec(DisasContext *dc, int op,
 		case CC_OP_DSTEP:
 			t_gen_cris_dstep(dst, a, b);
 			break;
-		case CC_OP_MSTEP:
-			t_gen_cris_mstep(dst, a, b, cpu_PR[PR_CCS]);
-			break;
 		case CC_OP_BOUND:
 		{
 			int l1;
@@ -913,8 +878,7 @@ static void gen_tst_cc (DisasContext *dc, TCGv cc, int cond)
 	move_opt = (dc->cc_op == CC_OP_MOVE);
 	switch (cond) {
 		case CC_EQ:
-			if ((arith_opt || move_opt)
-			    && dc->cc_x_uptodate != (2 | X_FLAG)) {
+			if (arith_opt || move_opt) {
 				/* If cc_result is zero, T0 should be 
 				   non-zero otherwise T0 should be zero.  */
 				int l1;
@@ -932,10 +896,9 @@ static void gen_tst_cc (DisasContext *dc, TCGv cc, int cond)
 			}
 			break;
 		case CC_NE:
-			if ((arith_opt || move_opt)
-			    && dc->cc_x_uptodate != (2 | X_FLAG)) {
+			if (arith_opt || move_opt)
 				tcg_gen_mov_tl(cc, cc_result);
-	 		} else {
+			else {
 				cris_evaluate_flags(dc);
 				tcg_gen_xori_tl(cc, cpu_PR[PR_CCS],
 						Z_FLAG);
@@ -1418,7 +1381,7 @@ static unsigned int dec_moveq(DisasContext *dc)
 	imm = sign_extend(dc->op1, 5);
 	LOG_DIS("moveq %d, $r%u\n", imm, dc->op2);
 
-	tcg_gen_movi_tl(cpu_R[dc->op2], imm);
+	tcg_gen_mov_tl(cpu_R[dc->op2], tcg_const_tl(imm));
 	return 2;
 }
 static unsigned int dec_subq(DisasContext *dc)
@@ -2095,17 +2058,16 @@ static unsigned int dec_setclrf(DisasContext *dc)
 			dc->flags_x = 0;
 	}
 
-	/* Break the TB if any of the SPI flag changes.  */
-	if (flags & (P_FLAG | S_FLAG)) {
-		tcg_gen_movi_tl(env_pc, dc->pc + 2);
-		dc->is_jmp = DISAS_UPDATE;
-		dc->cpustate_changed = 1;
+	/* Break the TB if the P flag changes.  */
+	if (flags & P_FLAG) {
+		if ((set && !(dc->tb_flags & P_FLAG))
+		    || (!set && (dc->tb_flags & P_FLAG))) {
+			tcg_gen_movi_tl(env_pc, dc->pc + 2);
+			dc->is_jmp = DISAS_UPDATE;
+			dc->cpustate_changed = 1;
+		}
 	}
-
-	/* For the I flag, only act on posedge.  */
-	if ((flags & I_FLAG)) {
-		tcg_gen_movi_tl(env_pc, dc->pc + 2);
-		dc->is_jmp = DISAS_UPDATE;
+	if (flags & S_FLAG) {
 		dc->cpustate_changed = 1;
 	}
 
@@ -2181,22 +2143,17 @@ static unsigned int dec_move_rp(DisasContext *dc)
 static unsigned int dec_move_pr(DisasContext *dc)
 {
 	TCGv t0;
-	LOG_DIS("move $p%u, $r%u\n", dc->op2, dc->op1);
+	LOG_DIS("move $p%u, $r%u\n", dc->op1, dc->op2);
 	cris_cc_mask(dc, 0);
 
 	if (dc->op2 == PR_CCS)
 		cris_evaluate_flags(dc);
 
-        if (dc->op2 == PR_DZ) {
-		tcg_gen_movi_tl(cpu_R[dc->op1], 0);
-        } else {
-		t0 = tcg_temp_new();
-		t_gen_mov_TN_preg(t0, dc->op2);
-		cris_alu(dc, CC_OP_MOVE,
-			 cpu_R[dc->op1], cpu_R[dc->op1], t0,
-			 preg_sizes[dc->op2]);
-		tcg_temp_free(t0);
-	}
+	t0 = tcg_temp_new();
+	t_gen_mov_TN_preg(t0, dc->op2);
+	cris_alu(dc, CC_OP_MOVE,
+		 cpu_R[dc->op1], cpu_R[dc->op1], t0, preg_sizes[dc->op2]);
+	tcg_temp_free(t0);
 	return 2;
 }
 
@@ -2766,7 +2723,7 @@ static unsigned int dec_lapc_im(DisasContext *dc)
 
 	pc = dc->pc;
 	pc += imm;
-	tcg_gen_movi_tl(cpu_R[rd], pc);
+	t_gen_mov_reg_TN(rd, tcg_const_tl(pc));
 	return 6;
 }
 
@@ -3069,7 +3026,8 @@ static struct decoder_info {
 	{{0, 0}, dec_null}
 };
 
-static unsigned int crisv32_decoder(DisasContext *dc)
+static inline unsigned int
+cris_decoder(DisasContext *dc)
 {
 	unsigned int insn_len = 2;
 	int i;
@@ -3132,7 +3090,6 @@ static void check_breakpoint(CPUState *env, DisasContext *dc)
 	}
 }
 
-#include "translate_v10.c"
 
 /*
  * Delay slots on QEMU/CRIS.
@@ -3175,7 +3132,7 @@ gen_intermediate_code_internal(CPUState *env, TranslationBlock *tb,
 {
 	uint16_t *gen_opc_end;
    	uint32_t pc_start;
-	unsigned int insn_len, orig_flags;
+	unsigned int insn_len;
 	int j, lj;
 	struct DisasContext ctx;
 	struct DisasContext *dc = &ctx;
@@ -3185,11 +3142,6 @@ gen_intermediate_code_internal(CPUState *env, TranslationBlock *tb,
         int max_insns;
 
 	qemu_log_try_set_file(stderr);
-
-	if (env->pregs[PR_VR] == 32)
-		dc->decoder = crisv32_decoder;
-	else
-		dc->decoder = crisv10_decoder;
 
 	/* Odd PC indicates that branch is rexecuting due to exception in the
 	 * delayslot, like in real hw.
@@ -3210,15 +3162,12 @@ gen_intermediate_code_internal(CPUState *env, TranslationBlock *tb,
 	dc->cc_x_uptodate = 0;
 	dc->cc_mask = 0;
 	dc->update_cc = 0;
-	dc->clear_prefix = 0;
-	dc->clear_locked_irq = 1;
 
 	cris_update_cc_op(dc, CC_OP_FLAGS, 4);
 	dc->cc_size_uptodate = -1;
 
 	/* Decode TB flags.  */
-	orig_flags = dc->tb_flags = tb->flags & (S_FLAG | P_FLAG | U_FLAG \
-					| X_FLAG | PFIX_FLAG);
+	dc->tb_flags = tb->flags & (S_FLAG | P_FLAG | U_FLAG | X_FLAG);
 	dc->delayed_branch = !!(tb->flags & 7);
 	if (dc->delayed_branch)
 		dc->jmp = JMP_INDIRECT;
@@ -3284,7 +3233,7 @@ gen_intermediate_code_internal(CPUState *env, TranslationBlock *tb,
                     gen_io_start();
 		dc->clear_x = 1;
 
-		insn_len = dc->decoder(dc);
+		insn_len = cris_decoder(dc);		
 		dc->ppc = dc->pc;
 		dc->pc += insn_len;
 		if (dc->clear_x)
@@ -3321,13 +3270,6 @@ gen_intermediate_code_internal(CPUState *env, TranslationBlock *tb,
                  && !singlestep
 		 && (dc->pc < next_page_start)
                  && num_insns < max_insns);
-
-	if (dc->tb_flags != orig_flags) {
-		dc->cpustate_changed = 1;
-	}
-
-	if (dc->clear_locked_irq)
-		t_gen_mov_env_TN(locked_irq, tcg_const_tl(0));
 
 	npc = dc->pc;
 	if (dc->jmp == JMP_DIRECT && !dc->delayed_branch)
@@ -3388,8 +3330,7 @@ gen_intermediate_code_internal(CPUState *env, TranslationBlock *tb,
 #ifdef DEBUG_DISAS
 #if !DISAS_CRIS
 	if (qemu_loglevel_mask(CPU_LOG_TB_IN_ASM)) {
-		log_target_disas(pc_start, dc->pc - pc_start,
-                                 dc->env->pregs[PR_VR]);
+		log_target_disas(pc_start, dc->pc - pc_start, 0);
 		qemu_log("\nisize=%d osize=%zd\n",
 			dc->pc - pc_start, gen_opc_ptr - gen_opc_buf);
 	}
@@ -3425,13 +3366,13 @@ void cpu_dump_state (CPUState *env, FILE *f,
 
 
 	for (i = 0; i < 16; i++) {
-		cpu_fprintf(f, "%s=%8.8x ",regnames[i], env->regs[i]);
+		cpu_fprintf(f, "r%2.2d=%8.8x ", i, env->regs[i]);
 		if ((i + 1) % 4 == 0)
 			cpu_fprintf(f, "\n");
 	}
 	cpu_fprintf(f, "\nspecial regs:\n");
 	for (i = 0; i < 16; i++) {
-		cpu_fprintf(f, "%s=%8.8x ", pregnames[i], env->pregs[i]);
+		cpu_fprintf(f, "p%2.2d=%8.8x ", i, env->pregs[i]);
 		if ((i + 1) % 4 == 0)
 			cpu_fprintf(f, "\n");
 	}
@@ -3449,39 +3390,6 @@ void cpu_dump_state (CPUState *env, FILE *f,
 
 }
 
-struct
-{
-    uint32_t vr;
-    const char *name;
-} cris_cores[] = {
-	{8, "crisv8"},
-	{9, "crisv9"},
-	{10, "crisv10"},
-	{11, "crisv11"},
-	{32, "crisv32"},
-};
-
-void cris_cpu_list(FILE *f, int (*cpu_fprintf)(FILE *f, const char *fmt, ...))
-{
-    unsigned int i;
-
-    (*cpu_fprintf)(f, "Available CPUs:\n");
-    for (i = 0; i < ARRAY_SIZE(cris_cores); i++) {
-        (*cpu_fprintf)(f, "  %s\n", cris_cores[i].name);
-    }
-}
-
-static uint32_t vr_by_name(const char *name)
-{
-    unsigned int i;
-    for (i = 0; i < ARRAY_SIZE(cris_cores); i++) {
-        if (strcmp(name, cris_cores[i].name) == 0) {
-            return cris_cores[i].vr;
-        }
-    }
-    return 32;
-}
-
 CPUCRISState *cpu_cris_init (const char *cpu_model)
 {
 	CPUCRISState *env;
@@ -3490,7 +3398,6 @@ CPUCRISState *cpu_cris_init (const char *cpu_model)
 
 	env = qemu_mallocz(sizeof(CPUCRISState));
 
-	env->pregs[PR_VR] = vr_by_name(cpu_model);
 	cpu_exec_init(env);
 	cpu_reset(env);
 	qemu_init_vcpu(env);
@@ -3499,15 +3406,6 @@ CPUCRISState *cpu_cris_init (const char *cpu_model)
 		return env;
 
 	tcg_initialized = 1;
-
-#define GEN_HELPER 2
-#include "helper.h"
-
-	if (env->pregs[PR_VR] < 32) {
-		cpu_crisv10_init(env);
-		return env; 
-	}
-
 
 	cpu_env = tcg_global_reg_new_ptr(TCG_AREG0, "env");
 	cc_x = tcg_global_mem_new(TCG_AREG0,
@@ -3549,26 +3447,26 @@ CPUCRISState *cpu_cris_init (const char *cpu_model)
 					       pregnames[i]);
 	}
 
+#define GEN_HELPER 2
+#include "helper.h"
+
 	return env;
 }
 
 void cpu_reset (CPUCRISState *env)
 {
-	uint32_t vr;
-
 	if (qemu_loglevel_mask(CPU_LOG_RESET)) {
 		qemu_log("CPU Reset (CPU %d)\n", env->cpu_index);
 		log_cpu_state(env, 0);
 	}
 
-	vr = env->pregs[PR_VR];
 	memset(env, 0, offsetof(CPUCRISState, breakpoints));
-	env->pregs[PR_VR] = vr;
 	tlb_flush(env, 1);
 
+	env->pregs[PR_VR] = 32;
 #if defined(CONFIG_USER_ONLY)
 	/* start in user mode with interrupts enabled.  */
-	env->pregs[PR_CCS] |= U_FLAG | I_FLAG | P_FLAG;
+	env->pregs[PR_CCS] |= U_FLAG | I_FLAG;
 #else
 	cris_mmu_init(env);
 	env->pregs[PR_CCS] = 0;

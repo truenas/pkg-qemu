@@ -139,65 +139,9 @@ enum {
     FP_ROUND_DYNAMIC = 0x3,
 };
 
-/* FPCR bits */
-#define FPCR_SUM		(1ULL << 63)
-#define FPCR_INED		(1ULL << 62)
-#define FPCR_UNFD		(1ULL << 61)
-#define FPCR_UNDZ		(1ULL << 60)
-#define FPCR_DYN_SHIFT		58
-#define FPCR_DYN_CHOPPED	(0ULL << FPCR_DYN_SHIFT)
-#define FPCR_DYN_MINUS		(1ULL << FPCR_DYN_SHIFT)
-#define FPCR_DYN_NORMAL		(2ULL << FPCR_DYN_SHIFT)
-#define FPCR_DYN_PLUS		(3ULL << FPCR_DYN_SHIFT)
-#define FPCR_DYN_MASK		(3ULL << FPCR_DYN_SHIFT)
-#define FPCR_IOV		(1ULL << 57)
-#define FPCR_INE		(1ULL << 56)
-#define FPCR_UNF		(1ULL << 55)
-#define FPCR_OVF		(1ULL << 54)
-#define FPCR_DZE		(1ULL << 53)
-#define FPCR_INV		(1ULL << 52)
-#define FPCR_OVFD		(1ULL << 51)
-#define FPCR_DZED		(1ULL << 50)
-#define FPCR_INVD		(1ULL << 49)
-#define FPCR_DNZ		(1ULL << 48)
-#define FPCR_DNOD		(1ULL << 47)
-#define FPCR_STATUS_MASK	(FPCR_IOV | FPCR_INE | FPCR_UNF \
-				 | FPCR_OVF | FPCR_DZE | FPCR_INV)
-
-/* The silly software trap enables implemented by the kernel emulation.
-   These are more or less architecturally required, since the real hardware
-   has read-as-zero bits in the FPCR when the features aren't implemented.
-   For the purposes of QEMU, we pretend the FPCR can hold everything.  */
-#define SWCR_TRAP_ENABLE_INV	(1ULL << 1)
-#define SWCR_TRAP_ENABLE_DZE	(1ULL << 2)
-#define SWCR_TRAP_ENABLE_OVF	(1ULL << 3)
-#define SWCR_TRAP_ENABLE_UNF	(1ULL << 4)
-#define SWCR_TRAP_ENABLE_INE	(1ULL << 5)
-#define SWCR_TRAP_ENABLE_DNO	(1ULL << 6)
-#define SWCR_TRAP_ENABLE_MASK	((1ULL << 7) - (1ULL << 1))
-
-#define SWCR_MAP_DMZ		(1ULL << 12)
-#define SWCR_MAP_UMZ		(1ULL << 13)
-#define SWCR_MAP_MASK		(SWCR_MAP_DMZ | SWCR_MAP_UMZ)
-
-#define SWCR_STATUS_INV		(1ULL << 17)
-#define SWCR_STATUS_DZE		(1ULL << 18)
-#define SWCR_STATUS_OVF		(1ULL << 19)
-#define SWCR_STATUS_UNF		(1ULL << 20)
-#define SWCR_STATUS_INE		(1ULL << 21)
-#define SWCR_STATUS_DNO		(1ULL << 22)
-#define SWCR_STATUS_MASK	((1ULL << 23) - (1ULL << 17))
-
-#define SWCR_MASK  (SWCR_TRAP_ENABLE_MASK | SWCR_MAP_MASK | SWCR_STATUS_MASK)
-
 /* Internal processor registers */
 /* XXX: TOFIX: most of those registers are implementation dependant */
 enum {
-#if defined(CONFIG_USER_ONLY)
-    IPR_EXC_ADDR,
-    IPR_EXC_SUM,
-    IPR_EXC_MASK,
-#else
     /* Ebox IPRs */
     IPR_CC           = 0xC0,            /* 21264 */
     IPR_CC_CTL       = 0xC1,            /* 21264 */
@@ -311,7 +255,6 @@ enum {
     IPR_VPTB,
     IPR_WHAMI,
     IPR_ALT_MODE,
-#endif
     IPR_LAST,
 };
 
@@ -351,27 +294,17 @@ struct pal_handler_t {
 
 struct CPUAlphaState {
     uint64_t ir[31];
-    float64 fir[31];
+    float64  fir[31];
+    float_status fp_status;
+    uint64_t fpcr;
     uint64_t pc;
     uint64_t lock;
     uint32_t pcc[2];
     uint64_t ipr[IPR_LAST];
     uint64_t ps;
     uint64_t unique;
-    float_status fp_status;
-    /* The following fields make up the FPCR, but in FP_STATUS format.  */
-    uint8_t fpcr_exc_status;
-    uint8_t fpcr_exc_mask;
-    uint8_t fpcr_dyn_round;
-    uint8_t fpcr_flush_to_zero;
-    uint8_t fpcr_dnz;
-    uint8_t fpcr_dnod;
-    uint8_t fpcr_undz;
-
-    /* Used for HW_LD / HW_ST */
-    uint8_t saved_mode;
-    /* For RC and RS */
-    uint8_t intr_flag;
+    int saved_mode; /* Used for HW_LD / HW_ST */
+    int intr_flag; /* For RC and RS */
 
 #if TARGET_LONG_BITS > HOST_LONG_BITS
     /* temporary fixed-point registers
@@ -450,13 +383,9 @@ enum {
 };
 
 /* Arithmetic exception */
-#define EXC_M_IOV       (1<<16)         /* Integer Overflow */
-#define EXC_M_INE       (1<<15)         /* Inexact result */
-#define EXC_M_UNF       (1<<14)         /* Underflow */
-#define EXC_M_FOV       (1<<13)         /* Overflow */
-#define EXC_M_DZE       (1<<12)         /* Division by zero */
-#define EXC_M_INV       (1<<11)         /* Invalid operation */
-#define EXC_M_SWC       (1<<10)         /* Software completion */
+enum {
+    EXCP_ARITH_OVERFLOW,
+};
 
 enum {
     IR_V0   = 0,
@@ -507,8 +436,6 @@ int cpu_alpha_handle_mmu_fault (CPUState *env, uint64_t address, int rw,
 #define cpu_handle_mmu_fault cpu_alpha_handle_mmu_fault
 void do_interrupt (CPUState *env);
 
-uint64_t cpu_alpha_load_fpcr (CPUState *env);
-void cpu_alpha_store_fpcr (CPUState *env, uint64_t val);
 int cpu_alpha_mfpr (CPUState *env, int iprn, uint64_t *valp);
 int cpu_alpha_mtpr (CPUState *env, int iprn, uint64_t val, uint64_t *oldvalp);
 void pal_init (CPUState *env);

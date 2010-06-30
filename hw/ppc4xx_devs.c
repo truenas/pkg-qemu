@@ -183,10 +183,10 @@ static void ppcuic_set_irq (void *opaque, int irq_num, int level)
         ppcuic_trigger_irq(uic);
 }
 
-static uint32_t dcr_read_uic (void *opaque, int dcrn)
+static target_ulong dcr_read_uic (void *opaque, int dcrn)
 {
     ppcuic_t *uic;
-    uint32_t ret;
+    target_ulong ret;
 
     uic = opaque;
     dcrn -= uic->dcr_base;
@@ -229,13 +229,13 @@ static uint32_t dcr_read_uic (void *opaque, int dcrn)
     return ret;
 }
 
-static void dcr_write_uic (void *opaque, int dcrn, uint32_t val)
+static void dcr_write_uic (void *opaque, int dcrn, target_ulong val)
 {
     ppcuic_t *uic;
 
     uic = opaque;
     dcrn -= uic->dcr_base;
-    LOG_UIC("%s: dcr %d val 0x%x\n", __func__, dcrn, val);
+    LOG_UIC("%s: dcr %d val " TARGET_FMT_lx "\n", __func__, dcrn, val);
     switch (dcrn) {
     case DCR_UICSR:
         uic->uicsr &= ~val;
@@ -448,10 +448,10 @@ static void sdram_unmap_bcr (ppc4xx_sdram_t *sdram)
     }
 }
 
-static uint32_t dcr_read_sdram (void *opaque, int dcrn)
+static target_ulong dcr_read_sdram (void *opaque, int dcrn)
 {
     ppc4xx_sdram_t *sdram;
-    uint32_t ret;
+    target_ulong ret;
 
     sdram = opaque;
     switch (dcrn) {
@@ -516,7 +516,7 @@ static uint32_t dcr_read_sdram (void *opaque, int dcrn)
     return ret;
 }
 
-static void dcr_write_sdram (void *opaque, int dcrn, uint32_t val)
+static void dcr_write_sdram (void *opaque, int dcrn, target_ulong val)
 {
     ppc4xx_sdram_t *sdram;
 

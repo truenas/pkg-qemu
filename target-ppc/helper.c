@@ -736,13 +736,14 @@ static inline int slb_lookup(CPUPPCState *env, target_ulong eaddr,
                     PRIx32 "\n", __func__, n, slb->tmp64, slb->tmp);
         if (slb_is_valid(slb)) {
             /* SLB entry is valid */
-            mask = 0xFFFFFFFFF0000000ULL;
             if (slb->tmp & 0x8) {
-                /* 16 MB PTEs */
+                /* 1 TB Segment */
+                mask = 0xFFFF000000000000ULL;
                 if (target_page_bits)
-                    *target_page_bits = 24;
+                    *target_page_bits = 24; // XXX 16M pages?
             } else {
-                /* 4 KB PTEs */
+                /* 256MB Segment */
+                mask = 0xFFFFFFFFF0000000ULL;
                 if (target_page_bits)
                     *target_page_bits = TARGET_PAGE_BITS;
             }
@@ -1154,7 +1155,7 @@ static int mmu40x_get_physical_address (CPUState *env, mmu_ctx_t *ctx,
                              env->spr[SPR_40x_PID], 0, i) < 0)
             continue;
         zsel = (tlb->attr >> 4) & 0xF;
-        zpr = (env->spr[SPR_40x_ZPR] >> (30 - (2 * zsel))) & 0x3;
+        zpr = (env->spr[SPR_40x_ZPR] >> (28 - (2 * zsel))) & 0x3;
         LOG_SWTLB("%s: TLB %d zsel %d zpr %d rw %d attr %08x\n",
                     __func__, i, zsel, zpr, rw, tlb->attr);
         /* Check execute enable bit */
@@ -1170,8 +1171,6 @@ static int mmu40x_get_physical_address (CPUState *env, mmu_ctx_t *ctx,
             break;
         case 0x0:
             if (pr != 0) {
-                /* Raise Zone protection fault.  */
-                env->spr[SPR_40x_ESR] = 1 << 22;
                 ctx->prot = 0;
                 ret = -2;
                 break;
@@ -1184,8 +1183,6 @@ static int mmu40x_get_physical_address (CPUState *env, mmu_ctx_t *ctx,
             ctx->prot = tlb->prot;
             ctx->prot |= PAGE_EXEC;
             ret = check_prot(ctx->prot, rw, access_type);
-            if (ret == -2)
-                env->spr[SPR_40x_ESR] = 0;
             break;
         }
         if (ret >= 0) {
@@ -1583,20 +1580,11 @@ int cpu_ppc_handle_mmu_fault (CPUState *env, target_ulong address, int rw,
                 /* Access rights violation */
                 env->exception_index = POWERPC_EXCP_DSI;
                 env->error_code = 0;
-                if (env->mmu_model == POWERPC_MMU_SOFT_4xx
-                    || env->mmu_model == POWERPC_MMU_SOFT_4xx_Z) {
-                    env->spr[SPR_40x_DEAR] = address;
-                    if (rw) {
-                        env->spr[SPR_40x_ESR] |= 0x00800000;
-                    }
-                } else {
-                    env->spr[SPR_DAR] = address;
-                    if (rw == 1) {
-                        env->spr[SPR_DSISR] = 0x0A000000;
-                    } else {
-                        env->spr[SPR_DSISR] = 0x08000000;
-                    }
-                }
+                env->spr[SPR_DAR] = address;
+                if (rw == 1)
+                    env->spr[SPR_DSISR] = 0x0A000000;
+                else
+                    env->spr[SPR_DSISR] = 0x08000000;
                 break;
             case -4:
                 /* Direct store exception */

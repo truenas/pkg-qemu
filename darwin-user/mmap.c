@@ -129,7 +129,7 @@ int mmap_frag(unsigned long host_start,
         if ((flags &  MAP_SHARED) &&
 #endif
             (prot & PROT_WRITE))
-            return -1;
+            return -EINVAL;
 
         /* adjust protection to be able to read */
         if (!(prot1 & PROT_WRITE))

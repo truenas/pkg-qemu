@@ -233,8 +233,7 @@ static int vmdk_snapshot_create(const char *filename, const char *backing_file)
     memset(&header, 0, sizeof(header));
     memcpy(&header,&hdr[4], sizeof(header)); // skip the VMDK4_MAGIC
 
-    if (ftruncate(snp_fd, header.grain_offset << 9))
-        goto fail;
+    ftruncate(snp_fd, header.grain_offset << 9);
     /* the descriptor offset = 0x200 */
     if (lseek(p_fd, 0x200, SEEK_SET) == -1)
         goto fail;
@@ -358,7 +357,7 @@ static int vmdk_parent_open(BlockDriverState *bs, const char * filename)
             return -1;
         }
         parent_open = 1;
-        if (bdrv_open(bs->backing_hd, parent_img_name, 0) < 0)
+        if (bdrv_open(bs->backing_hd, parent_img_name, BDRV_O_RDONLY) < 0)
             goto failure;
         parent_open = 0;
     }
@@ -372,10 +371,9 @@ static int vmdk_open(BlockDriverState *bs, const char *filename, int flags)
     uint32_t magic;
     int l1_size, i, ret;
 
-    if (parent_open) {
-        /* Parent must be opened as RO, no RDWR. */
-        flags = 0;
-    }
+    if (parent_open)
+        // Parent must be opened as RO.
+        flags = BDRV_O_RDONLY;
 
     ret = bdrv_file_open(&s->hd, filename, flags);
     if (ret < 0)
@@ -718,7 +716,6 @@ static int vmdk_create(const char *filename, QEMUOptionParameter *options)
     int64_t total_size = 0;
     const char *backing_file = NULL;
     int flags = 0;
-    int ret;
 
     // Read out options
     while (options && options->name) {
@@ -775,44 +772,22 @@ static int vmdk_create(const char *filename, QEMUOptionParameter *options)
     header.check_bytes[3] = 0xa;
 
     /* write all the data */
-    ret = qemu_write_full(fd, &magic, sizeof(magic));
-    if (ret != sizeof(magic)) {
-        ret = -1;
-        goto exit;
-    }
-    ret = qemu_write_full(fd, &header, sizeof(header));
-    if (ret != sizeof(header)) {
-        ret = -1;
-        goto exit;
-    }
+    write(fd, &magic, sizeof(magic));
+    write(fd, &header, sizeof(header));
 
-    ret = ftruncate(fd, header.grain_offset << 9);
-    if (ret < 0) {
-        ret = -1;
-        goto exit;
-    }
+    ftruncate(fd, header.grain_offset << 9);
 
     /* write grain directory */
     lseek(fd, le64_to_cpu(header.rgd_offset) << 9, SEEK_SET);
     for (i = 0, tmp = header.rgd_offset + gd_size;
-         i < gt_count; i++, tmp += gt_size) {
-        ret = qemu_write_full(fd, &tmp, sizeof(tmp));
-        if (ret != sizeof(tmp)) {
-            ret = -1;
-            goto exit;
-        }
-    }
+         i < gt_count; i++, tmp += gt_size)
+        write(fd, &tmp, sizeof(tmp));
 
     /* write backup grain directory */
     lseek(fd, le64_to_cpu(header.gd_offset) << 9, SEEK_SET);
     for (i = 0, tmp = header.gd_offset + gd_size;
-         i < gt_count; i++, tmp += gt_size) {
-        ret = qemu_write_full(fd, &tmp, sizeof(tmp));
-        if (ret != sizeof(tmp)) {
-            ret = -1;
-            goto exit;
-        }
-    }
+         i < gt_count; i++, tmp += gt_size)
+        write(fd, &tmp, sizeof(tmp));
 
     /* compose the descriptor */
     real_filename = filename;
@@ -829,16 +804,10 @@ static int vmdk_create(const char *filename, QEMUOptionParameter *options)
 
     /* write the descriptor */
     lseek(fd, le64_to_cpu(header.desc_offset) << 9, SEEK_SET);
-    ret = qemu_write_full(fd, desc, strlen(desc));
-    if (ret != strlen(desc)) {
-        ret = -1;
-        goto exit;
-    }
+    write(fd, desc, strlen(desc));
 
-    ret = 0;
-exit:
     close(fd);
-    return ret;
+    return 0;
 }
 
 static void vmdk_close(BlockDriverState *bs)

@@ -49,6 +49,9 @@ static int nbd_open(BlockDriverState *bs, const char* filename, int flags)
     size_t blocksize;
     int ret;
 
+    if ((flags & BDRV_O_CREAT))
+        return -EINVAL;
+
     if (!strstart(filename, "nbd:", &host))
         return -EINVAL;
 

@@ -205,24 +205,6 @@ typedef enum {
     TCG_COND_GTU,
 } TCGCond;
 
-/* Invert the sense of the comparison.  */
-static inline TCGCond tcg_invert_cond(TCGCond c)
-{
-    return (TCGCond)(c ^ 1);
-}
-
-/* Swap the operands in a comparison.  */
-static inline TCGCond tcg_swap_cond(TCGCond c)
-{
-    int mask = (c < TCG_COND_LT ? 0 : c < TCG_COND_LTU ? 7 : 15);
-    return (TCGCond)(c ^ mask);
-}
-
-static inline TCGCond tcg_unsigned_cond(TCGCond c)
-{
-    return (c >= TCG_COND_LT && c <= TCG_COND_GT ? c + 4 : c);
-}
-
 #define TEMP_VAL_DEAD  0
 #define TEMP_VAL_REG   1
 #define TEMP_VAL_MEM   2
@@ -412,9 +394,6 @@ typedef struct TCGOpDef {
     uint16_t copy_size;
     TCGArgConstraint *args_ct;
     int *sorted_args;
-#if defined(CONFIG_DEBUG_TCG)
-    int used;
-#endif
 } TCGOpDef;
         
 typedef struct TCGTargetOpDef {

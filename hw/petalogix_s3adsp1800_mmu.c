@@ -38,21 +38,13 @@
 #define LMB_BRAM_SIZE  (128 * 1024)
 #define FLASH_SIZE     (16 * 1024 * 1024)
 
-static struct
-{
-    uint32_t bootstrap_pc;
-    uint32_t cmdline;
-    uint32_t fdt;
-} boot_info;
+static uint32_t bootstrap_pc;
 
 static void main_cpu_reset(void *opaque)
 {
     CPUState *env = opaque;
-
     cpu_reset(env);
-    env->regs[5] = boot_info.cmdline;
-    env->regs[7] = boot_info.fdt;
-    env->sregs[SR_PC] = boot_info.bootstrap_pc;
+    env->sregs[SR_PC] = bootstrap_pc;
 }
 
 #define BINARY_DEVICE_TREE_FILE "petalogix-s3adsp1800.dtb"
@@ -141,10 +133,11 @@ petalogix_s3adsp1800_init(ram_addr_t ram_size,
 
     phys_flash = qemu_ram_alloc(FLASH_SIZE);
     dinfo = drive_get(IF_PFLASH, 0, 0);
-    pflash_cfi01_register(0xa0000000, phys_flash,
+    pflash_cfi02_register(0xa0000000, phys_flash,
                           dinfo ? dinfo->bdrv : NULL, (64 * 1024),
                           FLASH_SIZE >> 16,
-                          1, 0x89, 0x18, 0x0000, 0x0);
+                          1, 1, 0x0000, 0x0000, 0x0000, 0x0000,
+                          0x555, 0x2aa);
 
     cpu_irq = microblaze_pic_init_cpu(env);
     dev = xilinx_intc_create(0x81800000, cpu_irq[0], 2);
@@ -173,24 +166,27 @@ petalogix_s3adsp1800_init(ram_addr_t ram_size,
                                    1, ELF_MACHINE, 0);
         }
         /* Always boot into physical ram.  */
-        boot_info.bootstrap_pc = ddr_base + (entry & 0x0fffffff);
+        bootstrap_pc = ddr_base + (entry & 0x0fffffff);
         if (kernel_size < 0) {
             /* If we failed loading ELF's try a raw image.  */
             kernel_size = load_image_targphys(kernel_filename, ddr_base,
                                               ram_size);
-            boot_info.bootstrap_pc = ddr_base;
+            bootstrap_pc = ddr_base;
         }
 
-        boot_info.cmdline = ddr_base + kernel_size + 8192;
+        env->regs[5] = ddr_base + kernel_size + 8192;
         if (kernel_cmdline && (kcmdline_len = strlen(kernel_cmdline))) {
-            pstrcpy_targphys("cmdline", boot_info.cmdline, 256, kernel_cmdline);
+            pstrcpy_targphys("cmdline", env->regs[5], 256, kernel_cmdline);
         }
+        env->regs[6] = 0;
         /* Provide a device-tree.  */
-        boot_info.fdt = boot_info.cmdline + 256;
-        petalogix_load_device_tree(boot_info.fdt, ram_size,
-                                   0, 0,
+        env->regs[7] = ddr_base + kernel_size + 256;
+        petalogix_load_device_tree(env->regs[7], ram_size,
+                                   env->regs[6], 0,
                                    kernel_cmdline);
     }
+
+    env->sregs[SR_PC] = bootstrap_pc;
 }
 
 static QEMUMachine petalogix_s3adsp1800_machine = {

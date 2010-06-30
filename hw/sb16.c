@@ -782,10 +782,8 @@ static void complete (SB16State *s)
             break;
 
         case 0xe2:
-#ifdef DEBUG
             d0 = dsp_get_data (s);
-            dolog ("E2 = %#x\n", d0);
-#endif
+            ldebug ("E2 = %#x\n", d0);
             break;
 
         case 0xe4:

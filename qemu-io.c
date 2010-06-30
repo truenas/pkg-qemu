@@ -492,8 +492,7 @@ readv_f(int argc, char **argv)
 	int c, cnt;
 	char *buf;
 	int64_t offset;
-        /* Some compilers get confused and warn if this is not initialized.  */
-        int total = 0;
+	int total;
 	int nr_iov;
 	QEMUIOVector qiov;
 	int pattern = 0;
@@ -748,8 +747,7 @@ writev_f(int argc, char **argv)
 	int c, cnt;
 	char *buf;
 	int64_t offset;
-        /* Some compilers get confused and warn if this is not initialized.  */
-        int total = 0;
+	int total;
 	int nr_iov;
 	int pattern = 0xcd;
 	QEMUIOVector qiov;
@@ -1307,6 +1305,7 @@ open_help(void)
 " 'open -Cn /tmp/data' - creates/opens data file read-write and uncached\n"
 "\n"
 " Opens a file for subsequent use by all of the other qemu-io commands.\n"
+" -C, -- create new file if it doesn't exist\n"
 " -r, -- open file read-only\n"
 " -s, -- use snapshot file\n"
 " -n, -- disable host cache\n"
@@ -1336,13 +1335,16 @@ open_f(int argc, char **argv)
 	int growable = 0;
 	int c;
 
-	while ((c = getopt(argc, argv, "snrg")) != EOF) {
+	while ((c = getopt(argc, argv, "snCrg")) != EOF) {
 		switch (c) {
 		case 's':
 			flags |= BDRV_O_SNAPSHOT;
 			break;
 		case 'n':
 			flags |= BDRV_O_NOCACHE;
+			break;
+		case 'C':
+			flags |= BDRV_O_CREAT;
 			break;
 		case 'r':
 			readonly = 1;
@@ -1355,9 +1357,10 @@ open_f(int argc, char **argv)
 		}
 	}
 
-	if (!readonly) {
-            flags |= BDRV_O_RDWR;
-        }
+	if (readonly)
+		flags |= BDRV_O_RDONLY;
+	else
+		flags |= BDRV_O_RDWR;
 
 	if (optind != argc - 1)
 		return command_usage(&open_cmd);
@@ -1391,9 +1394,10 @@ init_check_command(
 static void usage(const char *name)
 {
 	printf(
-"Usage: %s [-h] [-V] [-rsnm] [-c cmd] ... [file]\n"
+"Usage: %s [-h] [-V] [-Crsnm] [-c cmd] ... [file]\n"
 "QEMU Disk exerciser\n"
 "\n"
+"  -C, --create         create new file if it doesn't exist\n"
 "  -c, --cmd            command to execute\n"
 "  -r, --read-only      export read-only\n"
 "  -s, --snapshot       use snapshot file\n"
@@ -1412,12 +1416,13 @@ int main(int argc, char **argv)
 {
 	int readonly = 0;
 	int growable = 0;
-	const char *sopt = "hVc:rsnmgk";
-        const struct option lopt[] = {
+	const char *sopt = "hVc:Crsnmgk";
+	struct option lopt[] = {
 		{ "help", 0, NULL, 'h' },
 		{ "version", 0, NULL, 'V' },
 		{ "offset", 1, NULL, 'o' },
 		{ "cmd", 1, NULL, 'c' },
+		{ "create", 0, NULL, 'C' },
 		{ "read-only", 0, NULL, 'r' },
 		{ "snapshot", 0, NULL, 's' },
 		{ "nocache", 0, NULL, 'n' },
@@ -1442,6 +1447,9 @@ int main(int argc, char **argv)
 			break;
 		case 'c':
 			add_user_command(optarg);
+			break;
+		case 'C':
+			flags |= BDRV_O_CREAT;
 			break;
 		case 'r':
 			readonly = 1;
@@ -1496,9 +1504,10 @@ int main(int argc, char **argv)
 	add_check_command(init_check_command);
 
 	/* open the device */
-	if (!readonly) {
-            flags |= BDRV_O_RDWR;
-        }
+	if (readonly)
+		flags |= BDRV_O_RDONLY;
+	else
+		flags |= BDRV_O_RDWR;
 
 	if ((argc - optind) == 1)
 		openfile(argv[optind], flags, growable);

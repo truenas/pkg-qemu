@@ -1,20 +1,16 @@
 # -*- Mode: makefile -*-
 
+# This needs to be defined before rules.mak
 GENERATED_HEADERS = config-target.h
 
 include ../config-host.mak
 include config-devices.mak
 include config-target.mak
 include $(SRC_PATH)/rules.mak
-ifneq ($(HWDIR),)
-include $(HWDIR)/config.mak
-endif
 
 TARGET_PATH=$(SRC_PATH)/target-$(TARGET_BASE_ARCH)
-$(call set-vpath, $(SRC_PATH):$(TARGET_PATH):$(SRC_PATH)/hw)
+VPATH=$(SRC_PATH):$(TARGET_PATH):$(SRC_PATH)/hw
 QEMU_CFLAGS+= -I.. -I$(TARGET_PATH) -DNEED_CPU_H
-
-include $(SRC_PATH)/Makefile.objs
 
 ifdef CONFIG_USER_ONLY
 # user emulator name
@@ -68,9 +64,9 @@ libobj-$(CONFIG_S390_DIS) += s390-dis.o
 libobj-$(CONFIG_SH4_DIS) += sh4-dis.o
 libobj-$(CONFIG_SPARC_DIS) += sparc-dis.o
 
-$(libobj-y): $(GENERATED_HEADERS)
-
 # libqemu
+
+libqemu.a: $(libobj-y)
 
 translate.o: translate.c cpu.h
 
@@ -91,11 +87,10 @@ signal.o: QEMU_CFLAGS += $(HELPER_CFLAGS)
 
 ifdef CONFIG_LINUX_USER
 
-$(call set-vpath, $(SRC_PATH)/linux-user:$(SRC_PATH)/linux-user/$(TARGET_ABI_DIR))
-
+VPATH+=:$(SRC_PATH)/linux-user:$(SRC_PATH)/linux-user/$(TARGET_ABI_DIR)
 QEMU_CFLAGS+=-I$(SRC_PATH)/linux-user -I$(SRC_PATH)/linux-user/$(TARGET_ABI_DIR)
 obj-y = main.o syscall.o strace.o mmap.o signal.o thunk.o \
-      elfload.o linuxload.o uaccess.o gdbstub.o cpu-uname.o
+      elfload.o linuxload.o uaccess.o gdbstub.o
 
 obj-$(TARGET_HAS_BFLT) += flatload.o
 obj-$(TARGET_HAS_ELFLOAD32) += elfload32.o
@@ -111,10 +106,7 @@ obj-arm-y += arm-semi.o
 
 obj-m68k-y += m68k-sim.o m68k-semi.o
 
-$(obj-y) $(obj-$(TARGET_BASE_ARCH)-y): $(GENERATED_HEADERS)
-
-obj-y += $(addprefix ../libuser/, $(user-obj-y))
-obj-y += $(libobj-y)
+ARLIBS=../libuser/libuser.a libqemu.a
 
 endif #CONFIG_LINUX_USER
 
@@ -123,8 +115,7 @@ endif #CONFIG_LINUX_USER
 
 ifdef CONFIG_DARWIN_USER
 
-$(call set-vpath, $(SRC_PATH)/darwin-user)
-
+VPATH+=:$(SRC_PATH)/darwin-user
 QEMU_CFLAGS+=-I$(SRC_PATH)/darwin-user -I$(SRC_PATH)/darwin-user/$(TARGET_ARCH)
 
 # Leave some space for the regular program loading zone
@@ -137,10 +128,7 @@ obj-y = main.o commpage.o machload.o mmap.o signal.o syscall.o thunk.o \
 
 obj-i386-y += ioport-user.o
 
-$(obj-y) $(obj-$(TARGET_BASE_ARCH)-y): $(GENERATED_HEADERS)
-
-obj-y += $(addprefix ../libuser/, $(user-obj-y))
-obj-y += $(libobj-y)
+ARLIBS=../libuser/libuser.a libqemu.a
 
 endif #CONFIG_DARWIN_USER
 
@@ -149,8 +137,7 @@ endif #CONFIG_DARWIN_USER
 
 ifdef CONFIG_BSD_USER
 
-$(call set-vpath, $(SRC_PATH)/bsd-user)
-
+VPATH+=:$(SRC_PATH)/bsd-user
 QEMU_CFLAGS+=-I$(SRC_PATH)/bsd-user -I$(SRC_PATH)/bsd-user/$(TARGET_ARCH)
 
 obj-y = main.o bsdload.o elfload.o mmap.o signal.o strace.o syscall.o \
@@ -158,10 +145,7 @@ obj-y = main.o bsdload.o elfload.o mmap.o signal.o strace.o syscall.o \
 
 obj-i386-y += ioport-user.o
 
-$(obj-y) $(obj-$(TARGET_BASE_ARCH)-y): $(GENERATED_HEADERS)
-
-obj-y += $(addprefix ../libuser/, $(user-obj-y))
-obj-y += $(libobj-y)
+ARLIBS=../libuser/libuser.a libqemu.a
 
 endif #CONFIG_BSD_USER
 
@@ -172,8 +156,7 @@ ifdef CONFIG_SOFTMMU
 obj-y = vl.o async.o monitor.o pci.o pci_host.o pcie_host.o machine.o gdbstub.o
 # virtio has to be here due to weird dependency between PCI and virtio-net.
 # need to fix this properly
-obj-y += virtio-blk.o virtio-balloon.o virtio-net.o virtio-pci.o virtio-serial-bus.o
-obj-y += rwhandler.o
+obj-y += virtio-blk.o virtio-balloon.o virtio-net.o virtio-console.o virtio-pci.o
 obj-$(CONFIG_KVM) += kvm.o kvm-all.o
 obj-$(CONFIG_ISA_MMIO) += isa_mmio.o
 LIBS+=-lz
@@ -211,7 +194,7 @@ obj-i386-y += fdc.o mc146818rtc.o serial.o i8259.o i8254.o pcspk.o pc.o
 obj-i386-y += cirrus_vga.o apic.o ioapic.o parallel.o acpi.o piix_pci.o
 obj-i386-y += usb-uhci.o vmmouse.o vmport.o vmware_vga.o hpet.o
 obj-i386-y += device-hotplug.o pci-hotplug.o smbios.o wdt_ib700.o
-obj-i386-y += ne2000-isa.o debugcon.o multiboot.o
+obj-i386-y += ne2000-isa.o
 
 # shared objects
 obj-ppc-y = ppc.o ide/core.o ide/qdev.o ide/isa.o ide/pci.o ide/macio.o
@@ -225,7 +208,7 @@ obj-ppc-y += macio.o cuda.o adb.o mac_nvram.o mac_dbdma.o
 # OldWorld PowerMac
 obj-ppc-y += heathrow_pic.o grackle_pci.o ppc_oldworld.o
 # NewWorld PowerMac
-obj-ppc-y += unin_pci.o ppc_newworld.o dec_pci.o
+obj-ppc-y += unin_pci.o ppc_newworld.o
 # PowerPC 4xx boards
 obj-ppc-y += pflash_cfi02.o ppc4xx_devs.o ppc4xx_pci.o ppc405_uc.o ppc405_boards.o
 obj-ppc-y += ppc440.o ppc440_bamboo.o
@@ -253,7 +236,7 @@ obj-microblaze-y += xilinx_timer.o
 obj-microblaze-y += xilinx_uartlite.o
 obj-microblaze-y += xilinx_ethlite.o
 
-obj-microblaze-y += pflash_cfi01.o
+obj-microblaze-y += pflash_cfi02.o
 
 obj-microblaze-$(CONFIG_FDT) += device_tree.o
 
@@ -320,21 +303,17 @@ vl.o: qemu-options.h
 
 monitor.o: qemu-monitor.h
 
-$(obj-y) $(obj-$(TARGET_BASE_ARCH)-y): $(GENERATED_HEADERS)
-
-obj-y += $(addprefix ../, $(common-obj-y))
-obj-y += $(libobj-y)
-obj-y += $(addprefix $(HWDIR)/, $(hw-obj-y))
+ARLIBS=../libqemu_common.a libqemu.a $(HWLIB)
 
 endif # CONFIG_SOFTMMU
 
 obj-$(CONFIG_GDBSTUB_XML) += gdbstub-xml.o
 
-$(QEMU_PROG): $(obj-y) $(obj-$(TARGET_BASE_ARCH)-y)
+$(QEMU_PROG): $(obj-y) $(obj-$(TARGET_BASE_ARCH)-y) $(ARLIBS)
 	$(call LINK,$(obj-y) $(obj-$(TARGET_BASE_ARCH)-y))
 
 
-gdbstub-xml.c: $(TARGET_XML_FILES) $(SRC_PATH)/feature_to_c.sh
+gdbstub-xml.c: $(TARGET_XML_FILES) feature_to_c.sh
 	$(call quiet-command,rm -f $@ && $(SHELL) $(SRC_PATH)/feature_to_c.sh $@ $(TARGET_XML_FILES),"  GEN   $(TARGET_DIR)$@")
 
 qemu-options.h: $(SRC_PATH)/qemu-options.hx

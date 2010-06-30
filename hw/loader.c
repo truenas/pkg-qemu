@@ -537,6 +537,7 @@ struct Rom {
 
 static FWCfgState *fw_cfg;
 static QTAILQ_HEAD(, Rom) roms = QTAILQ_HEAD_INITIALIZER(roms);
+int rom_enable_driver_roms;
 
 static void rom_insert(Rom *rom)
 {
@@ -623,11 +624,15 @@ int rom_add_blob(const char *name, const void *blob, size_t len,
 
 int rom_add_vga(const char *file)
 {
+    if (!rom_enable_driver_roms)
+        return 0;
     return rom_add_file(file, "vgaroms", 0);
 }
 
 int rom_add_option(const char *file)
 {
+    if (!rom_enable_driver_roms)
+        return 0;
     return rom_add_file(file, "genroms", 0);
 }
 

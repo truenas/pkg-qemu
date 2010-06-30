@@ -149,14 +149,9 @@ static int glue(load_symbols, SZ)(struct elfhdr *ehdr, int fd, int must_swab,
         }
         i++;
     }
-    if (nsyms) {
-        syms = qemu_realloc(syms, nsyms * sizeof(*syms));
+    syms = qemu_realloc(syms, nsyms * sizeof(*syms));
 
-        qsort(syms, nsyms, sizeof(*syms), glue(symcmp, SZ));
-    } else {
-        qemu_free(syms);
-        syms = NULL;
-    }
+    qsort(syms, nsyms, sizeof(*syms), glue(symcmp, SZ));
 
     /* String table */
     if (symtab->sh_link >= ehdr->e_shnum)

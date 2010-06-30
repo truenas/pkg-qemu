@@ -209,7 +209,6 @@ static int cow_create(const char *filename, QEMUOptionParameter *options)
     struct stat st;
     int64_t image_sectors = 0;
     const char *image_filename = NULL;
-    int ret;
 
     /* Read out options */
     while (options && options->name) {
@@ -249,23 +248,11 @@ static int cow_create(const char *filename, QEMUOptionParameter *options)
     }
     cow_header.sectorsize = cpu_to_be32(512);
     cow_header.size = cpu_to_be64(image_sectors * 512);
-    ret = qemu_write_full(cow_fd, &cow_header, sizeof(cow_header));
-    if (ret != sizeof(cow_header)) {
-        ret = -1;
-        goto exit;
-    }
-
+    write(cow_fd, &cow_header, sizeof(cow_header));
     /* resize to include at least all the bitmap */
-    ret = ftruncate(cow_fd, sizeof(cow_header) + ((image_sectors + 7) >> 3));
-    if (ret) {
-        ret = -errno;
-        goto exit;
-    }
-
-    ret = 0;
-exit:
+    ftruncate(cow_fd, sizeof(cow_header) + ((image_sectors + 7) >> 3));
     close(cow_fd);
-    return ret;
+    return 0;
 }
 
 static void cow_flush(BlockDriverState *bs)

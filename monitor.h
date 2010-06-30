@@ -20,10 +20,6 @@ typedef enum MonitorEvent {
     QEVENT_RESET,
     QEVENT_POWERDOWN,
     QEVENT_STOP,
-    QEVENT_VNC_CONNECTED,
-    QEVENT_VNC_INITIALIZED,
-    QEVENT_VNC_DISCONNECTED,
-    QEVENT_BLOCK_IO_ERROR,
     QEVENT_MAX,
 } MonitorEvent;
 
@@ -33,9 +29,9 @@ void monitor_init(CharDriverState *chr, int flags);
 int monitor_suspend(Monitor *mon);
 void monitor_resume(Monitor *mon);
 
-int monitor_read_bdrv_key_start(Monitor *mon, BlockDriverState *bs,
-                                BlockDriverCompletionFunc *completion_cb,
-                                void *opaque);
+void monitor_read_bdrv_key_start(Monitor *mon, BlockDriverState *bs,
+                                 BlockDriverCompletionFunc *completion_cb,
+                                 void *opaque);
 
 int monitor_get_fd(Monitor *mon, const char *fdname);
 
@@ -44,7 +40,5 @@ void monitor_printf(Monitor *mon, const char *fmt, ...)
     __attribute__ ((__format__ (__printf__, 2, 3)));
 void monitor_print_filename(Monitor *mon, const char *filename);
 void monitor_flush(Monitor *mon);
-
-typedef void (MonitorCompletion)(void *opaque, QObject *ret_data);
 
 #endif /* !MONITOR_H */

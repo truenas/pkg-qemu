@@ -850,8 +850,7 @@ void sdl_display_init(DisplayState *ds, int full_screen, int no_frame)
 
     flags = SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE;
     if (SDL_Init (flags)) {
-        fprintf(stderr, "Could not initialize SDL(%s) - exiting\n",
-                SDL_GetError());
+        fprintf(stderr, "Could not initialize SDL - exiting\n");
         exit(1);
     }
     vi = SDL_GetVideoInfo();
@@ -872,6 +871,10 @@ void sdl_display_init(DisplayState *ds, int full_screen, int no_frame)
     da->resize_displaysurface = sdl_resize_displaysurface;
     da->free_displaysurface = sdl_free_displaysurface;
     if (register_displayallocator(ds, da) == da) {
+        DisplaySurface *surf;
+        surf = sdl_create_displaysurface(ds_get_width(ds), ds_get_height(ds));
+        defaultallocator_free_displaysurface(ds->surface);
+        ds->surface = surf;
         dpy_resize(ds);
     }
 

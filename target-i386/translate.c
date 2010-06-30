@@ -2047,8 +2047,8 @@ static void gen_lea_modrm(DisasContext *s, int modrm, int *reg_ptr, int *offset_
                 gen_op_movl_A0_im(disp);
             }
         }
-        /* XXX: index == 4 is always invalid */
-        if (havesib && (index != 4 || scale != 0)) {
+        /* index == 4 means no index */
+        if (havesib && (index != 4)) {
 #ifdef TARGET_X86_64
             if (s->aflag == 2) {
                 gen_op_addq_A0_reg_sN(scale, index);
@@ -2207,6 +2207,8 @@ static void gen_add_A0_ds_seg(DisasContext *s)
     if (s->override >= 0) {
         override = s->override;
         must_add_seg = 1;
+    } else {
+        override = R_DS;
     }
     if (must_add_seg) {
 #ifdef TARGET_X86_64
@@ -3163,11 +3165,16 @@ static void gen_sse(DisasContext *s, int b, target_ulong pc_start, int rex_r)
         case 0x1e7: /* movntdq */
         case 0x02b: /* movntps */
         case 0x12b: /* movntps */
-        case 0x3f0: /* lddqu */
             if (mod == 3)
                 goto illegal_op;
             gen_lea_modrm(s, modrm, &reg_addr, &offset_addr);
             gen_sto_env_A0(s->mem_index, offsetof(CPUX86State,xmm_regs[reg]));
+            break;
+        case 0x3f0: /* lddqu */
+            if (mod == 3)
+                goto illegal_op;
+            gen_lea_modrm(s, modrm, &reg_addr, &offset_addr);
+            gen_ldo_env_A0(s->mem_index, offsetof(CPUX86State,xmm_regs[reg]));
             break;
         case 0x22b: /* movntss */
         case 0x32b: /* movntsd */
@@ -4589,9 +4596,7 @@ static target_ulong disas_insn(DisasContext *s, target_ulong pc_start)
                 /* operand size for jumps is 64 bit */
                 ot = OT_QUAD;
             } else if (op == 3 || op == 5) {
-                /* for call calls, the operand is 16 or 32 bit, even
-                   in long mode */
-                ot = dflag ? OT_LONG : OT_WORD;
+                ot = dflag ? OT_LONG + (rex_w == 1) : OT_WORD;
             } else if (op == 6) {
                 /* default push size is 64 bit */
                 ot = dflag ? OT_QUAD : OT_WORD;
@@ -4692,6 +4697,8 @@ static target_ulong disas_insn(DisasContext *s, target_ulong pc_start)
             ot = dflag + OT_WORD;
 
         modrm = ldub_code(s->pc++);
+        mod = (modrm >> 6) & 3;
+        rm = (modrm & 7) | REX_B(s);
         reg = ((modrm >> 3) & 7) | rex_r;
 
         gen_ldst_modrm(s, modrm, ot, OR_TMP0, 0);

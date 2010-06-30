@@ -156,18 +156,15 @@ quit:
     return;
 }
 
-static int xen_domain_watcher(void)
+static void xen_domain_watcher(void)
 {
     int qemu_running = 1;
     int fd[2], i, n, rc;
     char byte;
 
-    if (pipe(fd) != 0) {
-        qemu_log("%s: Huh? pipe error: %s\n", __FUNCTION__, strerror(errno));
-        return -1;
-    }
+    pipe(fd);
     if (fork() != 0)
-        return 0; /* not child */
+        return; /* not child */
 
     /* close all file handles, except stdio/out/err,
      * our watch pipe and the xen interface handle */
@@ -241,9 +238,7 @@ int xen_domain_build_pv(const char *kernel, const char *ramdisk,
     }
     qemu_log("xen: created domain %d\n", xen_domid);
     atexit(xen_domain_cleanup);
-    if (xen_domain_watcher() == -1) {
-        goto err;
-    }
+    xen_domain_watcher();
 
     xenstore_domain_init1(kernel, ramdisk, cmdline);
 

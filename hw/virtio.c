@@ -75,6 +75,8 @@ struct VirtQueue
     void (*handle_output)(VirtIODevice *vdev, VirtQueue *vq);
 };
 
+#define VIRTIO_PCI_QUEUE_MAX        16
+
 /* virt queue functions */
 static void virtqueue_init(VirtQueue *vq)
 {
@@ -443,7 +445,7 @@ void virtio_reset(void *opaque)
     if (vdev->reset)
         vdev->reset(vdev);
 
-    vdev->guest_features = 0;
+    vdev->features = 0;
     vdev->queue_sel = 0;
     vdev->status = 0;
     vdev->isr = 0;
@@ -596,7 +598,7 @@ void virtio_notify(VirtIODevice *vdev, VirtQueue *vq)
 {
     /* Always notify when queue is empty (when feature acknowledge) */
     if ((vring_avail_flags(vq) & VRING_AVAIL_F_NO_INTERRUPT) &&
-        (!(vdev->guest_features & (1 << VIRTIO_F_NOTIFY_ON_EMPTY)) ||
+        (!(vdev->features & (1 << VIRTIO_F_NOTIFY_ON_EMPTY)) ||
          (vq->inuse || vring_avail_idx(vq) != vq->last_avail_idx)))
         return;
 
@@ -623,7 +625,7 @@ void virtio_save(VirtIODevice *vdev, QEMUFile *f)
     qemu_put_8s(f, &vdev->status);
     qemu_put_8s(f, &vdev->isr);
     qemu_put_be16s(f, &vdev->queue_sel);
-    qemu_put_be32s(f, &vdev->guest_features);
+    qemu_put_be32s(f, &vdev->features);
     qemu_put_be32(f, vdev->config_len);
     qemu_put_buffer(f, vdev->config, vdev->config_len);
 
@@ -650,7 +652,7 @@ int virtio_load(VirtIODevice *vdev, QEMUFile *f)
 {
     int num, i, ret;
     uint32_t features;
-    uint32_t supported_features =
+    uint32_t supported_features = vdev->get_features(vdev) |
         vdev->binding->get_features(vdev->binding_opaque);
 
     if (vdev->binding->load_config) {
@@ -668,7 +670,7 @@ int virtio_load(VirtIODevice *vdev, QEMUFile *f)
                 features, supported_features);
         return -1;
     }
-    vdev->guest_features = features;
+    vdev->features = features;
     vdev->config_len = qemu_get_be32(f);
     qemu_get_buffer(f, vdev->config, vdev->config_len);
 

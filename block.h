@@ -27,7 +27,10 @@ typedef struct QEMUSnapshotInfo {
     uint64_t vm_clock_nsec; /* VM clock relative to boot */
 } QEMUSnapshotInfo;
 
+#define BDRV_O_RDONLY      0x0000
 #define BDRV_O_RDWR        0x0002
+#define BDRV_O_ACCESS      0x0003
+#define BDRV_O_CREAT       0x0004 /* create an empty file */
 #define BDRV_O_SNAPSHOT    0x0008 /* open the file read only and save writes in a snapshot */
 #define BDRV_O_FILE        0x0010 /* open as a raw file (do not try to
                                      use a disk image format on top of
@@ -36,7 +39,6 @@ typedef struct QEMUSnapshotInfo {
 #define BDRV_O_NOCACHE     0x0020 /* do not use the host page cache */
 #define BDRV_O_CACHE_WB    0x0040 /* use write-back caching */
 #define BDRV_O_NATIVE_AIO  0x0080 /* use native AIO instead of the thread pool */
-#define BDRV_O_NO_BACKING  0x0100 /* don't open the backing file */
 
 #define BDRV_O_CACHE_MASK  (BDRV_O_NOCACHE | BDRV_O_CACHE_WB)
 
@@ -44,12 +46,6 @@ typedef struct QEMUSnapshotInfo {
 #define BDRV_SECTOR_SIZE   (1 << BDRV_SECTOR_BITS)
 #define BDRV_SECTOR_MASK   ~(BDRV_SECTOR_SIZE - 1);
 
-typedef enum {
-    BDRV_ACTION_REPORT, BDRV_ACTION_IGNORE, BDRV_ACTION_STOP
-} BlockMonEventAction;
-
-void bdrv_mon_event(const BlockDriverState *bdrv,
-                    BlockMonEventAction action, int is_read);
 void bdrv_info_print(Monitor *mon, const QObject *data);
 void bdrv_info(Monitor *mon, QObject **ret_data);
 void bdrv_stats_print(Monitor *mon, const QObject *data);
@@ -86,8 +82,6 @@ int64_t bdrv_getlength(BlockDriverState *bs);
 void bdrv_get_geometry(BlockDriverState *bs, uint64_t *nb_sectors_ptr);
 void bdrv_guess_geometry(BlockDriverState *bs, int *pcyls, int *pheads, int *psecs);
 int bdrv_commit(BlockDriverState *bs);
-int bdrv_change_backing_file(BlockDriverState *bs,
-    const char *backing_file, const char *backing_fmt);
 void bdrv_register(BlockDriver *bdrv);
 
 /* async block I/O */
@@ -152,6 +146,7 @@ int bdrv_get_type_hint(BlockDriverState *bs);
 int bdrv_get_translation_hint(BlockDriverState *bs);
 int bdrv_is_removable(BlockDriverState *bs);
 int bdrv_is_read_only(BlockDriverState *bs);
+int bdrv_set_read_only(BlockDriverState *bs, int read_only);
 int bdrv_is_sg(BlockDriverState *bs);
 int bdrv_enable_write_cache(BlockDriverState *bs);
 int bdrv_is_inserted(BlockDriverState *bs);
@@ -206,5 +201,4 @@ void bdrv_set_dirty_tracking(BlockDriverState *bs, int enable);
 int bdrv_get_dirty(BlockDriverState *bs, int64_t sector);
 void bdrv_reset_dirty(BlockDriverState *bs, int64_t cur_sector,
                       int nr_sectors);
-int64_t bdrv_get_dirty_count(BlockDriverState *bs);
 #endif

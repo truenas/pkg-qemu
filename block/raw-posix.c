@@ -138,7 +138,7 @@ static int raw_open_common(BlockDriverState *bs, const char *filename,
 
     s->open_flags = open_flags | O_BINARY;
     s->open_flags &= ~O_ACCMODE;
-    if (bdrv_flags & BDRV_O_RDWR) {
+    if ((bdrv_flags & BDRV_O_ACCESS) == BDRV_O_RDWR) {
         s->open_flags |= O_RDWR;
     } else {
         s->open_flags |= O_RDONLY;
@@ -205,9 +205,13 @@ out_close:
 static int raw_open(BlockDriverState *bs, const char *filename, int flags)
 {
     BDRVRawState *s = bs->opaque;
+    int open_flags = 0;
 
     s->type = FTYPE_FILE;
-    return raw_open_common(bs, filename, flags, 0);
+    if (flags & BDRV_O_CREAT)
+        open_flags = O_CREAT | O_TRUNC;
+
+    return raw_open_common(bs, filename, flags, open_flags);
 }
 
 /* XXX: use host sector size if necessary with:
@@ -391,12 +395,8 @@ static int raw_pread(BlockDriverState *bs, int64_t offset,
                     size = ALIGNED_BUFFER_SIZE;
 
                 ret = raw_pread_aligned(bs, offset, s->aligned_buf, size);
-                if (ret < 0) {
+                if (ret < 0)
                     return ret;
-                } else if (ret == 0) {
-                    fprintf(stderr, "raw_pread: read beyond end of file\n");
-                    abort();
-                }
 
                 size = ret;
                 if (size > count)
@@ -1055,26 +1055,9 @@ static int floppy_open(BlockDriverState *bs, const char *filename, int flags)
 
 static int floppy_probe_device(const char *filename)
 {
-    int fd, ret;
-    int prio = 0;
-    struct floppy_struct fdparam;
-
     if (strstart(filename, "/dev/fd", NULL))
-        prio = 50;
-
-    fd = open(filename, O_RDONLY | O_NONBLOCK);
-    if (fd < 0) {
-        goto out;
-    }
-
-    /* Attempt to detect via a floppy specific ioctl */
-    ret = ioctl(fd, FDGETPRM, &fdparam);
-    if (ret >= 0)
-        prio = 100;
-
-    close(fd);
-out:
-    return prio;
+        return 100;
+    return 0;
 }
 
 
@@ -1157,25 +1140,9 @@ static int cdrom_open(BlockDriverState *bs, const char *filename, int flags)
 
 static int cdrom_probe_device(const char *filename)
 {
-    int fd, ret;
-    int prio = 0;
-
     if (strstart(filename, "/dev/cd", NULL))
-        prio = 50;
-
-    fd = open(filename, O_RDONLY | O_NONBLOCK);
-    if (fd < 0) {
-        goto out;
-    }
-
-    /* Attempt to detect via a CDROM specific ioctl */
-    ret = ioctl(fd, CDROM_DRIVE_STATUS, CDSL_CURRENT);
-    if (ret >= 0)
-        prio = 100;
-
-    close(fd);
-out:
-    return prio;
+        return 100;
+    return 0;
 }
 
 static int cdrom_is_inserted(BlockDriverState *bs)
