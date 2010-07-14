@@ -14,7 +14,7 @@ Build-Depends: debhelper (>= 5), quilt (>= 0.40), nasm, device-tree-compiler,
  libgpmg1-dev [amd64 arm armel hppa i386 powerpc sparc sparc64 ppc64],
  linux-libc-dev (>= 2.6.30) [amd64 i386 powerpc ppc64]
 Build-Conflicts: oss4-dev
-Standards-Version: 3.8.4
+Standards-Version: 3.9.0
 Homepage: http://www.qemu.org/
 Vcs-Browser: http://git.debian.org/?p=pkg-qemu/qemu.git
 Vcs-Git: git://git.debian.org/git/pkg-qemu/qemu.git
@@ -45,7 +45,7 @@ Description: fast processor emulator
 Package: qemu-keymaps
 Architecture: all
 Depends: ${misc:Depends}
-Conflicts: qemu (<< 0.11.0-2), qemu-system (<< 0.12.4+dfsg-4)
+Breaks: qemu (<< 0.11.0-2), qemu-system (<< 0.12.4+dfsg-4)
 Replaces: qemu (<< 0.11.0-2), qemu-system (<< 0.12.4+dfsg-4)
 Description: QEMU utilities
  QEMU is a fast processor emulator: currently the package supports
@@ -60,7 +60,7 @@ Package: qemu-system
 Architecture: amd64 arm armel hppa i386 mips mipsel powerpc sparc sparc64 kfreebsd-i386 kfreebsd-amd64 ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-keymaps (>= ${source:Version}), vgabios (>= 0.6c-1), seabios (>= 0.5.1-2), openbios-ppc (>= 1.0+svn640), openbios-sparc (>= 1.0+svn640), openhackware, etherboot-qemu
 Recommends: vde2, qemu-utils
-Conflicts: qemu (<< 0.11.0-2)
+Breaks: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Suggests: samba, kqemu-source
 Description: QEMU full system emulation binaries
@@ -77,7 +77,7 @@ Description: QEMU full system emulation binaries
 Package: qemu-user
 Architecture: amd64 arm armel hppa i386 mips mipsel powerpc sparc sparc64 ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Conflicts: qemu (<< 0.11.0-2)
+Breaks: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Suggests: sudo
 Description: QEMU user mode emulation binaries
@@ -106,7 +106,8 @@ Package: qemu-utils
 Architecture: amd64 arm armel hppa i386 mips mipsel powerpc sparc sparc64 kfreebsd-i386 kfreebsd-amd64 ppc64
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: debootstrap
-Conflicts: kvm (= 85+dfsg-4.1), qemu (<< 0.11.0-2), qemu-user (<< 0.11.1-2)
+Conflicts: kvm (= 85+dfsg-4.1)
+Breaks: qemu (<< 0.11.0-2), qemu-user (<< 0.11.1-2)
 Replaces: qemu (<< 0.11.0-2), qemu-user (<< 0.11.1-2)
 Description: QEMU utilities
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
