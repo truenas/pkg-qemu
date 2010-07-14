@@ -1,3 +1,9 @@
+qemu (0.12.4+dfsg-4) UNRELEASED; urgency=low
+
+  * Update debian/copyright.  Closes: bug#588911.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 14 Jul 2010 14:01:32 +0200
+
 qemu (0.12.4+dfsg-3) unstable; urgency=low
 
   * Update 99_stable.diff from the stable branch. 
