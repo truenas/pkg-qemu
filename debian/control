@@ -64,6 +64,7 @@ Breaks: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Suggests: samba, kqemu-source
 Description: QEMU full system emulation binaries
+ QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
  SPARC and x86-64 emulation. By using dynamic translation it achieves
  reasonable speed while being easy to port on new host CPUs.
@@ -81,6 +82,7 @@ Breaks: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Suggests: sudo
 Description: QEMU user mode emulation binaries
+ QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
  SPARC and x86-64 emulation. By using dynamic translation it achieves
  reasonable speed while being easy to port on new host CPUs.
@@ -94,6 +96,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: binfmt-support
 Suggests: sudo
 Description: QEMU user mode emulation binaries (static version)
+ QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
  SPARC and x86-64 emulation. By using dynamic translation it achieves
  reasonable speed while being easy to port on new host CPUs.
@@ -110,11 +113,12 @@ Conflicts: kvm (= 85+dfsg-4.1)
 Breaks: qemu (<< 0.11.0-2), qemu-user (<< 0.11.1-2)
 Replaces: qemu (<< 0.11.0-2), qemu-user (<< 0.11.1-2)
 Description: QEMU utilities
+ QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
  SPARC and x86-64 emulation. By using dynamic translation it achieves
  reasonable speed while being easy to port on new host CPUs.
  .
- This package provides qemu related utilities:
+ This package provides QEMU related utilities:
   * qemu-img: QEMU disk image utility
   * qemu-io:  QEMU disk exerciser
   * qemu-nbd: QEMU disk network block device server
@@ -124,6 +128,7 @@ Architecture: amd64 arm armel hppa i386 mips mipsel powerpc sparc sparc64 kfreeb
 Section: libdevel
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: static libraries and headers for QEMU
+ QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
  SPARC and x86-64 emulation. By using dynamic translation it achieves
  reasonable speed while being easy to port on new host CPUs.
