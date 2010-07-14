@@ -1,8 +1,10 @@
-qemu (0.12.4+dfsg-4) UNRELEASED; urgency=low
+qemu (0.12.4+dfsg-4) UNRELEASED; urgency=high
 
   * Update debian/copyright.  Closes: bug#588911.
+  * Update 99_stable.diff from the stable branch:
+    - Add documentation for the stdio signal option. Closes: bug#588514.
 
- -- Aurelien Jarno <aurel32@debian.org>  Wed, 14 Jul 2010 14:01:32 +0200
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 14 Jul 2010 14:46:56 +0200
 
 qemu (0.12.4+dfsg-3) unstable; urgency=low
 
