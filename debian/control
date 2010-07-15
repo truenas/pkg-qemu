@@ -62,7 +62,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-keymaps (>= ${source:Version})
 Recommends: vde2, qemu-utils
 Breaks: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
-Suggests: samba, kqemu-source
+Suggests: samba
 Description: QEMU full system emulation binaries
  QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
