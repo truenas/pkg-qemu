@@ -1,4 +1,3 @@
 02_kfreebsd.patch
 03_support_pselect_in_linux_user_arm.patch
-06_sh4.diff
 security/leftover.patch
