@@ -3,8 +3,9 @@ qemu (0.13.0~rc0+dfsg-1) UNRELEASED; urgency=low
   * New upstream release candidate version.
   * Do not configure audio drivers for qemu-user and qemu-user-static targets. 
   * Remove 05_bochs_vbe.diff patch, applied upstream.
+  * Refresh 03_support_pselect_in_linux_user_arm.patch
 
- -- Vagrant Cascadian <vagrant@debian.org>  Thu, 29 Jul 2010 00:26:17 -0400
+ -- Vagrant Cascadian <vagrant@debian.org>  Thu, 29 Jul 2010 11:39:48 -0400
 
 qemu (0.12.5+dfsg-1) unstable; urgency=low
 
