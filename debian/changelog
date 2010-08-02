@@ -3,8 +3,9 @@ qemu (0.13.0~rc0+dfsg-2) EXPERIMENTAL; urgency=low
   [ Aurelien Jarno ]
   * Add ia64 to the list of supported architectures.
   * Bump Standards-Version to 3.9.1 (no changes).
+  * Update seabios, openbios-ppc and openbios-sparc dependencies.
 
- -- Aurelien Jarno <aurel32@debian.org>  Fri, 30 Jul 2010 06:16:38 +0200
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 02 Aug 2010 07:10:53 +0200
 
 qemu (0.13.0~rc0+dfsg-1) experimental; urgency=low
 
