@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 5), quilt (>= 0.40), nasm, device-tree-compiler,
  linux-libc-dev (>= 2.6.30) [amd64 i386 ia64 powerpc ppc64],
  texinfo
 Build-Conflicts: oss4-dev
-Standards-Version: 3.9.0
+Standards-Version: 3.9.1
 Homepage: http://www.qemu.org/
 Vcs-Browser: http://git.debian.org/?p=pkg-qemu/qemu.git
 Vcs-Git: git://git.debian.org/git/pkg-qemu/qemu.git
