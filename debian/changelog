@@ -6,8 +6,10 @@ qemu (0.13.0~rc0+dfsg-2) EXPERIMENTAL; urgency=low
   * Update seabios, openbios-ppc and openbios-sparc dependencies.
   * Add 99_stable.diff to update from the stable-0.13 branch:
     - Fix sparc FTBFS. Closes: #591249.
+  * Add qemu-debootstrap from Loïc Minier in qemu-static. Closes:
+    #572952.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 02 Aug 2010 07:10:53 +0200
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 03 Aug 2010 07:16:50 +0200
 
 qemu (0.13.0~rc0+dfsg-1) experimental; urgency=low
 
