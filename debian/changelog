@@ -1,4 +1,4 @@
-qemu (0.13.0~rc0+dfsg-2) EXPERIMENTAL; urgency=low
+qemu (0.13.0~rc0+dfsg-2) experimental; urgency=low
 
   [ Aurelien Jarno ]
   * Add ia64 to the list of supported architectures.
@@ -9,7 +9,7 @@ qemu (0.13.0~rc0+dfsg-2) EXPERIMENTAL; urgency=low
   * Add qemu-debootstrap from Loïc Minier in qemu-static. Closes:
     #572952.
 
- -- Aurelien Jarno <aurel32@debian.org>  Tue, 03 Aug 2010 07:16:50 +0200
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 03 Aug 2010 07:25:06 +0200
 
 qemu (0.13.0~rc0+dfsg-1) experimental; urgency=low
 
