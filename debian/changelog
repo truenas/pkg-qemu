@@ -4,6 +4,8 @@ qemu (0.13.0~rc0+dfsg-2) EXPERIMENTAL; urgency=low
   * Add ia64 to the list of supported architectures.
   * Bump Standards-Version to 3.9.1 (no changes).
   * Update seabios, openbios-ppc and openbios-sparc dependencies.
+  * Add 99_stable.diff to update from the stable-0.13 branch:
+    - Fix sparc FTBFS. Closes: #591249.
 
  -- Aurelien Jarno <aurel32@debian.org>  Mon, 02 Aug 2010 07:10:53 +0200
 
