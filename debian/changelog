@@ -1,3 +1,10 @@
+qemu (0.12.5+dfsg-2) UNRELEASED; urgency=low
+
+  * mips/mipsel binfmt registration: also match EI_ABIVERSION=1, used by
+    OpenWRT. Closes: #591543.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 16 Aug 2010 19:58:33 +0200
+
 qemu (0.12.5+dfsg-1) unstable; urgency=low
 
   * New upstream stable version.
