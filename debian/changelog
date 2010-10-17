@@ -1,4 +1,4 @@
-qemu (0.13.0~rc1+dfsg-1) EXPERIMENTAL; urgency=low
+qemu (0.13.0+dfsg-1) EXPERIMENTAL; urgency=low
 
   [ Aurelien Jarno ]
   * mips/mipsel binfmt registration: also match EI_ABIVERSION=1, used by
@@ -12,7 +12,7 @@ qemu (0.13.0~rc1+dfsg-1) EXPERIMENTAL; urgency=low
   * New upstream version. 
   * Drop 99_stable.diff, applied in new upstream version.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 13 Sep 2010 10:52:15 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 17 Oct 2010 16:24:34 -0700
 
 qemu (0.13.0~rc0+dfsg-2) experimental; urgency=low
 
