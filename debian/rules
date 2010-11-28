@@ -163,7 +163,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	done
 
 	# binfmt support
-	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=\"$(BINFMT_TARGETS)\"/g' \
+	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=\"$(ALL_BINFMT_TARGETS)\"/g' \
 		$(CURDIR)/debian/qemu-user-static.prerm \
 		$(CURDIR)/debian/qemu-user-static.postinst
 
