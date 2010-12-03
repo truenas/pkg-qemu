@@ -1,3 +1,16 @@
+qemu (0.13.0+dfsg-3) UNRELEASED; urgency=low
+
+  * qemu-user-static: 
+    - Drop binfmt support for emulating amd64 on i386, as it is broken and
+      including it interferes with environments capable of running amd64
+      natively.  Closes: #604712.
+    - Remove binfmt support for installed targets in postinst before installing
+      supported targets, to ensure no-longer-supported targets are actually
+      removed.
+    - Remove binfmt support for installed targets in prerm.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 03 Dec 2010 12:30:56 -0800
+
 qemu (0.13.0+dfsg-2) experimental; urgency=low
 
   * Fix Build-Depends to exclude kfreebsd-any wildcards where appropriate.
