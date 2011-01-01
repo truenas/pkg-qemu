@@ -74,6 +74,7 @@ configure-stamp: configure
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--sysconfdir=/etc \
 			--disable-blobs \
 			--disable-strip \
 			--disable-linux-user \
@@ -90,6 +91,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--sysconfdir=/etc \
 			--interp-prefix=/etc/qemu-binfmt/%M \
 			--disable-blobs \
 			--disable-strip \
@@ -104,6 +106,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--sysconfdir=/etc \
 			--interp-prefix=/etc/qemu-binfmt/%M \
 			--disable-blobs \
 			--disable-strip \

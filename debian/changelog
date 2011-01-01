@@ -1,5 +1,6 @@
 qemu (0.13.0+dfsg-3) UNRELEASED; urgency=low
 
+  [ Vagrant Cascadian ]
   * qemu-user-static: 
     - Drop binfmt support for emulating amd64 on i386, as it is broken and
       including it interferes with environments capable of running amd64
@@ -9,7 +10,10 @@ qemu (0.13.0+dfsg-3) UNRELEASED; urgency=low
       removed.
     - Remove binfmt support for installed targets in prerm.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Fri, 03 Dec 2010 12:30:56 -0800
+  [ Aurelien Jarno ]
+  * Fix configuration files directory.  Closes: #600735.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 01 Jan 2011 20:41:30 +0100
 
 qemu (0.13.0+dfsg-2) experimental; urgency=low
 
