@@ -12,8 +12,9 @@ qemu (0.13.0+dfsg-3) UNRELEASED; urgency=low
 
   [ Aurelien Jarno ]
   * Fix configuration files directory.  Closes: #600735.
+  * Enable AIO support.
 
- -- Aurelien Jarno <aurel32@debian.org>  Sat, 01 Jan 2011 20:41:30 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 12 Jan 2011 09:17:13 +0100
 
 qemu (0.13.0+dfsg-2) experimental; urgency=low
 
