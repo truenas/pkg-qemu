@@ -1,3 +1,72 @@
+qemu (0.13.0+dfsg-3) UNRELEASED; urgency=low
+
+  [ Vagrant Cascadian ]
+  * qemu-user-static: 
+    - Drop binfmt support for emulating amd64 on i386, as it is broken and
+      including it interferes with environments capable of running amd64
+      natively.  Closes: #604712.
+    - Remove binfmt support for installed targets in postinst before installing
+      supported targets, to ensure no-longer-supported targets are actually
+      removed.
+    - Remove binfmt support for installed targets in prerm.
+
+  [ Aurelien Jarno ]
+  * Fix configuration files directory.  Closes: #600735.
+  * Enable AIO support.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 12 Jan 2011 09:17:13 +0100
+
+qemu (0.13.0+dfsg-2) experimental; urgency=low
+
+  * Fix Build-Depends to exclude kfreebsd-any wildcards where appropriate.
+    Thanks to Jon Severinsson. Closes: #592215
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Oct 2010 09:02:27 -0700
+
+qemu (0.13.0+dfsg-1) experimental; urgency=low
+
+  [ Aurelien Jarno ]
+  * mips/mipsel binfmt registration: also match EI_ABIVERSION=1, used by
+    OpenWRT. Closes: #591543.
+  * Build-depends on libattr1-dev to enable VirtFS (9p) support. Closes:
+    #592215.
+  * Use architecture wildcards instead of explicit architecture list.
+
+  [ Vagrant Cascadian ]
+  * Switch to source format 3.0 (quilt).
+  * New upstream version. 
+  * Drop 99_stable.diff, applied in new upstream version.
+  * debian/watch: update to properly handle upstream rc versions.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 18 Oct 2010 10:22:44 -0700
+
+qemu (0.13.0~rc0+dfsg-2) experimental; urgency=low
+
+  [ Aurelien Jarno ]
+  * Add ia64 to the list of supported architectures.
+  * Bump Standards-Version to 3.9.1 (no changes).
+  * Update seabios, openbios-ppc and openbios-sparc dependencies.
+  * Add 99_stable.diff to update from the stable-0.13 branch:
+    - Fix sparc FTBFS. Closes: #591249.
+  * Add qemu-debootstrap from Loïc Minier in qemu-static. Closes:
+    #572952.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 03 Aug 2010 07:25:06 +0200
+
+qemu (0.13.0~rc0+dfsg-1) experimental; urgency=low
+
+  * New upstream release candidate version.
+  * Do not configure audio drivers for qemu-user and qemu-user-static targets. 
+  * Remove patches:
+    - 05_bochs_vbe, applied upstream.
+    - 06_sh4, applied upstream.
+    - 03_support_pselect_in_linux_user_arm, upstream implemented a simpler
+      workaround.
+  * Add Build-Depends on texinfo. 
+  * Drop libqemu-dev package. 
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Thu, 29 Jul 2010 19:51:01 -0400
+
 qemu (0.12.5+dfsg-3) unstable; urgency=medium
 
   * qemu-user-static: 

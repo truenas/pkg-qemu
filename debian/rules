@@ -23,10 +23,10 @@ DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 DEB_HOST_ARCH_CPU = $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU)
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-       conf_arch += --audio-drv-list=alsa,oss,sdl,esd,pa
+       conf_audio_drv += --audio-drv-list=alsa,oss,sdl,esd,pa
 endif
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
-       conf_arch += --audio-drv-list=oss,sdl,esd,pa
+       conf_audio_drv += --audio-drv-list=oss,sdl,esd,pa
 endif
 # KVM on PowerPC needs at least 2.6.33 kernel headers
 ifeq ($(DEB_HOST_ARCH_CPU),powerpc)
@@ -63,9 +63,7 @@ ifeq ($(BINFMT_TARGETS),)
 BINFMT_TARGETS=$(ALL_BINFMT_TARGETS)
 endif
 
-include /usr/share/quilt/quilt.make
-
-configure-stamp: configure $(QUILT_STAMPFN)
+configure-stamp: configure
 	dh_testdir
 
 	# system build
@@ -76,12 +74,13 @@ configure-stamp: configure $(QUILT_STAMPFN)
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--sysconfdir=/etc \
 			--disable-blobs \
 			--disable-strip \
 			--disable-linux-user \
 			--disable-bsd-user \
 			--disable-darwin-user \
-			$(conf_arch)
+			$(conf_arch) $(conf_audio_drv)
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user build
@@ -92,6 +91,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--sysconfdir=/etc \
 			--interp-prefix=/etc/qemu-binfmt/%M \
 			--disable-blobs \
 			--disable-strip \
@@ -106,6 +106,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--extra-cflags="$(CFLAGS)" \
 			--extra-ldflags="$(LDFLAGS)" \
 			--prefix=/usr \
+			--sysconfdir=/etc \
 			--interp-prefix=/etc/qemu-binfmt/%M \
 			--disable-blobs \
 			--disable-strip \
@@ -131,7 +132,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 endif
 	touch $@
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	
