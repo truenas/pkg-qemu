@@ -1,4 +1,4 @@
-qemu (0.14.0~rc1+dfsg-1) UNRELEASED; urgency=low
+qemu (0.14.0+dfsg-1) UNRELEASED; urgency=low
 
   [ Vagrant Cascadian ]
   * New upstream release candidate version.
@@ -15,7 +15,11 @@ qemu (0.14.0~rc1+dfsg-1) UNRELEASED; urgency=low
   * Fix configuration files directory.  Closes: #600735.
   * Enable AIO support.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 07 Feb 2011 15:14:17 -0800
+  [ Vagrant Cascadian ]
+  * Update debian/copyright to refer to upstream git repositry and clarify
+    which binary blobs are removed to make the dfsg-free tarball.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 18 Feb 2011 09:27:18 -0800
 
 qemu (0.13.0+dfsg-2) experimental; urgency=low
 
