@@ -1,4 +1,4 @@
-qemu (0.14.0+dfsg-1) UNRELEASED; urgency=low
+qemu (0.14.0+dfsg-1) unstable; urgency=low
 
   [ Vagrant Cascadian ]
   * New upstream release candidate version.
@@ -20,7 +20,7 @@ qemu (0.14.0+dfsg-1) UNRELEASED; urgency=low
     which binary blobs are removed to make the dfsg-free tarball.
   * Refresh debian/patches/security/leftover.patch. 
 
- -- Vagrant Cascadian <vagrant@debian.org>  Fri, 18 Feb 2011 10:05:45 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 18 Feb 2011 21:07:01 -0800
 
 qemu (0.13.0+dfsg-2) experimental; urgency=low
 
