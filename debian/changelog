@@ -3,6 +3,8 @@ qemu (0.14.0+dfsg-2) UNRELEASED; urgency=low
   [ Aurelien Jarno ]
   * Tighten dependencies on openbios-ppc, openbios-sparc and seabios to
     the versions in upstream 0.14.0.
+  * patches/02_kfreebsd.patch: don't consider futimens/utimensat available
+    if it is a stub.
 
  -- Aurelien Jarno <aurel32@debian.org>  Sat, 19 Feb 2011 12:50:33 +0100
 
