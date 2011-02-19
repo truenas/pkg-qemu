@@ -1,3 +1,11 @@
+qemu (0.14.0+dfsg-2) UNRELEASED; urgency=low
+
+  [ Aurelien Jarno ]
+  * Tighten dependencies on openbios-ppc, openbios-sparc and seabios to
+    the versions in upstream 0.14.0.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 19 Feb 2011 12:50:33 +0100
+
 qemu (0.14.0+dfsg-1) unstable; urgency=low
 
   [ Vagrant Cascadian ]
