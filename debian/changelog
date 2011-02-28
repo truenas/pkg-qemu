@@ -3,8 +3,10 @@ qemu (0.14.0+dfsg-3) UNRELEASED; urgency=low
   [ Aurelien Jarno ]
   * Depends on vgabios (>= 0.6c-3) and add symlinks for qxl, stdvga and
     vmware bioses.  Closes: #614252, #614169.
+  * Tighten build-depends on linux-libc-dev to (>= 2.6.34), to get
+    vhost-net support.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 28 Feb 2011 08:15:01 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 28 Feb 2011 08:59:50 +0100
 
 qemu (0.14.0+dfsg-2) unstable; urgency=low
 
