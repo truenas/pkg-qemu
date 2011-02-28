@@ -1,4 +1,4 @@
-qemu (0.14.0+dfsg-3) UNRELEASED; urgency=low
+qemu (0.14.0+dfsg-3) unstable; urgency=low
 
   [ Aurelien Jarno ]
   * Depends on vgabios (>= 0.6c-3) and add symlinks for qxl, stdvga and
@@ -9,7 +9,7 @@ qemu (0.14.0+dfsg-3) UNRELEASED; urgency=low
     filesystems.
   * Build-depends on librados1-dev to get rdb support.  Closes: #614150.
 
- -- Aurelien Jarno <aurel32@debian.org>  Mon, 28 Feb 2011 09:01:56 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 28 Feb 2011 09:06:00 +0100
 
 qemu (0.14.0+dfsg-2) unstable; urgency=low
 
