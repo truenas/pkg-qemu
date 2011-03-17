@@ -1,0 +1,26 @@
+From d43ffce14023df871d6065eb864d1f41eb441f37 Mon Sep 17 00:00:00 2001
+From: Aurelien Jarno <aurelien@aurel32.net>
+Date: Thu, 6 Jan 2011 22:43:14 +0100
+Subject: [PATCH] tcg/mips: fix branch target change during code retranslation
+
+TCG on MIPS was trying to avoid changing the branch offset, but didn't
+due to a stupid typo. Fix it.
+
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+---
+ tcg/mips/tcg-target.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/tcg/mips/tcg-target.c b/tcg/mips/tcg-target.c
+index 2af7a2e..4e92a50 100644
+--- a/tcg/mips/tcg-target.c
++++ b/tcg/mips/tcg-target.c
+@@ -352,7 +352,7 @@ static inline void tcg_out_opc_imm(TCGContext *s, int opc, int rt, int rs, int i
+ static inline void tcg_out_opc_br(TCGContext *s, int opc, int rt, int rs)
+ {
+     /* We need to keep the offset unchanged for retranslation */
+-    uint16_t offset = (uint16_t)(*(uint32_t *) &s->code_ptr);
++    uint16_t offset = (uint16_t)(*(uint32_t *) s->code_ptr);
+ 
+     tcg_out_opc_imm(s, opc, rt, rs, offset);
+ }
