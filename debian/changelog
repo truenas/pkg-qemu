@@ -1,10 +1,10 @@
-qemu (0.12.5+dfsg-3squeeze1) UNRELEASED; urgency=low
+qemu (0.12.5+dfsg-3squeeze1) squeeze-proposed-updates; urgency=low
 
   * Don't register qemu-mips(el) with binfmt on mips(el).  Closes:
     #618369.
   * mips hosts: fix branch target change during code retranslation.
 
- -- Aurelien Jarno <aurel32@debian.org>  Thu, 17 Mar 2011 20:38:41 +0100
+ -- Aurelien Jarno <aurel32@debian.org>  Thu, 17 Mar 2011 22:38:30 +0100
 
 qemu (0.12.5+dfsg-3) unstable; urgency=medium
 
