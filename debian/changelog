@@ -1,8 +1,9 @@
 qemu (0.14.0+dfsg-6) UNRELEASED; urgency=low
 
   * Depend on ipxe instead of etherboot-qemu.
+  * Add pcnet-ipxe.patch from upstream to fix ipxe with pcnet nic.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 11 Apr 2011 13:40:12 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Wed, 13 Apr 2011 14:26:49 -0700
 
 qemu (0.14.0+dfsg-5) unstable; urgency=low
 
