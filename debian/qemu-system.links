@@ -32,3 +32,4 @@ usr/lib/ipxe/e1000_82540.rom usr/share/qemu/pxe-e1000.bin
 usr/lib/ipxe/virtio-net.rom usr/share/qemu/pxe-virtio.bin
 usr/lib/ipxe/pcnet32.rom usr/share/qemu/pxe-pcnet.bin
 usr/lib/ipxe/ne2k_isa.rom usr/share/qemu/pxe-ne2k_isa.bin
+usr/lib/ipxe/ns8390.rom usr/share/qemu/pxe-ne2k_pci.bin 
