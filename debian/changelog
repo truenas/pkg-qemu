@@ -5,6 +5,13 @@ qemu (0.14.0+dfsg-6) UNRELEASED; urgency=low
 
  -- Vagrant Cascadian <vagrant@debian.org>  Wed, 13 Apr 2011 14:26:49 -0700
 
+qemu (0.14.0+dfsg-5.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Replace "librados1-dev" by "librados-dev" in Build-Dependencies.
+
+ -- Mehdi Dogguy <mehdi@debian.org>  Fri, 29 Apr 2011 17:45:05 +0200
+
 qemu (0.14.0+dfsg-5) unstable; urgency=low
 
   * Don't register qemu-mips(el) with binfmt on mips(el).  Closes:
