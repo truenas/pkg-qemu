@@ -6,8 +6,9 @@ qemu (0.14.1+dfsg-1) UNRELEASED; urgency=low
   * Add symlink for network boot with eepro100 cards (i82551, i82557b, 
     i82559er).
   * Drop 01_rdb.patch, applied upstream. 
+  * Add support for building on armhf architecture.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 09 May 2011 10:01:06 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 09 May 2011 10:33:47 -0700
 
 qemu (0.14.0+dfsg-5.1) unstable; urgency=low
 
