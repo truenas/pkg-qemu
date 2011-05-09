@@ -2,8 +2,10 @@ qemu (0.14.0+dfsg-6) UNRELEASED; urgency=low
 
   * Depend on ipxe instead of etherboot-qemu.
   * Add pcnet-ipxe.patch from upstream to fix ipxe with pcnet nic.
+  * Add symlink for network boot with eepro100 cards (i82551, i82557b, 
+    i82559er).
 
- -- Vagrant Cascadian <vagrant@debian.org>  Wed, 13 Apr 2011 14:26:49 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 09 May 2011 09:43:38 -0700
 
 qemu (0.14.0+dfsg-5.1) unstable; urgency=low
 
