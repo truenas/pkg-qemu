@@ -1,4 +1,4 @@
-qemu (0.14.1+dfsg-1) UNRELEASED; urgency=low
+qemu (0.14.1+dfsg-1) unstable; urgency=low
 
   * New upstream version.
   * Depend on ipxe instead of etherboot-qemu.
@@ -10,7 +10,7 @@ qemu (0.14.1+dfsg-1) UNRELEASED; urgency=low
   * Support debootstrap options that require arguments in qemu-debootstrap.
     Thanks to Stefano Rivera for the patch. Closes: #605660.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Fri, 01 Jul 2011 22:39:14 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 01 Jul 2011 22:49:40 -0700
 
 qemu (0.14.0+dfsg-5.1) unstable; urgency=low
 
