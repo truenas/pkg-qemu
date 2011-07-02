@@ -7,8 +7,10 @@ qemu (0.14.1+dfsg-1) UNRELEASED; urgency=low
     i82559er).
   * Drop 01_rdb.patch, applied upstream. 
   * Add support for building on armhf architecture.
+  * Support debootstrap options that require arguments in qemu-debootstrap.
+    Thanks to Stefano Rivera for the patch. Closes: #605660.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 09 May 2011 10:33:47 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 01 Jul 2011 22:39:14 -0700
 
 qemu (0.14.0+dfsg-5.1) unstable; urgency=low
 
