@@ -13,7 +13,7 @@ Build-Depends: debhelper (>= 5), nasm, device-tree-compiler,
  libgpmg1-dev [linux-any], linux-libc-dev (>= 2.6.34) [linux-any],
  libaio-dev [linux-any], xfslibs-dev [linux-any], texinfo
 Build-Conflicts: oss4-dev
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://www.qemu.org/
 Vcs-Browser: http://git.debian.org/?p=pkg-qemu/qemu.git
 Vcs-Git: git://git.debian.org/git/pkg-qemu/qemu.git
