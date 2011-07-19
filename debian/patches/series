@@ -2,3 +2,4 @@
 security/leftover.patch
 pcnet-ipxe.patch
 runnning-typo.patch
+qemu-mipsel-debian-rootfs.patch
