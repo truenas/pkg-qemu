@@ -1,3 +1,10 @@
+qemu (0.14.1+dfsg-3) UNRELEASED; urgency=low
+
+  * Add patches/qemu-ifunc-sparc.patch and patches/qemu-ifunc-sparc.patch
+    to fix FTBFS on ppc and sparc.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Fri, 22 Jul 2011 18:00:24 +0200
+
 qemu (0.14.1+dfsg-2) unstable; urgency=low
 
   * Add override for qemu-user-static binaries which embed needed libraries.
