@@ -1,4 +1,4 @@
-qemu (0.14.1+dfsg-3) UNRELEASED; urgency=low
+qemu (0.14.1+dfsg-3) unstable; urgency=low
 
   [ Aurelien Jarno ]
   * Add patches/qemu-ifunc-ppc.patch and patches/qemu-ifunc-sparc.patch
@@ -13,7 +13,7 @@ qemu (0.14.1+dfsg-3) UNRELEASED; urgency=low
   * Fix maintainer-script-without-set-e lintian checks.
   * Fix hyphen-used-as-minus-sign lintian check for qemu-debootstrap manpage.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Fri, 22 Jul 2011 18:09:54 +0200
+ -- Vagrant Cascadian <vagrant@debian.org>  Sat, 23 Jul 2011 10:18:37 +0200
 
 qemu (0.14.1+dfsg-2) unstable; urgency=low
 
