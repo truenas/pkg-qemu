@@ -5,3 +5,4 @@ runnning-typo.patch
 qemu-mipsel-debian-rootfs.patch
 qemu-ifunc-ppc.patch
 qemu-ifunc-sparc.patch
+librbd.patch

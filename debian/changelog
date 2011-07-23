@@ -2,8 +2,10 @@ qemu (0.14.1+dfsg-4) UNRELEASED; urgency=low
 
   * qemu-debootstrap: Return the exit status of debootstrap instead of 
     hard-coding a sucessful exit status.
+  * Enable rbd support again with patch to use librbd instead of using 
+    librados directly.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sat, 23 Jul 2011 18:53:16 +0200
+ -- Vagrant Cascadian <vagrant@debian.org>  Sat, 23 Jul 2011 22:31:51 +0200
 
 qemu (0.14.1+dfsg-3) unstable; urgency=low
 
