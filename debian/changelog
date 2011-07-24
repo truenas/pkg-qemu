@@ -6,8 +6,9 @@ qemu (0.15.0~rc0+dfsg-1) UNRELEASED; urgency=low
   * Build-depend on librbd-dev.
   * Remove qemu-mipsel-debian-rootfs.patch, a variation was applied upstream.
   * Remove pcnet-ipxe patch, applied upstream.
+  * Add Build-Depends on python. 
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jul 2011 08:59:18 +0200
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jul 2011 10:06:26 +0200
 
 qemu (0.14.1+dfsg-3) unstable; urgency=low
 
