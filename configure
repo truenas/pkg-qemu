@@ -179,6 +179,7 @@ smartcard=""
 smartcard_nss=""
 usb_redir=""
 opengl=""
+guest_agent="yes"
 
 # parse CC options first
 for opt do
@@ -475,6 +476,7 @@ fi
 
 : ${make=${MAKE-make}}
 : ${install=${INSTALL-install}}
+: ${python=${PYTHON-python}}
 
 if test "$mingw32" = "yes" ; then
   EXESUF=".exe"
@@ -515,6 +517,8 @@ for opt do
   --make=*) make="$optarg"
   ;;
   --install=*) install="$optarg"
+  ;;
+  --python=*) python="$optarg"
   ;;
   --extra-cflags=*)
   ;;
@@ -748,6 +752,10 @@ for opt do
   ;;
   --enable-usb-redir) usb_redir="yes"
   ;;
+  --enable-guest-agent) guest_agent="yes"
+  ;;
+  --disable-guest-agent) guest_agent="no"
+  ;;
   *) echo "ERROR: unknown option $opt"; show_help="yes"
   ;;
   esac
@@ -837,7 +845,6 @@ if [ "$softmmu" = "yes" ] ; then
     default_target_list="\
 i386-softmmu \
 x86_64-softmmu \
-alpha-softmmu \
 arm-softmmu \
 cris-softmmu \
 lm32-softmmu \
@@ -924,6 +931,7 @@ echo "  --extra-cflags=CFLAGS    append extra C compiler flags QEMU_CFLAGS"
 echo "  --extra-ldflags=LDFLAGS  append extra linker flags LDFLAGS"
 echo "  --make=MAKE              use specified make [$make]"
 echo "  --install=INSTALL        use specified install [$install]"
+echo "  --python=PYTHON          use specified python [$python]"
 echo "  --static                 enable static build [$static]"
 echo "  --mandir=PATH            install man pages in PATH"
 echo "  --datadir=PATH           install firmware in PATH"
@@ -1025,6 +1033,8 @@ echo "  --disable-smartcard-nss  disable smartcard nss support"
 echo "  --enable-smartcard-nss   enable smartcard nss support"
 echo "  --disable-usb-redir      disable usb network redirection support"
 echo "  --enable-usb-redir       enable usb network redirection support"
+echo "  --disable-guest-agent    disable building of the QEMU Guest Agent"
+echo "  --enable-guest-agent     enable building of the QEMU Guest Agent"
 echo ""
 echo "NOTE: The object files are built at the place where configure is launched"
 exit 1
@@ -1080,6 +1090,15 @@ if test "$solaris" = "yes" ; then
     if test -f /usr/ccs/bin/ar ; then
       echo "Add /usr/ccs/bin to your path and rerun configure"
     fi
+    exit 1
+  fi
+fi
+
+if test "$guest_agent" != "no" ; then
+  if has $python; then
+    :
+  else
+    echo "Python not found. Use --python=/path/to/python"
     exit 1
   fi
 fi
@@ -1811,14 +1830,16 @@ fi
 
 ##########################################
 # glib support probe
-if $pkg_config --modversion gthread-2.0 gio-2.0 > /dev/null 2>&1 ; then
-    glib_cflags=`$pkg_config --cflags gthread-2.0 gio-2.0 2>/dev/null`
-    glib_libs=`$pkg_config --libs gthread-2.0 gio-2.0 2>/dev/null`
-    libs_softmmu="$glib_libs $libs_softmmu"
-    libs_tools="$glib_libs $libs_tools"
-else
-    echo "glib-2.0 required to compile QEMU"
-    exit 1
+if test "$guest_agent" != "no" ; then
+    if $pkg_config --modversion glib-2.0 > /dev/null 2>&1 ; then
+        glib_cflags=`$pkg_config --cflags glib-2.0 2>/dev/null`
+        glib_libs=`$pkg_config --libs glib-2.0 2>/dev/null`
+        libs_softmmu="$glib_libs $libs_softmmu"
+        libs_tools="$glib_libs $libs_tools"
+    else
+        echo "glib-2.0 required to compile QEMU"
+        exit 1
+    fi
 fi
 
 ##########################################
@@ -2499,6 +2520,29 @@ if test "$trace_backend" = "dtrace"; then
 fi
 
 ##########################################
+# __sync_fetch_and_and requires at least -march=i486. Many toolchains
+# use i686 as default anyway, but for those that don't, an explicit
+# specification is necessary
+if test $vhost_net = "yes" && test $cpu = "i386"; then
+  cat > $TMPC << EOF
+int sfaa(unsigned *ptr)
+{
+  return __sync_fetch_and_and(ptr, 0);
+}
+
+int main(int argc, char **argv)
+{
+  int val = 42;
+  sfaa(&val);
+  return val;
+}
+EOF
+  if ! compile_prog "" "" ; then
+    CFLAGS+="-march=i486"
+  fi
+fi
+
+##########################################
 # End of CC checks
 # After here, no more $cc or $ld runs
 
@@ -2555,7 +2599,9 @@ if test "$softmmu" = yes ; then
   tools="qemu-img\$(EXESUF) qemu-io\$(EXESUF) $tools"
   if [ "$linux" = "yes" -o "$bsd" = "yes" -o "$solaris" = "yes" ] ; then
       tools="qemu-nbd\$(EXESUF) $tools"
+    if [ "$guest_agent" = "yes" ]; then
       tools="qemu-ga\$(EXESUF) $tools"
+    fi
     if [ "$check_utests" = "yes" ]; then
       tools="check-qint check-qstring check-qdict check-qlist $tools"
       tools="check-qfloat check-qjson $tools"
@@ -2591,6 +2637,7 @@ echo "QEMU_CFLAGS       $QEMU_CFLAGS"
 echo "LDFLAGS           $LDFLAGS"
 echo "make              $make"
 echo "install           $install"
+echo "python            $python"
 echo "host CPU          $cpu"
 echo "host big endian   $bigendian"
 echo "target list       $target_list"
@@ -2655,6 +2702,7 @@ echo "xfsctl support    $xfs"
 echo "nss used          $smartcard_nss"
 echo "usb net redir     $usb_redir"
 echo "OpenGL support    $opengl"
+echo "build guest agent $guest_agent"
 
 if test $sdl_too_old = "yes"; then
 echo "-> Your SDL version is too old - please upgrade to have SDL support"
@@ -3003,6 +3051,7 @@ echo "INSTALL=$install" >> $config_host_mak
 echo "INSTALL_DIR=$install -d -m0755 -p" >> $config_host_mak
 echo "INSTALL_DATA=$install -m0644 -p" >> $config_host_mak
 echo "INSTALL_PROG=$install -m0755 -p" >> $config_host_mak
+echo "PYTHON=$python" >> $config_host_mak
 echo "CC=$cc" >> $config_host_mak
 echo "CC_I386=$cc_i386" >> $config_host_mak
 echo "HOST_CC=$host_cc" >> $config_host_mak
