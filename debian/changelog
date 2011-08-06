@@ -1,4 +1,4 @@
-qemu (0.15.0~rc0+dfsg-1) UNRELEASED; urgency=low
+qemu (0.15.0~rc2+dfsg-1) UNRELEASED; urgency=low
 
   * New upstream version.
   * qemu-debootstrap: Return the exit status of debootstrap instead of 
@@ -8,7 +8,7 @@ qemu (0.15.0~rc0+dfsg-1) UNRELEASED; urgency=low
   * Remove pcnet-ipxe patch, applied upstream.
   * Add Build-Depends on python. 
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jul 2011 10:06:26 +0200
+ -- Vagrant Cascadian <vagrant@debian.org>  Sat, 06 Aug 2011 16:39:41 +0200
 
 qemu (0.14.1+dfsg-3) unstable; urgency=low
 
