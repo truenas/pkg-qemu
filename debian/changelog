@@ -7,8 +7,9 @@ qemu (0.15.0~rc2+dfsg-1) UNRELEASED; urgency=low
   * Remove qemu-mipsel-debian-rootfs.patch, a variation was applied upstream.
   * Remove pcnet-ipxe patch, applied upstream.
   * Add Build-Depends on python. 
+  * Rename pxe rom symlinks to match upstream rename. 
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sat, 06 Aug 2011 16:39:41 +0200
+ -- Vagrant Cascadian <vagrant@debian.org>  Sat, 06 Aug 2011 16:44:16 +0200
 
 qemu (0.14.1+dfsg-3) unstable; urgency=low
 
