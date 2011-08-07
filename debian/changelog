@@ -1,4 +1,4 @@
-qemu (0.15.0~rc2+dfsg-1) UNRELEASED; urgency=low
+qemu (0.15.0~rc2+dfsg-1) experimental; urgency=low
 
   * New upstream version.
   * qemu-debootstrap: Return the exit status of debootstrap instead of 
@@ -9,7 +9,7 @@ qemu (0.15.0~rc2+dfsg-1) UNRELEASED; urgency=low
   * Add Build-Depends on python. 
   * Rename pxe rom symlinks to match upstream rename. 
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sat, 06 Aug 2011 16:44:16 +0200
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 07 Aug 2011 13:27:43 +0200
 
 qemu (0.14.1+dfsg-3) unstable; urgency=low
 
