@@ -3,8 +3,12 @@ qemu (0.15.0+dfsg-1) UNRELEASED; urgency=low
   * New upstream version.
   * Install new qemu-system, qemu-user and qemu-user-static variants: 
     lm32, microblazeel, s390x
+  * Enable spice support on amd64 and i386:
+    - Build-depend on libspice-server-dev and libspice-protocol-dev.
+  * Patch from upstream to set QEMU_INCLUDES before QEMU_CFLAGS (needed for 
+    spice support).
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sat, 03 Sep 2011 16:28:31 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Sat, 03 Sep 2011 20:47:20 -0700
 
 qemu (0.15.0~rc2+dfsg-1) experimental; urgency=low
 
