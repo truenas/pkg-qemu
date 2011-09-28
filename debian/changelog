@@ -7,8 +7,9 @@ qemu (0.15.0+dfsg-1) UNRELEASED; urgency=low
     - Build-depend on libspice-server-dev and libspice-protocol-dev.
   * Patch from upstream to set QEMU_INCLUDES before QEMU_CFLAGS (needed for 
     spice support).
+  * Update debian/watch to check http://qemu.org/download.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sat, 03 Sep 2011 20:47:20 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Wed, 28 Sep 2011 06:09:15 -0700
 
 qemu (0.15.0~rc2+dfsg-1) experimental; urgency=low
 
