@@ -1,4 +1,4 @@
-qemu (1.0~rc1+dfsg-1) UNRELEASED; urgency=low
+qemu (1.0~rc0+dfsg-1) UNRELEASED; urgency=low
 
   * New upstream version.
   * remove patches applied upstream:
