@@ -4,8 +4,10 @@ qemu (1.0~rc1-1) UNRELEASED; urgency=low
   * remove patches applied upstream:
     - security/leftover.patch
     - Move_QEMU_INCLUDES_before_QEMU_CFLAGS
+  * Install new qemu-system variants:
+    - xtensa, xtensaeb
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 06 Nov 2011 10:00:35 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 06 Nov 2011 12:21:02 -0800
 
 qemu (0.15.1+dfsg-1) UNRELEASED; urgency=low
 
