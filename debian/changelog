@@ -6,8 +6,10 @@ qemu (1.0~rc1+dfsg-1) UNRELEASED; urgency=low
     - Move_QEMU_INCLUDES_before_QEMU_CFLAGS
   * Install new qemu-system variants:
     xtensa, xtensaeb, alpha
+  * debian/rules: Drop hack to rename "qemu" binary to "qemu-system-i386", as 
+    upstream now does the same.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 06 Nov 2011 14:28:06 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 06 Nov 2011 14:30:15 -0800
 
 qemu (0.15.1+dfsg-1) UNRELEASED; urgency=low
 
