@@ -1,9 +1,10 @@
-qemu (1.0~rc1+dfsg-1) UNRELEASED; urgency=low
+qemu (1.0~rc3+dfsg-1) UNRELEASED; urgency=low
 
   * New upstream version.
   * remove patches applied upstream:
     - security/leftover.patch
     - Move_QEMU_INCLUDES_before_QEMU_CFLAGS
+    - runnning-typo.patch
   * Install new qemu-system variants:
     xtensa, xtensaeb, alpha
   * debian/rules: Drop hack to rename "qemu" binary to "qemu-system-i386", as 
@@ -11,7 +12,7 @@ qemu (1.0~rc1+dfsg-1) UNRELEASED; urgency=low
   * Enable spice support on amd64: 
     - Add Build-Depends: libspice-server-dev, libspice-protocol-dev
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 07 Nov 2011 14:35:16 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Tue, 22 Nov 2011 18:01:31 -0800
 
 qemu (0.15.1+dfsg-1) UNRELEASED; urgency=low
 
