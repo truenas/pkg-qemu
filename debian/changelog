@@ -1,6 +1,7 @@
-qemu (1.0~rc3+dfsg-1) UNRELEASED; urgency=low
+qemu (1.0~rc4+dfsg-1) UNRELEASED; urgency=low
 
-  * New upstream version.
+  * New upstream version:
+    - Fixes CVE-2011-4111.
   * remove patches applied upstream:
     - security/leftover.patch
     - Move_QEMU_INCLUDES_before_QEMU_CFLAGS
@@ -12,7 +13,7 @@ qemu (1.0~rc3+dfsg-1) UNRELEASED; urgency=low
   * Enable spice support on amd64: 
     - Add Build-Depends: libspice-server-dev, libspice-protocol-dev
 
- -- Vagrant Cascadian <vagrant@debian.org>  Tue, 22 Nov 2011 18:01:31 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 28 Nov 2011 17:35:03 -0800
 
 qemu (0.15.1+dfsg-1) UNRELEASED; urgency=low
 
