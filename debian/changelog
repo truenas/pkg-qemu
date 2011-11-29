@@ -1,3 +1,12 @@
+qemu (0.15.1+dfsg-2) unstable; urgency=low
+
+  * Add patch that fixes a buffer overrun (CVE-2011-4111). 
+  * Enable spice support on amd64:
+    - Add Build-Depends: libspice-server-dev, libspice-protocol-dev
+  * debian/rules: Use dh_prep instead of "dh_clean -k", which is deprecated. 
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 28 Nov 2011 20:34:50 -0800
+
 qemu (0.15.1+dfsg-1) unstable; urgency=low
 
   * New upstream version.
