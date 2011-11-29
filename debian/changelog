@@ -12,8 +12,9 @@ qemu (1.0~rc4+dfsg-1) UNRELEASED; urgency=low
     upstream now does the same.
   * Enable spice support on amd64: 
     - Add Build-Depends: libspice-server-dev, libspice-protocol-dev
+  * debian/rules: use dh_prep instead of "dh_clean -k", which is deprecated.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 28 Nov 2011 17:35:03 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 28 Nov 2011 18:03:42 -0800
 
 qemu (0.15.1+dfsg-1) UNRELEASED; urgency=low
 
