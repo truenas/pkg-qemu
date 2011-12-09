@@ -1,0 +1,24 @@
+commit 64ba39af27c0ddaa48fd5625f3109ae81e970e4e
+Author: Richard Henderson <rth@twiddle.net>
+Date:   Wed Aug 17 14:11:49 2011 -0700
+
+    tcg-ia64: Fix typos in AREG0 setup in prologue.
+    
+    Signed-off-by: Richard Henderson <rth@twiddle.net>
+    Signed-off-by: Blue Swirl <blauwirbel@gmail.com>
+
+diff --git a/tcg/ia64/tcg-target.c b/tcg/ia64/tcg-target.c
+index 6386a5b..9db205d 100644
+--- a/tcg/ia64/tcg-target.c
++++ b/tcg/ia64/tcg-target.c
+@@ -2308,8 +2308,8 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     }
+ 
+     tcg_out_bundle(s, miB,
+-                   tcg_opc_m48(TCG_REG_P0, OPC_MOV_I21,
+-                               TCG_REG_AREG0, TCG_REG_R32, 0),
++                   tcg_opc_a4 (TCG_REG_P0, OPC_ADDS_A4,
++                               TCG_AREG0, 0, TCG_REG_R32),
+                    tcg_opc_a4 (TCG_REG_P0, OPC_ADDS_A4,
+                                TCG_REG_R12, -frame_size, TCG_REG_R12),
+                    tcg_opc_b4 (TCG_REG_P0, OPC_BR_SPTK_MANY_B4, TCG_REG_B6));
