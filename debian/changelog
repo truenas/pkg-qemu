@@ -17,6 +17,12 @@ qemu (1.0~rc4+dfsg-1) experimental; urgency=low
 
  -- Vagrant Cascadian <vagrant@debian.org>  Mon, 28 Nov 2011 23:40:24 -0800
 
+qemu (0.15.1+dfsg-3) unstable; urgency=low
+
+  * Add patch from upstream to fix FTBFS on ia64. 
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 09 Dec 2011 23:48:21 -0800
+
 qemu (0.15.1+dfsg-2) unstable; urgency=low
 
   * Add patch that fixes a buffer overrun (CVE-2011-4111). 
