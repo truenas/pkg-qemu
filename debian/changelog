@@ -1,3 +1,12 @@
+qemu (1.0+dfsg-1) experimental; urgency=low
+
+  * New upstream version.
+  * Add build-dep on libxen-dev to enable xen support. 
+  * Add build-dep on libiscsi-dev to enable iscsi support.
+  * Add patch from upstream to not block SIGCHLD (Closes: #618743).
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Fri, 30 Dec 2011 16:12:03 -0800
+
 qemu (1.0~rc4+dfsg-1) experimental; urgency=low
 
   * New upstream version:
