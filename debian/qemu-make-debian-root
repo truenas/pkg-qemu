@@ -20,14 +20,17 @@ which debootstrap >/dev/null || {
 KEEPFS=0
 if [ "$1" = "-k" ] || [ "$2" = "-k" ]; then
     KEEPFS=1
-    shift
 fi
 
 SPARSE=0
 if [ "$1" = "-s" ] || [ "$2" = "-s" ]; then
     SPARSE=1
-    shift
 fi
+
+# Remove any options, tacitly assuming them at the beginning.
+#
+[ $KEEPFS -eq 1 ] && shift
+[ $SPARSE -eq 1 ] && shift
 
 if [ $# -lt 4 ]; then
     echo Usage: "$0 [-ks] size-in-MB distrib deburl image [files_to_copy_in_/root]" >&2
