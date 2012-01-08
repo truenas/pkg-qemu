@@ -5,6 +5,7 @@ qemu (1.0+dfsg-2) UNRELEASED; urgency=low
   * Add binfmt support for s390x.
   * Bump depends on openbios-ppc and openbios-sparc on versions 
     compatible with version 1.0.
+  * Build on s390x (Closes: #651048).
 
  -- Aurelien Jarno <aurel32@debian.org>  Sun, 08 Jan 2012 13:11:27 +0100
 
