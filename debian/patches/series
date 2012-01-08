@@ -3,3 +3,4 @@ qemu-ifunc-ppc.patch
 qemu-ifunc-sparc.patch
 dont-block-sigchld
 x86-fix-cmpxchg.patch
+configure-nss-usbredir.patch
