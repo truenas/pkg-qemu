@@ -3,6 +3,8 @@ qemu (1.0+dfsg-2) UNRELEASED; urgency=low
   * Add patch from upstream to fix cmpxchg on x86.
   * Add patch to not link user builds with NSS (Closes: #648202).
   * Add binfmt support for s390x.
+  * Bump depends on openbios-ppc and openbios-sparc on versions 
+    compatible with version 1.0.
 
  -- Aurelien Jarno <aurel32@debian.org>  Sun, 08 Jan 2012 13:11:27 +0100
 
