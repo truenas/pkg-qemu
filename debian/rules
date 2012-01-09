@@ -145,6 +145,7 @@ clean:
 	
 	rm -rf $(CURDIR)/*-build
 	rm -f $(CURDIR)/*-stamp
+	rm -f config.log
 	
 	dh_clean
 
