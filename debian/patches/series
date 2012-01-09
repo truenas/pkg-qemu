@@ -4,3 +4,4 @@ qemu-ifunc-sparc.patch
 dont-block-sigchld
 x86-fix-cmpxchg.patch
 configure-nss-usbredir.patch
+fix-malta-i8259
