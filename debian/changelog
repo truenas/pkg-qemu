@@ -1,7 +1,13 @@
 qemu (1.0+dfsg-3) UNRELEASED; urgency=low
 
+  [ Aurelien Jarno ]
   * Add a build-depends on libfdt-dev to enable some more emulated machines.
   * Really add binfmt support for s390x.
+
+  [ Michael Tokarev ]
+  * Depend on ipxe-qemu | ipxe (<< 1.0.0+git-20120202.f6840ba-2)
+    after ipxe package split.  This will probably need to be changed
+    to just ipxe-qemu once it will be landed properly.
 
  -- Aurelien Jarno <aurel32@debian.org>  Thu, 02 Feb 2012 01:35:19 +0100
 
