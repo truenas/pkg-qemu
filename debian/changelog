@@ -1,3 +1,13 @@
+qemu (1.01+dfsg-1) UNRELEASED; urgency=low
+
+  [ Aurelien Jarno ]
+  * New upstream stable version:
+    - remove debian/patches/fix-malta-i8259
+    - remove debian/patches/qemu-ifunc-ppc.patch
+    - remove debian/patches/x86-fix-cmpxchg.patch
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 07 Feb 2012 20:18:45 +0100
+
 qemu (1.0+dfsg-3) unstable; urgency=low
 
   [ Aurelien Jarno ]
