@@ -9,7 +9,11 @@ qemu (1.0+dfsg-3) UNRELEASED; urgency=low
     after ipxe package split.  This will probably need to be changed
     to just ipxe-qemu once it will be landed properly.
 
- -- Aurelien Jarno <aurel32@debian.org>  Thu, 02 Feb 2012 01:35:19 +0100
+  [ Vagrant Cascadian ]
+  * Apply patch to use dpkg-buildflags (Closes: #656276). 
+    Thanks to Moritz Muehlenhoff. 
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 06 Feb 2012 17:22:46 -0800
 
 qemu (1.0+dfsg-2) unstable; urgency=low
 
