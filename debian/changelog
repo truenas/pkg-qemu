@@ -1,4 +1,4 @@
-qemu (1.0+dfsg-3) UNRELEASED; urgency=low
+qemu (1.0+dfsg-3) unstable; urgency=low
 
   [ Aurelien Jarno ]
   * Add a build-depends on libfdt-dev to enable some more emulated machines.
@@ -13,7 +13,7 @@ qemu (1.0+dfsg-3) UNRELEASED; urgency=low
   * Apply patch to use dpkg-buildflags (Closes: #656276). 
     Thanks to Moritz Muehlenhoff. 
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 06 Feb 2012 17:22:46 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 06 Feb 2012 17:56:15 -0800
 
 qemu (1.0+dfsg-2) unstable; urgency=low
 
