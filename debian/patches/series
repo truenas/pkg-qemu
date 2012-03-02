@@ -2,3 +2,4 @@
 qemu-ifunc-sparc.patch
 dont-block-sigchld
 configure-nss-usbredir.patch
+fix-armhf-prctl.patch
