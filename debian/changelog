@@ -1,4 +1,4 @@
-qemu (1.0.1+dfsg-1) UNRELEASED; urgency=low
+qemu (1.0.1+dfsg-1) unstable; urgency=low
 
   [ Aurelien Jarno ]
   * New upstream stable version:
@@ -12,12 +12,12 @@ qemu (1.0.1+dfsg-1) UNRELEASED; urgency=low
   * depend on vgabios >= 0.6c-3~ not 0.6c-3, to assist backporting
 
   [ Hector Oron ]
-  * Fix arm prctl syscall (Closes: #656926, #651083). 
+  * Fix prctl syscall (Closes: #656926, #651083). 
 
   [ Vagrant Cascadian ]
   * Update to Standards-Version 3.9.3, no changes necessary.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 05 Mar 2012 13:04:24 -0800
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 05 Mar 2012 13:05:14 -0800
 
 qemu (1.0+dfsg-3) unstable; urgency=low
 
