@@ -1,3 +1,14 @@
+qemu (1.1~rc0+dfsg-1) UNRELEASED; urgency=low
+
+  * New upstream release candidate.
+  * debian/patches:
+    - Update 02_kfreebsd.
+    - Remove dont-block-sigchld, applied upstream.
+    - Update configure-nss-usbredir.
+    - Update fix-armhf-prctl.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 07 May 2012 15:48:20 -0700
+
 qemu (1.0.1+dfsg-1) unstable; urgency=low
 
   [ Aurelien Jarno ]
