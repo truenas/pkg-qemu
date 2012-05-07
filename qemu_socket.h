@@ -8,10 +8,6 @@
 #include <ws2tcpip.h>
 
 #define socket_error() WSAGetLastError()
-#undef EINTR
-#define EWOULDBLOCK WSAEWOULDBLOCK
-#define EINTR       WSAEINTR
-#define EINPROGRESS WSAEINPROGRESS
 
 int inet_aton(const char *cp, struct in_addr *ia);
 
@@ -35,6 +31,7 @@ int inet_aton(const char *cp, struct in_addr *ia);
 /* misc helpers */
 int qemu_socket(int domain, int type, int protocol);
 int qemu_accept(int s, struct sockaddr *addr, socklen_t *addrlen);
+int socket_set_cork(int fd, int v);
 void socket_set_block(int fd);
 void socket_set_nonblock(int fd);
 int send_all(int fd, const void *buf, int len1);
