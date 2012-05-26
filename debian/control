@@ -17,7 +17,8 @@ Build-Depends: debhelper (>= 5), nasm, device-tree-compiler, libfdt-dev,
  python,
  libspice-server-dev [amd64], libspice-protocol-dev [amd64],
  libxen-dev [amd64 i386],
- libiscsi-dev
+ libiscsi-dev,
+ libusbredirparser-dev [linux-any]
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.3
 Homepage: http://www.qemu.org/
