@@ -1,4 +1,4 @@
-qemu (1.1~rc0+dfsg-1) UNRELEASED; urgency=low
+qemu (1.1.0~rc3+dfsg-1) experimental; urgency=low
 
   * New upstream release candidate.
   * debian/patches:
@@ -8,8 +8,14 @@ qemu (1.1~rc0+dfsg-1) UNRELEASED; urgency=low
     - Update fix-armhf-prctl.
   * debian/rules: Remove --disable-darwin-user from configure, as it is no 
     longer present.
+  * Apply patch to qemu-make-debian-root to improve argument handling.
+    (Closes: #671723). Thanks to Askar Safin.
+  * qemu-utils: Add recommends on sharutils, used by qemu-make-debian-root
+    (Closes: #660296).
+  * Add Build-Depends on libusbredirparser-dev to support usbredir protocol.
+  * Add Build-Depends on libbsd-dev for kfreebsd.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 07 May 2012 16:00:52 -0700
+ -- Vagrant Cascadian <vagrant@debian.org>  Wed, 30 May 2012 20:24:59 -0700
 
 qemu (1.0.1+dfsg-1) unstable; urgency=low
 
