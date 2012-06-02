@@ -1,3 +1,10 @@
+qemu (1.1.0~rc3+dfsg-2) UNRELEASED; urgency=low
+
+  * do-not-include-libutil.h.patch - don't include libutil.h&Co when not
+    needed.  Fixes FTBFS on kFreebsd with recent libbsd-dev.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Jun 2012 22:55:33 +0400
+
 qemu (1.1.0~rc3+dfsg-1) experimental; urgency=low
 
   * New upstream release candidate.
