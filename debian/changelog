@@ -3,6 +3,9 @@ qemu (1.1.0~rc3+dfsg-2) UNRELEASED; urgency=low
   * do-not-include-libutil.h.patch - don't include libutil.h&Co when not
     needed.  Fixes FTBFS on kFreebsd with recent libbsd-dev.
   * drop libbsd-dev support on kFreebsd - no longer needed.
+  * do not build USB host support on kFreebsd (qemu uses obsolete,
+    now removed, USB API).  Use the same hack/technique as FreeBSD
+    qemu port does -- changing HOST_USB to "stub" after configure run.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Jun 2012 22:55:33 +0400
 
