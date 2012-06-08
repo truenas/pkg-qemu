@@ -1,5 +1,9 @@
-qemu (1.1.0~rc3+dfsg-2) UNRELEASED; urgency=low
+qemu (1.1.0+dfsg-1) unstable; urgency=low
 
+  [ Vagrant Cascadian ]
+  * New upstream release.
+
+  [ Michael Tokarev ]
   * do-not-include-libutil.h.patch - don't include libutil.h&Co when not
     needed.  Fixes FTBFS on kFreebsd with recent libbsd-dev.
   * drop libbsd-dev support on kFreebsd - no longer needed.
@@ -7,7 +11,7 @@ qemu (1.1.0~rc3+dfsg-2) UNRELEASED; urgency=low
     now removed, USB API).  Use the same hack/technique as FreeBSD
     qemu port does -- changing HOST_USB to "stub" after configure run.
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Jun 2012 22:55:33 +0400
+ -- Vagrant Cascadian <vagrant@debian.org>  Thu, 07 Jun 2012 13:44:26 -0700
 
 qemu (1.1.0~rc3+dfsg-1) experimental; urgency=low
 
