@@ -5,3 +5,4 @@
 07_tcg-mips-fix-branch-target-change-during-code-retran.patch
 99_stable.diff
 security/leftover.patch
+CVE-2012-2652-prevent_snapshot_mode_TMPDIR_symlink_attack

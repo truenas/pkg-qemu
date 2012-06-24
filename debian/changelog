@@ -1,3 +1,10 @@
+qemu (0.12.5+dfsg-3squeeze2) UNRELEASED; urgency=low
+
+  * Apply patch from upstream to fix CVE-2012-2652, symlink attacks in 
+    snapshot mode. Closes: #678280.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jun 2012 18:51:00 -0500
+
 qemu (0.12.5+dfsg-3squeeze1) squeeze-proposed-updates; urgency=low
 
   * Don't register qemu-mips(el) with binfmt on mips(el).  Closes:
