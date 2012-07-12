@@ -1,11 +1,16 @@
 qemu (1.1.0+dfsg-2) UNRELEASED; urgency=low
 
+  [Vagrant Cascadian]
   * qemu-system: Add symlinks for extboot.bin, kvmvapic.bin and vapic.bin to 
     binaries shipped in seabios. Closes: #678217, #678217.
   * qemu-system: Remove dead link for ne2k_isa.rom, which is not included in 
     ipxe. Closes: #678217. 
   * qemu-system: Bump versioned openbios-sparc and openbios-ppc Depends to 
     1.0+svn1060.
+
+  [Michael Tokarev]
+  * bump versioned depends of seabios to 1.7.0~, since this version ships
+    kvmvapic.bin.
 
  -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jun 2012 19:08:04 -0500
 
