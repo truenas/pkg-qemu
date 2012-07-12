@@ -11,6 +11,7 @@ qemu (1.1.0+dfsg-2) UNRELEASED; urgency=low
   [Michael Tokarev]
   * bump versioned depends of seabios to 1.7.0~, since this version ships
     kvmvapic.bin.
+  * ship /usr/share/qemu/qemu-icon.bmp (Closes: #681317)
 
  -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jun 2012 19:08:04 -0500
 
