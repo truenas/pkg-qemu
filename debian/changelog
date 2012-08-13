@@ -20,7 +20,7 @@ qemu (1.1.0+dfsg-2) UNRELEASED; urgency=low
 qemu (1.1.0+dfsg-1) unstable; urgency=low
 
   [ Vagrant Cascadian ]
-  * New upstream release.
+  * New upstream release. (Closes: #655604, #655145)
 
   [ Michael Tokarev ]
   * do-not-include-libutil.h.patch - don't include libutil.h&Co when not
