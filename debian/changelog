@@ -1,4 +1,7 @@
-qemu (1.1.0+dfsg-2) UNRELEASED; urgency=low
+qemu (1.1.1+dfsg-1) UNRELEASED; urgency=low
+
+  [Michael  Tokarev]
+  * new upstream stable/bugfix release, fixing a lot of bugs
 
   [Vagrant Cascadian]
   * qemu-system: Add symlinks for extboot.bin, kvmvapic.bin and vapic.bin to 
