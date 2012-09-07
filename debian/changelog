@@ -1,4 +1,4 @@
-qemu (1.1.1+dfsg-1) UNRELEASED; urgency=low
+qemu (1.1.2+dfsg-1) UNRELEASED; urgency=low
 
   [Michael  Tokarev]
   * new upstream stable/bugfix release, fixing a lot of bugs
