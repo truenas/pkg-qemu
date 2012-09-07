@@ -6,3 +6,4 @@
 99_stable.diff
 security/leftover.patch
 block-prevent-snapshot-mode-TMPDIR-symlink-attack-CVE-2012-2652.patch
+console-bounds-check-whenever-changing-the-cursor-CVE-2012-3515.patch
