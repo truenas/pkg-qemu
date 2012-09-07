@@ -10,7 +10,7 @@ qemu (1.1.2+dfsg-1) UNRELEASED; urgency=low
   * qemu-system: Remove dead link for ne2k_isa.rom, which is not included in 
     ipxe. Closes: #678217. 
   * qemu-system: Bump versioned openbios-sparc and openbios-ppc Depends to 
-    1.0+svn1060.
+    1.0+svn1060, to ensure we use at least version which is used by upstream
 
   [Michael Tokarev]
   * bump versioned depends of seabios to 1.7.0~, since this version ships
