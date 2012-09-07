@@ -1,7 +1,8 @@
 qemu (1.1.2+dfsg-1) UNRELEASED; urgency=low
 
   [Michael  Tokarev]
-  * new upstream stable/bugfix release, fixing a lot of bugs
+  * new upstream stable/bugfix release, fixing a LOT of bugs,
+    including CVE-2012-3515 (Closes: #686973, #681985)
 
   [Vagrant Cascadian]
   * qemu-system: Add symlinks for extboot.bin, kvmvapic.bin and vapic.bin to 
