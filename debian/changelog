@@ -1,4 +1,4 @@
-qemu (0.12.5+dfsg-3squeeze2) UNRELEASED; urgency=low
+qemu (0.12.5+dfsg-3squeeze2) squeeze-security; urgency=low
 
   * block-prevent-snapshot-mode-TMPDIR-symlink-attack-CVE-2012-2652.patch
     upstream fix for CVE-2012-2652, symlink attacks in snapshot mode.
@@ -7,7 +7,7 @@ qemu (0.12.5+dfsg-3squeeze2) UNRELEASED; urgency=low
     upstream fix for CVE-2012-3515, VT100 emulation vulnerability.
     (Closes: #686973)
 
- -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jun 2012 18:51:00 -0500
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 08 Sep 2012 10:05:17 +0400
 
 qemu (0.12.5+dfsg-3squeeze1) squeeze-proposed-updates; urgency=low
 
