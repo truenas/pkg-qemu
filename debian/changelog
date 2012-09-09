@@ -24,6 +24,8 @@ qemu (1.1.2+dfsg-1) UNRELEASED; urgency=low
     to un-break s390[x] emulation code.  Similar fixes were included for
     other platforms in 1.1.2 changeset.  Without this fix, qemu is basically
     useless on s390.
+  * document -netdev option in the manpage, a long-standing omission
+    (net-add--netdev-options-to-man-page.patch)
 
  -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jun 2012 19:08:04 -0500
 
