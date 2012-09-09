@@ -20,6 +20,10 @@ qemu (1.1.2+dfsg-1) UNRELEASED; urgency=low
   * ship /usr/share/qemu/qemu-icon.bmp (Closes: #681317)
   * do not build-depend on ceph (librbd-dev librados-dev), since ceph is
     having longstanding issues in wheezy.
+  * add tcg_s390-fix-ld_st-with-CONFIG_TCG_PASS_AREG0.patch - upstream fix
+    to un-break s390[x] emulation code.  Similar fixes were included for
+    other platforms in 1.1.2 changeset.  Without this fix, qemu is basically
+    useless on s390.
 
  -- Vagrant Cascadian <vagrant@debian.org>  Sun, 24 Jun 2012 19:08:04 -0500
 
