@@ -36,6 +36,12 @@ else
        conf_audio_drv = 
 endif
 
+# list of system (softmmu) targets, from ./configure
+system_targets = \
+ i386 x86_64 alpha arm cris lm32 m68k microblaze microblazeel \
+ mips mipsel mips64 mips64el ppc ppcemb ppc64 sh4 sh4eb \
+ sparc sparc64 s390x xtensa xtensaeb
+
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 # binfmt linux-user support
 
@@ -131,6 +137,14 @@ install: build
 
 	# system build
 	$(MAKE) -C $(CURDIR)/system-build DESTDIR=$(CURDIR)/debian/tmp install
+
+	# qemu-system
+	mkdir -p debian/qemu-system/usr/bin debian/qemu-system/usr/share/man/man1
+	mv $(addprefix debian/tmp/usr/bin/qemu-system-,${system_targets}) \
+	    debian/qemu-system/usr/bin/
+	for t in ${system_targets}; do \
+		ln -s qemu.1 debian/qemu-system/usr/share/man/man1/qemu-system-$$t.1 ;\
+	done
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user build
