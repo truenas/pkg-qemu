@@ -27,44 +27,28 @@ else
        conf_audio_drv = 
 endif
 
-# binfmt support
-ALL_BINFMT_TARGETS=alpha arm armeb cris i386 m68k microblaze mips mipsel ppc ppc64 ppc64abi32 s390x sh4 sh4eb sparc sparc32plus sparc64 x86_64
-ifeq ($(DEB_HOST_ARCH),amd64)
-BINFMT_TARGETS=$(filter-out i386 x86_64, $(ALL_BINFMT_TARGETS))
-endif
-ifneq (,$(findstring $(DEB_HOST_ARCH), arm armel armhf))
-BINFMT_TARGETS=$(filter-out arm, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),i386)
-# Drop support for emulating amd64 on i386, as it is broken and including it
-# interferes with environments capable of running amd64 natively.
-# http://bugs.debian.org/604712
-BINFMT_TARGETS=$(filter-out i386 x86_64, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),mips)
-BINFMT_TARGETS=$(filter-out mips, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),mipsel)
-BINFMT_TARGETS=$(filter-out mipsel, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),powerpc)
-BINFMT_TARGETS=$(filter-out ppc, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),ppc64)
-BINFMT_TARGETS=$(filter-out ppc ppc64 ppc64abi32 , $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),s390x)
-BINFMT_TARGETS=$(filter-out s390x, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),sparc)
-BINFMT_TARGETS=$(filter-out sparc sparc32plus sparc64, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(DEB_HOST_ARCH),sparc64)
-BINFMT_TARGETS=$(filter-out sparc sparc32plus sparc64, $(ALL_BINFMT_TARGETS))
-endif
-ifeq ($(BINFMT_TARGETS),)
-BINFMT_TARGETS=$(ALL_BINFMT_TARGETS)
-endif
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+# binfmt linux-user support
+
+all_binfmt_targets = \
+ $(patsubst debian/binfmts/qemu-%,%,$(wildcard debian/binfmts/qemu-*))
+
+# find which targets needs to be filtered out, which is arch-dependent.
+# Drop support for emulating amd64 on i386, http://bugs.debian.org/604712
+filter_binfmts = $(shell \
+ case $(DEB_HOST_ARCH) in \
+   (amd64 | i386) echo i386 x86_64 ;;\
+   (arm | armel | armhf) echo arm ;;\
+   (mips | mipsel) echo $(DEB_HOST_ARCH) ;;\
+   (powerpc) echo ppc ;;\
+   (ppc64) echo ppc ppc64 ppc64abi32 ;;\
+   (s390x) echo s390x ;;\
+   (sparc | sparc64) echo sparc sparc32plus sparc64 ;;\
+ esac)
+
+binfmt_targets = $(filter-out $(filter_binfmts), $(all_binfmt_targets))
+
+endif	# binfmt
 
 configure-stamp: configure
 	dh_testdir
@@ -175,11 +159,11 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	done
 
 	# binfmt support
-	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=\"$(ALL_BINFMT_TARGETS)\"/g' \
+	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=\"$(all_binfmt_targets)\"/g' \
 		$(CURDIR)/debian/qemu-user-static.prerm \
 		$(CURDIR)/debian/qemu-user-static.postinst
 
-	for target in $(BINFMT_TARGETS) ; do \
+	for target in $(binfmt_targets) ; do \
 		install -m 644 $(CURDIR)/debian/binfmts/qemu-$$target \
 			$(CURDIR)/debian/qemu-user-static/usr/share/binfmts ; \
 	done
