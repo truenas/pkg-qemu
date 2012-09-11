@@ -19,6 +19,15 @@ endif
 DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
+common_configure_opts = \
+	--with-pkgversion="Debian $(DEB_VERSION)" \
+	--extra-cflags="$(CFLAGS)" \
+	--extra-ldflags="$(LDFLAGS)" \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--disable-blobs \
+	--disable-strip \
+
 ifeq ($(DEB_HOST_ARCH_OS),linux)
        conf_audio_drv = --audio-drv-list=alsa,oss,sdl,pa
 else ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
@@ -56,14 +65,7 @@ configure-stamp: configure
 	# system build
 	mkdir -p $(CURDIR)/system-build
 	cd $(CURDIR)/system-build && \
-		../configure \
-			--with-pkgversion="Debian $(DEB_VERSION)" \
-			--extra-cflags="$(CFLAGS)" \
-			--extra-ldflags="$(LDFLAGS)" \
-			--prefix=/usr \
-			--sysconfdir=/etc \
-			--disable-blobs \
-			--disable-strip \
+		../configure ${common_configure_opts} \
 			--disable-linux-user \
 			--disable-bsd-user \
 			${conf_audio_drv}
@@ -81,29 +83,15 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user build
 	mkdir -p $(CURDIR)/user-build
 	cd $(CURDIR)/user-build && \
-		../configure \
-			--with-pkgversion="Debian $(DEB_VERSION)" \
-			--extra-cflags="$(CFLAGS)" \
-			--extra-ldflags="$(LDFLAGS)" \
-			--prefix=/usr \
-			--sysconfdir=/etc \
+		../configure ${common_configure_opts} \
 			--interp-prefix=/etc/qemu-binfmt/%M \
-			--disable-blobs \
-			--disable-strip \
 			--disable-system
 
 	# static user build
 	mkdir -p $(CURDIR)/user-static-build
 	cd $(CURDIR)/user-static-build && \
-		../configure \
-			--with-pkgversion="Debian $(DEB_VERSION)" \
-			--extra-cflags="$(CFLAGS)" \
-			--extra-ldflags="$(LDFLAGS)" \
-			--prefix=/usr \
-			--sysconfdir=/etc \
+		../configure ${common_configure_opts} \
 			--interp-prefix=/etc/qemu-binfmt/%M \
-			--disable-blobs \
-			--disable-strip \
 			--disable-system \
 			--static
 endif
