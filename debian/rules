@@ -120,11 +120,10 @@ build-stamp: configure-stamp
 	done
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-	# user build
-	$(MAKE) -C $(CURDIR)/user-build $(NJOBS)
-
-	# static user build
-	$(MAKE) -C $(CURDIR)/user-static-build $(NJOBS)
+	# user and user-static build
+	# we use this invocation to build just the binaries
+	$(MAKE) -C $(CURDIR)/user-build $(NJOBS) $(foreach t,${user_targets},subdir-${t}-linux-user)
+	$(MAKE) -C $(CURDIR)/user-static-build $(NJOBS) $(foreach t,${user_targets},subdir-${t}-linux-user)
 endif
 	touch $@
 
