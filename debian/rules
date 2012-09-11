@@ -130,7 +130,7 @@ build-arch: build-stamp
 build-indep: build-stamp
 build-stamp: configure-stamp
 	dh_testdir
-	
+
 	# system build
 	$(MAKE) -C $(CURDIR)/system-build $(NJOBS)
 
@@ -149,7 +149,7 @@ clean:
 	rm -rf $(CURDIR)/*-build
 	rm -f $(CURDIR)/*-stamp
 	rm -f config.log
-	
+
 	dh_clean
 
 install: build
@@ -157,7 +157,7 @@ install: build
 	dh_testroot
 	dh_prep
 	dh_installdirs -a
-	
+
 	# system build
 	$(MAKE) -C $(CURDIR)/system-build DESTDIR=$(CURDIR)/debian/tmp install
 
