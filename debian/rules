@@ -57,14 +57,17 @@ filter_binfmts = $(shell \
 
 binfmt_targets = $(filter-out $(filter_binfmts), $(all_binfmt_targets))
 
+user_configure_opts = \
+	--interp-prefix=/etc/qemu-binfmt/%M \
+	--disable-system
+
 endif	# binfmt
 
 configure-stamp: configure
 	dh_testdir
 
 	# system build
-	mkdir -p $(CURDIR)/system-build
-	cd $(CURDIR)/system-build && \
+	mkdir -p system-build && cd system-build && \
 		../configure ${common_configure_opts} \
 			--disable-linux-user \
 			--disable-bsd-user \
@@ -81,18 +84,11 @@ endif
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user build
-	mkdir -p $(CURDIR)/user-build
-	cd $(CURDIR)/user-build && \
-		../configure ${common_configure_opts} \
-			--interp-prefix=/etc/qemu-binfmt/%M \
-			--disable-system
-
+	mkdir -p user-build && cd user-build && \
+		../configure ${common_configure_opts} ${user_configure_opts}
 	# static user build
-	mkdir -p $(CURDIR)/user-static-build
-	cd $(CURDIR)/user-static-build && \
-		../configure ${common_configure_opts} \
-			--interp-prefix=/etc/qemu-binfmt/%M \
-			--disable-system \
+	mkdir -p user-static-build && cd user-static-build && \
+		../configure ${common_configure_opts} ${user_configure_opts} \
 			--static
 endif
 	touch $@
