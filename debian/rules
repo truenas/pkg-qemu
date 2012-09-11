@@ -82,7 +82,7 @@ configure-stamp: configure
 			--disable-strip \
 			--disable-linux-user \
 			--disable-bsd-user \
-			$(conf_arch) $(conf_audio_drv)
+			$(conf_audio_drv)
 
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 # Hack alert.
@@ -106,8 +106,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--interp-prefix=/etc/qemu-binfmt/%M \
 			--disable-blobs \
 			--disable-strip \
-			--disable-system \
-			$(conf_arch)
+			--disable-system
 
 	# static user build
 	mkdir -p $(CURDIR)/user-static-build
@@ -122,8 +121,7 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 			--disable-blobs \
 			--disable-strip \
 			--disable-system \
-			--static \
-			$(conf_arch)
+			--static
 endif
 	touch $@
 
