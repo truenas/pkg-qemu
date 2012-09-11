@@ -145,8 +145,7 @@ endif
 
 clean:
 	dh_testdir
-	dh_testroot
-	
+
 	rm -rf $(CURDIR)/*-build
 	rm -f $(CURDIR)/*-stamp
 	rm -f config.log
