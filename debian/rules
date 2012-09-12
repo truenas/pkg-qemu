@@ -159,9 +159,10 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	done
 
 	# binfmt support
-	sed -i -e 's/^BINFMT_TARGETS=.*/BINFMT_TARGETS=\"$(all_binfmt_targets)\"/g' \
-		$(CURDIR)/debian/qemu-user-static.prerm \
-		$(CURDIR)/debian/qemu-user-static.postinst
+	for x in postinst prerm; do \
+	    sed 's/@BINFMT_TARGETS@/${all_binfmt_targets}/' \
+		debian/qemu-user-static.$$x-in > debian/qemu-user-static.$$x.debhelper ; \
+	done
 
 	for target in $(binfmt_targets) ; do \
 		install -m 644 $(CURDIR)/debian/binfmts/qemu-$$target \
