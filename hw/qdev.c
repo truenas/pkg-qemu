@@ -150,6 +150,7 @@ int qdev_init(DeviceState *dev)
 
     rc = dc->init(dev);
     if (rc < 0) {
+        object_unparent(OBJECT(dev));
         qdev_free(dev);
         return rc;
     }
@@ -240,6 +241,7 @@ void qbus_reset_all_fn(void *opaque)
 int qdev_simple_unplug_cb(DeviceState *dev)
 {
     /* just zap it */
+    object_unparent(OBJECT(dev));
     qdev_free(dev);
     return 0;
 }
@@ -254,10 +256,9 @@ int qdev_simple_unplug_cb(DeviceState *dev)
    way is somewhat unclean, and best avoided.  */
 void qdev_init_nofail(DeviceState *dev)
 {
-    const char *typename = object_get_typename(OBJECT(dev));
-
     if (qdev_init(dev) < 0) {
-        error_report("Initialization of device %s failed", typename);
+        error_report("Initialization of device %s failed",
+                     object_get_typename(OBJECT(dev)));
         exit(1);
     }
 }

@@ -634,7 +634,7 @@ static void ahci_write_fis_d2h(AHCIDevice *ad, uint8_t *cmd_fis)
     }
 }
 
-static int ahci_populate_sglist(AHCIDevice *ad, QEMUSGList *sglist, int offset)
+static int ahci_populate_sglist(AHCIDevice *ad, QEMUSGList *sglist)
 {
     AHCICmdHdr *cmd = ad->cur_cmd;
     uint32_t opts = le32_to_cpu(cmd->opts);
@@ -645,10 +645,6 @@ static int ahci_populate_sglist(AHCIDevice *ad, QEMUSGList *sglist, int offset)
     uint8_t *prdt;
     int i;
     int r = 0;
-    int sum = 0;
-    int off_idx = -1;
-    int off_pos = -1;
-    int tbl_entry_size;
 
     if (!sglist_alloc_hint) {
         DPRINTF(ad->port_no, "no sg list given by guest: 0x%08x\n", opts);
@@ -670,30 +666,9 @@ static int ahci_populate_sglist(AHCIDevice *ad, QEMUSGList *sglist, int offset)
     /* Get entries in the PRDT, init a qemu sglist accordingly */
     if (sglist_alloc_hint > 0) {
         AHCI_SG *tbl = (AHCI_SG *)prdt;
-        sum = 0;
+
+        qemu_sglist_init(sglist, sglist_alloc_hint);
         for (i = 0; i < sglist_alloc_hint; i++) {
-            /* flags_size is zero-based */
-            tbl_entry_size = (le32_to_cpu(tbl[i].flags_size) + 1);
-            if (offset <= (sum + tbl_entry_size)) {
-                off_idx = i;
-                off_pos = offset - sum;
-                break;
-            }
-            sum += tbl_entry_size;
-        }
-        if ((off_idx == -1) || (off_pos < 0) || (off_pos > tbl_entry_size)) {
-            DPRINTF(ad->port_no, "%s: Incorrect offset! "
-                            "off_idx: %d, off_pos: %d\n",
-                            __func__, off_idx, off_pos);
-            r = -1;
-            goto out;
-        }
-
-        qemu_sglist_init(sglist, (sglist_alloc_hint - off_idx));
-        qemu_sglist_add(sglist, le64_to_cpu(tbl[off_idx].addr + off_pos),
-                        le32_to_cpu(tbl[off_idx].flags_size) + 1 - off_pos);
-
-        for (i = off_idx + 1; i < sglist_alloc_hint; i++) {
             /* flags_size is zero-based */
             qemu_sglist_add(sglist, le64_to_cpu(tbl[i].addr),
                             le32_to_cpu(tbl[i].flags_size) + 1);
@@ -766,7 +741,7 @@ static void process_ncq_command(AHCIState *s, int port, uint8_t *cmd_fis,
             ncq_tfs->lba, ncq_tfs->lba + ncq_tfs->sector_count - 2,
             s->dev[port].port.ifs[0].nb_sectors - 1);
 
-    ahci_populate_sglist(&s->dev[port], &ncq_tfs->sglist, 0);
+    ahci_populate_sglist(&s->dev[port], &ncq_tfs->sglist);
     ncq_tfs->tag = tag;
 
     switch(ncq_fis->command) {
@@ -989,7 +964,7 @@ static int ahci_start_transfer(IDEDMA *dma)
         goto out;
     }
 
-    if (!ahci_populate_sglist(ad, &s->sg, 0)) {
+    if (!ahci_populate_sglist(ad, &s->sg)) {
         has_sglist = 1;
     }
 
@@ -1034,7 +1009,6 @@ static void ahci_start_dma(IDEDMA *dma, IDEState *s,
     DPRINTF(ad->port_no, "\n");
     ad->dma_cb = dma_cb;
     ad->dma_status |= BM_STATUS_DMAING;
-    s->io_buffer_offset = 0;
     dma_cb(s, 0);
 }
 
@@ -1043,7 +1017,7 @@ static int ahci_dma_prepare_buf(IDEDMA *dma, int is_write)
     AHCIDevice *ad = DO_UPCAST(AHCIDevice, dma, dma);
     IDEState *s = &ad->port.ifs[0];
 
-    ahci_populate_sglist(ad, &s->sg, 0);
+    ahci_populate_sglist(ad, &s->sg);
     s->io_buffer_size = s->sg.size;
 
     DPRINTF(ad->port_no, "len=%#x\n", s->io_buffer_size);
@@ -1057,7 +1031,7 @@ static int ahci_dma_rw_buf(IDEDMA *dma, int is_write)
     uint8_t *p = s->io_buffer + s->io_buffer_index;
     int l = s->io_buffer_size - s->io_buffer_index;
 
-    if (ahci_populate_sglist(ad, &s->sg, s->io_buffer_offset)) {
+    if (ahci_populate_sglist(ad, &s->sg)) {
         return 0;
     }
 
@@ -1067,13 +1041,9 @@ static int ahci_dma_rw_buf(IDEDMA *dma, int is_write)
         dma_buf_write(p, l, &s->sg);
     }
 
-    /* free sglist that was created in ahci_populate_sglist() */
-    qemu_sglist_destroy(&s->sg);
-
     /* update number of transferred bytes */
     ad->cur_cmd->status = cpu_to_le32(le32_to_cpu(ad->cur_cmd->status) + l);
     s->io_buffer_index += l;
-    s->io_buffer_offset += l;
 
     DPRINTF(ad->port_no, "len=%#x\n", l);
 

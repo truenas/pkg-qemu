@@ -19,8 +19,6 @@
  */
 
 #include "cpu.h"
-#include "memory.h"
-#include "cputlb.h"
 #include "dyngen-exec.h"
 #include "host-utils.h"
 #include "helper.h"
@@ -2368,9 +2366,6 @@ static void ext_interrupt(CPUS390XState *env, int type, uint32_t param,
     cpu_inject_ext(env, type, param, param64);
 }
 
-/*
- * ret < 0 indicates program check, ret = 0,1,2,3 -> cc
- */
 int sclp_service_call(CPUS390XState *env, uint32_t sccb, uint64_t code)
 {
     int r = 0;
@@ -2380,12 +2375,10 @@ int sclp_service_call(CPUS390XState *env, uint32_t sccb, uint64_t code)
     printf("sclp(0x%x, 0x%" PRIx64 ")\n", sccb, code);
 #endif
 
-    /* basic checks */
-    if (!memory_region_is_ram(phys_page_find(sccb >> TARGET_PAGE_BITS)->mr)) {
-        return -PGM_ADDRESSING;
-    }
     if (sccb & ~0x7ffffff8ul) {
-        return -PGM_SPECIFICATION;
+        fprintf(stderr, "KVM: invalid sccb address 0x%x\n", sccb);
+        r = -1;
+        goto out;
     }
 
     switch(code) {
@@ -2412,24 +2405,22 @@ int sclp_service_call(CPUS390XState *env, uint32_t sccb, uint64_t code)
 #ifdef DEBUG_HELPER
             printf("KVM: invalid sclp call 0x%x / 0x%" PRIx64 "x\n", sccb, code);
 #endif
-            r = 3;
+            r = -1;
             break;
     }
 
+out:
     return r;
 }
 
 /* SCLP service call */
 uint32_t HELPER(servc)(uint32_t r1, uint64_t r2)
 {
-    int r;
-
-    r = sclp_service_call(env, r1, r2);
-    if (r < 0) {
-        program_interrupt(env, -r, 4);
-        return 0;
+    if (sclp_service_call(env, r1, r2)) {
+        return 3;
     }
-    return r;
+
+    return 0;
 }
 
 /* DIAG */

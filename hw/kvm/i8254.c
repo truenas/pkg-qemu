@@ -35,8 +35,7 @@
 typedef struct KVMPITState {
     PITCommonState pit;
     LostTickPolicy lost_tick_policy;
-    bool vm_stopped;
-    int64_t kernel_clock_offset;
+    bool state_valid;
 } KVMPITState;
 
 static int64_t abs64(int64_t v)
@@ -44,11 +43,19 @@ static int64_t abs64(int64_t v)
     return v < 0 ? -v : v;
 }
 
-static void kvm_pit_update_clock_offset(KVMPITState *s)
+static void kvm_pit_get(PITCommonState *pit)
 {
+    KVMPITState *s = DO_UPCAST(KVMPITState, pit, pit);
+    struct kvm_pit_state2 kpit;
+    struct kvm_pit_channel_state *kchan;
+    struct PITChannelState *sc;
     int64_t offset, clock_offset;
     struct timespec ts;
-    int i;
+    int i, ret;
+
+    if (s->state_valid) {
+        return;
+    }
 
     /*
      * Measure the delta between CLOCK_MONOTONIC, the base used for
@@ -64,21 +71,6 @@ static void kvm_pit_update_clock_offset(KVMPITState *s)
         if (abs64(offset) < abs64(clock_offset)) {
             clock_offset = offset;
         }
-    }
-    s->kernel_clock_offset = clock_offset;
-}
-
-static void kvm_pit_get(PITCommonState *pit)
-{
-    KVMPITState *s = DO_UPCAST(KVMPITState, pit, pit);
-    struct kvm_pit_state2 kpit;
-    struct kvm_pit_channel_state *kchan;
-    struct PITChannelState *sc;
-    int i, ret;
-
-    /* No need to re-read the state if VM is stopped. */
-    if (s->vm_stopped) {
-        return;
     }
 
     if (kvm_has_pit_state2()) {
@@ -114,7 +106,7 @@ static void kvm_pit_get(PITCommonState *pit)
         sc->mode = kchan->mode;
         sc->bcd = kchan->bcd;
         sc->gate = kchan->gate;
-        sc->count_load_time = kchan->count_load_time + s->kernel_clock_offset;
+        sc->count_load_time = kchan->count_load_time + clock_offset;
     }
 
     sc = &pit->channels[0];
@@ -122,23 +114,17 @@ static void kvm_pit_get(PITCommonState *pit)
         pit_get_next_transition_time(sc, sc->count_load_time);
 }
 
-static void kvm_pit_put(PITCommonState *pit)
+static void kvm_pit_put(PITCommonState *s)
 {
-    KVMPITState *s = DO_UPCAST(KVMPITState, pit, pit);
     struct kvm_pit_state2 kpit;
     struct kvm_pit_channel_state *kchan;
     struct PITChannelState *sc;
     int i, ret;
 
-    /* The offset keeps changing as long as the VM is stopped. */
-    if (s->vm_stopped) {
-        kvm_pit_update_clock_offset(s);
-    }
-
-    kpit.flags = pit->channels[0].irq_disabled ? KVM_PIT_FLAGS_HPET_LEGACY : 0;
+    kpit.flags = s->channels[0].irq_disabled ? KVM_PIT_FLAGS_HPET_LEGACY : 0;
     for (i = 0; i < 3; i++) {
         kchan = &kpit.channels[i];
-        sc = &pit->channels[i];
+        sc = &s->channels[i];
         kchan->count = sc->count;
         kchan->latched_count = sc->latched_count;
         kchan->count_latched = sc->count_latched;
@@ -151,7 +137,7 @@ static void kvm_pit_put(PITCommonState *pit)
         kchan->mode = sc->mode;
         kchan->bcd = sc->bcd;
         kchan->gate = sc->gate;
-        kchan->count_load_time = sc->count_load_time - s->kernel_clock_offset;
+        kchan->count_load_time = sc->count_load_time;
     }
 
     ret = kvm_vm_ioctl(kvm_state,
@@ -225,12 +211,10 @@ static void kvm_pit_vm_state_change(void *opaque, int running,
     KVMPITState *s = opaque;
 
     if (running) {
-        kvm_pit_update_clock_offset(s);
-        s->vm_stopped = false;
+        s->state_valid = false;
     } else {
-        kvm_pit_update_clock_offset(s);
         kvm_pit_get(&s->pit);
-        s->vm_stopped = true;
+        s->state_valid = true;
     }
 }
 

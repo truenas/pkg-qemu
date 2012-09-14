@@ -194,19 +194,18 @@ uint32_t do_arm_semihosting(CPUARMState *env)
         if (!(s = lock_user_string(ARG(0))))
             /* FIXME - should this error code be -TARGET_EFAULT ? */
             return (uint32_t)-1;
-        if (ARG(1) >= 12) {
-            unlock_user(s, ARG(0), 0);
+        if (ARG(1) >= 12)
             return (uint32_t)-1;
-        }
         if (strcmp(s, ":tt") == 0) {
-            int result_fileno = ARG(1) < 4 ? STDIN_FILENO : STDOUT_FILENO;
-            unlock_user(s, ARG(0), 0);
-            return result_fileno;
+            if (ARG(1) < 4)
+                return STDIN_FILENO;
+            else
+                return STDOUT_FILENO;
         }
         if (use_gdb_syscalls()) {
             gdb_do_syscall(arm_semi_cb, "open,%s,%x,1a4", ARG(0),
 			   (int)ARG(2)+1, gdb_open_modeflags[ARG(1)]);
-            ret = env->regs[0];
+            return env->regs[0];
         } else {
             ret = set_swi_errno(ts, open(s, open_modeflags[ARG(1)], 0644));
         }

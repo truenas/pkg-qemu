@@ -248,9 +248,6 @@ static bool ga_open_pidfile(const char *pidfile)
     pidfd = open(pidfile, O_CREAT|O_WRONLY, S_IRUSR|S_IWUSR);
     if (pidfd == -1 || lockf(pidfd, F_TLOCK, 0)) {
         g_critical("Cannot lock pid file, %s", strerror(errno));
-        if (pidfd != -1) {
-            close(pidfd);
-        }
         return false;
     }
 
@@ -439,9 +436,7 @@ static void become_daemon(const char *pidfile)
     return;
 
 fail:
-    if (pidfile) {
-        unlink(pidfile);
-    }
+    unlink(pidfile);
     g_critical("failed to daemonize");
     exit(EXIT_FAILURE);
 #endif

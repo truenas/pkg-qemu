@@ -847,26 +847,6 @@ static void console_clear_xy(TextConsole *s, int x, int y)
     update_xy(s, x, y);
 }
 
-/* set cursor, checking bounds */
-static void set_cursor(TextConsole *s, int x, int y)
-{
-    if (x < 0) {
-        x = 0;
-    }
-    if (y < 0) {
-        y = 0;
-    }
-    if (y >= s->height) {
-        y = s->height - 1;
-    }
-    if (x >= s->width) {
-        x = s->width - 1;
-    }
-
-    s->x = x;
-    s->y = y;
-}
-
 static void console_putchar(TextConsole *s, int ch)
 {
     TextCell *c;
@@ -938,8 +918,7 @@ static void console_putchar(TextConsole *s, int ch)
                     s->esc_params[s->nb_esc_params] * 10 + ch - '0';
             }
         } else {
-            if (s->nb_esc_params < MAX_ESC_PARAMS)
-                s->nb_esc_params++;
+            s->nb_esc_params++;
             if (ch == ';')
                 break;
 #ifdef DEBUG_CONSOLE
@@ -953,37 +932,59 @@ static void console_putchar(TextConsole *s, int ch)
                 if (s->esc_params[0] == 0) {
                     s->esc_params[0] = 1;
                 }
-                set_cursor(s, s->x, s->y - s->esc_params[0]);
+                s->y -= s->esc_params[0];
+                if (s->y < 0) {
+                    s->y = 0;
+                }
                 break;
             case 'B':
                 /* move cursor down */
                 if (s->esc_params[0] == 0) {
                     s->esc_params[0] = 1;
                 }
-                set_cursor(s, s->x, s->y + s->esc_params[0]);
+                s->y += s->esc_params[0];
+                if (s->y >= s->height) {
+                    s->y = s->height - 1;
+                }
                 break;
             case 'C':
                 /* move cursor right */
                 if (s->esc_params[0] == 0) {
                     s->esc_params[0] = 1;
                 }
-                set_cursor(s, s->x + s->esc_params[0], s->y);
+                s->x += s->esc_params[0];
+                if (s->x >= s->width) {
+                    s->x = s->width - 1;
+                }
                 break;
             case 'D':
                 /* move cursor left */
                 if (s->esc_params[0] == 0) {
                     s->esc_params[0] = 1;
                 }
-                set_cursor(s, s->x - s->esc_params[0], s->y);
+                s->x -= s->esc_params[0];
+                if (s->x < 0) {
+                    s->x = 0;
+                }
                 break;
             case 'G':
                 /* move cursor to column */
-                set_cursor(s, s->esc_params[0] - 1, s->y);
+                s->x = s->esc_params[0] - 1;
+                if (s->x < 0) {
+                    s->x = 0;
+                }
                 break;
             case 'f':
             case 'H':
                 /* move cursor to row, column */
-                set_cursor(s, s->esc_params[1] - 1, s->esc_params[0] - 1);
+                s->x = s->esc_params[1] - 1;
+                if (s->x < 0) {
+                    s->x = 0;
+                }
+                s->y = s->esc_params[0] - 1;
+                if (s->y < 0) {
+                    s->y = 0;
+                }
                 break;
             case 'J':
                 switch (s->esc_params[0]) {

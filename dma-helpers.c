@@ -33,7 +33,6 @@ void qemu_sglist_add(QEMUSGList *qsg, dma_addr_t base, dma_addr_t len)
 void qemu_sglist_destroy(QEMUSGList *qsg)
 {
     g_free(qsg->sg);
-    memset(qsg, 0, sizeof(*qsg));
 }
 
 typedef struct {

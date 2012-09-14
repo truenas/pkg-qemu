@@ -40,7 +40,7 @@ static void *softmmu_lock_user(CPUArchState *env, uint32_t addr, uint32_t len,
     uint8_t *p;
     /* TODO: Make this something that isn't fixed size.  */
     p = malloc(len);
-    if (p && copy)
+    if (copy)
         cpu_memory_rw_debug(env, addr, p, len, 0);
     return p;
 }
@@ -52,9 +52,6 @@ static char *softmmu_lock_user_string(CPUArchState *env, uint32_t addr)
     uint8_t c;
     /* TODO: Make this something that isn't fixed size.  */
     s = p = malloc(1024);
-    if (!s) {
-        return NULL;
-    }
     do {
         cpu_memory_rw_debug(env, addr, &c, 1, 0);
         addr++;
