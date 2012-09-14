@@ -115,9 +115,7 @@ build-stamp: configure-stamp
 
 	# system build
 	$(MAKE) -C $(CURDIR)/system-build $(NJOBS)
-	for i in bamboo mpc8544ds ; do \
-		dtc -o system-build/pc-bios/$$i.dtb pc-bios/$$i.dts ; \
-	done
+	dtc -o system-build/pc-bios/bamboo.dtb pc-bios/bamboo.dts
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user and user-static build

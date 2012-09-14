@@ -1,5 +1,9 @@
-qemu (1.1.2+dfsg-2+exp) UNRELEASED; urgency=low
+qemu (1.2.0+dfsg-1~exp1) UNRELEASED; urgency=low
 
+  * new upstream version (1.2.0)
+    remove do-not-include-libutil.h.patch (included upstream)
+    update 02_kfreebsd.patch
+    do not build mpc8544ds.dtb
   * Cleaned up the build system ALOT.  Larger changes:
     - used explicit lists of emulated targets in debian/rules
       and generate everything else from there, instead of repeating
