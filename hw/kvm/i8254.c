@@ -23,55 +23,23 @@
  * THE SOFTWARE.
  */
 #include "qemu-timer.h"
-#include "sysemu.h"
 #include "hw/i8254.h"
 #include "hw/i8254_internal.h"
 #include "kvm.h"
 
 #define KVM_PIT_REINJECT_BIT 0
 
-#define CALIBRATION_ROUNDS   3
-
 typedef struct KVMPITState {
     PITCommonState pit;
     LostTickPolicy lost_tick_policy;
-    bool state_valid;
 } KVMPITState;
 
-static int64_t abs64(int64_t v)
+static void kvm_pit_get(PITCommonState *s)
 {
-    return v < 0 ? -v : v;
-}
-
-static void kvm_pit_get(PITCommonState *pit)
-{
-    KVMPITState *s = DO_UPCAST(KVMPITState, pit, pit);
     struct kvm_pit_state2 kpit;
     struct kvm_pit_channel_state *kchan;
     struct PITChannelState *sc;
-    int64_t offset, clock_offset;
-    struct timespec ts;
     int i, ret;
-
-    if (s->state_valid) {
-        return;
-    }
-
-    /*
-     * Measure the delta between CLOCK_MONOTONIC, the base used for
-     * kvm_pit_channel_state::count_load_time, and vm_clock. Take the
-     * minimum of several samples to filter out scheduling noise.
-     */
-    clock_offset = INT64_MAX;
-    for (i = 0; i < CALIBRATION_ROUNDS; i++) {
-        offset = qemu_get_clock_ns(vm_clock);
-        clock_gettime(CLOCK_MONOTONIC, &ts);
-        offset -= ts.tv_nsec;
-        offset -= (int64_t)ts.tv_sec * 1000000000;
-        if (abs64(offset) < abs64(clock_offset)) {
-            clock_offset = offset;
-        }
-    }
 
     if (kvm_has_pit_state2()) {
         ret = kvm_vm_ioctl(kvm_state, KVM_GET_PIT2, &kpit);
@@ -79,7 +47,7 @@ static void kvm_pit_get(PITCommonState *pit)
             fprintf(stderr, "KVM_GET_PIT2 failed: %s\n", strerror(ret));
             abort();
         }
-        pit->channels[0].irq_disabled = kpit.flags & KVM_PIT_FLAGS_HPET_LEGACY;
+        s->channels[0].irq_disabled = kpit.flags & KVM_PIT_FLAGS_HPET_LEGACY;
     } else {
         /*
          * kvm_pit_state2 is superset of kvm_pit_state struct,
@@ -93,7 +61,7 @@ static void kvm_pit_get(PITCommonState *pit)
     }
     for (i = 0; i < 3; i++) {
         kchan = &kpit.channels[i];
-        sc = &pit->channels[i];
+        sc = &s->channels[i];
         sc->count = kchan->count;
         sc->latched_count = kchan->latched_count;
         sc->count_latched = kchan->count_latched;
@@ -106,10 +74,10 @@ static void kvm_pit_get(PITCommonState *pit)
         sc->mode = kchan->mode;
         sc->bcd = kchan->bcd;
         sc->gate = kchan->gate;
-        sc->count_load_time = kchan->count_load_time + clock_offset;
+        sc->count_load_time = kchan->count_load_time;
     }
 
-    sc = &pit->channels[0];
+    sc = &s->channels[0];
     sc->next_transition_time =
         pit_get_next_transition_time(sc, sc->count_load_time);
 }
@@ -205,19 +173,6 @@ static void kvm_pit_irq_control(void *opaque, int n, int enable)
     kvm_pit_put(pit);
 }
 
-static void kvm_pit_vm_state_change(void *opaque, int running,
-                                    RunState state)
-{
-    KVMPITState *s = opaque;
-
-    if (running) {
-        s->state_valid = false;
-    } else {
-        kvm_pit_get(&s->pit);
-        s->state_valid = true;
-    }
-}
-
 static int kvm_pit_initfn(PITCommonState *pit)
 {
     KVMPITState *s = DO_UPCAST(KVMPITState, pit, pit);
@@ -259,8 +214,6 @@ static int kvm_pit_initfn(PITCommonState *pit)
     memory_region_init_reservation(&pit->ioports, "kvm-pit", 4);
 
     qdev_init_gpio_in(&pit->dev.qdev, kvm_pit_irq_control, 1);
-
-    qemu_add_vm_change_state_handler(kvm_pit_vm_state_change, s);
 
     return 0;
 }

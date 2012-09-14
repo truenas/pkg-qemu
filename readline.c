@@ -337,9 +337,6 @@ static void readline_completion(ReadLineState *rs)
         }
         readline_show_prompt(rs);
     }
-    for (i = 0; i < rs->nb_completions; i++) {
-        g_free(rs->completions[i]);
-    }
 }
 
 /* return true if command handled */
