@@ -16,7 +16,7 @@ qemu (1.2.0+dfsg-1~exp1) UNRELEASED; urgency=low
   * ship forgotten target-x86_64.conf and cpus-x86_64.conf in qemu-system-x86.
   * ship virtfs-proxy-helper in qemu-utils.
   * stop shipping tundev.c, since it does not reflect the reality for
-    a long time now (Closes: #325761).
+    a long time now (Closes: #325761, #325754).
   * remove debian/patches/fix-armhf-prctl.patch, it is included
     upstream in 1.1.0 version and is misapplied since 1.1.0~rc3+dfsg-1.
 
