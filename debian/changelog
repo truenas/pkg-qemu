@@ -1,5 +1,6 @@
 qemu (1.2.0+dfsg-1~exp1) UNRELEASED; urgency=low
 
+  [ Michael Tokarev ]
   * new upstream version (1.2.0)
     remove do-not-include-libutil.h.patch (included upstream)
     update 02_kfreebsd.patch
@@ -18,6 +19,9 @@ qemu (1.2.0+dfsg-1~exp1) UNRELEASED; urgency=low
     a long time now (Closes: #325761).
   * remove debian/patches/fix-armhf-prctl.patch, it is included
     upstream in 1.1.0 version and is misapplied since 1.1.0~rc3+dfsg-1.
+
+  [ Vagrant Cascadian ]
+  * Add libcap-dev to Build-Depends to support virtfs-proxy-helper.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 14 Sep 2012 12:23:27 +0400
 
