@@ -22,6 +22,8 @@ qemu (1.2.0+dfsg-1~exp1) UNRELEASED; urgency=low
   * drop -jN passing to downstream makes, as it breaks dpkg-buildpackage -j
     and actually breaks build (Closes: #597524 - said to be fixed in 0.14.1
     but was still present)
+  * add revert-serial-fix-retry-logic.patch that restores
+    old (semi-)working behavour of a virtual serial port.
 
   [ Vagrant Cascadian ]
   * Add libcap-dev to Build-Depends to support virtfs-proxy-helper.
