@@ -10,11 +10,6 @@ DEB_VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' '
 CFLAGS = $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
 LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed
 
-# Support multiple makes at once
-ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-NJOBS := -j $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-endif
-
 # Architecture/system specific configuration
 DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
@@ -114,14 +109,14 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# system build
-	$(MAKE) -C $(CURDIR)/system-build $(NJOBS)
+	$(MAKE) -C $(CURDIR)/system-build
 	dtc -o system-build/pc-bios/bamboo.dtb pc-bios/bamboo.dts
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user and user-static build
 	# we use this invocation to build just the binaries
-	$(MAKE) -C $(CURDIR)/user-build $(NJOBS) $(foreach t,${user_targets},subdir-${t}-linux-user)
-	$(MAKE) -C $(CURDIR)/user-static-build $(NJOBS) $(foreach t,${user_targets},subdir-${t}-linux-user)
+	$(MAKE) -C $(CURDIR)/user-build $(foreach t,${user_targets},subdir-${t}-linux-user)
+	$(MAKE) -C $(CURDIR)/user-static-build $(foreach t,${user_targets},subdir-${t}-linux-user)
 endif
 	touch $@
 
