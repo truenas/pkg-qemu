@@ -2,6 +2,8 @@ qemu (1.1.2+dfsg-1a) UNRELEASED; urgency=low
 
   * remove debian/patches/fix-armhf-prctl.patch, it is included
     upstream in 1.1.0 version and is misapplied since 1.1.0~rc3+dfsg-1.
+  * add revert-serial-fix-retry-logic.patch that restores
+    old (semi-)working behavour of a virtual serial port.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 14 Sep 2012 13:18:45 +0400
 
