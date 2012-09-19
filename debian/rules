@@ -12,11 +12,6 @@ LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
 LDFLAGS += -Wl,--as-needed
 CFLAGS += $(shell dpkg-buildflags --get CPPFLAGS)
 
-# Support multiple makes at once
-ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-NJOBS := -j $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-endif
-
 # Architecture/system specific configuration
 DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
@@ -136,14 +131,14 @@ build-stamp: configure-stamp
 	dh_testdir
 	
 	# system build
-	$(MAKE) -C $(CURDIR)/system-build $(NJOBS)
+	$(MAKE) -C $(CURDIR)/system-build
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user build
-	$(MAKE) -C $(CURDIR)/user-build $(NJOBS)
+	$(MAKE) -C $(CURDIR)/user-build
 
 	# static user build
-	$(MAKE) -C $(CURDIR)/user-static-build $(NJOBS)
+	$(MAKE) -C $(CURDIR)/user-static-build
 endif
 	touch $@
 
