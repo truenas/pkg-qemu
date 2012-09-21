@@ -1,7 +1,7 @@
 qemu (1.2.0+dfsg-1~exp1) UNRELEASED; urgency=low
 
   [ Michael Tokarev ]
-  * new upstream version (1.2.0)
+  * new upstream version (1.2.0) (Closes: #676374)
     remove do-not-include-libutil.h.patch (included upstream)
     update 02_kfreebsd.patch
     do not build mpc8544ds.dtb
