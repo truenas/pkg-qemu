@@ -1,0 +1,67 @@
+From: Michael Tokarev <mjt@tls.msk.ru>
+Date: Thu, 27 Sep 2012 22:50:22 +0400
+Subject: intel_hda: do not call msi_reset when only device state needs resetting
+Bug-Debian: http://bugs.debian.org/68896
+
+Commit 8e729e3b521d9 "intel-hda: Fix reset of MSI function"
+(applied to 1.1.1 as 0ec39075710) added a call to msi_reset()
+into intel_hda_reset() function.  But this function is called
+not only from PCI bus reset method, but also from device init
+method (intel_hda_set_g_ctl()), and there, we should not reset
+msi state.  For this, split intel_hda_reset() into two halves,
+one common part with device reset, and one with msi reset,
+intel_hda_reset_msi(), which also calls the common part, for
+the bus method.
+
+This is only needed for 1.1.x series, since in 1.2+, MSI reset
+is called in proper places by the PCI code already.
+
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: 688964@bugs.debian.org
+---
+ hw/intel-hda.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/hw/intel-hda.c b/hw/intel-hda.c
+index e38861e..da61323 100644
+--- a/hw/intel-hda.c
++++ b/hw/intel-hda.c
+@@ -1107,9 +1107,6 @@ static void intel_hda_reset(DeviceState *dev)
+     DeviceState *qdev;
+     HDACodecDevice *cdev;
+ 
+-    if (d->msi) {
+-        msi_reset(&d->pci);
+-    }
+     intel_hda_regs_reset(d);
+     d->wall_base_ns = qemu_get_clock_ns(vm_clock);
+ 
+@@ -1122,6 +1119,15 @@ static void intel_hda_reset(DeviceState *dev)
+     intel_hda_update_irq(d);
+ }
+ 
++static void intel_hda_reset_msi(DeviceState *dev)
++{
++    IntelHDAState *d = DO_UPCAST(IntelHDAState, pci.qdev, dev);
++    if (d->msi) {
++        msi_reset(&d->pci);
++    }
++    intel_hda_reset(dev);
++}
++
+ static int intel_hda_init(PCIDevice *pci)
+ {
+     IntelHDAState *d = DO_UPCAST(IntelHDAState, pci, pci);
+@@ -1261,7 +1267,7 @@ static void intel_hda_class_init(ObjectClass *klass, void *data)
+     k->revision = 1;
+     k->class_id = PCI_CLASS_MULTIMEDIA_HD_AUDIO;
+     dc->desc = "Intel HD Audio Controller";
+-    dc->reset = intel_hda_reset;
++    dc->reset = intel_hda_reset_msi;
+     dc->vmsd = &vmstate_intel_hda;
+     dc->props = intel_hda_properties;
+ }
+-- 
+1.7.10.4
+

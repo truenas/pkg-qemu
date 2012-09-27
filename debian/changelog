@@ -1,3 +1,13 @@
+qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
+
+  * intel_hda-do-not-call-msi_reset-when-only-device-state-needs-resetting.patch
+    patch to fix Fixing reset of MSI function in intel-hda virtual device.
+    The fix (applied to stable-1.1.1) was partially wrong, as it actually
+    added the msi_reset() call to two code paths instead of one as planned.
+    Fix this by splitting the function in question into two parts.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Sep 2012 23:12:49 +0400
+
 qemu (1.1.2+dfsg-2) unstable; urgency=low
 
   * remove debian/patches/fix-armhf-prctl.patch, it is included
