@@ -3,6 +3,11 @@
 # $Id: rules 391 2009-03-07 05:21:19Z aurel32 $
 #
 
+# support parallel build using DEB_BUULD_OPTIONS=parallel=N
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  MAKEFLAGS += -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+endif
+
 # Packaging version
 DEB_VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
 
