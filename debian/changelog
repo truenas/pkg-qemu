@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-2~bpo60+1) squeeze-backports; urgency=low
+
+  * Rebuild for squeeze-backports:
+    disable fdt and usbredir support for squeeze
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 21 Oct 2012 17:33:28 +0400
+
 qemu (1.1.2+dfsg-2) unstable; urgency=low
 
   * remove debian/patches/fix-armhf-prctl.patch, it is included
