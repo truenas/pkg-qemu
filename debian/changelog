@@ -5,6 +5,8 @@ qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
     The fix (applied to stable-1.1.1) was partially wrong, as it actually
     added the msi_reset() call to two code paths instead of one as planned.
     Fix this by splitting the function in question into two parts.
+  * add build-dependency on libcap-dev [linux-any] to enable virtfs support
+    which has been dropped in 1.1. (Closes: #677654)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Sep 2012 23:12:49 +0400
 
