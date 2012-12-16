@@ -9,3 +9,4 @@ intel_hda-do-not-call-msi_reset-when-only-device-state-needs-resetting.patch
 blockdev-preserve-readonly-and-snapshot-states-across-media-changes.patch
 ahci-properly-reset-PxCMD-on-HBA-reset.patch
 eepro100-fix-network-hang-when-rx-buffers-run-out.patch
+fixes-related-to-processing-of-qemu-s-numa-option.patch
