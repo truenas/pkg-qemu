@@ -1,4 +1,4 @@
-qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
+qemu (1.1.2+dfsg-3) unstable; urgency=low
 
   * add build-dependency on libcap-dev [linux-any] to enable virtfs support
     which has been dropped in 1.1. (Closes: #677654)
@@ -32,7 +32,7 @@ qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
   * vmdk-fix-data-corruption-bug-in-WRITE-and-READ-handling.patch:
     possible data corruption bug in vmdk image format (Closes: #696050)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Sep 2012 23:12:49 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 16 Dec 2012 23:08:40 +0400
 
 qemu (1.1.2+dfsg-2) unstable; urgency=low
 
