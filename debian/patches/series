@@ -13,3 +13,4 @@ eepro100-fix-network-hang-when-rx-buffers-run-out.patch
 fixes-related-to-processing-of-qemu-s-numa-option.patch
 qcow2-fix-avail_sectors-in-cluster-allocation-code.patch
 qcow2-fix-refcount-table-size-calculation.patch
+tap-reset-vnet-header-size-on-open.patch

@@ -23,6 +23,8 @@ qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
     fixes data corruption in stacked qcow2 (Closes: #695905)
   * qcow2-fix-refcount-table-size-calculation.patch: another possible
     corruption or crash in qcow2 (Closes: #691569)
+  * tap-reset-vnet-header-size-on-open.patch: always ensure tap device is
+    in known state initially (Closes: #696057)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Sep 2012 23:12:49 +0400
 
