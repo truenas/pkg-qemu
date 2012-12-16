@@ -6,3 +6,4 @@ tcg_s390-fix-ld_st-with-CONFIG_TCG_PASS_AREG0.patch
 net-add--netdev-options-to-man-page.patch
 revert-serial-fix-retry-logic.patch
 intel_hda-do-not-call-msi_reset-when-only-device-state-needs-resetting.patch
+blockdev-preserve-readonly-and-snapshot-states-across-media-changes.patch

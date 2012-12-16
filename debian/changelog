@@ -8,6 +8,8 @@ qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
     added the msi_reset() call to two code paths instead of one as planned.
     Fix this by splitting the function in question into two parts.
     (Closes: #688964)
+  * blockdev-preserve-readonly-and-snapshot-states-across-media-changes.patch:
+    allow opening of read-only cdrom images/devices (Closes: #686776)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Sep 2012 23:12:49 +0400
 
