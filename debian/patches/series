@@ -8,6 +8,7 @@ revert-serial-fix-retry-logic.patch
 intel_hda-do-not-call-msi_reset-when-only-device-state-needs-resetting.patch
 blockdev-preserve-readonly-and-snapshot-states-across-media-changes.patch
 ahci-properly-reset-PxCMD-on-HBA-reset.patch
+e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
 eepro100-fix-network-hang-when-rx-buffers-run-out.patch
 fixes-related-to-processing-of-qemu-s-numa-option.patch
 qcow2-fix-avail_sectors-in-cluster-allocation-code.patch

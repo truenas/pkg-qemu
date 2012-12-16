@@ -12,6 +12,9 @@ qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
     allow opening of read-only cdrom images/devices (Closes: #686776)
   * ahci-properly-reset-PxCMD-on-HBA-reset.patch: fix windows install on ahci
     (Closes: #696052)
+  * e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch:
+    discard too long rx packets which may overflow guest buffer
+    (Closes: #696051)
   * eepro100-fix-network-hang-when-rx-buffers-run-out.patch:
     fix e100 stall (Closes: #696061)
   * fixes-related-to-processing-of-qemu-s-numa-option.patch:
