@@ -17,6 +17,10 @@ qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
     (Closes: #696051)
   * eepro100-fix-network-hang-when-rx-buffers-run-out.patch:
     fix e100 stall (Closes: #696061)
+  * fix possible network stalls/slowness in e1000 device emulation:
+    net-notify-iothread-after-flushing-queue.patch
+    e1000-flush-queue-whenever-can_receive-can-go-from-false-to-true.patch
+    (Closes: #696063)
   * fixes-related-to-processing-of-qemu-s-numa-option.patch:
     fixes numa handling (Closes: #691343)
   * qcow2-fix-avail_sectors-in-cluster-allocation-code.patch:

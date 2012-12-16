@@ -8,6 +8,8 @@ revert-serial-fix-retry-logic.patch
 intel_hda-do-not-call-msi_reset-when-only-device-state-needs-resetting.patch
 blockdev-preserve-readonly-and-snapshot-states-across-media-changes.patch
 ahci-properly-reset-PxCMD-on-HBA-reset.patch
+net-notify-iothread-after-flushing-queue.patch
+e1000-flush-queue-whenever-can_receive-can-go-from-false-to-true.patch
 e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
 eepro100-fix-network-hang-when-rx-buffers-run-out.patch
 fixes-related-to-processing-of-qemu-s-numa-option.patch
