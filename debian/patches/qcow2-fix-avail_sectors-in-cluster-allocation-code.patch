@@ -1,0 +1,54 @@
+From 69a43cccc36d3029bb1be68187dcbf718f8bff6c Mon Sep 17 00:00:00 2001
+From: Kevin Wolf <kwolf@redhat.com>
+Date: Tue, 22 May 2012 17:01:20 +0200
+Subject: qcow2: Fix avail_sectors in cluster allocation code
+Bug-Debian: http://bugs.debian.org/695905
+
+avail_sectors should really be the number of sectors from the start of
+the allocation, not from the start of the write request.
+
+We're lucky enough that this mistake didn't cause any real bug.
+avail_sectors is only used in the intialiser of QCowL2Meta:
+
+  .nb_available   = MIN(requested_sectors, avail_sectors),
+
+m->nb_available in turn is only used for COW at the end of the
+allocation. A COW occurs only if the request wasn't cluster aligned,
+which in turn would imply that requested_sectors was less than
+avail_sectors (both in the original and in the fixed version). In this
+case avail_sectors is ignored and therefore the mistake doesn't cause
+any misbehaviour.
+
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit b7ab0fea37c15ca9e249c42c46f5c48fd1a0943c)
+
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ block/qcow2-cluster.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
+index c173fcd..58e7e24 100644
+--- a/block/qcow2-cluster.c
++++ b/block/qcow2-cluster.c
+@@ -949,8 +949,16 @@ again:
+ 
+         /* save info needed for meta data update */
+         if (nb_clusters > 0) {
++            /*
++             * requested_sectors: Number of sectors from the start of the first
++             * newly allocated cluster to the end of the (possibly shortened
++             * before) write request.
++             *
++             * avail_sectors: Number of sectors from the start of the first
++             * newly allocated to the end of the last newly allocated cluster.
++             */
+             int requested_sectors = n_end - keep_clusters * s->cluster_sectors;
+-            int avail_sectors = (keep_clusters + nb_clusters)
++            int avail_sectors = nb_clusters
+                                 << (s->cluster_bits - BDRV_SECTOR_BITS);
+ 
+             *m = (QCowL2Meta) {
+-- 
+1.7.10.4
+
