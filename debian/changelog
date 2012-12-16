@@ -25,6 +25,8 @@ qemu-kvm (1.1.2+dfsg-3) UNRELEASED; urgency=low
     corruption or crash in qcow2 (Closes: #691569)
   * tap-reset-vnet-header-size-on-open.patch: always ensure tap device is
     in known state initially (Closes: #696057)
+  * vmdk-fix-data-corruption-bug-in-WRITE-and-READ-handling.patch:
+    possible data corruption bug in vmdk image format (Closes: #696050)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Sep 2012 23:12:49 +0400
 
