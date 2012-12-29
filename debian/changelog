@@ -35,7 +35,7 @@ qemu (1.3.0+dfsg-1~exp1) experimental; urgency=low
     but was still present)
   * add revert-serial-fix-retry-logic.patch that restores
     old (semi-)working behavour of a virtual serial port.
-  * re-introduce support parallel build using DEB_BUULD_OPTIONS=parallel=N,
+  * re-introduce support parallel build using DEB_BUILD_OPTIONS=parallel=N,
     this time by adding to $MAKEFLAGS instead of passing down to submakes
   * build-depend on libcap-ng-dev (for virtfs-proxy-helper)
 
