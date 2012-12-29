@@ -130,6 +130,7 @@ clean:
 	dh_testdir
 	rm -rf $(CURDIR)/*-build/
 	rm -f $(CURDIR)/*-stamp
+	find $(CURDIR)/scripts/ -name '*.pyc' -delete || :
 	dh_clean
 
 install: build
