@@ -18,7 +18,7 @@ qemu (1.3.0+dfsg-1~exp1) UNRELEASED; urgency=low
       moving eveything to debian/$pkg.install, because with the number
       of packages growing, amount of these small files becomes very
       large and the result is difficult to maintain.
-  * ship forgotten target-x86_64.conf and cpus-x86_64.conf in qemu-system-x86.
+  * ship forgotten target-x86_64.conf in qemu-system-x86.
   * ship virtfs-proxy-helper in qemu-utils.
   * stop shipping tundev.c, since it does not reflect the reality for
     a long time now (Closes: #325761, #325754).
