@@ -89,7 +89,7 @@ configure-stamp: configure
 			${conf_audio_drv}
 
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
-# Hack alert.
+# Hack alert.  XXX need to verify if it is still the case.
 # On recent kFreebsd, old USB host API has been removed,
 # but qemu did not learn to use new USB API.
 # Just do not build USB host support.
