@@ -9,6 +9,7 @@ qemu (1.3.0+dfsg-1~exp1) UNRELEASED; urgency=low
      net-add--netdev-options-to-man-page.patch
    - update 02_kfreebsd.patch
    - do not build mpc8544ds.dtb
+   - include new targets
   * Cleaned up the build system ALOT.  Larger changes:
     - used explicit lists of emulated targets in debian/rules
       and generate everything else from there, instead of repeating
