@@ -127,7 +127,6 @@ build-stamp: configure-stamp
 		qemu-build/pc-bios/spapr-rtas.bin
 	cmp qemu-build/pc-bios/spapr-rtas.bin pc-bios/spapr-rtas.bin
 
-
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# user-static build
 	# we use this invocation to build just the binaries
