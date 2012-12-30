@@ -87,6 +87,8 @@ configure-stamp: configure
 			--disable-linux-user \
 			--disable-bsd-user \
 			${conf_audio_drv}
+# remove links to blobs to ensure these wont be used
+	find system-build/pc-bios -maxdepth 1 -and -type l -and -delete
 
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 # Hack alert.  XXX need to verify if it is still the case.
