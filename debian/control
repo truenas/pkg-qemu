@@ -17,8 +17,8 @@ Build-Depends: debhelper (>= 5), nasm, device-tree-compiler, libfdt-dev,
  libxen-dev [amd64 i386],
  libiscsi-dev,
  libusbredirparser-dev [linux-any],
- libcap-dev,
- libcap-ng-dev,
+ libcap-dev [linux-any],
+ libcap-ng-dev [linux-any],
  libpixman-1-dev
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.3
