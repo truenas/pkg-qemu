@@ -28,6 +28,7 @@ common_configure_opts = \
 	--disable-blobs \
 	--disable-strip \
 	--with-system-pixman \
+	--interp-prefix=/etc/qemu-binfmt/%M \
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
        conf_audio_drv = --audio-drv-list=alsa,oss,sdl,pa
@@ -71,12 +72,13 @@ filter_binfmts = $(shell \
 
 binfmt_targets = $(filter-out $(filter_binfmts), $(all_binfmt_targets))
 
-user_configure_opts = \
-	--target-list="$(addsuffix -linux-user,${user_targets})" \
-	--interp-prefix=/etc/qemu-binfmt/%M \
-	--disable-system
+enable_linux_user = --enable-linux-user
 
-endif	# binfmt
+else
+
+enable_linux_user =
+
+endif	# linux
 
 configure-stamp: configure
 	dh_testdir
@@ -84,8 +86,7 @@ configure-stamp: configure
 	# system build
 	mkdir -p qemu-build && cd qemu-build && \
 		../configure ${common_configure_opts} \
-			--disable-linux-user \
-			--disable-bsd-user \
+			--enable-system --disable-user ${enable_linux_user} \
 			${conf_audio_drv}
 # remove links to blobs to ensure these wont be used
 	find qemu-build/pc-bios -maxdepth 1 -and -type l -and -delete
@@ -100,13 +101,10 @@ ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 endif
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-	# user build
-	mkdir -p user-build && cd user-build && \
-		../configure ${common_configure_opts} ${user_configure_opts}
-	# static user build
 	mkdir -p user-static-build && cd user-static-build && \
-		../configure ${common_configure_opts} ${user_configure_opts} \
-			--static
+		../configure ${common_configure_opts} \
+			--static --disable-system \
+			--target-list="$(addsuffix -linux-user,${user_targets})"
 endif
 	touch $@
 
@@ -134,9 +132,8 @@ build-stamp: configure-stamp
 
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-	# user and user-static build
+	# user-static build
 	# we use this invocation to build just the binaries
-	$(MAKE) -C $(CURDIR)/user-build $(foreach t,${user_targets},subdir-${t}-linux-user)
 	$(MAKE) -C $(CURDIR)/user-static-build $(foreach t,${user_targets},subdir-${t}-linux-user)
 endif
 	touch $@
@@ -166,16 +163,22 @@ install: build
 	done
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-	# qemu-user and qemu-user-static
-	for x in "" -static; do \
-	    mkdir -p debian/qemu-user$$x/usr/bin \
-		debian/qemu-user$$x/usr/share/man/man1 ;\
-	    for t in ${user_targets} ; do \
-		cp -p user$$x-build/$$t-linux-user/qemu-$$t \
-		    debian/qemu-user$$x/usr/bin/qemu-$$t$$x ;\
-		ln -s qemu-user$$x.1 \
-		    debian/qemu-user$$x/usr/share/man/man1/qemu-$$t$$x.1 ;\
-	    done ;\
+	# qemu-user
+	mkdir -p debian/qemu-user/usr/bin debian/qemu-user/usr/share/man/man1
+	for t in ${user_targets}; do \
+	    mv debian/tmp/usr/bin/qemu-$$t \
+		debian/qemu-user/usr/bin ; \
+	    ln -s qemu-user.1 \
+		debian/qemu-user/usr/share/man/man1/qemu-$$t.1 ; \
+	done
+
+	# qemu-user-static
+	mkdir -p debian/qemu-user-static/usr/bin debian/qemu-user-static/usr/share/man/man1
+	for t in ${user_targets}; do \
+	    cp -p user-static-build/$$t-linux-user/qemu-$$t \
+		debian/qemu-user-static/usr/bin/qemu-$$t-static ; \
+	    ln -s qemu-user-static.1 \
+		    debian/qemu-user-static/usr/share/man/man1/qemu-$$t-static.1 ; \
 	done
 
 	# binfmt support
