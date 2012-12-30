@@ -1,5 +1,12 @@
 General packaging items:
 
+* package new versions of:
+
+    libusbredirparser (>> 0.5)
+    libspice-server & libspice-protocol (>> 0.12)
+
+  and add versioned dependencies to debian/control.
+
 * Add -dbg package(s).
 
   Current linux-user binaries are built in a way that results in inclusion
