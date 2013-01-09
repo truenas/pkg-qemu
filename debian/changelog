@@ -1,5 +1,6 @@
 qemu (1.1.2+dfsg-4) UNRELEASED; urgency=low
 
+  * linux-user-fix-mips-32-on-64-prealloc-case.patch (Closes: #668658)
   * e1000-discard-oversized-packets-based-on-SBP_LPE.patch: the second
     half of the fix for CVE-2012-6075. (Finally Closes: #696051)
 
