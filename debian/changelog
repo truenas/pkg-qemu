@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-4) UNRELEASED; urgency=low
+
+  * e1000-discard-oversized-packets-based-on-SBP_LPE.patch: the second
+    half of the fix for CVE-2012-6075. (Finally Closes: #696051)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 09 Jan 2013 13:26:10 +0400
+
 qemu (1.1.2+dfsg-3) unstable; urgency=low
 
   * add build-dependency on libcap-dev [linux-any] to enable virtfs support

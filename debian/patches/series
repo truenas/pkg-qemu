@@ -11,6 +11,7 @@ ahci-properly-reset-PxCMD-on-HBA-reset.patch
 net-notify-iothread-after-flushing-queue.patch
 e1000-flush-queue-whenever-can_receive-can-go-from-false-to-true.patch
 e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
+e1000-discard-oversized-packets-based-on-SBP_LPE.patch
 eepro100-fix-network-hang-when-rx-buffers-run-out.patch
 fixes-related-to-processing-of-qemu-s-numa-option.patch
 qcow2-fix-avail_sectors-in-cluster-allocation-code.patch

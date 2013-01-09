@@ -3,6 +3,8 @@ From: Michael Contreras <michael@inetric.com>
 Date: Sun, 2 Dec 2012 20:11:22 -0800
 Subject: e1000: Discard packets that are too long if !SBP and !LPE
 Bug-Debian: http://bugs.debian.org/696051
+Comment: first half of the fix for CVE-2012-6075
+Comment: see also e1000-discard-oversized-packets-based-on-SBP_LPE.patch
 Comment: http://patchwork.ozlabs.org/patch/203291/
 Comment: Michael Contreras:
 Comment: Tested with linux guest. This error can potentially be exploited. At the very
