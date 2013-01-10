@@ -71,10 +71,10 @@ Package: qemu-system
 Architecture: amd64 arm armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel powerpc ppc64 s390x sparc sparc64
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-keymaps (>= ${source:Version}), vgabios (>= 0.6c-3~), seabios (>= 1.7.0~), openbios-ppc (>= 1.0+svn1060), openbios-sparc (>= 1.0+svn1060), openhackware, ipxe-qemu
-Recommends: vde2, qemu-utils
+Recommends: qemu-utils
 Breaks: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
-Suggests: samba
+Suggests: samba, vde2
 Description: QEMU full system emulation binaries
  QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
