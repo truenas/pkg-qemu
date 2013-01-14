@@ -1,0 +1,45 @@
+From 3b6ec9f2c61a265067b66bd282a7a1d263409e2b Mon Sep 17 00:00:00 2001
+From: Michael Contreras <michael@inetric.com>
+Date: Wed, 5 Dec 2012 13:31:30 -0500
+Subject: e1000: Discard oversized packets based on SBP|LPE
+Bug-Debian: http://bugs.debian.org/696051
+Comment: second half of the fix for CVE-2012-6075
+Comment: see also e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
+Comment: cherry-picked to 0.12 by mjt
+
+Discard packets longer than 16384 when !SBP to match the hardware behavior.
+
+Signed-off-by: Michael Contreras <michael@inetric.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ hw/e1000.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/hw/e1000.c b/hw/e1000.c
+index 07120ff..4cd9d6e 100644
+--- a/hw/e1000.c
++++ b/hw/e1000.c
+@@ -55,6 +55,8 @@ static int debugflags = DBGBIT(TXERR) | DBGBIT(GENERAL);
+ 
+ /* this is the size past which hardware will drop packets when setting LPE=0 */
+ #define MAXIMUM_ETHERNET_VLAN_SIZE 1522
++/* this is the size past which hardware will drop packets when setting LPE=1 */
++#define MAXIMUM_ETHERNET_LPE_SIZE 16384
+ 
+ /*
+  * HW models:
+@@ -638,8 +640,9 @@ e1000_receive(VLANClientState *nc, const uint8_t *buf, size_t size)
+     }
+ 
+     /* Discard oversized packets if !LPE and !SBP. */
+-    if (size > MAXIMUM_ETHERNET_VLAN_SIZE
+-        && !(s->mac_reg[RCTL] & E1000_RCTL_LPE)
++    if ((size > MAXIMUM_ETHERNET_LPE_SIZE ||
++        (size > MAXIMUM_ETHERNET_VLAN_SIZE
++        && !(s->mac_reg[RCTL] & E1000_RCTL_LPE)))
+         && !(s->mac_reg[RCTL] & E1000_RCTL_SBP)) {
+         return size;
+     }
+-- 
+1.7.10.4
+
