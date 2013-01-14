@@ -1,3 +1,12 @@
+qemu (1.1.2+dfsg-5) UNRELEASED; urgency=low
+
+  * fix USB regression introduced in 1.1 (Closes: #683983)
+    uhci-don-t-queue-up-packets-after-one-with-the-SPD-flag-set.patch
+    Big thanks to Peter Schaefer (https://bugs.launchpad.net/bugs/1033727)
+    for the help identifying the fix.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 14 Jan 2013 12:15:08 +0400
+
 qemu (1.1.2+dfsg-4) unstable; urgency=medium
 
   * linux-user-fix-mips-32-on-64-prealloc-case.patch (Closes: #668658)
