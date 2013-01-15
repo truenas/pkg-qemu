@@ -1,4 +1,4 @@
-qemu (0.12.5+dfsg-3squeeze3) stable-secutiry; urgency=low
+qemu (0.12.5+dfsg-3squeeze3) stable-security; urgency=low
 
   * CVE-2012-6075 fix (Closes: #696051):
     e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
