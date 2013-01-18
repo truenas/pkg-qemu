@@ -18,7 +18,7 @@ Build-Depends: debhelper (>= 9), device-tree-compiler, libfdt-dev,
  libspice-server-dev (>= 0.12.2~) [amd64 i386],
  libxen-dev [amd64 i386],
  libiscsi-dev,
- libusbredirparser-dev [linux-any],
+ libusbredirparser-dev (>= 0.6~) [linux-any],
  libcap-dev [linux-any],
  libcap-ng-dev [linux-any],
  libpixman-1-dev

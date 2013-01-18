@@ -63,6 +63,6 @@ enable-spice	amd64|i386
 #enable-rbd	# rbd isn't enabled yet
 #enable-smartcard
 #enable-smartcard-nss
-#enable-usb-redir	# XXX needs libusbredirparser-dev >= 0.5
+enable-usb-redir	linux
 #enable-seccomp		# XXX todo
 #enable-glusterfs	# XXX todo
