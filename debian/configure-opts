@@ -51,6 +51,7 @@ enable-vde
 enable-libiscsi
 
 enable-linux-aio	linux
+enable-xfsctl		linux
 
 # kvm is linux-specific
 enable-kvm	linux
