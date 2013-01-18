@@ -80,7 +80,7 @@ configure-stamp: configure
 	mkdir -p qemu-build && cd qemu-build && \
 		../configure ${common_configure_opts} \
 			--enable-system --disable-user ${enable_linux_user} \
-			$(shell sh debian/configure-opts $(DEB_HOST_ARCH) $(DEB_HOST_ARCH_OS))
+			$(shell sh debian/configure-opts $(DEB_HOST_ARCH) $(DEB_HOST_ARCH_OS)) \
 			$(QEMU_CONFIGURE_OPTIONS)
 
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
