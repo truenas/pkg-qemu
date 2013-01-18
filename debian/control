@@ -22,7 +22,7 @@ Build-Depends: debhelper (>= 9),
  libbluetooth-dev [linux-any],
 # --enable-brlapi
  libbrlapi-dev,
-# still needed?
+# needed for virtfs
  libcap-dev [linux-any],
 # --enable-cap-ng
  libcap-ng-dev [linux-any],
