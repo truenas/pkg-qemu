@@ -58,7 +58,8 @@ enable-vhost-net linux	# is vhost-net linux-specific
 #enable-xen	amd64|i386	XXX todo! does not work for some reason
 
 # should we enable spice on more arches?
-#enable-spice	amd64		XXX todo! does not work with old spice
+enable-spice	amd64|i386
+
 #enable-rbd	# rbd isn't enabled yet
 #enable-smartcard
 #enable-smartcard-nss
