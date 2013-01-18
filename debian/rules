@@ -30,6 +30,7 @@ common_configure_opts = \
 	--disable-strip \
 	--with-system-pixman \
 	--interp-prefix=/etc/qemu-binfmt/%M \
+	--localstatedir=/var \
 
 # list of system (softmmu) targets, from ./configure
 system_targets = \
