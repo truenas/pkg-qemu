@@ -15,6 +15,8 @@ qemu (1.3.0+dfsg-1~exp4) UNRELEASED; urgency=low
   * set permissions of /dev/kvm in qemu-system.postinst
     the same way it is done in old qemu-kvm package
   * set --localstatedir=/var (will be used later by guest agent)
+  * bump qemu-system dependency on seabios to 1.7.2
+    and add symlinks for acpi-dsdt.aml and q35-acpi-dsdt.aml
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Dec 2012 17:12:20 +0400
 

@@ -116,8 +116,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  openbios-sparc (>= 1.0+svn1060),
  openhackware,
  qemu-keymaps (>= ${source:Version}),
-# XXX todo: bump seabios version once 1.7.2 will be out
- seabios (>= 1.7.0~),
+ seabios (>= 1.7.2~),
  vgabios (>= 0.6c-3~),
 Recommends: qemu-utils
 Breaks: qemu (<< 0.11.0-2)
