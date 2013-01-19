@@ -23,6 +23,7 @@ qemu (1.3.0+dfsg-1~exp4) UNRELEASED; urgency=low
     Add Breaks: for old iproute without bridge controls.
     Add iproute to Recomments, so that the scripts will actually work
     (previous script used sudo which should be in recommends too)
+  * enable seccomp (and libseccomp-dev b-d) on linux
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Dec 2012 17:12:20 +0400
 
