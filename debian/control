@@ -118,7 +118,9 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  qemu-keymaps (>= ${source:Version}),
  seabios (>= 1.7.2~),
  vgabios (>= 0.6c-3~),
-Recommends: qemu-utils
+# iproute before 20110315 were unable to deal with bridge (set master device)
+Breaks: iproute (<< 20110315-1)
+Recommends: qemu-utils, iproute
 Breaks: qemu (<< 0.11.0-2)
 Replaces: qemu (<< 0.11.0-2)
 Suggests: samba, vde2

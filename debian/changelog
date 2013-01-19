@@ -17,6 +17,12 @@ qemu (1.3.0+dfsg-1~exp4) UNRELEASED; urgency=low
   * set --localstatedir=/var (will be used later by guest agent)
   * bump qemu-system dependency on seabios to 1.7.2
     and add symlinks for acpi-dsdt.aml and q35-acpi-dsdt.aml
+  * import qemu-ifup and qemu-ifdown scripts from qemu-kvm,
+    and modify qemu-ifup to allow usage of just `ip' command
+    from iproute package (if installed) instead of old brctl+ifconfig.
+    Add Breaks: for old iproute without bridge controls.
+    Add iproute to Recomments, so that the scripts will actually work
+    (previous script used sudo which should be in recommends too)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Dec 2012 17:12:20 +0400
 
