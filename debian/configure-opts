@@ -53,7 +53,8 @@ enable-libiscsi
 
 enable-linux-aio	linux
 enable-xfsctl		linux
-enable-seccomp		linux
+# somehow seccomp is linux-x86-specific
+enable-seccomp		linux-amd64 | linux-i386
 
 # kvm is linux-specific
 enable-kvm	linux
