@@ -13,6 +13,7 @@ while read opt cond; do
   [ -z "$cond" ] && x=y
   [ -n "$x" ] || eval "case \"$1\" in $cond) x=y;; esac"
   [ -n "$x" ] || eval "case \"$2\" in $cond) x=y;; esac"
+  [ -n "$x" ] || eval "case \"$1-$2\" in $cond) x=y;; esac"
   [ -z "$x" ] || echo --$opt
 done
 
