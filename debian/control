@@ -138,16 +138,6 @@ Description: QEMU full system emulation binaries
  It can also be used to provide virtual hosting of several virtual
  machines on a single server.
 
-Package: qemu-kvm
-Architecture: i386 amd64
-Multi-Arch: foreign
-Depends: qemu-system (>= ${source:Version})
-Provides: kvm
-Section: oldlibs
-Description: QEMU Full virtualization on x86 hardware (transitional package)
- QEMU is a fast processor emulator.  This package is a transitional
- package from old qemu-kvm to qemu-system.  It is safe to remove it.
-
 Package: qemu-user
 Architecture: amd64 arm armel armhf hppa i386 ia64 mips mipsel powerpc ppc64 s390x sparc sparc64
 Multi-Arch: foreign
@@ -200,3 +190,14 @@ Description: QEMU utilities
   * qemu-io:  QEMU disk exerciser
   * qemu-nbd: QEMU disk network block device server
   * virtfs-proxy-helper: QEMU proxy helper for virtfs (aka 9pfs)
+
+Package: qemu-kvm
+Architecture: i386 amd64
+Multi-Arch: foreign
+Depends: qemu-system (>= ${source:Version})
+Provides: kvm
+Section: oldlibs
+Description: QEMU Full virtualization on x86 hardware (transitional package)
+ QEMU is a fast processor emulator.  This package is a transitional
+ package from old qemu-kvm to qemu-system.  It is safe to remove it.
+
