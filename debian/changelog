@@ -3,6 +3,8 @@ qemu (1.3.0+dfsg-4exp) UNRELEASED; urgency=low
   * install forgotten /etc/qemu-ifdown (dummy, but qemu complains without it)
   * install virtfs-proxy-helper in qemu-system not qemu-utils
   * add qemu-kvm.NEWS mentioning transition from qemu-kvm to qemu-system-x86_64.
+  * do not pass -cpu kvm64 to qemu in kvm wrapper script, previous qemu-kvm
+    used qemu64 cpu instead - the same as new qemu uses.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 22 Jan 2013 00:05:46 +0400
 
