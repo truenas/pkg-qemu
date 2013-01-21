@@ -5,6 +5,8 @@ qemu-build/pc-bios/*.dtb usr/share/qemu/
 qemu-build/pc-bios/spapr-rtas.bin /usr/share/qemu/
 debian/tmp/etc/qemu/target-x86_64.conf
 pc-bios/qemu-icon.bmp /usr/share/qemu/
+debian/tmp/usr/bin/virtfs-proxy-helper
+debian/tmp/usr/share/man/man1/virtfs-proxy-helper.1
 # qemu-kvm compatibility wrapper
 debian/kvm /usr/bin/kvm
 # until we have qemu-docs package,
