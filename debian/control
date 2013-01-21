@@ -98,8 +98,8 @@ Package: qemu-keymaps
 Architecture: all
 Multi-Arch: foreign
 Depends: ${misc:Depends}
-Breaks: qemu (<< 0.11.0-2), qemu-system (<< 0.12.4+dfsg-4)
-Replaces: qemu (<< 0.11.0-2), qemu-system (<< 0.12.4+dfsg-4)
+Breaks: qemu (<< 0.11.0-2), qemu-system (<< 0.12.4+dfsg-4), qemu-common (<< 1.2.0.dfsg-1)
+Replaces: qemu (<< 0.11.0-2), qemu-system (<< 0.12.4+dfsg-4), qemu-common (<< 1.2.0.dfsg-1)
 Description: QEMU keyboard maps
  QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
@@ -121,10 +121,12 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  seabios (>= 1.7.2~),
  vgabios (>= 0.6c-3~),
 Recommends: qemu-utils, iproute
-Breaks: qemu (<< 0.11.0-2),
+Conflicts: kvm
+Provides: qemu-kvm, kvm
+Breaks: qemu (<< 0.11.0-2), qemu-kvm (<< 1.2.0.dfsg-1), qemu-common (<< 1.2.0.dfsg-1), kvm,
 # iproute before 20110315 were unable to deal with bridge (set master device)
   iproute (<< 20110315-1)
-Replaces: qemu (<< 0.11.0-2)
+Replaces: qemu (<< 0.11.0-2), qemu-kvm (<< 1.2.0.dfsg-1), qemu-common (<< 1.2.0.dfsg-1), kvm
 Suggests: samba, vde2
 Description: QEMU full system emulation binaries
  QEMU is a fast processor emulator: currently the package supports
@@ -194,7 +196,6 @@ Package: qemu-kvm
 Architecture: i386 amd64
 Multi-Arch: foreign
 Depends: qemu-system (>= ${source:Version})
-Provides: kvm
 Section: oldlibs
 Description: QEMU Full virtualization on x86 hardware (transitional package)
  QEMU is a fast processor emulator.  This package is a transitional
