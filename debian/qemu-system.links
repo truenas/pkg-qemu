@@ -3,7 +3,6 @@ usr/share/seabios/optionrom/linuxboot.bin usr/share/qemu/linuxboot.bin
 usr/share/seabios/optionrom/multiboot.bin usr/share/qemu/multiboot.bin
 usr/share/seabios/optionrom/extboot.bin usr/share/qemu/extboot.bin
 usr/share/seabios/optionrom/kvmvapic.bin usr/share/qemu/kvmvapic.bin
-usr/share/seabios/optionrom/vapic.bin usr/share/qemu/vapic.bin
 usr/share/seabios/acpi-dsdt.aml usr/share/qemu/acpi-dsdt.aml
 usr/share/seabios/q35-acpi-dsdt.aml usr/share/qemu/q35-acpi-dsdt.aml
 usr/share/vgabios/vgabios.bin usr/share/qemu/vgabios.bin
