@@ -7,8 +7,6 @@ debian/tmp/etc/qemu/target-x86_64.conf
 pc-bios/qemu-icon.bmp /usr/share/qemu/
 debian/tmp/usr/bin/virtfs-proxy-helper
 debian/tmp/usr/share/man/man1/virtfs-proxy-helper.1
-# qemu-kvm compatibility wrapper
-debian/kvm /usr/bin/kvm
 # until we have qemu-docs package,
 # these are duplicated here and in qemu metapackage
 debian/tmp/usr/share/doc/qemu/qemu-tech.html /usr/share/doc/qemu-system/
