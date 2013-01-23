@@ -1,12 +1,5 @@
 General packaging items:
 
-* package new versions of:
-
-    libusbredirparser (>> 0.5)
-    libspice-server & libspice-protocol (>> 0.12)
-
-  and add versioned dependencies to debian/control.
-
 * create package for qemu-ga (#676959)
 
 * decide what to do with qemu-bridge-helper (#691138)
