@@ -1,3 +1,5 @@
+# warning: when editing this file,
+# do not forget to update qemu-system.install.kfreebsd
 debian/qemu-ifup etc/
 debian/qemu-ifdown etc/
 debian/tmp/usr/share/man/man1/qemu.1
