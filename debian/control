@@ -125,8 +125,11 @@ Conflicts: kvm
 Provides: qemu-kvm, kvm
 Breaks: qemu-kvm (<< 1.2.0.dfsg-1), qemu-common (<< 1.2.0.dfsg-1), kvm,
 # iproute before 20110315 were unable to deal with bridge (set master device)
-  iproute (<< 20110315-1)
-Replaces: qemu-kvm (<< 1.2.0.dfsg-1), qemu-common (<< 1.2.0.dfsg-1), kvm
+  iproute (<< 20110315-1),
+# qemu-utils had virtfs-proxy-helper
+  qemu-utils (<<1.3.0+dfsg-4)
+Replaces: qemu-kvm (<< 1.2.0.dfsg-1), qemu-common (<< 1.2.0.dfsg-1), kvm,
+  qemu-utils (<<1.3.0+dfsg-4)
 Suggests: samba, vde2
 Description: QEMU full system emulation binaries
  QEMU is a fast processor emulator: currently the package supports
