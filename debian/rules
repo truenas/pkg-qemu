@@ -168,6 +168,13 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	dh_install -pqemu-system debian/kvm /usr/bin/
 endif
 
+# virtfs-proxy-helper is linux-specific
+	for f in usr/bin/virtfs-proxy-helper \
+	         usr/share/man/man1/virtfs-proxy-helper.1 ; do \
+	  mkdir -p debian/qemu-system/$${f%.*} ; \
+	  mv debian/tmp/$$f debian/qemu-system/$$f ; \
+	done
+
 	# qemu-user
 	mkdir -p debian/qemu-user/usr/bin debian/qemu-user/usr/share/man/man1
 	for t in ${user_targets}; do \
