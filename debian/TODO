@@ -1,10 +1,5 @@
 General packaging items:
 
-* think about qemu-ifup for kfreebsd.  Currently it uses ip or brctl
-  commands, neither of which is available on kfreebsd.  More, there's
-  no linux-like bridges there.  We should have a separate ifup script
-  for kfreebsd.
-
 * create package for qemu-ga (#676959)
 
 * decide what to do with qemu-bridge-helper (#691138)

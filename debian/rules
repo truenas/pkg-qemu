@@ -204,6 +204,10 @@ endif
 		$(addprefix debian/binfmts/qemu-,${binfmt_targets})
 endif
 
+# qemu-ifup is arch-specific
+	install -D debian/qemu-ifup.$(DEB_HOST_ARCH_OS) \
+		debian/qemu-system/etc/qemu-ifup
+
 	dh_install --list-missing
 	dh_installdocs
 	dh_installchangelogs Changelog

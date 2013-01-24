@@ -1,4 +1,3 @@
-debian/qemu-ifup etc/
 debian/qemu-ifdown etc/
 debian/tmp/usr/share/man/man1/qemu.1
 qemu-build/pc-bios/*.dtb usr/share/qemu/
