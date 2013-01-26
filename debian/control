@@ -361,6 +361,23 @@ Description: QEMU utilities
   * qemu-io:  QEMU disk exerciser
   * qemu-nbd: QEMU disk network block device server
 
+Package: qemu-guest-agent
+Architecture: any
+Multi-Arch: foreign
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Guest-side qemu-system agent
+ QEMU is a fast processor emulator: currently the package supports
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This package provides a daemon (agent) to run inside qemu-system
+ guests (full system emulation).  It communicates with the host using
+ a virtio-serial channel org.qemu.guest_agent.0.
+ .
+ Install this package on a system which is running as guest inside
+ qemu virtual machine.  It is not used on the host.
+
 Package: qemu-kvm
 Architecture: i386 amd64
 Multi-Arch: foreign

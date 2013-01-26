@@ -1,6 +1,6 @@
 General packaging items:
 
-* create package for qemu-ga (#676959)
+* write startup scripts for qemu-guest-agent
 
 * decide what to do with qemu-bridge-helper (#691138)
 
