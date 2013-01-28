@@ -1,4 +1,4 @@
-qemu (1.3.0+dfsg-5exq) UNRELEASED; urgency=low
+qemu (1.3.0+dfsg-6exp) UNRELEASED; urgency=low
 
   * don't install virtfs-proxy-helper in its own subdir in /usr/bin
 
