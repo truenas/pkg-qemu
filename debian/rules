@@ -191,7 +191,7 @@ endif
 # virtfs-proxy-helper is linux-specific
 	for f in usr/bin/virtfs-proxy-helper \
 	         usr/share/man/man1/virtfs-proxy-helper.1 ; do \
-	  mkdir -p debian/qemu-system-common/$${f%.*} ; \
+	  mkdir -p debian/qemu-system-common/$${f%/*} ; \
 	  mv debian/tmp/$$f debian/qemu-system-common/$$f ; \
 	done
 
