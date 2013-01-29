@@ -71,5 +71,5 @@ enable-spice	amd64|i386
 #enable-rbd	# rbd isn't enabled yet
 #enable-smartcard-nss	# requires libnss3-dev and libtool
 enable-usb-redir	linux
-#enable-seccomp		# XXX todo
+
 #enable-glusterfs	# XXX todo
