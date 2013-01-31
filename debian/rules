@@ -237,6 +237,7 @@ endif
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	dh_installinit -pqemu-system-x86 --no-restart-on-upgrade
 endif
+	dh_installinit -pqemu-guest-agent
 	dh_link
 	dh_strip
 	dh_compress
