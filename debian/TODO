@@ -1,5 +1,20 @@
 General packaging items:
 
+* figure out what to do with kvm initscripts and udev rules.
+  Currently we ship kvm udev rules in qemu-system-common, even
+  if kvm modules makes no sence on many arches and even if
+  corresponding qemu-system-$arch might not be installed.
+  We load kvm module (on x86 only) in qemu-system-x86, but
+  we don't fix permissions of /dev/kvm at install time (see
+  qemu-system-common.postinst).  It all is.. wrong.
+
+  Maybe we should provide all - the kvm udev rules, kvm module
+  loading script, and postinst snippet to change perms - in
+  all relevant arch-specific packages only when arch is native?
+  But how to do that properly?
+
+* permissions/ownership for /dev/vhost_net???
+
 * write startup scripts for qemu-guest-agent
 
 * decide what to do with qemu-bridge-helper (#691138)
