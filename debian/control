@@ -400,4 +400,7 @@ Section: oldlibs
 Description: QEMU Full virtualization on x86 hardware (transitional package)
  QEMU is a fast processor emulator.  This package is a transitional
  package from old qemu-kvm to qemu-system-x86.  It is safe to remove it.
+ .
+ Please note that old qemu-kvm configuration files (in /etc/kvm/) are
+ no longer used.
 
