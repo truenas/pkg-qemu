@@ -19,6 +19,7 @@ LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed
 DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
+# we add another set of configure options from debian/control
 common_configure_opts = \
 	--with-pkgversion="Debian $(DEB_VERSION)" \
 	--extra-cflags="$(CFLAGS)" \
@@ -89,10 +90,11 @@ configure-stamp: configure
 
 	# system build
 	mkdir -p qemu-build && cd qemu-build && \
-		../configure ${common_configure_opts} \
-			--enable-system --disable-user ${enable_linux_user} \
-			$(shell sh debian/configure-opts $(DEB_HOST_ARCH) $(DEB_HOST_ARCH_OS)) \
-			$(QEMU_CONFIGURE_OPTIONS)
+	   ../configure ${common_configure_opts} \
+		--enable-system --disable-user ${enable_linux_user} \
+		$(shell sh debian/extract-config-opts \
+		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
+		$(QEMU_CONFIGURE_OPTIONS)
 
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 # Hack alert.  qemu-1.3 still needs this.
