@@ -146,9 +146,3 @@ General packaging items:
 
   Note that in both cases -dbg is much larger than sum of all other binary
   packages.
-
-Small list of things not to forget for any new (upstream) release:
-
-* Make sure it works with the BIOS files in testing or otherwise raise the
-  dependency versions
-
