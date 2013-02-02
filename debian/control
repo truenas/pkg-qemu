@@ -52,16 +52,16 @@ Build-Depends: debhelper (>= 9),
  libsdl1.2-dev (>> 1.2.1),
 # --enable-seccomp	linux-amd64|linux-i386
  libseccomp-dev (>> 1.0.0) [linux-amd64 linux-i386],
-# --enable-spice	*-amd64|*-i386
- libspice-server-dev (>= 0.12.2~) [amd64 i386],
+# --enable-spice	linux-amd64|linux-i386
+ libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386],
 # --enable-usb-redir	linux-*
  libusbredirparser-dev (>= 0.6~) [linux-any],
 # --enable-vde
  libvdeplug2-dev,
 # needed for sdl
  libx11-dev,
-# --enable-xen	*-amd64|*-i386
- libxen-dev [amd64 i386],
+# --enable-xen	linux-amd64|linux-i386
+ libxen-dev [linux-amd64 linux-i386],
 # XXX need to check minimum linux-headers requiriment
  linux-libc-dev (>= 2.6.34) [linux-any],
 # --enable-uuid

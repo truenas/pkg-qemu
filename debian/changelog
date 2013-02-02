@@ -1,3 +1,13 @@
+qemu (1.4.0~rc0+dfsg-2exp) UNRELEASED; urgency=low
+
+  * fix debian/control arch fields. Build-Depends: foo [bar]
+    means foo will be selected for build on LINUX-bar, not any-bar.
+    So stop using [bar], always use [linux-bar] or [any-bar],
+    as appropriate.  This fix spice and xen (non)selection on
+    kfreebsd-{i386,amd64}.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 03 Feb 2013 00:39:41 +0400
+
 qemu (1.4.0~rc0+dfsg-1exp) experimental; urgency=low
 
   * new upstream 1.4.0-rc0 (first release candidate).
