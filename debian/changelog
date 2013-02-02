@@ -1,5 +1,12 @@
-qemu (1.3.0+dfsg-6exp) UNRELEASED; urgency=low
+qemu (1.4.0~rc0+dfsg-1exp) UNRELEASED; urgency=low
 
+  * new upstream 1.4.0-rc0 (first release candidate).
+  * remove patches included upstream:
+    e1000-discard-oversized-packets-based-on-SBP_LPE.patch
+    link-seccomp-only-with-softmmu-targets.patch
+    revert-serial-fix-retry-logic.patch
+    savevm.c-cleanup-system-includes.patch
+  * refresh qemu-ifunc-sparc.patch
   * don't install virtfs-proxy-helper in its own subdir in /usr/bin
   * add qemu-io manpage.  Thank you Asias He for the work!
     (Closes: #652518)
