@@ -7,6 +7,8 @@ qemu (1.4.0~rc0+dfsg-1exp) UNRELEASED; urgency=low
     revert-serial-fix-retry-logic.patch
     savevm.c-cleanup-system-includes.patch
   * refresh qemu-ifunc-sparc.patch
+  * add fix-virtio-net-for-win-guests.patch bandaid to make virtio-net
+    in windows guest to work again
   * don't install virtfs-proxy-helper in its own subdir in /usr/bin
   * add qemu-io manpage.  Thank you Asias He for the work!
     (Closes: #652518)

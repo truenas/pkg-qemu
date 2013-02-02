@@ -1,2 +1,3 @@
 02_kfreebsd.patch
 qemu-ifunc-sparc.patch
+fix-virtio-net-for-win-guests.patch
