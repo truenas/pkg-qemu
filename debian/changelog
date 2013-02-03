@@ -11,6 +11,7 @@ qemu (1.4.0~rc0+dfsg-2exp) UNRELEASED; urgency=low
 qemu (1.4.0~rc0+dfsg-1exp) experimental; urgency=low
 
   * new upstream 1.4.0-rc0 (first release candidate).
+    (Closes: #549195)
   * remove patches included upstream:
     e1000-discard-oversized-packets-based-on-SBP_LPE.patch
     link-seccomp-only-with-softmmu-targets.patch
