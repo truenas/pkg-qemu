@@ -5,6 +5,7 @@ qemu (1.4.0~rc0+dfsg-2exp) UNRELEASED; urgency=low
     So stop using [bar], always use [linux-bar] or [any-bar],
     as appropriate.  This fix spice and xen (non)selection on
     kfreebsd-{i386,amd64}.
+  * fix manpage "links" generation (man qemu-system-* was broken)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 03 Feb 2013 00:39:41 +0400
 
