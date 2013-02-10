@@ -37,6 +37,7 @@ Build-Depends: debhelper (>= 9),
 # --enable-fdt
  libfdt-dev,
 # --enable-vnc-tls
+# --enable-vnc-ws
  libgnutls-dev,
 # --enable-libiscsi
  libiscsi-dev,
