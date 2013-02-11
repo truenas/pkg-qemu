@@ -82,8 +82,8 @@ Build-Depends: debhelper (>= 9),
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.3
 Homepage: http://www.qemu.org/
-Vcs-Browser: http://git.debian.org/?p=pkg-qemu/qemu.git
-Vcs-Git: git://git.debian.org/git/pkg-qemu/qemu.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-qemu/qemu.git
+Vcs-Git: git://anonscm.debian.org/pkg-qemu/qemu.git
 
 Package: qemu
 Architecture: amd64 arm armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel powerpc ppc64 s390x sparc sparc64
