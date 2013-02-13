@@ -393,7 +393,7 @@ Description: Guest-side qemu-system agent
 Package: qemu-kvm
 Architecture: i386 amd64
 Multi-Arch: foreign
-Depends: qemu-system-x86 (>= ${source:Version})
+Depends: ${misc:Depends}, qemu-system-x86 (>= ${source:Version})
 Section: oldlibs
 Description: QEMU Full virtualization on x86 hardware (transitional package)
  QEMU is a fast processor emulator.  This package is a transitional
