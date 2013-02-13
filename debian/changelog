@@ -11,13 +11,13 @@ qemu (1.4.0~rc0+dfsg-2exp) UNRELEASED; urgency=low
   * add a check for (vlc) container to qemu-system-x86 initscript
 
   [ Steve Langasek ]
- * Pass --enable-uname-release=2.6.32 for the user emulation builds, so that
-   we have a sensible baseline kernel value regardless of what the
-   underlying host kernel is.  This makes eglibc happier when running under
-   emulation on a very old kernel for instance (whose host syscall ABI has
-   nothing to do with what emulated syscalls are supported), and probably
-   also lets us steer clear for the moment of code that has problem with
-   the new kernel upstream versioning convention.  LP: #921078.
+  * Pass --enable-uname-release=2.6.32 for the user emulation builds, so that
+    we have a sensible baseline kernel value regardless of what the
+    underlying host kernel is.  This makes eglibc happier when running under
+    emulation on a very old kernel for instance (whose host syscall ABI has
+    nothing to do with what emulated syscalls are supported), and probably
+    also lets us steer clear for the moment of code that has problem with
+    the new kernel upstream versioning convention.  LP: #921078.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 03 Feb 2013 00:39:41 +0400
 
