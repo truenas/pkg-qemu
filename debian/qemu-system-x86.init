@@ -13,7 +13,7 @@
 
 # check if we're running inside an (lxc) container
 # (we may copy or move this to the postinst script too, to skip installing it)
-grep -zq ^container= /proc/1/environ 2>/dev/null && exit 0
+grep -zqs ^container= /proc/1/environ && exit 0
 
 . /lib/lsb/init-functions
 
