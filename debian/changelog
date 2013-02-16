@@ -3,6 +3,7 @@ qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
   * set qemu-kvm priority to extra
   * fix distribution field in last qemu-system.NEWS entry
   * bump Standards-Version to 3.9.4 (no changes needed)
+  * fix update-rc.d args for qemu-system-x86
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 16 Feb 2013 13:26:04 +0400
 

@@ -237,7 +237,7 @@ endif
 	dh_installchangelogs Changelog
 	dh_installudev
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
-	dh_installinit -pqemu-system-x86 --no-restart-on-upgrade
+	dh_installinit -pqemu-system-x86 --no-restart-on-upgrade -u start 20 S .
 endif
 	dh_installinit -pqemu-guest-agent
 	dh_link
