@@ -1,6 +1,8 @@
-qemu (1.4.0~rc0+dfsg-2exp) UNRELEASED; urgency=low
+qemu (1.4.0+dfsg-1exp) UNRELEASED; urgency=low
 
   [ Michael Tokarev ]
+  * 1.4.0 final release
+  * remove fix-virtio-net-for-win-guests.patch (upstream now has better fix)
   * fix debian/control arch fields. Build-Depends: foo [bar]
     means foo will be selected for build on LINUX-bar, not any-bar.
     So stop using [bar], always use [linux-bar] or [any-bar],
