@@ -1,3 +1,9 @@
+qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
+
+  * set qemu-kvm priority to extra
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 16 Feb 2013 13:26:04 +0400
+
 qemu (1.4.0+dfsg-1exp) experimental; urgency=low
 
   [ Michael Tokarev ]

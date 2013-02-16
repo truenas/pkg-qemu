@@ -395,6 +395,7 @@ Architecture: i386 amd64
 Multi-Arch: foreign
 Depends: ${misc:Depends}, qemu-system-x86 (>= ${source:Version})
 Section: oldlibs
+Priority: extra
 Description: QEMU Full virtualization on x86 hardware (transitional package)
  QEMU is a fast processor emulator.  This package is a transitional
  package from old qemu-kvm to qemu-system-x86.  It is safe to remove it.
