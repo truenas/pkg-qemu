@@ -1,4 +1,4 @@
-qemu (1.4.0+dfsg-1exp) UNRELEASED; urgency=low
+qemu (1.4.0+dfsg-1exp) experimental; urgency=low
 
   [ Michael Tokarev ]
   * 1.4.0 final release
@@ -21,7 +21,7 @@ qemu (1.4.0+dfsg-1exp) UNRELEASED; urgency=low
     also lets us steer clear for the moment of code that has problem with
     the new kernel upstream versioning convention.  LP: #921078.
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 03 Feb 2013 00:39:41 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 16 Feb 2013 12:34:54 +0400
 
 qemu (1.4.0~rc0+dfsg-1exp) experimental; urgency=low
 
