@@ -5,6 +5,7 @@ qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
   * bump Standards-Version to 3.9.4 (no changes needed)
   * fix update-rc.d args for qemu-system-x86
   * pre-Depend on adduser for qemu-system-common (Closes: #700840)
+  * move guest agent binary (qemu-ga) to /usr/sbin
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 16 Feb 2013 13:26:04 +0400
 
