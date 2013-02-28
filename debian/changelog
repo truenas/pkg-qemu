@@ -1,3 +1,18 @@
+qemu (1.1.2+dfsg-6) UNRELEASED; urgency=low
+
+  * another bugfix for USB, upstream from early days of past-1.1.
+    usb-split-endpoint-init-and-reset.patch.  With certain redirected
+    to guest USB devices, qemu process may crash:
+
+     usb_packet_complete: Assertion `((&ep->queue)->tqh_first) == p' failed.
+
+    The patch fixes this by de-coupling reset and complete paths.
+    Big thanks goes to Joseph Price who found the fix by doing a
+    reverse git bisection.
+    (Closes: #701926)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Feb 2013 20:55:34 +0400
+
 qemu (1.1.2+dfsg-5) unstable; urgency=low
 
   * fix USB regression introduced in 1.1 (Closes: #683983)
