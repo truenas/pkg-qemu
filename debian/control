@@ -55,6 +55,7 @@ Build-Depends: debhelper (>= 9),
  libseccomp-dev (>> 1.0.0) [linux-amd64 linux-i386],
 # --enable-spice	linux-amd64|linux-i386
  libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386],
+ libspice-protocol-dev (>= 0.12.3~) [linux-amd64 linux-i386],
 # --enable-usb-redir	linux-*
  libusbredirparser-dev (>= 0.6~) [linux-any],
 # --enable-vde
