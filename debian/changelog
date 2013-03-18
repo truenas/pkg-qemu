@@ -1,3 +1,9 @@
+qemu (1.1.2+dfsg-6a) unstable; urgency=low
+
+  * reupload to remove two unrelated files slipped in debian/
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 18 Mar 2013 10:09:37 +0400
+
 qemu (1.1.2+dfsg-6) unstable; urgency=low
 
   * another bugfix for USB, upstream from early days of past-1.1.
