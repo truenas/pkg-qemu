@@ -10,6 +10,7 @@ qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
   * add versioned build-depends on libspice-protocol-dev (>= 0.12.3)
 
   [ Aurelien Jarno ]
+  * debian/rules: don't build spapr-rtas.bin from .hex file.
   * qemu-system-ppc: add a depends on qemu-slof and add the corresponding
     links (Closes: #686979).
 
