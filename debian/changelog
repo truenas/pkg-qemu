@@ -1,5 +1,6 @@
 qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
 
+  [ Michael Tokarev ]
   * set qemu-kvm priority to extra
   * fix distribution field in last qemu-system.NEWS entry
   * bump Standards-Version to 3.9.4 (no changes needed)
@@ -7,6 +8,10 @@ qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
   * pre-Depend on adduser for qemu-system-common (Closes: #700840)
   * move guest agent binary (qemu-ga) to /usr/sbin
   * add versioned build-depends on libspice-protocol-dev (>= 0.12.3)
+
+  [ Aurelien Jarno ]
+  * qemu-system-ppc: add a depends on qemu-slof and add the corresponding
+    links (Closes: #686979).
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 16 Feb 2013 13:26:04 +0400
 
