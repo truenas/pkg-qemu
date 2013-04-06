@@ -8,6 +8,8 @@ qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
   * pre-Depend on adduser for qemu-system-common (Closes: #700840)
   * move guest agent binary (qemu-ga) to /usr/sbin
   * add versioned build-depends on libspice-protocol-dev (>= 0.12.3)
+  * refresh qemu-ifunc-sparc.patch, use proper submission from patchwork
+    (sparc-linux-user-fix-missing-symbols...) instead.
 
   [ Aurelien Jarno ]
   * debian/rules: don't build spapr-rtas.bin from .hex file.
