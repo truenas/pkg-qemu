@@ -1,4 +1,4 @@
-qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
+qemu (1.4.0+dfsg-2exp) experimental; urgency=low
 
   [ Michael Tokarev ]
   * set qemu-kvm priority to extra
@@ -11,13 +11,14 @@ qemu (1.4.0+dfsg-2exp) UNRELEASED; urgency=low
   * refresh qemu-ifunc-sparc.patch, use proper submission from patchwork
     (sparc-linux-user-fix-missing-symbols...) instead.
   * apply 1.4.1 upstream stable patch
+  * release as 1.4.0
 
   [ Aurelien Jarno ]
   * debian/rules: don't build spapr-rtas.bin from .hex file.
   * qemu-system-ppc: add a depends on qemu-slof and add the corresponding
     links (Closes: #686979).
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 16 Feb 2013 13:26:04 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 18 Apr 2013 14:45:30 +0400
 
 qemu (1.4.0+dfsg-1exp) experimental; urgency=low
 
