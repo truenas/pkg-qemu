@@ -1,3 +1,9 @@
+qemu (1.4.0+dfsg-2exq) UNRELEASED; urgency=low
+
+  * define localstatedir (for guest-agent)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 05 May 2013 21:45:15 +0400
+
 qemu (1.4.0+dfsg-2exp) experimental; urgency=low
 
   [ Michael Tokarev ]
