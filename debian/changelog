@@ -2,6 +2,8 @@ qemu (1.5.0~rc0+dfsg-1) UNRELEASED; urgency=low
 
   * update to new upstream release candidate (1.5.0-rc0)
   * remove --audio-card-list
+  * added new moxie system target
+  * added new linux-user targets: mips64 mips64el mipsn32 mipsn32el
   * define localstatedir (for guest-agent)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 05 May 2013 21:45:15 +0400
