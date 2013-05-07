@@ -6,6 +6,7 @@ qemu (1.5.0~rc0+dfsg-1) UNRELEASED; urgency=low
   * added new linux-user targets: mips64 mips64el mipsn32 mipsn32el
   * add libgtk2 and libvte to dependencies (new UI)
   * added libssh2 to dependencies (new block device)
+  * s/libvdeplug2-dev/libvdeplug-dev/
   * define localstatedir (for guest-agent)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 05 May 2013 21:45:15 +0400

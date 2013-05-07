@@ -66,7 +66,7 @@ Build-Depends: debhelper (>= 9),
 # --enable-libssh2
  libssh2-1-dev,
 # --enable-vde
- libvdeplug2-dev,
+ libvdeplug-dev,
 # for gtk2, revisit for gtk3
  libvte-dev (>> 0.18.0~),
 # needed for sdl
