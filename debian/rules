@@ -33,7 +33,6 @@ common_configure_opts = \
 	--with-system-pixman \
 	--interp-prefix=/etc/qemu-binfmt/%M \
 	--localstatedir=/var \
-	--audio-card-list=ac97,es1370,sb16,cs4231a,adlib,gus,hda \
 	--enable-uname-release=2.6.32 \
 
 # list of system (softmmu) targets, from ./configure
