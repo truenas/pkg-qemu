@@ -39,6 +39,9 @@ Build-Depends: debhelper (>= 9),
 # --enable-vnc-tls
 # --enable-vnc-ws
  libgnutls-dev,
+# --enable-gtk
+# --with-gtkabi=2.0
+ libgtk2.0-dev,
 # --enable-libiscsi
  libiscsi-dev,
 # --enable-curses
@@ -60,6 +63,8 @@ Build-Depends: debhelper (>= 9),
  libusbredirparser-dev (>= 0.6~) [linux-any],
 # --enable-vde
  libvdeplug2-dev,
+# for gtk2, revisit for gtk3
+ libvte-dev (>> 0.18.0~),
 # needed for sdl
  libx11-dev,
 # --enable-xen	linux-amd64|linux-i386
