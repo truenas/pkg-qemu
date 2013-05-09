@@ -1,6 +1,13 @@
+qemu (1.5.0~rc0+dfsg-2) UNRELEASED; urgency=low
+
+  * mention that 1.5 closes #697641
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 09 May 2013 12:54:45 +0400
+
 qemu (1.5.0~rc0+dfsg-1) experimental; urgency=low
 
   * update to new upstream release candidate (1.5.0-rc0)
+    (Closes: #697641)
   * remove --audio-card-list
   * added new moxie system target
   * added new linux-user targets: mips64 mips64el mipsn32 mipsn32el
