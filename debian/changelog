@@ -1,5 +1,6 @@
-qemu (1.5.0~rc0+dfsg-2) UNRELEASED; urgency=low
+qemu (1.5.0~rc1+dfsg-1) UNRELEASED; urgency=low
 
+  * update to 1.5.0-rc1
   * mention that 1.5 closes #697641 and #705544
   * bump dependency on openbios (openbios-ppc for qemu-system-ppc,
     openbios-sparc for qemu-system-sparc) from 1.0+svn1060 to 1.1
