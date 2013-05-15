@@ -306,7 +306,7 @@ Architecture: amd64 arm armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends},
  qemu-system-common (>= ${source:Version}), qemu-keymaps (>= ${source:Version}),
- vgabios (>= 0.6c-3~), seabios (>= 1.7.2~), ipxe-qemu
+ vgabios (>= 0.6c-3~), seabios (>= 1.7.2-2~), ipxe-qemu
 Provides: ${sysprovides:x86}, qemu-kvm, kvm
 Conflicts: kvm
 Breaks:
