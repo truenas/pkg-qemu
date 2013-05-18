@@ -9,6 +9,8 @@ qemu (1.5.0~rc1+dfsg-1) UNRELEASED; urgency=low
   * add retry-pxe-after-efi.patch to try pxe-XXXX.rom after unsuccessfully
     trying efi-XXXX.rom - this is for NICs, until pxe-qemu package will be
     able to provide necessary efi-XXXX.rom files.
+  * add (versioned) dependency on libusb-1.0 now when the right version
+    is available in debian
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 09 May 2013 12:54:45 +0400
 
