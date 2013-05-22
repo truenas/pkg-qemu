@@ -31,10 +31,8 @@
 /* For tb_lock */
 #include "cpu.h"
 #include "tcg.h"
-#include "qemu-timer.h"
-#include "envlist.h"
-
-#define DEBUG_LOGFILE "/tmp/qemu.log"
+#include "qemu/timer.h"
+#include "qemu/envlist.h"
 
 int singlestep;
 #if defined(CONFIG_USE_GUEST_BASE)
@@ -681,7 +679,7 @@ static void usage(void)
            "-g port           wait gdb connection to port\n"
            "-L path           set the elf interpreter prefix (default=%s)\n"
            "-s size           set the stack size in bytes (default=%ld)\n"
-           "-cpu model        select CPU (-cpu ? for list)\n"
+           "-cpu model        select CPU (-cpu help for list)\n"
            "-drop-ld-preload  drop LD_PRELOAD for target process\n"
            "-E var=value      sets/modifies targets environment variable(s)\n"
            "-U var            unsets targets environment variable(s)\n"
@@ -691,11 +689,12 @@ static void usage(void)
            "-bsd type         select emulated BSD type FreeBSD/NetBSD/OpenBSD (default)\n"
            "\n"
            "Debug options:\n"
-           "-d options   activate log (default logfile=%s)\n"
-           "-D logfile   override default logfile location\n"
-           "-p pagesize  set the host page size to 'pagesize'\n"
-           "-singlestep  always run in singlestep mode\n"
-           "-strace      log system calls\n"
+           "-d item1[,...]    enable logging of specified items\n"
+           "                  (use '-d help' for a list of log items)\n"
+           "-D logfile        write logs to 'logfile' (default stderr)\n"
+           "-p pagesize       set the host page size to 'pagesize'\n"
+           "-singlestep       always run in singlestep mode\n"
+           "-strace           log system calls\n"
            "\n"
            "Environment variables:\n"
            "QEMU_STRACE       Print system calls and arguments similar to the\n"
@@ -709,8 +708,7 @@ static void usage(void)
            ,
            TARGET_ARCH,
            interp_prefix,
-           x86_stack_size,
-           DEBUG_LOGFILE);
+           x86_stack_size);
     exit(1);
 }
 
@@ -733,7 +731,7 @@ int main(int argc, char **argv)
 {
     const char *filename;
     const char *cpu_model;
-    const char *log_file = DEBUG_LOGFILE;
+    const char *log_file = NULL;
     const char *log_mask = NULL;
     struct target_pt_regs regs1, *regs = &regs1;
     struct image_info info1, *info = &info1;
@@ -825,7 +823,7 @@ int main(int argc, char **argv)
             qemu_uname_release = argv[optind++];
         } else if (!strcmp(r, "cpu")) {
             cpu_model = argv[optind++];
-            if (strcmp(cpu_model, "?") == 0) {
+            if (is_help_option(cpu_model)) {
 /* XXX: implement xxx_cpu_list for targets that still miss it */
 #if defined(cpu_list)
                     cpu_list(stdout, &fprintf);
@@ -861,20 +859,16 @@ int main(int argc, char **argv)
     }
 
     /* init debug */
-    cpu_set_log_filename(log_file);
+    qemu_set_log_filename(log_file);
     if (log_mask) {
         int mask;
-        const CPULogItem *item;
 
-        mask = cpu_str_to_log_mask(log_mask);
+        mask = qemu_str_to_log_mask(log_mask);
         if (!mask) {
-            printf("Log items (comma separated):\n");
-            for (item = cpu_log_items; item->mask != 0; item++) {
-                printf("%-10s %s\n", item->name, item->help);
-            }
+            qemu_print_log_usage(stdout);
             exit(1);
         }
-        cpu_set_log(mask);
+        qemu_set_log(mask);
     }
 
     if (optind >= argc) {
@@ -917,8 +911,8 @@ int main(int argc, char **argv)
         fprintf(stderr, "Unable to find CPU definition\n");
         exit(1);
     }
-#if defined(TARGET_I386) || defined(TARGET_SPARC) || defined(TARGET_PPC)
-    cpu_state_reset(env);
+#if defined(TARGET_SPARC) || defined(TARGET_PPC)
+    cpu_reset(ENV_GET_CPU(env));
 #endif
     thread_env = env;
 
@@ -1010,13 +1004,13 @@ int main(int argc, char **argv)
 
     env->cr[0] = CR0_PG_MASK | CR0_WP_MASK | CR0_PE_MASK;
     env->hflags |= HF_PE_MASK;
-    if (env->cpuid_features & CPUID_SSE) {
+    if (env->features[FEAT_1_EDX] & CPUID_SSE) {
         env->cr[4] |= CR4_OSFXSR_MASK;
         env->hflags |= HF_OSFXSR_MASK;
     }
 #ifndef TARGET_ABI32
     /* enable 64 bit mode if possible */
-    if (!(env->cpuid_ext2_features & CPUID_EXT2_LM)) {
+    if (!(env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
         fprintf(stderr, "The selected x86 CPU does not support 64 bit mode\n");
         exit(1);
     }

@@ -1,3 +1,284 @@
+qemu (1.5.0+dfsg-2) UNRELEASED; urgency=low
+
+  * merged development history of wheezy and experimental branches.
+    Now the history is ordered by version, but is not chronological.
+    As a base we now have wheezy (1.1.2+dfsg-6a) version.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 22 May 2013 12:02:01 +0400
+
+qemu (1.5.0+dfsg-1) unstable; urgency=low
+
+  * update to 1.5.0 (Closes: #707732)
+  * upload to unstable
+  * mention that 1.5 closes #697641 and #705544
+  * bump dependency on openbios (openbios-ppc for qemu-system-ppc,
+    openbios-sparc for qemu-system-sparc) from 1.0+svn1060 to 1.1
+    (Closes: #707727)
+  * bump dependency on seabios to be >= 1.7.2-2
+  * add retry-pxe-after-efi.patch to try pxe-XXXX.rom after unsuccessfully
+    trying efi-XXXX.rom - this is for NICs, until pxe-qemu package will be
+    able to provide necessary efi-XXXX.rom files.
+  * add (versioned) dependency on libusb-1.0 now when the right version
+    is available in debian
+  * use-fixed-data-path.patch: do not try to derive data path from
+    executable location, always use /usr/share/qemu
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 21 May 2013 00:49:47 +0400
+
+qemu (1.5.0~rc0+dfsg-1) experimental; urgency=low
+
+  * update to new upstream release candidate (1.5.0-rc0)
+    (Closes: #697641, #705544)
+  * remove --audio-card-list
+  * added new moxie system target
+  * added new linux-user targets: mips64 mips64el mipsn32 mipsn32el
+  * add libgtk2 and libvte to dependencies (new UI)
+  * added libssh2 to dependencies (new block device)
+  * s/libvdeplug2-dev/libvdeplug-dev/
+  * define localstatedir (for guest-agent)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 08 May 2013 01:01:01 +0400
+
+qemu (1.4.0+dfsg-2exp) experimental; urgency=low
+
+  [ Michael Tokarev ]
+  * set qemu-kvm priority to extra
+  * fix distribution field in last qemu-system.NEWS entry
+  * bump Standards-Version to 3.9.4 (no changes needed)
+  * fix update-rc.d args for qemu-system-x86
+  * pre-Depend on adduser for qemu-system-common (Closes: #700840)
+  * move guest agent binary (qemu-ga) to /usr/sbin
+  * add versioned build-depends on libspice-protocol-dev (>= 0.12.3)
+  * refresh qemu-ifunc-sparc.patch, use proper submission from patchwork
+    (sparc-linux-user-fix-missing-symbols...) instead.
+  * apply 1.4.1 upstream stable patch
+  * release as 1.4.0
+
+  [ Aurelien Jarno ]
+  * debian/rules: don't build spapr-rtas.bin from .hex file.
+  * qemu-system-ppc: add a depends on qemu-slof and add the corresponding
+    links (Closes: #686979).
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 18 Apr 2013 14:45:30 +0400
+
+qemu (1.4.0+dfsg-1exp) experimental; urgency=low
+
+  [ Michael Tokarev ]
+  * 1.4.0 final release
+  * remove fix-virtio-net-for-win-guests.patch (upstream now has better fix)
+  * fix debian/control arch fields. Build-Depends: foo [bar]
+    means foo will be selected for build on LINUX-bar, not any-bar.
+    So stop using [bar], always use [linux-bar] or [any-bar],
+    as appropriate.  This fix spice and xen (non)selection on
+    kfreebsd-{i386,amd64}.
+  * fix manpage "links" generation (man qemu-system-* was broken)
+  * change Vcs fields to point to anonscm.debian.org (lintian)
+  * add a check for (lxc) container to qemu-system-x86 initscript
+
+  [ Steve Langasek ]
+  * Pass --enable-uname-release=2.6.32 for the user emulation builds, so that
+    we have a sensible baseline kernel value regardless of what the
+    underlying host kernel is.  This makes eglibc happier when running under
+    emulation on a very old kernel for instance (whose host syscall ABI has
+    nothing to do with what emulated syscalls are supported), and probably
+    also lets us steer clear for the moment of code that has problem with
+    the new kernel upstream versioning convention.  LP: #921078.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 16 Feb 2013 12:34:54 +0400
+
+qemu (1.4.0~rc0+dfsg-1exp) experimental; urgency=low
+
+  * new upstream 1.4.0-rc0 (first release candidate).
+    (Closes: #549195)
+  * remove patches included upstream:
+    e1000-discard-oversized-packets-based-on-SBP_LPE.patch
+    link-seccomp-only-with-softmmu-targets.patch
+    revert-serial-fix-retry-logic.patch
+    savevm.c-cleanup-system-includes.patch
+  * refresh qemu-ifunc-sparc.patch
+  * add fix-virtio-net-for-win-guests.patch bandaid to make virtio-net
+    in windows guest to work again
+  * don't install virtfs-proxy-helper in its own subdir in /usr/bin
+  * add qemu-io manpage.  Thank you Asias He for the work!
+    (Closes: #652518)
+  * move config options from debian/configure-opts into debian/control,
+    to keep list of build-deps & corresponding config flags in one place
+  * use initscript from old qemu-kvm package to load kvm modules for
+    qemu-system-x86, and clean it up (Closes: #699404)
+  * load vhost_net module in the initscript too
+  * mention default NIC change in qemu-kvm.NEWS and old conffiles
+  * remove mentions of (ubuntu-specific) qemu-common from debian/control
+    for now, as it does not help anyway (other changes are needed anyway
+    and it is better to keep them in one place)
+  * add a (preliminary) qemu-guest-agent startup script
+  * qemu-system-x86 break libvirt0 << 1.0, because older versions
+    didn't work with qemu 1.3+ correctly
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Feb 2013 21:05:28 +0400
+
+qemu (1.3.0+dfsg-5exp) experimental; urgency=low
+
+  * qemu-system-split: split qemu-system into several target-specific packages:
+    qemu-system-arm, qemu-system-mips, qemu-system-ppc, qemu-system-sparc,
+    qemu-system-x86, and qemu-system-misc, plus qemu-system-common.
+    (Closes: #636000)
+  * add initial qemu-guest-agent package (just the binary for now,
+    no startup script) (Closes: #676959)
+  * do not try to install (linux-specific) virtfs-proxy-helper on kfreebsd
+  * change order of audio drivers, in particular put pulseaudio (pa) first
+  * ship OS-specific qemu-ifup (use trivial ifconfig invocation on kfreebsd)
+  * qemu-system replaces qemu-utils due to virtfs-proxy-helper binary
+  * chmod +x qemu-ifdown
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 28 Jan 2013 15:05:57 +0400
+
+qemu (1.3.0+dfsg-4exp) experimental; urgency=low
+
+  * install forgotten /etc/qemu-ifdown (dummy, but qemu complains without it)
+  * install virtfs-proxy-helper in qemu-system not qemu-utils
+  * add qemu-kvm.NEWS mentioning transition from qemu-kvm to qemu-system-x86_64.
+  * do not pass -cpu kvm64 to qemu in kvm wrapper script, previous qemu-kvm
+    used qemu64 cpu instead - the same as new qemu uses.
+  * install kvm wrapper on x86 only, and install it as /usr/bin/kvm not
+    /usr/bin/kvm/kvm (Closes: #698736).
+  * stop shipping /usr/share/qemu/vapic.bin link (qemu uses kvmvapic.bin)
+  * stop shipping /usr/share/qemu/vgabios.bin link (qemu uses vgabios-*.bin)
+  * enable all guest audio devices
+  * add breaks/replaces/provides/conflicts with kvm (very old package),
+    qemu-kvm, and ubuntu's qemu-common.
+  * stop caring about old (pre-squeeze) qemu
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 23 Jan 2013 11:08:47 +0400
+
+qemu (1.3.0+dfsg-3exp) experimental; urgency=low
+
+  * add ability to specify os-arch in configure-opts
+  * libseccomp is linux-x86 not linux-any
+  * e1000-discard-oversized-packets-based-on-SBP_LPE.patch
+    CVE-2012-6075 (Closes: #696051)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 21 Jan 2013 02:54:15 +0400
+
+qemu (1.3.0+dfsg-2exp) experimental; urgency=low
+
+  * qemu-nbd and qemu-io should be installed on kFreeBSD too
+  * install qemu-system docs into /usr/share/doc/qemu-system,
+    not .../qemu (Closes: #697085)
+  * do not depend on ipxe, it does not provide our ROMs
+  * move vde2 from Recommends to Suggests, since it isn't
+    used often
+  * require libspice-server-dev >= 0.12.2 and require it on i386 too,
+    enable spice support
+  * require libusbredirparser-dev >= 0.6, enable usb-redir
+  * enable xen explicitly on amd64|i386
+  * enable xfsctl explicitly on linux
+  * sort build-deps in debian/control and add comments
+  * set permissions of /dev/kvm in qemu-system.postinst
+    the same way it is done in old qemu-kvm package
+  * set --localstatedir=/var (will be used later by guest agent)
+  * bump qemu-system dependency on seabios to 1.7.2
+    and add symlinks for acpi-dsdt.aml and q35-acpi-dsdt.aml
+  * import qemu-ifup and qemu-ifdown scripts from qemu-kvm,
+    and modify qemu-ifup to allow usage of just `ip' command
+    from iproute package (if installed) instead of old brctl+ifconfig.
+    Add Breaks: for old iproute without bridge controls.
+    Add iproute to Recomments, so that the scripts will actually work
+    (previous script used sudo which should be in recommends too)
+  * enable seccomp (and libseccomp-dev b-d) on linux,
+    and add link-seccomp-only-with-softmmu-targets.patch
+  * use $(MAKE) not make when building spapr-rtas.bin
+  * update debian/watch (new place and new extensions)
+  * add qemu-kvm package (transitional, depends on qemu-system),
+    and add /usr/bin/kvm wrapper that calls qemu-system-x86_64
+    with some arguments to match original qemu-kvm behavour.
+    (Closes: #560853)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 20 Jan 2013 22:12:11 +0400
+
+qemu (1.3.0+dfsg-1~exp3) experimental; urgency=low
+
+  * enable vde on kFreebsd too (no idea why it was disabled)
+  * bluez (libbluetooth) is linux-specific
+  * savevm.c-cleanup-system-includes.patch: remove excessive #includes
+    from savevm.c (fixes FTBFS on kFreebsd due to wrong #include)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Dec 2012 15:52:23 +0400
+
+qemu (1.3.0+dfsg-1~exp2) experimental; urgency=low
+
+  * mention that 1.3: Closes #622319, #597527, #593547, #660154
+  * libcap and libcap-ng are linux-specific
+  * include spapr-rtas.bin file in a pre-compiled pseudo-hex-with-assembly
+    form in debian/spapr-rtas.hex, "compile" it (using sed magic) in
+    build step and compare the result with the actually built binary
+    on ppc.  This binary is needed for ppc system emulation (qemu-system-ppc*).
+    (Closes: #670909).
+  * rename system-build to qemu-build, and merge user-build to qemu-build,
+    building qemu-system and qemu-user in one go.  Only qemu-system-static
+    is left in separate build dir.  Note that current qemu-user is
+    linux-specific, even if qemu has bsd-user targets.
+  * add or32 user target
+  * debian/configure-opts - list of (possible arch- or os-specific)
+    features to enable/disable.  This is in order to ensure we always
+    build with specific options enabled and error out if new upstream
+    will dislike our dependencies, or if the deps will not work.
+    Move config_audio_drv from debian/rules to this file too.
+    For now do not explicitly enable xen, spice, usb-redir, since
+    these requires some more work.
+    Also pass $(QEMU_CONFIGURE_OPTIONS) to qemu configure line,
+    to be able to quickly override some options.
+  * do not build-depend on sharutils, since no uuencoded binaries
+    are shipped anymore
+  * do not build-depend on nasm, we don't compile from assembly anymore
+  * remove libgpmg1-dev from build-depends.  It was due to #267174,
+    because of static link of qemu with libsdl.  Now only qemu-user-static
+    is linked statically, and this one does not use libsdl.
+  * add myself to uploaders, and remove dm-upload-allowed
+  * added main docs to qemu-system package
+  * specify --libexecdir=/usr/lib to configure
+  * mark all packages as Multi-Arch: foreign
+    (at least it is possible to install i386 versions on amd64 arch)
+  * replace "flags OC" with "credentials yes" in debian/binfmts/*,
+    since that's the format update-binfmts expects to enable setuid
+    binaries. (Closes: #683205)
+  * build-depend on debhelper 9, and set debian/compat to 9
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Dec 2012 01:40:35 +0400
+
+qemu (1.3.0+dfsg-1~exp1) experimental; urgency=low
+
+  [ Michael Tokarev ]
+  * new upstream version (1.3.0)
+    (Closes: #676374, #622319, #597527, #593547, #660154)
+   - Removed patches included upstream:
+     do-not-include-libutil.h.patch
+     configure-nss-usbredir.patch
+     tcg_s390-fix-ld_st-with-CONFIG_TCG_PASS_AREG0.patch
+     net-add--netdev-options-to-man-page.patch
+   - update 02_kfreebsd.patch
+   - do not build mpc8544ds.dtb
+   - include new targets
+  * Cleaned up the build system ALOT.  Larger changes:
+    - used explicit lists of emulated targets in debian/rules
+      and generate everything else from there, instead of repeating
+      these lists in lots of places.
+    - stop using debian/$pkg.manpages and other auxilary files like this,
+      moving eveything to debian/$pkg.install, because with the number
+      of packages growing, amount of these small files becomes very
+      large and the result is difficult to maintain.
+  * ship forgotten target-x86_64.conf in qemu-system.
+  * ship virtfs-proxy-helper in qemu-utils.
+  * stop shipping tundev.c, since it does not reflect the reality for
+    a long time now (Closes: #325761, #325754).
+  * re-introduce support parallel build using DEB_BUILD_OPTIONS=parallel=N,
+    this time by adding to $MAKEFLAGS instead of passing down to submakes
+  * build-depend on libcap-ng-dev (for virtfs-proxy-helper)
+
+  [ Vagrant Cascadian ]
+  * Add libcap-dev to Build-Depends to support virtfs-proxy-helper.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 30 Dec 2012 01:52:21 +0400
+
 qemu (1.1.2+dfsg-6a) unstable; urgency=low
 
   * reupload to remove two unrelated files slipped in debian/

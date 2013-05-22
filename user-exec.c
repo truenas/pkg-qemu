@@ -18,8 +18,7 @@
  */
 #include "config.h"
 #include "cpu.h"
-#include "dyngen-exec.h"
-#include "disas.h"
+#include "disas/disas.h"
 #include "tcg.h"
 
 #undef EAX
@@ -41,7 +40,7 @@
 static void exception_action(CPUArchState *env1)
 {
 #if defined(TARGET_I386)
-    raise_exception_err_env(env1, env1->exception_index, env1->error_code);
+    raise_exception_err(env1, env1->exception_index, env1->error_code);
 #else
     cpu_loop_exit(env1);
 #endif
@@ -58,10 +57,6 @@ void cpu_resume_from_signal(CPUArchState *env1, void *puc)
     struct sigcontext *uc = puc;
 #endif
 
-    env = env1;
-
-    /* XXX: restore cpu registers saved in host registers */
-
     if (puc) {
         /* XXX: use siglongjmp ? */
 #ifdef __linux__
@@ -74,8 +69,8 @@ void cpu_resume_from_signal(CPUArchState *env1, void *puc)
         sigprocmask(SIG_SETMASK, &uc->sc_mask, NULL);
 #endif
     }
-    env->exception_index = -1;
-    longjmp(env->jmp_env, 1);
+    env1->exception_index = -1;
+    siglongjmp(env1->jmp_env, 1);
 }
 
 /* 'pc' is the host PC at which the exception was raised. 'address' is
@@ -86,12 +81,8 @@ static inline int handle_cpu_signal(uintptr_t pc, unsigned long address,
                                     int is_write, sigset_t *old_set,
                                     void *puc)
 {
-    TranslationBlock *tb;
     int ret;
 
-    if (cpu_single_env) {
-        env = cpu_single_env; /* XXX: find a correct solution for multithread */
-    }
 #if defined(DEBUG_SIGNAL)
     qemu_printf("qemu: SIGSEGV pc=0x%08lx address=%08lx w=%d oldset=0x%08lx\n",
                 pc, address, is_write, *(unsigned long *)old_set);
@@ -103,7 +94,8 @@ static inline int handle_cpu_signal(uintptr_t pc, unsigned long address,
     }
 
     /* see if it is an MMU fault */
-    ret = cpu_handle_mmu_fault(env, address, is_write, MMU_USER_IDX);
+    ret = cpu_handle_mmu_fault(cpu_single_env, address, is_write,
+                               MMU_USER_IDX);
     if (ret < 0) {
         return 0; /* not an MMU fault */
     }
@@ -111,17 +103,12 @@ static inline int handle_cpu_signal(uintptr_t pc, unsigned long address,
         return 1; /* the MMU fault was handled without causing real CPU fault */
     }
     /* now we have a real cpu fault */
-    tb = tb_find_pc(pc);
-    if (tb) {
-        /* the PC is inside the translated code. It means that we have
-           a virtual CPU fault */
-        cpu_restore_state(tb, env, pc);
-    }
+    cpu_restore_state(cpu_single_env, pc);
 
     /* we restore the process signal mask as the sigreturn should
        do it (XXX: use sigsetjmp) */
     sigprocmask(SIG_SETMASK, old_set, NULL);
-    exception_action(env);
+    exception_action(cpu_single_env);
 
     /* never comes here */
     return 1;
@@ -449,7 +436,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
     unsigned long pc;
     int is_write;
 
-#if (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 3))
+#if defined(__GLIBC__) && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 3))
     pc = uc->uc_mcontext.gregs[R15];
 #else
     pc = uc->uc_mcontext.arm_pc;
@@ -588,7 +575,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
 int cpu_signal_handler(int host_signum, void *pinfo,
                        void *puc)
 {
-    struct siginfo *info = pinfo;
+    siginfo_t *info = pinfo;
     struct ucontext *uc = puc;
     unsigned long pc = uc->uc_mcontext.sc_iaoq[0];
     uint32_t insn = *(uint32_t *)pc;

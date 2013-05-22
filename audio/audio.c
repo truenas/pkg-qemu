@@ -23,9 +23,9 @@
  */
 #include "hw/hw.h"
 #include "audio.h"
-#include "monitor.h"
-#include "qemu-timer.h"
-#include "sysemu.h"
+#include "monitor/monitor.h"
+#include "qemu/timer.h"
+#include "sysemu/sysemu.h"
 
 #define AUDIO_CAP "audio"
 #include "audio_int.h"
@@ -818,6 +818,7 @@ static int audio_attach_capture (HWVoiceOut *hw)
         sw->active = hw->enabled;
         sw->conv = noop_conv;
         sw->ratio = ((int64_t) hw_cap->info.freq << 32) / sw->info.freq;
+        sw->vol = nominal_volume;
         sw->rate = st_rate_start (sw->info.freq, hw_cap->info.freq);
         if (!sw->rate) {
             dolog ("Could not start rate conversion for `%s'\n", SW_NAME (sw));
@@ -827,8 +828,9 @@ static int audio_attach_capture (HWVoiceOut *hw)
         QLIST_INSERT_HEAD (&hw_cap->sw_head, sw, entries);
         QLIST_INSERT_HEAD (&hw->cap_head, sc, entries);
 #ifdef DEBUG_CAPTURE
-        asprintf (&sw->name, "for %p %d,%d,%d",
-                  hw, sw->info.freq, sw->info.bits, sw->info.nchannels);
+        sw->name = g_strdup_printf ("for %p %d,%d,%d",
+                                    hw, sw->info.freq, sw->info.bits,
+                                    sw->info.nchannels);
         dolog ("Added %s active = %d\n", sw->name, sw->active);
 #endif
         if (sw->active) {

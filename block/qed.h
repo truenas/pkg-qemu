@@ -15,7 +15,7 @@
 #ifndef BLOCK_QED_H
 #define BLOCK_QED_H
 
-#include "block_int.h"
+#include "block/block_int.h"
 
 /* The layout of a QED file is as follows:
  *
@@ -209,6 +209,11 @@ typedef struct {
 
 void *gencb_alloc(size_t len, BlockDriverCompletionFunc *cb, void *opaque);
 void gencb_complete(void *opaque, int ret);
+
+/**
+ * Header functions
+ */
+int qed_write_header_sync(BDRVQEDState *s);
 
 /**
  * L2 cache functions

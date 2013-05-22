@@ -6,7 +6,7 @@
  */
 
 #include <slirp.h>
-#include "qemu-timer.h"
+#include "qemu/timer.h"
 
 static void
 ifs_insque(struct mbuf *ifm, struct mbuf *ifmhead)
@@ -177,11 +177,6 @@ void if_start(Slirp *slirp)
     }
 
     while (ifm_next) {
-        /* check if we can really output */
-        if (!slirp_can_output(slirp->opaque)) {
-            break;
-        }
-
         ifm = ifm_next;
         from_batchq = next_from_batchq;
 

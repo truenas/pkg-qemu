@@ -24,16 +24,16 @@
  * THE SOFTWARE.
  */
 #include <hw/hw.h>
-#include <hw/pc.h>
-#include <hw/pci.h>
-#include <hw/isa.h>
-#include "block.h"
-#include "sysemu.h"
-#include "dma.h"
+#include <hw/i386/pc.h>
+#include <hw/pci/pci.h>
+#include <hw/isa/isa.h>
+#include "block/block.h"
+#include "sysemu/sysemu.h"
+#include "sysemu/dma.h"
 
 #include <hw/ide/pci.h>
 
-static uint64_t bmdma_read(void *opaque, target_phys_addr_t addr,
+static uint64_t bmdma_read(void *opaque, hwaddr addr,
                            unsigned size)
 {
     BMDMAState *bm = opaque;
@@ -60,7 +60,7 @@ static uint64_t bmdma_read(void *opaque, target_phys_addr_t addr,
     return val;
 }
 
-static void bmdma_write(void *opaque, target_phys_addr_t addr,
+static void bmdma_write(void *opaque, hwaddr addr,
                         uint64_t val, unsigned size)
 {
     BMDMAState *bm = opaque;
@@ -74,7 +74,8 @@ static void bmdma_write(void *opaque, target_phys_addr_t addr,
 #endif
     switch (addr & 3) {
     case 0:
-        return bmdma_cmd_writeb(bm, val);
+        bmdma_cmd_writeb(bm, val);
+        break;
     case 2:
         bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
         break;
@@ -157,7 +158,7 @@ static void vt82c686b_init_ports(PCIIDEState *d) {
     int i;
 
     for (i = 0; i < 2; i++) {
-        ide_bus_new(&d->bus[i], &d->dev.qdev, i);
+        ide_bus_new(&d->bus[i], &d->dev.qdev, i, 2);
         ide_init_ioport(&d->bus[i], NULL, port_info[i].iobase,
                         port_info[i].iobase2);
         ide_init2(&d->bus[i], isa_get_irq(NULL, port_info[i].isairq));
@@ -189,7 +190,7 @@ static int vt82c686b_ide_initfn(PCIDevice *dev)
     return 0;
 }
 
-static int vt82c686b_ide_exitfn(PCIDevice *dev)
+static void vt82c686b_ide_exitfn(PCIDevice *dev)
 {
     PCIIDEState *d = DO_UPCAST(PCIIDEState, dev, dev);
     unsigned i;
@@ -201,8 +202,6 @@ static int vt82c686b_ide_exitfn(PCIDevice *dev)
         memory_region_destroy(&d->bmdma[i].addr_ioport);
     }
     memory_region_destroy(&d->bmdma_bar);
-
-    return 0;
 }
 
 void vt82c686b_ide_init(PCIBus *bus, DriveInfo **hd_table, int devfn)
@@ -227,7 +226,7 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
     dc->no_user = 1;
 }
 
-static TypeInfo via_ide_info = {
+static const TypeInfo via_ide_info = {
     .name          = "via-ide",
     .parent        = TYPE_PCI_DEVICE,
     .instance_size = sizeof(PCIIDEState),

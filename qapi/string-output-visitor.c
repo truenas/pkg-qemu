@@ -11,9 +11,9 @@
  */
 
 #include "qemu-common.h"
-#include "string-output-visitor.h"
-#include "qapi/qapi-visit-impl.h"
-#include "qerror.h"
+#include "qapi/string-output-visitor.h"
+#include "qapi/visitor-impl.h"
+#include "qapi/qmp/qerror.h"
 
 struct StringOutputVisitor
 {
@@ -52,7 +52,7 @@ static void print_type_number(Visitor *v, double *obj, const char *name,
                               Error **errp)
 {
     StringOutputVisitor *sov = DO_UPCAST(StringOutputVisitor, visitor, v);
-    string_output_set(sov, g_strdup_printf("%g", *obj));
+    string_output_set(sov, g_strdup_printf("%f", *obj));
 }
 
 char *string_output_get_string(StringOutputVisitor *sov)

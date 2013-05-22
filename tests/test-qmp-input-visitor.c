@@ -13,10 +13,11 @@
 #include <glib.h>
 #include <stdarg.h>
 
+#include "qemu-common.h"
 #include "qapi/qmp-input-visitor.h"
 #include "test-qapi-types.h"
 #include "test-qapi-visit.h"
-#include "qemu-objects.h"
+#include "qapi/qmp/types.h"
 
 typedef struct TestInputVisitorData {
     QObject *obj;
@@ -151,14 +152,22 @@ typedef struct TestStruct
 static void visit_type_TestStruct(Visitor *v, TestStruct **obj,
                                   const char *name, Error **errp)
 {
-    visit_start_struct(v, (void **)obj, "TestStruct", name, sizeof(TestStruct),
-                       errp);
+    Error *err = NULL;
+    if (!error_is_set(errp)) {
+        visit_start_struct(v, (void **)obj, "TestStruct", name, sizeof(TestStruct),
+                           &err);
+        if (!err) {
+            visit_type_int(v, &(*obj)->integer, "integer", &err);
+            visit_type_bool(v, &(*obj)->boolean, "boolean", &err);
+            visit_type_str(v, &(*obj)->string, "string", &err);
 
-    visit_type_int(v, &(*obj)->integer, "integer", errp);
-    visit_type_bool(v, &(*obj)->boolean, "boolean", errp);
-    visit_type_str(v, &(*obj)->string, "string", errp);
-
-    visit_end_struct(v, errp);
+            /* Always call end_struct if start_struct succeeded.  */
+            error_propagate(errp, err);
+            err = NULL;
+            visit_end_struct(v, &err);
+        }
+        error_propagate(errp, err);
+    }
 }
 
 static void test_visitor_in_struct(TestInputVisitorData *data,

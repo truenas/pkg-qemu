@@ -1,7 +1,7 @@
 /* public domain */
 
 #include "qemu-common.h"
-#include "sysemu.h"
+#include "sysemu/sysemu.h"
 #include "audio.h"
 
 #define AUDIO_CAP "winwave"
@@ -72,7 +72,7 @@ static void winwave_log_mmresult (MMRESULT mr)
         break;
 
     case MMSYSERR_NOMEM:
-        str = "Unable to allocate or locl memory";
+        str = "Unable to allocate or lock memory";
         break;
 
     case WAVERR_SYNC:
