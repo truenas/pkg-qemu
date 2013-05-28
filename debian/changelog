@@ -6,6 +6,7 @@ qemu (1.5.0+dfsg-2) UNRELEASED; urgency=low
   * removed trailing whitespaces from changelog file
   * run dh_installinit properly (Closes: #709199)
   * run dh_installman (Closes: #709241)
+  * remove build-dependendy on texi2html, upstream switched to makeinfo
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 22 May 2013 12:02:01 +0400
 
