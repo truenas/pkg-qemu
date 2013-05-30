@@ -18,6 +18,8 @@ LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed
 # Architecture/system specific configuration
 DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+# list of packages we're supposed to build
+BUILD_PACKAGES = $(shell dh_listpackages)
 
 # we add another set of configure options from debian/control
 common_configure_opts = \
