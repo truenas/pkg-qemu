@@ -3,6 +3,9 @@ qemu (1.5.0+dfsg-3) UNRELEASED; urgency=low
   * fix sections: misc => otherosfs
   * remove obsolete conffiles (kvm-ifup, kvm-ifdown, target-x86_64.conf)
     from /etc/kvm/ in qemu-kvm (Closes: #710328)
+  * rework debian/rules a bit, to build various bits depending on
+    which packages are requested, not depending on ad-hoc host/arch
+    logic
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 28 May 2013 19:59:28 +0400
 
