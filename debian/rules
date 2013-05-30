@@ -21,6 +21,7 @@ DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 # list of packages we're supposed to build
 BUILD_PACKAGES = $(shell dh_listpackages)
 
+enable_system = $(if $(filter qemu-system,${BUILD_PACKAGES}),enable,disable)
 enable_linux_user = $(if $(filter qemu-user,${BUILD_PACKAGES}),enable,disable)
 
 # we add another set of configure options from debian/control
@@ -39,6 +40,8 @@ common_configure_opts = \
 	--localstatedir=/var \
 	--enable-uname-release=2.6.32 \
 
+ifeq (${enable_system},enable)
+
 # list of system (softmmu) targets, from ./configure
 system_targets = \
  i386 x86_64 alpha arm cris lm32 m68k microblaze microblazeel \
@@ -54,6 +57,12 @@ sysarch_ppc   = $(filter ppc ppc64 ppcemb,${system_targets})
 sysarch_sparc = $(filter sparc sparc64,${system_targets})
 sysarch_x86   = $(filter i386 x86_64,${system_targets})
 sysarch_misc  = $(filter-out $(foreach s,${sys_systems},${sysarch_$s}),${system_targets})
+
+else
+
+systems =
+
+endif # enable_system
 
 ifeq (${enable_linux_user},enable)
 
@@ -91,8 +100,9 @@ configure-stamp: configure
 
 	# system build
 	mkdir -p qemu-build && cd qemu-build && \
-	   ../configure ${common_configure_opts} \
-		--enable-system --disable-user --${enable_linux_user}-linux-user \
+	   ../configure ${common_configure_opts} --disable-user \
+		--${enable_system}-system \
+		--${enable_linux_user}-linux-user \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
 		$(QEMU_CONFIGURE_OPTIONS)
@@ -122,9 +132,11 @@ build-indep: build-stamp
 build-stamp: configure-stamp
 	dh_testdir
 
-	# system build
+	# system and utils build
 	$(MAKE) -C $(CURDIR)/qemu-build
+ifeq (${enable_system},enable)
 	dtc -o qemu-build/pc-bios/bamboo.dtb pc-bios/bamboo.dts
+endif
 
 ifeq ($(enable_linux_user),enable)
 	# user-static build
@@ -164,6 +176,8 @@ install: build-stamp
 	# system build
 	$(MAKE) -C $(CURDIR)/qemu-build DESTDIR=$(CURDIR)/debian/tmp install
 
+ifeq (${enable_system},enable)
+
 	# qemu-system subpackages
 	$(foreach s,${systems},$(call inst-system,$s))
 
@@ -181,7 +195,10 @@ endif
 	  mkdir -p debian/qemu-system-common/$${f%/*} ; \
 	  mv debian/tmp/$$f debian/qemu-system-common/$$f ; \
 	done
-endif
+
+endif # linux
+
+endif # enable_system
 
 ifeq ($(enable_linux_user),enable)
 	# qemu-user
@@ -214,17 +231,18 @@ ifeq ($(enable_linux_user),enable)
 
 endif	# enable_linux_user
 
-# qemu-ifup is arch-specific
-	install -D debian/qemu-ifup.$(DEB_HOST_ARCH_OS) \
-		debian/qemu-system-common/etc/qemu-ifup
-
 	dh_install --list-missing
 	dh_installdocs
 	dh_installman
 	dh_installchangelogs Changelog
 	dh_installudev
+ifeq (${enable_system},enable)
+# qemu-ifup is arch-specific
+	install -D debian/qemu-ifup.$(DEB_HOST_ARCH_OS) \
+		debian/qemu-system-common/etc/qemu-ifup
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	dh_installinit -pqemu-system-x86 --no-restart-on-upgrade -- start 20 S .
+endif
 endif
 	dh_installinit -pqemu-guest-agent
 	dh_link
