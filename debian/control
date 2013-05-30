@@ -1,5 +1,5 @@
 Source: qemu
-Section: misc
+Section: otherosfs
 Priority: optional
 Maintainer: Debian QEMU Team <pkg-qemu-devel@lists.alioth.debian.org>
 Uploaders: Aurelien Jarno <aurel32@debian.org>,
