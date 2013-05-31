@@ -9,6 +9,8 @@ qemu (1.5.0+dfsg-3) UNRELEASED; urgency=low
   * do not fail at install if kvm module loading failed on x86 or
     if modprobe isn't installed (Closes: #710496)
   * also suggest kmod to be able to load x86 kvm modules
+  * suggest sgabios for qemu-system-x86 and put a symlink to sgabios.bin
+    (Closes: #696985)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 28 May 2013 19:59:28 +0400
 
