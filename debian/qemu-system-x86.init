@@ -29,6 +29,10 @@ case "$1" in
 	    log_warning_msg "Your system does not have support for KVM"
 	    exit 0
 	fi
+	if ! which modprobe >/dev/null; then
+	    log_warning_msg "modprobe isn't installed, not loading kvm modules."
+	    exit 0
+	fi
 	if modprobe -b $module ; then
 	    log_success_msg "Loading kvm module $module"
 	else

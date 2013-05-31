@@ -6,6 +6,8 @@ qemu (1.5.0+dfsg-3) UNRELEASED; urgency=low
   * rework debian/rules a bit, to build various bits depending on
     which packages are requested, not depending on ad-hoc host/arch
     logic
+  * do not fail at install if kvm module loading failed on x86 or
+    if modprobe isn't installed (Closes: #710496)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 28 May 2013 19:59:28 +0400
 
