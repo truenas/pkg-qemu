@@ -13,6 +13,7 @@ qemu (1.5.0+dfsg-3) UNRELEASED; urgency=low
     (Closes: #696985)
   * add rules to build just one of arch/indep parts, to make
     buildd log scanner happier (E-binary-arch-produces-all)
+  * use verbose build by default (V=1) and let it to be overridden
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 28 May 2013 19:59:28 +0400
 

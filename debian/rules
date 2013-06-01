@@ -14,6 +14,8 @@ DEB_VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' '
 # Compiler flags
 CFLAGS = $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
 LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed
+# verbose build
+V ?= 1
 
 # Architecture/system specific configuration
 DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
@@ -133,7 +135,7 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# system and utils build
-	$(MAKE) -C $(CURDIR)/qemu-build
+	$(MAKE) -C $(CURDIR)/qemu-build V=${V}
 ifeq (${enable_system},enable)
 	dtc -o qemu-build/pc-bios/bamboo.dtb pc-bios/bamboo.dts
 endif
@@ -141,7 +143,7 @@ endif
 ifeq ($(enable_linux_user),enable)
 	# user-static build
 	# we use this invocation to build just the binaries
-	$(MAKE) -C $(CURDIR)/user-static-build $(foreach t,${user_targets},subdir-${t}-linux-user)
+	$(MAKE) -C $(CURDIR)/user-static-build V=${V} $(foreach t,${user_targets},subdir-${t}-linux-user)
 endif
 	touch $@
 
