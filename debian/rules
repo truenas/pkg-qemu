@@ -152,6 +152,14 @@ clean:
 	find $(CURDIR)/scripts/ -name '*.pyc' -delete || :
 	dh_clean
 
+# define ${ai} variable to be one of -i (indep), -a (arch) or nothing (both)
+ai :=
+binary-indep: ai := -i
+binary-indep: install
+binary-arch: ai := -a
+binary-arch: install
+binary: install
+
 define inst-system
 	for x in postinst prerm; do \
 	  sed 's/@ARCH@/${sysarch_$1}/' debian/qemu-system.$$x-in > debian/qemu-system-$1.$$x.debhelper; \
@@ -231,11 +239,14 @@ ifeq ($(enable_linux_user),enable)
 
 endif	# enable_linux_user
 
+# install whole thing so --list-missing works right
 	dh_install --list-missing
-	dh_installdocs
-	dh_installman
-	dh_installchangelogs Changelog
-	dh_installudev
+# install the rest for arch/indep as needed
+	dh_installdocs ${ai}
+	dh_installman ${ai}
+	dh_installchangelogs ${ai} Changelog
+	dh_installudev ${ai}
+ifneq (${ai},-i)	# do not run this for binary-indep
 ifeq (${enable_system},enable)
 # qemu-ifup is arch-specific
 	install -D debian/qemu-ifup.$(DEB_HOST_ARCH_OS) \
@@ -247,19 +258,16 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 endif
 endif
 	dh_installinit -pqemu-guest-agent
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary-indep: install
-binary-arch: install
-binary: install
+endif
+	dh_link ${ai}
+	dh_strip ${ai}
+	dh_compress ${ai}
+	dh_fixperms ${ai}
+	dh_installdeb ${ai}
+	dh_shlibdeps ${ai}
+	dh_gencontrol ${ai}
+	dh_md5sums ${ai}
+	dh_builddeb ${ai}
 
 .PHONY: build clean binary-indep binary-arch binary install
 
