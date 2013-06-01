@@ -1,4 +1,4 @@
-qemu (1.5.0+dfsg-3) UNRELEASED; urgency=low
+qemu (1.5.0+dfsg-3) unstable; urgency=low
 
   * fix sections: misc => otherosfs
   * remove obsolete conffiles (kvm-ifup, kvm-ifdown, target-x86_64.conf)
@@ -15,7 +15,7 @@ qemu (1.5.0+dfsg-3) UNRELEASED; urgency=low
     buildd log scanner happier (E-binary-arch-produces-all)
   * use verbose build by default (V=1) and let it to be overridden
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 28 May 2013 19:59:28 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 02 Jun 2013 01:49:47 +0400
 
 qemu (1.5.0+dfsg-2) unstable; urgency=low
 
