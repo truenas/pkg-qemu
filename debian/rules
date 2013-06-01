@@ -115,7 +115,7 @@ ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 # but qemu did not learn to use new USB API.
 # Just do not build USB host support.
 	sed -i 's/^HOST_USB=bsd/HOST_USB=stub/' \
-		$(CURDIR)/qemu-build/config-host.mak
+		qemu-build/config-host.mak
 endif
 
 ifeq ($(enable_linux_user),enable)
@@ -135,7 +135,7 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# system and utils build
-	$(MAKE) -C $(CURDIR)/qemu-build V=${V}
+	$(MAKE) -C qemu-build V=${V}
 ifeq (${enable_system},enable)
 	dtc -o qemu-build/pc-bios/bamboo.dtb pc-bios/bamboo.dts
 endif
@@ -143,15 +143,15 @@ endif
 ifeq ($(enable_linux_user),enable)
 	# user-static build
 	# we use this invocation to build just the binaries
-	$(MAKE) -C $(CURDIR)/user-static-build V=${V} $(foreach t,${user_targets},subdir-${t}-linux-user)
+	$(MAKE) -C user-static-build V=${V} $(foreach t,${user_targets},subdir-${t}-linux-user)
 endif
 	touch $@
 
 clean:
 	dh_testdir
-	rm -rf $(CURDIR)/*-build/
-	rm -f $(CURDIR)/*-stamp
-	find $(CURDIR)/scripts/ -name '*.pyc' -delete || :
+	rm -rf *-build/
+	rm -f *-stamp
+	find scripts/ -name '*.pyc' -delete || :
 	dh_clean
 
 # define ${ai} variable to be one of -i (indep), -a (arch) or nothing (both)
@@ -183,8 +183,8 @@ install: build-stamp
 	dh_prep
 	dh_installdirs -a
 
-	# system build
-	$(MAKE) -C $(CURDIR)/qemu-build DESTDIR=$(CURDIR)/debian/tmp install
+	# system and utils install
+	$(MAKE) -C qemu-build DESTDIR=$(CURDIR)/debian/tmp install
 
 ifeq (${enable_system},enable)
 
