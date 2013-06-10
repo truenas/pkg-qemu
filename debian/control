@@ -38,9 +38,10 @@ Build-Depends: debhelper (>= 9),
 # --enable-vnc-tls
 # --enable-vnc-ws
  libgnutls-dev,
-# --enable-gtk
-# --with-gtkabi=2.0
- libgtk2.0-dev,
+# gtk ui is almost the same as sdl but adds bloat
+# --disable-gtk
+## --with-gtkabi=2.0
+# libgtk2.0-dev,
 # --enable-libiscsi
  libiscsi-dev,
 # --enable-curses
