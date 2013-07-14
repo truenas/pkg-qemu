@@ -12,6 +12,8 @@ qemu (1.5.0+dfsg-5) UNRELEASED; urgency=low
   * fix versions of obsolete qemu-kvm conffiles to be removed
   * provide manpage for obsolete kvm (Closes: #716891, #586973)
   * add --daemonize option to the guest-agent startup script (Closes: #715502)
+  * clarify what qemu-guest-agent does (Closes: #714270) and provide
+    its json schema as a doc
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Jun 2013 00:36:04 +0400
 
