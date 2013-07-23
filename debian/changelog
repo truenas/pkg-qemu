@@ -1,4 +1,4 @@
-qemu (1.5.0+dfsg-5) UNRELEASED; urgency=low
+qemu (1.5.0+dfsg-5) unstable; urgency=low
 
   * new upstream 1.5.1 stable/bugfix release (as qemu-1.5.1.diff)
     removed qemu_openpty_raw-helper.patch (included upstream)
@@ -15,7 +15,7 @@ qemu (1.5.0+dfsg-5) UNRELEASED; urgency=low
   * clarify what qemu-guest-agent does (Closes: #714270) and provide
     its json schema as a doc
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Jun 2013 00:36:04 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 23 Jul 2013 22:39:54 +0400
 
 qemu (1.5.0+dfsg-4) unstable; urgency=medium
 
