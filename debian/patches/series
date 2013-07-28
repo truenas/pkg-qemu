@@ -1,4 +1,5 @@
 qemu-1.5.1.diff
+usb-host-libusb-set-USB_DEV_FLAG_IS_HOST.patch
 02_kfreebsd.patch
 retry-pxe-after-efi.patch
 use-fixed-data-path.patch

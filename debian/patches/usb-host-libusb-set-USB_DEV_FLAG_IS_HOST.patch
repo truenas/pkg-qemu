@@ -1,0 +1,28 @@
+From 628e54857a82a3cb65ef96c12640c30d6307a064 Mon Sep 17 00:00:00 2001
+From: Gerd Hoffmann <kraxel@redhat.com>
+Date: Wed, 12 Jun 2013 13:17:02 +0200
+Subject: [PATCH] usb-host-libusb: set USB_DEV_FLAG_IS_HOST
+
+... like host-{linux,bsd}.c do.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ hw/usb/host-libusb.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
+index 0c12b0f..e2f3cc8 100644
+--- a/hw/usb/host-libusb.c
++++ b/hw/usb/host-libusb.c
+@@ -895,6 +895,7 @@ static int usb_host_initfn(USBDevice *udev)
+     USBHostDevice *s = USB_HOST_DEVICE(udev);
+ 
+     loglevel = s->loglevel;
++    udev->flags |= (1 << USB_DEV_FLAG_IS_HOST);
+     udev->auto_attach = 0;
+     QTAILQ_INIT(&s->requests);
+     QTAILQ_INIT(&s->isorings);
+-- 
+1.7.10.4
+
