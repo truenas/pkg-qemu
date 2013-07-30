@@ -5,6 +5,7 @@ qemu (1.6.0+dfsg-0) UNRELEASED; urgency=low
    - qemu-1.5.1.diff
    - sparc-linux-user-fix-missing-symbols-in-.rel-.rela.plt-sections.patch
   * refreshed use-fixed-data-path.patch
+  * ship new qemu_logo_no_text.svg
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 28 Jul 2013 10:47:32 +0400
 
