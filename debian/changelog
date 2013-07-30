@@ -6,6 +6,7 @@ qemu (1.6.0+dfsg-0) UNRELEASED; urgency=low
    - sparc-linux-user-fix-missing-symbols-in-.rel-.rela.plt-sections.patch
   * refreshed use-fixed-data-path.patch
   * ship new qemu_logo_no_text.svg
+  * stop shipping sgabios symlink, it is moved to sgabios package
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 28 Jul 2013 10:47:32 +0400
 
