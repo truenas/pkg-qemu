@@ -20,6 +20,10 @@ qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
   * Enable building for arm64; the arm64 target is not yet merged, but the
     package doesn't need arm64 target support to build for an arm64 host.
 
+  [ Riku Voipio ]
+  * control: build-depend on python:any (change originally made
+    in Aug-2013 but reverted by mjt later)
+
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 05 Feb 2014 13:02:52 +0400
 
 qemu (1.7.0+dfsg-3) unstable; urgency=low
