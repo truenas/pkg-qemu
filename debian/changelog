@@ -1,4 +1,4 @@
-qemu (1.6.0+dfsg-0) UNRELEASED; urgency=low
+qemu (1.6.0+dfsg-1) unstable; urgency=low
 
   [ Michael Tokarev ]
   * final upstream v1.6.0 (Closes: #718180, #714273, #605525, #701855)
@@ -9,7 +9,7 @@ qemu (1.6.0+dfsg-0) UNRELEASED; urgency=low
   [ Riku Voipio ]
   * - set --cross-prefix in debian/rules when cross-compiling
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 06 Aug 2013 12:29:27 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 02 Sep 2013 15:18:49 +0400
 
 qemu (1.6.0~rc0+dfsg-1exp) experimental; urgency=low
 
