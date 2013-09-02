@@ -7,9 +7,7 @@ qemu (1.6.0+dfsg-0) UNRELEASED; urgency=low
   * mention closing of #710971 by 1.5 (which disabled gtk support)
 
   [ Riku Voipio ]
-  * cross-compilation support:
-    - set --cross-prefix in debian/rules
-    - build-depend on python:any
+  * - set --cross-prefix in debian/rules when cross-compiling
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 06 Aug 2013 12:29:27 +0400
 
