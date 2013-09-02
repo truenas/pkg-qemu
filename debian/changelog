@@ -1,6 +1,12 @@
 qemu (1.6.0~rc0+dfsg-2exp) UNRELEASED; urgency=low
 
+  [ Michael Tokarev ]
   * mention closing of #717724 by 1.6
+
+  [ Riku Voipio ]
+  * cross-compilation support:
+    - set --cross-prefix in debian/rules
+    - build-depend on python:any
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 06 Aug 2013 12:29:27 +0400
 
