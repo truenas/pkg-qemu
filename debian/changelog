@@ -4,6 +4,7 @@ qemu (1.6.0+dfsg-0) UNRELEASED; urgency=low
   * final upstream v1.6.0 (Closes: #718180, #714273, #605525, #701855)
   * removed configure-explicitly-disable-virtfs-if-softmmu=no.patch
   * mention closing of #717724 by 1.6
+  * mention closing of #710971 by 1.5 (which disabled gtk support)
 
   [ Riku Voipio ]
   * cross-compilation support:
@@ -37,7 +38,7 @@ qemu (1.5.0+dfsg-5) unstable; urgency=low
     (fix FTBFS on s390)
   * disable gtk ui and build dependencies, as it adds almost nothing
     compared with sdl (well, except bugs and limitations), and has
-    lots of additional dependencies
+    lots of additional dependencies (Closes: #710971)
   * remove obsolete /etc/init.d/qemu-kvm (Closes: #712898)
   * fix versions of obsolete qemu-kvm conffiles to be removed
   * provide manpage for obsolete kvm (Closes: #716891, #586973)
