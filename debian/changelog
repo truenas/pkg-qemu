@@ -1,3 +1,9 @@
+qemu (1.6.0+dfsg-2) UNRELEASED; urgency=low
+
+  * Build-depend in seccomp again once it is in -testing
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 07 Oct 2013 22:12:34 +0400
+
 qemu (1.6.0+dfsg-1) unstable; urgency=low
 
   [ Michael Tokarev ]
