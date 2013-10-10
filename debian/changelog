@@ -2,6 +2,7 @@ qemu (1.6.0+dfsg-2) UNRELEASED; urgency=low
 
   * Build-depend in seccomp again once it is in -testing
   * 1.6.1 upstream bugfix release (Closes: #725944)
+  * fix "allows [one] to" in qemu-ga description
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 07 Oct 2013 22:12:34 +0400
 
