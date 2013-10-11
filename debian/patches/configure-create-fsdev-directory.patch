@@ -1,0 +1,31 @@
+commit 2b170effc7a0bb27f019727e5be02cd989e54e7d
+From: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Mon Oct 21 12:33:58 2013 +0400
+Comment: applied upstream for the next version
+
+    configure: create fsdev/ directory
+    
+    In some cases when building with parallelism (make -jN),
+    build fails because the directory where output files are
+    supposed to be does not exist.  In particular, when make
+    decides to build virtfs-proxy-helper.1 before other files
+    in fsdev/, build will fail with the following error:
+    
+    perl -Ww -- BUILDDIR/scripts/texi2pod.pl BUILDDIR/fsdev/virtfs-proxy-helper.texi fsdev/virtfs-proxy-helper.pod && pod2man --utf8 --section=1 --center=" " --release=" " fsdev/virtfs-proxy-helper.pod > fsdev/virtfs-proxy-helper.1
+    opening "fsdev/virtfs-proxy-helper.pod": No such file or directory
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+
+diff --git a/configure b/configure
+index 57ee62a..61bb27c 100755
+--- a/configure
++++ b/configure
+@@ -4647,6 +4647,7 @@ fi
+ 
+ # build tree in object directory in case the source is not in the current directory
+ DIRS="tests tests/tcg tests/tcg/cris tests/tcg/lm32 tests/libqos tests/qapi-schema tests/tcg/xtensa tests/qemu-iotests"
++DIRS="$DIRS fsdev"
+ DIRS="$DIRS pc-bios/optionrom pc-bios/spapr-rtas pc-bios/s390-ccw"
+ DIRS="$DIRS roms/seabios roms/vgabios"
+ DIRS="$DIRS qapi-generated"
