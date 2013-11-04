@@ -2,6 +2,7 @@ qemu (1.6.0+dfsg-3) UNRELEASED; urgency=low
 
   * mention closing of #721713
   * configure-create-fsdev-directory.patch to fix another FTBFS on s390
+  * refresh use-fixed-data-path.patch to contain just the min. changes
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Oct 2013 12:29:55 +0400
 
