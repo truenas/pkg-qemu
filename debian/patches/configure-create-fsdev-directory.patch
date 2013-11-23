@@ -17,14 +17,12 @@ Comment: applied upstream for the next version
     Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
     Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/configure b/configure
-index 57ee62a..61bb27c 100755
 --- a/configure
 +++ b/configure
-@@ -4647,6 +4647,7 @@ fi
+@@ -4540,6 +4540,7 @@ fi
  
  # build tree in object directory in case the source is not in the current directory
- DIRS="tests tests/tcg tests/tcg/cris tests/tcg/lm32 tests/libqos tests/qapi-schema tests/tcg/xtensa tests/qemu-iotests"
+ DIRS="tests tests/tcg tests/tcg/cris tests/tcg/lm32 tests/libqos tests/qapi-schema tests/tcg/xtensa"
 +DIRS="$DIRS fsdev"
  DIRS="$DIRS pc-bios/optionrom pc-bios/spapr-rtas pc-bios/s390-ccw"
  DIRS="$DIRS roms/seabios roms/vgabios"
