@@ -1,4 +1,4 @@
-qemu (1.6.0+dfsg-3) UNRELEASED; urgency=low
+qemu (1.6.0+dfsg-3) unstable; urgency=low
 
   * mention closing of #721713
   * configure-create-fsdev-directory.patch to fix another FTBFS on s390
@@ -6,7 +6,7 @@ qemu (1.6.0+dfsg-3) UNRELEASED; urgency=low
   * fix pxe-eepro100.rom link (never worked in qemu due to wrong name)
   * remove old $Id$ line from debian/rules
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Oct 2013 12:29:55 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 26 Nov 2013 01:48:59 +0400
 
 qemu (1.6.0+dfsg-2) unstable; urgency=low
 
