@@ -99,7 +99,7 @@ void qmp_guest_shutdown(bool has_mode, const char *mode, Error **err)
         reopen_fd_to_null(1);
         reopen_fd_to_null(2);
 
-        execle("/sbin/shutdown", "shutdown", shutdown_flag, "+0",
+        execle("/sbin/shutdown", "shutdown", "-h", shutdown_flag, "+0",
                "hypervisor initiated shutdown", (char*)NULL, environ);
         _exit(EXIT_FAILURE);
     } else if (pid < 0) {
@@ -566,7 +566,7 @@ typedef struct FsMount {
     QTAILQ_ENTRY(FsMount) next;
 } FsMount;
 
-typedef QTAILQ_HEAD(, FsMount) FsMountList;
+typedef QTAILQ_HEAD(FsMountList, FsMount) FsMountList;
 
 static void free_fs_mount_list(FsMountList *mounts)
 {
@@ -728,7 +728,7 @@ int64_t qmp_guest_fsfreeze_freeze(Error **err)
     /* cannot risk guest agent blocking itself on a write in this state */
     ga_set_frozen(ga_state);
 
-    QTAILQ_FOREACH(mount, &mounts, next) {
+    QTAILQ_FOREACH_REVERSE(mount, &mounts, FsMountList, next) {
         fd = qemu_open(mount->dirname, O_RDONLY);
         if (fd == -1) {
             error_setg_errno(err, errno, "failed to open %s", mount->dirname);
