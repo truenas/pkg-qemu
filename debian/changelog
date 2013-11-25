@@ -7,7 +7,7 @@ qemu (1.7.0~rc1+dfsg-1) UNRELEASED; urgency=low
 
 qemu (1.6.0+dfsg-3) unstable; urgency=low
 
-  * mention closing of #721713
+  * mention closing of #721713 and #710971
   * configure-create-fsdev-directory.patch to fix another FTBFS on s390
   * refresh use-fixed-data-path.patch to contain just the min. changes
   * fix pxe-eepro100.rom link (never worked in qemu due to wrong name)
@@ -18,7 +18,7 @@ qemu (1.6.0+dfsg-3) unstable; urgency=low
 qemu (1.6.0+dfsg-2) unstable; urgency=low
 
   * Build-depend in seccomp again once it is in -testing
-  * 1.6.1 upstream bugfix release (Closes: #725944, #721713)
+  * 1.6.1 upstream bugfix release (Closes: #725944, #721713, #710971)
   * fix "allows [one] to" in qemu-ga description
   * fix descriptions for qemu-system and qemu-system-common packages
 
