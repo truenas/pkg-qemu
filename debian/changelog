@@ -1,3 +1,10 @@
+qemu (1.7.0~rc1+dfsg-1) UNRELEASED; urgency=low
+
+  * new upstream release (candidate)
+  * removed configure-create-fsdev-directory.patch (upstreamed)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 26 Nov 2013 01:55:00 +0400
+
 qemu (1.6.0+dfsg-3) unstable; urgency=low
 
   * mention closing of #721713
