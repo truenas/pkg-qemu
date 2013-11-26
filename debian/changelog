@@ -1,4 +1,4 @@
-qemu (1.7.0~rc1+dfsg-1) UNRELEASED; urgency=low
+qemu (1.7.0~rc2+dfsg-1) UNRELEASED; urgency=low
 
   * new upstream release (candidate)
   * removed configure-create-fsdev-directory.patch (upstreamed)
