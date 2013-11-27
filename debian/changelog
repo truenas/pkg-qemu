@@ -1,6 +1,6 @@
-qemu (1.7.0~rc2+dfsg-1) UNRELEASED; urgency=low
+qemu (1.7.0+dfsg-1) UNRELEASED; urgency=low
 
-  * new upstream release (candidate) (Closes: #724758)
+  * new upstream release (Closes: #724758)
   * removed configure-create-fsdev-directory.patch (upstreamed)
   * tweak kvm loading script to not load module for 3.4+ kernel
     (kernel autoloads kvm modules since 3.4) (Closes: #717811)
