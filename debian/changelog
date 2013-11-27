@@ -9,7 +9,7 @@ qemu (1.7.0~rc2+dfsg-1) UNRELEASED; urgency=low
 
 qemu (1.6.0+dfsg-3) unstable; urgency=low
 
-  * mention closing of #721713 and #710971
+  * mention closing of #721713, #710971, #674201
   * configure-create-fsdev-directory.patch to fix another FTBFS on s390
   * refresh use-fixed-data-path.patch to contain just the min. changes
   * fix pxe-eepro100.rom link (never worked in qemu due to wrong name)
@@ -29,7 +29,7 @@ qemu (1.6.0+dfsg-2) unstable; urgency=low
 qemu (1.6.0+dfsg-1) unstable; urgency=low
 
   [ Michael Tokarev ]
-  * final upstream v1.6.0 (Closes: #718180, #714273, #605525, #701855)
+  * final upstream v1.6.0 (Closes: #718180, #714273, #605525, #701855, #674201)
   * removed configure-explicitly-disable-virtfs-if-softmmu=no.patch
   * mention closing of #717724 by 1.6
   * mention closing of #710971 by 1.5 (which disabled gtk support)
