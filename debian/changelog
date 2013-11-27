@@ -1,4 +1,4 @@
-qemu (1.7.0+dfsg-1) UNRELEASED; urgency=low
+qemu (1.7.0+dfsg-1) unstable; urgency=low
 
   * new upstream release (Closes: #724758)
   * tweak kvm loading script to not load module for 3.4+ kernel
@@ -8,7 +8,7 @@ qemu (1.7.0+dfsg-1) UNRELEASED; urgency=low
   * fix pxe-eepro100.rom link (never worked in qemu due to wrong name)
   * remove old $Id$ line from debian/rules
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 26 Nov 2013 01:48:59 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Nov 2013 03:14:21 +0400
 
 qemu (1.6.0+dfsg-2) unstable; urgency=low
 
