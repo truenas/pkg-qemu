@@ -1,4 +1,4 @@
-qemu (1.7.0+dfsg-2) UNRELEASED; urgency=low
+qemu (1.7.0+dfsg-2) unstable; urgency=low
 
   * switch from vgabios to seavgabios
   * rework update-alternatives handling for qemu-system (Closes: #722914)
@@ -11,7 +11,7 @@ qemu (1.7.0+dfsg-2) UNRELEASED; urgency=low
   * added fix-smb-security-share.patch by Michael Büsch (Closes: #727756)
   * added move-ncalrpc-dir-to-tmp.patch by Michael Büsch (Closes: #728876)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Nov 2013 13:07:35 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 29 Nov 2013 00:16:44 +0400
 
 qemu (1.7.0+dfsg-1) unstable; urgency=low
 
