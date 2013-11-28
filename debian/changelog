@@ -31,7 +31,6 @@ qemu (1.6.0+dfsg-2) unstable; urgency=low
 
 qemu (1.6.0+dfsg-1) unstable; urgency=low
 
-  [ Michael Tokarev ]
   * final upstream v1.6.0 (Closes: #718180, #714273, #605525, #701855, #674201)
   * removed configure-explicitly-disable-virtfs-if-softmmu=no.patch
   * mention closing of #717724 by 1.6
