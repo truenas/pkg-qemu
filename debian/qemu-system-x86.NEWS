@@ -1,0 +1,14 @@
+qemu (1.7.0+dfsg-2) UNRELEASED; urgency=low
+
+  Since version 1.7.0+dfsg-2, qemu-system-x86 switched from vgabios for
+  plex/bochs project to implementation of vgabios provided by seabios.
+  The latter is written almost entirely in C language so it is much easier
+  to debugu/develop, but it lacks some 16bit protected mode functions which
+  are present in vgabios.  This means that it is possible that, for eaxample,
+  some protected-mode games written for MS-DOS may not work since this
+  release.
+
+  This also means that vgabios package isn't used by qemu anymore, and might
+  be removed from the system if there are no other users of it left.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Nov 2013 18:40:56 +0400
