@@ -165,8 +165,8 @@ binary-arch: install
 binary: install
 
 define inst-system
-	for x in postinst prerm; do \
-	  sed 's/@ARCH@/${sysarch_$1}/' debian/qemu-system.$$x-in > debian/qemu-system-$1.$$x.debhelper; \
+	for x in postinst prerm postrm; do \
+	  sed 's/@ARCH@/${sysarch_$1}/' debian/qemu-system-alternatives.in > debian/qemu-system-$1.$$x.debhelper; \
 	done
 	mkdir -p debian/qemu-system-$1/usr/share/man/man1 debian/qemu-system-$1/usr/bin
 	for t in ${sysarch_$1}; do \

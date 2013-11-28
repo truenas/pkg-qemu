@@ -1,6 +1,7 @@
 qemu (1.7.0+dfsg-2) UNRELEASED; urgency=low
 
   * switch from vgabios to seavgabios
+  * rework update-alternatives handling for qemu-system (Closes: #722914)
   * mention closing of #326886, #390444, #706237 and CVE-2013-4375 for 1.7.0
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Nov 2013 13:07:35 +0400
