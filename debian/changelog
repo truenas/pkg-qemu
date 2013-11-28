@@ -9,6 +9,7 @@ qemu (1.7.0+dfsg-2) UNRELEASED; urgency=low
     and make this wrapper to force kvm mode (Closes: #727762)
   * use less strict dependency on qemu-keymaps
   * added fix-smb-security-share.patch by Michael Büsch (Closes: #727756)
+  * added move-ncalrpc-dir-to-tmp.patch by Michael Büsch (Closes: #728876)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Nov 2013 13:07:35 +0400
 
