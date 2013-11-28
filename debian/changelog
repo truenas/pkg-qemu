@@ -5,6 +5,8 @@ qemu (1.7.0+dfsg-2) UNRELEASED; urgency=low
   * mention closing of #326886, #390444, #706237 and CVE-2013-4375 for 1.7.0
   * rearrange libvte-dev build-dependency to come together with gtk, and
     comment it out (since gtk frontend isn't being built)
+  * re-introduce qemu-kvm package with just a wrapper (/usr/bin/kvm)
+    and make this wrapper to force kvm mode (Closes: #727762)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Nov 2013 13:07:35 +0400
 
