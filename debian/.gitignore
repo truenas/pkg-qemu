@@ -3,7 +3,9 @@
 *.debhelper.log
 *.substvars
 files
+qemu-guest-agent/
 qemu-keymaps/
+qemu-kvm/
 qemu-system/
 qemu-system-arm/
 qemu-system-common/
