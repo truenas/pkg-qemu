@@ -399,11 +399,11 @@ Description: Guest-side qemu-system agent
 Package: qemu-kvm
 Architecture: i386 amd64
 Multi-Arch: foreign
-Depends: ${misc:Depends}, qemu-system-x86 (>= ${source:Version})
+Depends: ${misc:Depends}, qemu-system-x86 (>= 1.7.0+dfsg-2~)
 Provides: kvm
 Conflicts: kvm
-Breaks: qemu-system-x86 (<< 1.7.0+dfsg-2)
-Replaces: qemu-system-x86 (<< 1.7.0+dfsg-2)
+Breaks: qemu-system-x86 (<< 1.7.0+dfsg-2~)
+Replaces: qemu-system-x86 (<< 1.7.0+dfsg-2~)
 Description: QEMU Full virtualization on x86 hardware (transitional package)
  QEMU is a fast processor emulator.  This package provides just a wrapper
  script /usr/bin/kvm which run qemu-system-x86 in kvm mode.

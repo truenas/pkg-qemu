@@ -1,3 +1,9 @@
+qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
+
+  * qemu-kvm: fix versions for Breaks/Replaces/Depends on qemu-system-x86
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 07 Dec 2013 21:20:37 +0400
+
 qemu (1.7.0+dfsg-2) unstable; urgency=low
 
   * switch from vgabios to seavgabios
