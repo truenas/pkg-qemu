@@ -1,3 +1,11 @@
+qemu (1.7.0+dfsg-2~bpo70+2) wheezy-backports; urgency=low
+
+  * Rebuild for wheezy-backports:
+    - disabled seccomp for now (not in wheezy)
+    - fix versioned Breaks: for qemu-kvm (should be in the next unstable)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 06 Dec 2013 01:21:37 +0400
+
 qemu (1.7.0+dfsg-2) unstable; urgency=low
 
   * switch from vgabios to seavgabios
