@@ -251,7 +251,7 @@ Architecture: amd64 arm armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends},
  qemu-system-common (>= ${source:Version}), qemu-keymaps (>= ${source:Upstream-Version}),
- openbios-ppc (>= 1.1), openhackware, qemu-slof
+ openbios-ppc (>= 1.1+svn1229), openhackware, qemu-slof
 Provides: ${sysprovides:ppc}
 Breaks: qemu-system (<< 1.3.0+dfsg-5)
 Replaces: qemu-system (<< 1.3.0+dfsg-5)
