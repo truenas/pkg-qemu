@@ -5,6 +5,7 @@ qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
   * remove unused lintian overrides for qemu-user from qemu (meta)package
   * qemu-system-*: depend on unversioned qemu-keymaps and qemu-system-common
     packages (no particular version of any is hard-required)
+  * remove debian/README.source (was from quilt)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 07 Dec 2013 21:20:37 +0400
 
