@@ -277,10 +277,13 @@ endif
 	dh_md5sums ${ai}
 	dh_builddeb ${ai}
 
-debian/control: debian/control-in
+ifneq (,$(wildcard debian/control-in))
+# only include rules for debian/control if debian/control-in is present
+debian/control: debian/control-in debian/rules
 	sed -e 's/^:${VENDOR}://' -e '/^:[a-z]*:/D' \
 		$< > $@.tmp
 	mv -f $@.tmp $@
+endif
 
 .PHONY: build clean binary-indep binary-arch binary install
 
