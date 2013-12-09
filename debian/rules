@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+VENDOR := debian
+
 # support parallel build using DEB_BUILD_OPTIONS=parallel=N
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
   MAKEFLAGS += -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
@@ -149,7 +151,7 @@ ifeq ($(enable_linux_user),enable)
 endif
 	touch $@
 
-clean:
+clean:	debian/control
 	dh_testdir
 	rm -rf *-build/
 	rm -f *-stamp
@@ -274,6 +276,11 @@ endif
 	dh_gencontrol ${ai}
 	dh_md5sums ${ai}
 	dh_builddeb ${ai}
+
+debian/control: debian/control-in
+	sed -e 's/^:${VENDOR}://' -e '/^:[a-z]*:/D' \
+		$< > $@.tmp
+	mv -f $@.tmp $@
 
 .PHONY: build clean binary-indep binary-arch binary install
 

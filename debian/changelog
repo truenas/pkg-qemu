@@ -8,6 +8,8 @@ qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
   * remove debian/README.source (was from quilt)
   * add myself to debian/copyright
   * reorder d/control to have Recommends:/Suggests: closer to Depends.
+  * rename d/control to d/control-in and add a d/rules rule to build it
+    based on ${VENDOR}
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 07 Dec 2013 21:20:37 +0400
 
