@@ -2,6 +2,7 @@ qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
 
   * qemu-kvm: fix versions for Breaks/Replaces/Depends on qemu-system-x86
   * qemu-system-ppc: depend on openbios-ppc >= 1.1+svn1229 to fix boot issues
+  * qemu-system-sparc: depend on openbios-sparc >= 1.1+svn1229 too
   * remove unused lintian overrides for qemu-user from qemu (meta)package
   * qemu-system-*: depend on unversioned qemu-keymaps and qemu-system-common
     packages (no particular version of any is hard-required)

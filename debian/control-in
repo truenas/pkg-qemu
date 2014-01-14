@@ -292,7 +292,7 @@ Package: qemu-system-sparc
 Architecture: amd64 arm armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel powerpc powerpcspe ppc64 s390x sparc sparc64
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common, qemu-keymaps,
-:debian: openbios-sparc (>= 1.1)
+:debian: openbios-sparc (>= 1.1+svn1229)
 Recommends: qemu-utils
 Suggests: samba, vde2
 Provides: ${sysprovides:sparc}
