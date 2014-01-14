@@ -16,7 +16,7 @@ case "$DPKG_MAINTSCRIPT_NAME:$1" in
               /usr/bin/qemu-system-$arch $prio
     done;;
 
-  prerm:remove | postrm:remove | postrm:disappear )
+  prerm:remove | postrm:disappear )
     for arch in $arches ; do
       update-alternatives --remove qemu /usr/bin/qemu-system-$arch
     done;;
