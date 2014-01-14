@@ -13,6 +13,7 @@ qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
   * allow different content in d/control for debian/ubuntu
   * added debian/README-components-versions
   * fixed qemu-armeb binfmt (Closes: #735078)
+  * added powerpcspe host arch (Closes: #734696)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 07 Dec 2013 21:20:37 +0400
 
