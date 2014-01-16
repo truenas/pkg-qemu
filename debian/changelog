@@ -18,6 +18,7 @@ qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
   * do not check for presence of update-alternatives which is part of dpkg
     (Closes: #733222)
   * do not call update-alternative --remove from postrm:remove
+    (lintian complains about this)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 07 Dec 2013 21:20:37 +0400
 
