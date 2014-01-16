@@ -19,6 +19,7 @@ qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
     (Closes: #733222)
   * do not call update-alternative --remove from postrm:remove
     (lintian complains about this)
+  * add efi netrom links.  This requires new ipxe-qemu.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 07 Dec 2013 21:20:37 +0400
 
