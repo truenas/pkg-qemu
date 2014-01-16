@@ -1,4 +1,4 @@
-qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
+qemu (1.7.0+dfsg-3) unstable; urgency=low
 
   * qemu-kvm: fix versions for Breaks/Replaces/Depends on qemu-system-x86
   * qemu-system-ppc: depend on openbios-ppc >= 1.1+svn1229 to fix boot issues
@@ -21,7 +21,7 @@ qemu (1.7.0+dfsg-3) UNRELEASED; urgency=low
     (lintian complains about this)
   * add efi netrom links.  This requires new ipxe-qemu.
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 07 Dec 2013 21:20:37 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 16 Jan 2014 15:17:46 +0400
 
 qemu (1.7.0+dfsg-2) unstable; urgency=low
 
