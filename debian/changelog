@@ -1,3 +1,10 @@
+qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
+
+  * x86-only-allow-real-mode-to-access-32bit-without-LMA.diff from upstream
+    (Closes: #719633)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 05 Feb 2014 13:02:52 +0400
+
 qemu (1.7.0+dfsg-3) unstable; urgency=low
 
   * qemu-kvm: fix versions for Breaks/Replaces/Depends on qemu-system-x86
