@@ -331,8 +331,8 @@ Provides: ${sysprovides:x86}
 :ubuntu:Conflicts: kvm (<< 1.3.0+dfsg-5)
 Breaks:
  qemu-system (<< 1.3.0+dfsg-5),
-# older libvirt (eg 0.10.2.x) is known broken with qemu >= 1.3
- libvirt0 (<< 1.0),
+# older libvirt (eg 1.0) is known broken with qemu >= 1.6
+ libvirt0 (<< 1.2),
 :ubuntu: qemu-common (<< 1.3.0+dfsg-5),
 :ubuntu: qemu-kvm (<< 1.2.0.dfsg-1),
 :ubuntu: kvm (<< 1.3.0+dfsg-5),

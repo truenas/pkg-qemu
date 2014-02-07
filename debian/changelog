@@ -5,6 +5,7 @@ qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
   * implement-posix-timers.diff from upstream (Closes: #732258)
   * address_space_translate-do-not-cross-page-boundaries.diff -
     upstream bugfix for xen
+  * break libvirt << 1.2, not just 1.0, we need 1.2+ after qemu-1.6.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 05 Feb 2014 13:02:52 +0400
 
