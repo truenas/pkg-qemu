@@ -16,6 +16,8 @@ qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
     have a ppc64el port yet, but qemu builds out of the box there so it's
     safe/appropriate to enable.
   * Merge in Ubuntu-specific (and Ubuntu-tagged) debian/control changes.
+  * Enable building for arm64; the arm64 target is not yet merged, but the
+    package doesn't need arm64 target support to build for an arm64 host.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 05 Feb 2014 13:02:52 +0400
 
