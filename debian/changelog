@@ -11,6 +11,7 @@ qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
   [ Steve Langasek ]
   * (from Ubuntu) add symlink for OVMF.fd, which is now available in Debian
     non-free.
+  * libusbredir is enabled in Ubuntu too, so sync debian/control.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 05 Feb 2014 13:02:52 +0400
 
