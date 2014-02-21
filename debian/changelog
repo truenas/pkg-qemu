@@ -12,6 +12,9 @@ qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
   * (from Ubuntu) add symlink for OVMF.fd, which is now available in Debian
     non-free.
   * libusbredir is enabled in Ubuntu too, so sync debian/control.
+  * Enable building for ppc64el (in both Debian and Ubuntu): Debian does not
+    have a ppc64el port yet, but qemu builds out of the box there so it's
+    safe/appropriate to enable.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 05 Feb 2014 13:02:52 +0400
 
