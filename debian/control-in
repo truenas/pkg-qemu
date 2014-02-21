@@ -93,8 +93,12 @@ Build-Depends: debhelper (>= 9),
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.4
 Homepage: http://www.qemu.org/
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-qemu/qemu.git
-Vcs-Git: git://anonscm.debian.org/pkg-qemu/qemu.git
+:debian:Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-qemu/qemu.git
+:ubuntu:Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-qemu/qemu.git;a=shortlog;h=refs/heads/ubuntu-trusty
+:ubuntu:XS-Debian-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-qemu/qemu.git
+:debian:Vcs-Git: git://anonscm.debian.org/pkg-qemu/qemu.git
+:ubuntu:Vcs-Git: git://anonscm.debian.org/pkg-qemu/qemu.git -b ubuntu-trusty
+:ubuntu:XS-Debian-Vcs-Git: git://anonscm.debian.org/pkg-qemu/qemu.git
 
 Package: qemu
 Architecture: amd64 arm armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel powerpc powerpcspe ppc64 ppc64el s390x sparc sparc64
@@ -451,3 +455,11 @@ Description: QEMU Full virtualization on x86 hardware (transitional package)
  Please note that old qemu-kvm configuration files (in /etc/kvm/) are
  no longer used.
 
+:ubuntu:Package: qemu-common
+:ubuntu:Architecture: all
+:ubuntu:Depends: ${misc:Depends}, qemu-keymaps
+:ubuntu:Section: oldlibs
+:ubuntu:Description: dummy transitional package from qemu-common to qemu-keymaps
+:ubuntu: This transitional package helps users transition from the qemu-common package
+:ubuntu: to the qemu-keymaps package.  Once this package and its dependencies are
+:ubuntu: installed you can safely remove it.
