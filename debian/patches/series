@@ -8,3 +8,4 @@ slirp-smb-redirect-port-445-too.patch
 x86-only-allow-real-mode-to-access-32bit-without-LMA.diff
 implement-posix-timers.diff
 address_space_translate-do-not-cross-page-boundaries.diff
+linux-user-fixed-s390x-clone-argument-order.patch

@@ -7,6 +7,7 @@ qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
   * address_space_translate-do-not-cross-page-boundaries.diff -
     upstream bugfix for xen
   * break libvirt << 1.2, not just 1.0, we need 1.2+ after qemu-1.6.
+  * add linux-user-fixed-s390x-clone-argument-order.patch (Closes: #739800)
 
   [ Steve Langasek ]
   * (from Ubuntu) add symlink for OVMF.fd, which is now available in Debian
