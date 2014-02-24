@@ -3,6 +3,7 @@
 /*.debhelper.log
 /*.substvars
 /files
+/qemu-common/
 /qemu-guest-agent/
 /qemu-keymaps/
 /qemu-kvm/
@@ -18,4 +19,4 @@
 /qemu-user/
 /qemu-utils/
 /qemu/
-
+!patches
