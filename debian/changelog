@@ -1,4 +1,4 @@
-qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
+qemu (1.7.0+dfsg-4) unstable; urgency=medium
 
   [ Michael Tokarev ]
   * 1.7.1 stable upstream release (Closes: #719633)
@@ -24,7 +24,7 @@ qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
   * control: build-depend on python:any (change originally made
     in Aug-2013 but reverted by mjt later)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 05 Feb 2014 13:02:52 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 12 Mar 2014 18:34:03 +0400
 
 qemu (1.7.0+dfsg-3) unstable; urgency=low
 
