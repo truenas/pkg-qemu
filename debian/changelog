@@ -1,8 +1,7 @@
 qemu (1.7.0+dfsg-4) UNRELEASED; urgency=low
 
   [ Michael Tokarev ]
-  * x86-only-allow-real-mode-to-access-32bit-without-LMA.diff from upstream
-    (Closes: #719633)
+  * 1.7.1 stable upstream release (Closes: #719633)
   * implement-posix-timers.diff from upstream (Closes: #732258)
   * address_space_translate-do-not-cross-page-boundaries.diff -
     upstream bugfix for xen
