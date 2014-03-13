@@ -1,6 +1,7 @@
 qemu (1.7.0+dfsg-5) UNRELEASED; urgency=low
 
   * remove OVMF.fd symlink added in -4, it belongs to ovmf (Closes: #741494)
+  * qemu-debootstrap: add support for arm64 architecture (Closes: #740112)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 13 Mar 2014 05:55:33 +0400
 
