@@ -60,7 +60,8 @@ Build-Depends: debhelper (>= 9),
 # --enable-vnc-sasl
  libsasl2-dev,
 # --enable-sdl
- libsdl1.2-dev (>> 1.2.1),
+# --with-sdlabi=2.0
+ libsdl2-dev,
 # --enable-seccomp	linux-amd64|linux-i386
  libseccomp-dev (>> 2.1.0) [linux-amd64 linux-i386],
 # --enable-spice	linux-amd64|linux-i386
@@ -91,7 +92,9 @@ Build-Depends: debhelper (>= 9),
 # other optional features we enable
 # --enable-vnc
 :debian:# --enable-vnc-jpeg
+:debian: libjpeg8-dev,
 # --enable-vnc-png
+ libpng12-dev,
 # --enable-kvm		linux-*
 # --enable-vhost-net	linux-*	# is it really linux-specific?
 ##--enable-glusterfs todo
