@@ -1,7 +1,8 @@
 qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
 
   * 2.0 actually does not close #739589,
-    remove it from from last changelog entry 
+    remove it from from last changelog entry
+  * mention closing of #707629 by 2.0
   * do not set --enable-uname-release=2.6.32 for qemu-user anymore
     (was needed for old ubuntu builders)
 
@@ -11,7 +12,7 @@ qemu (2.0.0~rc1+dfsg-1exp) experimental; urgency=low
 
   * new upstream release candidate (2.0-rc1)
     Closes: #742730 -- image format processing issues
-    Closes: #743235
+    Closes: #743235, #707629
   * refreshed patches:
     02_kfreebsd.patch
     retry-pxe-after-efi.patch
