@@ -112,7 +112,8 @@ configure-stamp: configure
 		--${enable_linux_user}-linux-user \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
-		$(QEMU_CONFIGURE_OPTIONS)
+		$(QEMU_CONFIGURE_OPTIONS) || \
+	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
 
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 # Hack alert.  qemu-1.3 still needs this.
