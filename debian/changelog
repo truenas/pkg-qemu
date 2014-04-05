@@ -1,6 +1,9 @@
 qemu (2.0.0~rc1+dfsg-0) UNRELEASED; urgency=low
 
   * new upstream release candidate (2.0-rc1)
+    Closes: #742730 -- image format processing issues
+    Closes: #739589 -- migration format processing issues
+    Closes: #743235
   * refreshed patches:
     02_kfreebsd.patch
     retry-pxe-after-efi.patch
