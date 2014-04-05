@@ -335,6 +335,7 @@ Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common, qemu-keymaps,
  seabios (>= 1.7.4-2~), ipxe-qemu
 Recommends: qemu-utils,
+ ovmf,
 :ubuntu: cpu-checker
 Suggests: samba, vde2, kmod, sgabios
 Provides: ${sysprovides:x86}

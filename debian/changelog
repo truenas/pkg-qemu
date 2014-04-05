@@ -16,6 +16,8 @@ qemu (2.0.0~rc1+dfsg-0) UNRELEASED; urgency=low
     implement-posix-timers.diff
     linux-user-fixed-s390x-clone-argument-order.patch
   * added bios-256k.bin symlink and bump seabios dependency to >= 1.7.4-2
+  * recommend ovmf package for qemu-system-x86 to support UEFI boot
+    (Closes: #714249)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Apr 2014 14:11:38 +0400
 
