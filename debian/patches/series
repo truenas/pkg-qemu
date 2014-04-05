@@ -1,4 +1,3 @@
-02_kfreebsd.patch
 retry-pxe-after-efi.patch
 use-fixed-data-path.patch
 move-ncalrpc-dir-to-tmp.patch
