@@ -98,6 +98,11 @@ Build-Depends: debhelper (>= 9),
 # --enable-kvm		linux-*
 # --enable-vhost-net	linux-*	# is it really linux-specific?
 ##--enable-glusterfs todo
+##--enable-lzo todo
+##--enable-libnfs todo
+##--enable-netmap todo bsd
+##--enable-quorum todo needs gcrypt
+##--enable-xen-pci-passthrough todo
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.4
 Homepage: http://www.qemu.org/
