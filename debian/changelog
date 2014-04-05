@@ -2,6 +2,8 @@ qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
 
   * 2.0 actually does not close #739589,
     remove it from from last changelog entry 
+  * do not set --enable-uname-release=2.6.32 for qemu-user anymore
+    (was needed for old ubuntu builders)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Apr 2014 21:31:26 +0400
 

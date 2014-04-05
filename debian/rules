@@ -39,7 +39,6 @@ common_configure_opts = \
 	--with-system-pixman \
 	--interp-prefix=/etc/qemu-binfmt/%M \
 	--localstatedir=/var \
-	--enable-uname-release=2.6.32 \
 
 ifeq (${enable_system},enable)
 
