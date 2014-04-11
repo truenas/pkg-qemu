@@ -9,3 +9,4 @@ slirp-smb-redirect-port-445-too.patch
 implement-posix-timers.diff
 address_space_translate-do-not-cross-page-boundaries.diff
 linux-user-fixed-s390x-clone-argument-order.patch
+virtio-net-fix-guest-triggerable-buffer-overrun-CVE-2014-0150.patch

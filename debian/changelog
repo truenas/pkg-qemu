@@ -1,3 +1,10 @@
+qemu (1.7.0+dfsg-7) unstable; urgency=high
+
+  * fix guest-triggerable buffer overrun in virtio-net device
+    (Closes: #744221 CVE-2014-0150)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Apr 2014 20:27:16 +0400
+
 qemu (1.7.0+dfsg-6) unstable; urgency=medium
 
   * make ceph (rbd) support linux-only, since it exists only on linux
