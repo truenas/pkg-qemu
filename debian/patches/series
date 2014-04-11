@@ -21,3 +21,4 @@ tap-reset-vnet-header-size-on-open.patch
 vmdk-fix-data-corruption-bug-in-WRITE-and-READ-handling.patch
 uhci-don-t-queue-up-packets-after-one-with-the-SPD-flag-set.patch
 usb-split-endpoint-init-and-reset.patch
+virtio-net-fix-guest-triggerable-buffer-overrun-CVE-2014-0150.patch

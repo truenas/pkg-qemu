@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-6a+deb7u1) wheezy-security; urgency=high
+
+  * fix guest-triggerable buffer overrun in virtio-net device
+    (Closes: #744221 CVE-2014-0150)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Apr 2014 20:27:16 +0400
+
 qemu (1.1.2+dfsg-6a) unstable; urgency=low
 
   * reupload to remove two unrelated files slipped in debian/
