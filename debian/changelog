@@ -1,3 +1,11 @@
+qemu (2.0.0+dfsg-4~bpo70+1) wheezy-backports; urgency=medium
+
+  * Rebuild for wheezy-backports.
+  * disabled seccomp for wheezy.
+  * s/python:any/python/ for wheezy.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 05 May 2014 21:16:27 +0400
+
 qemu (2.0.0+dfsg-4) unstable; urgency=medium
 
   * suggests ovmf, not recommends it as it is not in -main (Closes: #745698)
