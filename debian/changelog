@@ -3,6 +3,7 @@ qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
   * 2.0 actually does not close #739589,
     remove it from from last changelog entry
   * mention closing of #707629 by 2.0
+  * mention a list of CVE IDs closed by #742730
   * mention closing of CVE-2013-4377 by 1.7.0-6
   * do not set --enable-uname-release=2.6.32 for qemu-user anymore
     (was needed for old ubuntu builders)
@@ -16,7 +17,9 @@ qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
 qemu (2.0.0~rc1+dfsg-1exp) experimental; urgency=low
 
   * new upstream release candidate (2.0-rc1)
-    Closes: #742730 -- image format processing issues
+    Closes: #742730 -- image format processing issues:
+     CVE-2014-0142 CVE-2014-0143 CVE-2014-0144 CVE-2014-0145
+     CVE-2014-0146 CVE-2014-0147 CVE-2014-0148
     Closes: #743235, #707629
   * refreshed patches:
     02_kfreebsd.patch
