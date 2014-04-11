@@ -1,3 +1,11 @@
+qemu (1.7.0+dfsg-9~bpo70+1) wheezy-backports; urgency=medium
+
+  * Rebuild for wheezy-backports.
+  * disabled seccomp for wheezy.
+  * s/python:any/python/ for wheezy.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 16 Apr 2014 21:16:39 +0400
+
 qemu (1.7.0+dfsg-9) unstable; urgency=medium
 
   * remove rbd/rados/ceph support *again*, till they'll actually provide
