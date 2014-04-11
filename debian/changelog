@@ -1,3 +1,10 @@
+qemu (0.12.5+dfsg-3squeeze4) squeeze-security; urgency=high
+
+  * fix guest-triggerable buffer overrun in virtio-net device
+    (Closes: #744221 CVE-2014-0150)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 12 Apr 2014 11:57:35 +0400
+
 qemu (0.12.5+dfsg-3squeeze3) stable-security; urgency=low
 
   * CVE-2012-6075 fix (Closes: #696051):

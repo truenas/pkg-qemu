@@ -9,3 +9,4 @@ block-prevent-snapshot-mode-TMPDIR-symlink-attack-CVE-2012-2652.patch
 console-bounds-check-whenever-changing-the-cursor-CVE-2012-3515.patch
 e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
 e1000-discard-oversized-packets-based-on-SBP_LPE.patch
+virtio-net-fix-guest-triggerable-buffer-overrun-CVE-2014-0150.patch
