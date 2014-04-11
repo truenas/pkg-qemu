@@ -3,6 +3,7 @@ qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
   * 2.0 actually does not close #739589,
     remove it from from last changelog entry
   * mention closing of #707629 by 2.0
+  * mention closing of CVE-2013-4377 by 1.7.0-6
   * do not set --enable-uname-release=2.6.32 for qemu-user anymore
     (was needed for old ubuntu builders)
   * removed 02_kfreebsd.patch: it adds configure check for futimens() and
@@ -54,6 +55,7 @@ qemu (1.7.0+dfsg-4) unstable; urgency=medium
 
   [ Michael Tokarev ]
   * 1.7.1 stable upstream release (Closes: #719633)
+    Closes: CVE-2013-4377
   * implement-posix-timers.diff from upstream (Closes: #732258)
   * address_space_translate-do-not-cross-page-boundaries.diff -
     upstream bugfix for xen
