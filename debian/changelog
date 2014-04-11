@@ -1,3 +1,9 @@
+qemu (1.7.0+dfsg-8) unstable; urgency=low
+
+  * fix a brown-paper-bag bug in the previous upload
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Apr 2014 22:01:32 +0400
+
 qemu (1.7.0+dfsg-7) unstable; urgency=high
 
   * fix guest-triggerable buffer overrun in virtio-net device
