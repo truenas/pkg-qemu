@@ -1,4 +1,4 @@
-qemu (2.0.0+dfsg-2) UNRELEASED; urgency=medium
+qemu (2.0.0+dfsg-2) unstable; urgency=medium
 
   * resurrect 02_kfreebsd.patch, -- without it qemu FTBFS on current
     Debian kFreeBSD system still.
