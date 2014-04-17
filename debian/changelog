@@ -1,4 +1,4 @@
-qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
+qemu (2.0.0+dfsg-1) unstable; urgency=low
 
   * 2.0 actually does not close #739589,
     remove it from from last changelog entry
@@ -19,7 +19,7 @@ qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
     fixes windows BSOD with virtio-scsi when upgrading from 1.7.0 to 1.7.1
     or 2.0, among other things
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Apr 2014 21:31:26 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 17 Apr 2014 18:27:15 +0400
 
 qemu (2.0.0~rc1+dfsg-1exp) experimental; urgency=low
 
