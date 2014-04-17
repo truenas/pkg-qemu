@@ -1,3 +1,52 @@
+qemu (2.0.0~rc1+dfsg-1exq) UNRELEASED; urgency=low
+
+  * 2.0 actually does not close #739589,
+    remove it from from last changelog entry
+  * mention closing of #707629 by 2.0
+  * mention a list of CVE IDs closed by #742730
+  * mention closing of CVE-2013-4377 by 1.7.0-6
+  * do not set --enable-uname-release=2.6.32 for qemu-user anymore
+    (was needed for old ubuntu builders)
+  * removed 02_kfreebsd.patch: it adds configure check for futimens() and
+    futimesat() syscalls on FreeBSD, however futimens() appeared in FreeBSD
+    5.0, and futimesat() in 8.0, and 8.0 is the earliest supported version
+  * kmod dependency is linux-any
+  * doc-grammify-allows-to.patch: fix some lintian warnings
+  * remove alternatives for qemu: different architectures
+    aren't really alternatives and never had been 
+  * update Standards-Version to 3.9.5 (no changes needed)
+  * exec-limit-translation-limiting-in-address_space_translate-to-xen.diff -
+    fixes windows BSOD with virtio-scsi when upgrading from 1.7.0 to 1.7.1
+    or 2.0, among other things
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Apr 2014 21:31:26 +0400
+
+qemu (2.0.0~rc1+dfsg-1exp) experimental; urgency=low
+
+  * new upstream release candidate (2.0-rc1)
+    Closes: #742730 -- image format processing issues:
+     CVE-2014-0142 CVE-2014-0143 CVE-2014-0144 CVE-2014-0145
+     CVE-2014-0146 CVE-2014-0147 CVE-2014-0148
+    Closes: #743235, #707629
+  * refreshed patches:
+    02_kfreebsd.patch
+    retry-pxe-after-efi.patch
+    use-fixed-data-path.patch
+  * removed patches applied upstream:
+    qemu-1.7.1.diff
+    address_space_translate-do-not-cross-page-boundaries.diff
+    fix-smb-security-share.patch
+    slirp-smb-redirect-port-445-too.patch
+    implement-posix-timers.diff
+    linux-user-fixed-s390x-clone-argument-order.patch
+  * added bios-256k.bin symlink and bump seabios dependency to >= 1.7.4-2
+  * recommend ovmf package for qemu-system-x86 to support UEFI boot
+    (Closes: #714249)
+  * switch from sdl1 to sdl2 (build-depend on libsdl2-dev)
+  * output last 50 lines of config.log in case configure failed
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Apr 2014 16:23:48 +0400
+
 qemu (1.7.0+dfsg-9) unstable; urgency=medium
 
   * remove rbd/rados/ceph support *again*, till they'll actually provide
@@ -37,6 +86,7 @@ qemu (1.7.0+dfsg-4) unstable; urgency=medium
 
   [ Michael Tokarev ]
   * 1.7.1 stable upstream release (Closes: #719633)
+    Closes: CVE-2013-4377
   * implement-posix-timers.diff from upstream (Closes: #732258)
   * address_space_translate-do-not-cross-page-boundaries.diff -
     upstream bugfix for xen
