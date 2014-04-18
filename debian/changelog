@@ -1,5 +1,6 @@
 qemu (2.0.0+dfsg-3) UNRELEASED; urgency=low
 
+  * 2.0.0 closed #744213 (CVE-2013-4544) and #745157 (CVE-2014-2894)
   * mjt-set-oem-in-rsdt-like-slic.diff: apply a (hackish) patch to simplify
     running OEM versions of windows vista and 7 in qemu using SLIC table
     from current hardware.
@@ -15,6 +16,9 @@ qemu (2.0.0+dfsg-2) unstable; urgency=medium
 
 qemu (2.0.0+dfsg-1) unstable; urgency=low
 
+  * new upstream major release
+     Closes: #744213 CVE-2013-4544
+     Closes: #745157 CVE-2014-2894
   * 2.0 actually does not close #739589,
     remove it from from last changelog entry
   * mention closing of #707629 by 2.0
