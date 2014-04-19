@@ -22,3 +22,5 @@ vmdk-fix-data-corruption-bug-in-WRITE-and-READ-handling.patch
 uhci-don-t-queue-up-packets-after-one-with-the-SPD-flag-set.patch
 usb-split-endpoint-init-and-reset.patch
 virtio-net-fix-guest-triggerable-buffer-overrun-CVE-2014-0150.patch
+x86-only-allow-real-mode-to-access-32bit-without-LMA.patch
+fix-entry-pointer-for-ELF-kernels-loaded-with--kernel-option.patch

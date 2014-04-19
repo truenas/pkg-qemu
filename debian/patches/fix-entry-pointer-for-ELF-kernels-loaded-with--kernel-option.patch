@@ -1,0 +1,27 @@
+Description: fix entry pointer for ELF kernels loaded with -kernel option
+Author: Henning Schild <henning@hennsch.de>
+Origin: upstream, http://git.qemu.org/?p=qemu.git;a=commitdiff;h=4de6467cbc8f3ddff7f2dcb63f427b0e92de0e9d
+Bug-Debian: https://bugs.debian.org/741873
+
+diff --git a/hw/elf_ops.h b/hw/elf_ops.h
+index fa65ce2..731a983 100644
+--- a/hw/elf_ops.h
++++ b/hw/elf_ops.h
+@@ -269,6 +269,17 @@ static int glue(load_elf, SZ)(const char *name, int fd,
+                 addr = ph->p_paddr;
+             }
+ 
++            /* the entry pointer in the ELF header is a virtual
++             * address, if the text segments paddr and vaddr differ
++             * we need to adjust the entry */
++            if (pentry && !translate_fn &&
++                    ph->p_vaddr != ph->p_paddr &&
++                    ehdr.e_entry >= ph->p_vaddr &&
++                    ehdr.e_entry < ph->p_vaddr + ph->p_filesz &&
++                    ph->p_flags & PF_X) {
++                *pentry = ehdr.e_entry - ph->p_vaddr + ph->p_paddr;
++            }
++
+             snprintf(label, sizeof(label), "phdr #%d: %s", i, name);
+             rom_add_blob_fixed(label, data, mem_size, addr);
+ 

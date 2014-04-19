@@ -1,0 +1,33 @@
+Description: x86: only allow real mode to access 32bit without LMA
+ When we're running in non-64bit mode with qemu-system-x86_64 we can
+ still end up with virtual addresses that are above the 32bit boundary
+ if a segment offset is set up.
+ .
+ GNU Hurd does exactly that. It sets the segment offset to 0x80000000 and
+ puts its EIP value to 0x8xxxxxxx to access low memory.
+ .
+ This doesn't hit us when we enable paging, as there we just mask away the
+ unused bits. But with real mode, we assume that vaddr == paddr which is
+ wrong in this case. Real hardware wraps the virtual address around at the
+ 32bit boundary. So let's do the same.
+ .
+ This fixes booting GNU Hurd in qemu-system-x86_64 for me.
+Author: Alexander Graf <agraf@suse.de>
+Origin: upstream, http://git.qemu.org/?p=qemu.git;a=commitdiff;h=33dfdb56f2f3c8686d218395b871ec12fd5bf30b
+Bug-Debian: https://bugs.debian.org/719633
+
+--- a/target-i386/helper.c
++++ b/target-i386/helper.c
+@@ -512,6 +512,12 @@ int cpu_x86_handle_mmu_fault(CPUX86State
+ 
+     if (!(env->cr[0] & CR0_PG_MASK)) {
+         pte = addr;
++#ifdef TARGET_X86_64
++        if (!(env->hflags & HF_LMA_MASK)) {
++            /* Without long mode we can only address 32bits in real mode */
++            pte = (uint32_t)pte;
++        }
++#endif
+         virt_addr = addr & TARGET_PAGE_MASK;
+         prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+         page_size = 4096;
