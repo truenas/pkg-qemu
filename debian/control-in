@@ -463,6 +463,7 @@ Package: qemu-kvm
 :debian:Architecture: i386 amd64
 :ubuntu:Architecture: i386 amd64 armhf armel powerpc sparc
 Multi-Arch: foreign
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends}, qemu-system-x86 (>= 1.7.0+dfsg-2~)
 Provides: kvm,
 :ubuntu: qemu-kvm-spice

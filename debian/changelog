@@ -5,6 +5,7 @@ qemu (2.0.0+dfsg-3) UNRELEASED; urgency=low
     running OEM versions of windows vista and 7 in qemu using SLIC table
     from current hardware.
   * set VENDOR in d/rules
+  * added forgotten qemu-kvm Pre-Depends field
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 18 Apr 2014 11:35:14 +0400
 
