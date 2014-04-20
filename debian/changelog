@@ -6,6 +6,8 @@ qemu (2.0.0+dfsg-3) UNRELEASED; urgency=low
     from current hardware.
   * set VENDOR in d/rules
   * added forgotten qemu-kvm Pre-Depends field
+  * switch back from sdl1 to sdl2, as the latter apparently isn't ready yet
+    (Closes: #745269)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 18 Apr 2014 11:35:14 +0400
 
