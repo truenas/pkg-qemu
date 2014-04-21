@@ -1,4 +1,4 @@
-qemu (2.0.0+dfsg-3) UNRELEASED; urgency=low
+qemu (2.0.0+dfsg-3) unstable; urgency=low
 
   * 2.0.0 closed #744213 (CVE-2013-4544) and #745157 (CVE-2014-2894)
   * mjt-set-oem-in-rsdt-like-slic.diff: apply a (hackish) patch to simplify
@@ -9,7 +9,7 @@ qemu (2.0.0+dfsg-3) UNRELEASED; urgency=low
   * switch back from sdl1 to sdl2, as the latter apparently isn't ready yet
     (Closes: #745269)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 18 Apr 2014 11:35:14 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 21 Apr 2014 12:34:03 +0400
 
 qemu (2.0.0+dfsg-2) unstable; urgency=medium
 
