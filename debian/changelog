@@ -1,3 +1,9 @@
+qemu (2.0.0+dfsg-4) UNRELEASED; urgency=low
+
+  * suggests ovmf, not recommends it as it is not in -main (Closes: #745698)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 24 Apr 2014 10:09:03 +0400
+
 qemu (2.0.0+dfsg-3) unstable; urgency=low
 
   * 2.0.0 closed #744213 (CVE-2013-4544) and #745157 (CVE-2014-2894)
