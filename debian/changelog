@@ -1,6 +1,7 @@
 qemu (2.0.0+dfsg-4) UNRELEASED; urgency=low
 
   * suggests ovmf, not recommends it as it is not in -main (Closes: #745698)
+  * cputlb-fix-regression-with-TCG-interpreter.patch (Closes: #744342)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 24 Apr 2014 10:09:03 +0400
 
