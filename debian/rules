@@ -223,6 +223,8 @@ ifeq ($(enable_linux_user),enable)
 	for x in postinst prerm; do \
 	    sed -e s/@SUFFIX@/-static/ -e s/@PACKAGE@/qemu-user-static/ \
 		debian/binfmt-update-in >> debian/qemu-user-static.$$x.debhelper ; \
+	    sed -e s/@SUFFIX@// -e s/@PACKAGE@/qemu-user-binfmt/ \
+		debian/binfmt-update-in >> debian/qemu-user-binfmt.$$x.debhelper ; \
 	done
 
 endif	# enable_linux_user
