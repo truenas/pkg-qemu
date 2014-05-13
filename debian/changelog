@@ -1,4 +1,4 @@
-qemu (2.0.0+dfsg-5) UNRELEASED; urgency=medium
+qemu (2.0.0+dfsg-5) unstable; urgency=medium
 
   * re-re-enable rbd (ceph) support again (Closes: #689239)
     Should watch for breakage and for runtime dependencies closely from now on.
@@ -7,7 +7,7 @@ qemu (2.0.0+dfsg-5) UNRELEASED; urgency=medium
   * introduce qemu-user-binfmt (dummy) package to support binfmt
     registration of qemu-user binaries (Closes: #677529)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 08 May 2014 10:56:42 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 13 May 2014 21:15:48 +0400
 
 qemu (2.0.0+dfsg-4) unstable; urgency=medium
 
