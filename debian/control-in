@@ -395,6 +395,13 @@ Description: QEMU user mode emulation binaries
  .
  This package provides the user mode emulation binaries. In this mode
  QEMU can launch Linux processes compiled for one CPU on another CPU.
+ .
+ If qemu-user-binfmt package is also installed, it will register binary
+ format handlers from this qemu-user package with the kernel so it will
+ be possible to run foreign binaries directly.  However, this might not
+ be suitable for using inside foreign chroots, in which case it is
+ possible to use qemu-user-static package instead of qemu-user-binmft, --
+ qemu-user-static will register statically linked binfmt handlers instead.
 
 Package: qemu-user-static
 Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 mips mipsel powerpc powerpcspe ppc64 ppc64el s390x sparc sparc64
@@ -413,6 +420,10 @@ Description: QEMU user mode emulation binaries (static version)
  This package provides the user mode emulation binaries, built
  statically. In this mode QEMU can launch Linux processes compiled for
  one CPU on another CPU.
+ .
+ If binfmt-support package is installed, qemu-user-static package will
+ register binary formats which the provided emulators can handle, so
+ that it will be possible to run foreign binaries directly.
 
 Package: qemu-user-binfmt
 Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 mips mipsel powerpc powerpcspe ppc64 ppc64el s390x sparc sparc64
