@@ -25,3 +25,4 @@ virtio-net-fix-guest-triggerable-buffer-overrun-CVE-2014-0150.patch
 x86-only-allow-real-mode-to-access-32bit-without-LMA.patch
 fix-entry-pointer-for-ELF-kernels-loaded-with--kernel-option.patch
 ide-correct-improper-smart-self-test-counter-reset-CVE-2014-2894.patch
+scsi-allocate-SCSITargetReq-r-buf-dynamically-CVE-2013-4344.patch
