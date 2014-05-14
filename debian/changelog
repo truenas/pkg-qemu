@@ -1,11 +1,11 @@
-qemu (1.1.2+dfsg-6a+deb7u3) UNRELEASED; urgency=medium
+qemu (1.1.2+dfsg-6a+deb7u3) wheezy-security; urgency=high
 
   * ide-correct-improper-smart-self-test-counter-reset-CVE-2014-2894.patch
     (Closes: #745157 CVE-2014-2894)
   * scsi-allocate-SCSITargetReq-r-buf-dynamically-CVE-2013-4344.patch
     (Closes: #725944 CVE-2013-4344)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 05 May 2014 17:07:32 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 14 May 2014 16:08:52 +0400
 
 qemu (1.1.2+dfsg-6a+deb7u2) stable; urgency=medium
 
