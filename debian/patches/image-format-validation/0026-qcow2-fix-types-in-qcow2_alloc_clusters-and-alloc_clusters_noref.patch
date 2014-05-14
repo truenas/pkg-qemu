@@ -1,0 +1,83 @@
+From: Kevin Wolf <kwolf@redhat.com>
+Date: Wed, 26 Mar 2014 13:05:51 +0100
+Subject: qcow2: Fix types in qcow2_alloc_clusters and alloc_clusters_noref
+
+In order to avoid integer overflows.
+
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Max Reitz <mreitz@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit bb572aefbdac290363bfa5ca0e810ccce0a14ed6)
+
+Conflicts:
+	block/qcow2.h
+
+diff --git a/block/qcow2-refcount.c b/block/qcow2-refcount.c
+index cf22dca..d3c12ca 100644
+--- a/block/qcow2-refcount.c
++++ b/block/qcow2-refcount.c
+@@ -26,7 +26,7 @@
+ #include "block_int.h"
+ #include "block/qcow2.h"
+ 
+-static int64_t alloc_clusters_noref(BlockDriverState *bs, int64_t size);
++static int64_t alloc_clusters_noref(BlockDriverState *bs, uint64_t size);
+ static int QEMU_WARN_UNUSED_RESULT update_refcount(BlockDriverState *bs,
+                             int64_t offset, int64_t length,
+                             int addend);
+@@ -546,15 +546,16 @@ static int update_cluster_refcount(BlockDriverState *bs,
+ 
+ 
+ /* return < 0 if error */
+-static int64_t alloc_clusters_noref(BlockDriverState *bs, int64_t size)
++static int64_t alloc_clusters_noref(BlockDriverState *bs, uint64_t size)
+ {
+     BDRVQcowState *s = bs->opaque;
+-    int i, nb_clusters, refcount;
++    uint64_t i, nb_clusters;
++    int refcount;
+ 
+     nb_clusters = size_to_clusters(s, size);
+ retry:
+     for(i = 0; i < nb_clusters; i++) {
+-        int64_t next_cluster_index = s->free_cluster_index++;
++        uint64_t next_cluster_index = s->free_cluster_index++;
+         refcount = get_refcount(bs, next_cluster_index);
+ 
+         if (refcount < 0) {
+@@ -571,7 +572,7 @@ retry:
+     return (s->free_cluster_index - nb_clusters) << s->cluster_bits;
+ }
+ 
+-int64_t qcow2_alloc_clusters(BlockDriverState *bs, int64_t size)
++int64_t qcow2_alloc_clusters(BlockDriverState *bs, uint64_t size)
+ {
+     int64_t offset;
+     int ret;
+diff --git a/block/qcow2.h b/block/qcow2.h
+index c366b7b..8ef5b7d 100644
+--- a/block/qcow2.h
++++ b/block/qcow2.h
+@@ -172,8 +172,8 @@ typedef struct BDRVQcowState {
+     uint64_t *refcount_table;
+     uint64_t refcount_table_offset;
+     uint32_t refcount_table_size;
+-    int64_t free_cluster_index;
+-    int64_t free_byte_offset;
++    uint64_t free_cluster_index;
++    uint64_t free_byte_offset;
+ 
+     CoMutex lock;
+ 
+@@ -285,7 +285,7 @@ int qcow2_update_header(BlockDriverState *bs);
+ int qcow2_refcount_init(BlockDriverState *bs);
+ void qcow2_refcount_close(BlockDriverState *bs);
+ 
+-int64_t qcow2_alloc_clusters(BlockDriverState *bs, int64_t size);
++int64_t qcow2_alloc_clusters(BlockDriverState *bs, uint64_t size);
+ int qcow2_alloc_clusters_at(BlockDriverState *bs, uint64_t offset,
+     int nb_clusters);
+ int64_t qcow2_alloc_bytes(BlockDriverState *bs, int size);
+-- 
+1.7.10.4
+

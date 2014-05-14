@@ -1,0 +1,75 @@
+From: Kevin Wolf <kwolf@redhat.com>
+Date: Wed, 26 Mar 2014 13:05:44 +0100
+Subject: qcow2: Validate refcount table offset
+
+The end of the refcount table must not exceed INT64_MAX so that integer
+overflows are avoided.
+
+Also check for misaligned refcount table. Such images are invalid and
+probably the result of data corruption. Error out to avoid further
+corruption.
+
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Max Reitz <mreitz@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 8c7de28305a514d7f879fdfc677ca11fbf60d2e9)
+
+Conflicts:
+	block/qcow2.c
+	tests/qemu-iotests/080
+	tests/qemu-iotests/080.out
+
+diff --git a/block/qcow2.c b/block/qcow2.c
+index fb1c9c1..3f0eab0 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -214,6 +214,32 @@ static void report_unsupported_feature(BlockDriverState *bs,
+     }
+ }
+ 
++static int validate_table_offset(BlockDriverState *bs, uint64_t offset,
++                                 uint64_t entries, size_t entry_len)
++{
++    BDRVQcowState *s = bs->opaque;
++    uint64_t size;
++
++    /* Use signed INT64_MAX as the maximum even for uint64_t header fields,
++     * because values will be passed to qemu functions taking int64_t. */
++    if (entries > INT64_MAX / entry_len) {
++        return -EINVAL;
++    }
++
++    size = entries * entry_len;
++
++    if (INT64_MAX - size < offset) {
++        return -EINVAL;
++    }
++
++    /* Tables must be cluster aligned */
++    if (offset & (s->cluster_size - 1)) {
++        return -EINVAL;
++    }
++
++    return 0;
++}
++
+ static int qcow2_open(BlockDriverState *bs, int flags)
+ {
+     BDRVQcowState *s = bs->opaque;
+@@ -365,6 +391,13 @@ static int qcow2_open(BlockDriverState *bs, int flags)
+         goto fail;
+     }
+ 
++    ret = validate_table_offset(bs, s->refcount_table_offset,
++                                s->refcount_table_size, sizeof(uint64_t));
++    if (ret < 0) {
++        report_unsupported(bs, "Invalid reference count table offset");
++        goto fail;
++    }
++
+     s->snapshots_offset = header.snapshots_offset;
+     s->nb_snapshots = header.nb_snapshots;
+ 
+-- 
+1.7.10.4
+

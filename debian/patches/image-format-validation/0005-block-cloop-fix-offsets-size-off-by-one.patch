@@ -1,0 +1,76 @@
+From: Michael Tokarev <mjt@tls.msk.ru>
+Date: Sat, 26 Apr 2014 21:51:06 +0400
+Subject: block/cloop: fix offsets[] size off-by-one
+
+cloop stores the number of compressed blocks in the n_blocks header
+field.  The file actually contains n_blocks + 1 offsets, where the extra
+offset is the end-of-file offset.
+
+The following line in cloop_read_block() results in an out-of-bounds
+offsets[] access:
+
+    uint32_t bytes = s->offsets[block_num + 1] - s->offsets[block_num];
+
+This patch allocates and loads the extra offset so that
+cloop_read_block() works correctly when the last block is accessed.
+
+Notice that we must free s->offsets[] unconditionally now since there is
+always an end-of-file offset.
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Max Reitz <mreitz@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 42d43d35d907579179a39c924d169da924786f65)
+
+Conflicts:
+	block/cloop.c
+	tests/qemu-iotests/075
+	tests/qemu-iotests/075.out
+
+diff --git a/block/cloop.c b/block/cloop.c
+index 49e65e4..2435b98 100644
+--- a/block/cloop.c
++++ b/block/cloop.c
+@@ -95,14 +95,14 @@ static int cloop_open(BlockDriverState *bs, int flags)
+     s->n_blocks = be32_to_cpu(s->n_blocks);
+ 
+     /* read offsets */
+-    if (s->n_blocks > UINT32_MAX / sizeof(uint64_t)) {
++    if (s->n_blocks > (UINT32_MAX - 1) / sizeof(uint64_t)) {
+         /* Prevent integer overflow */
+         fprintf(stderr, "n_blocks %u must be %zu or less\n",
+                    s->n_blocks,
+-                   UINT32_MAX / sizeof(uint64_t));
++                   (UINT32_MAX - 1) / sizeof(uint64_t));
+         goto cloop_close;
+     }
+-    offsets_size = s->n_blocks * sizeof(uint64_t);
++    offsets_size = (s->n_blocks + 1) * sizeof(uint64_t);
+     if (offsets_size > 512 * 1024 * 1024) {
+         /* Prevent ridiculous offsets_size which causes memory allocation to
+          * fail or overflows bdrv_pread() size.  In practice the 512 MB
+@@ -117,7 +117,8 @@ static int cloop_open(BlockDriverState *bs, int flags)
+             offsets_size) {
+         goto cloop_close;
+     }
+-    for(i=0;i<s->n_blocks;i++) {
++
++    for (i = 0; i < s->n_blocks + 1; i++) {
+         uint64_t size;
+ 
+         s->offsets[i] = be64_to_cpu(s->offsets[i]);
+@@ -231,9 +232,7 @@ static coroutine_fn int cloop_co_read(BlockDriverState *bs, int64_t sector_num,
+ static void cloop_close(BlockDriverState *bs)
+ {
+     BDRVCloopState *s = bs->opaque;
+-    if (s->n_blocks > 0) {
+-        g_free(s->offsets);
+-    }
++    g_free(s->offsets);
+     g_free(s->compressed_block);
+     g_free(s->uncompressed_block);
+     inflateEnd(&s->zstream);
+-- 
+1.7.10.4
+

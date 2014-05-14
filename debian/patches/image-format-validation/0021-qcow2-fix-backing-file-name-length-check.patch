@@ -1,0 +1,50 @@
+From: Kevin Wolf <kwolf@redhat.com>
+Date: Wed, 26 Mar 2014 13:05:47 +0100
+Subject: qcow2: Fix backing file name length check
+
+len could become negative and would pass the check then. Nothing bad
+happened because bdrv_pread() happens to return an error for negative
+length values, but make variables for sizes unsigned anyway.
+
+This patch also changes the behaviour to error out on invalid lengths
+instead of silently truncating it to 1023.
+
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Max Reitz <mreitz@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 6d33e8e7dc9d40ea105feed4b39caa3e641569e8)
+
+Conflicts:
+	tests/qemu-iotests/080
+	tests/qemu-iotests/080.out
+
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 23baace..4297cc6 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -243,7 +243,8 @@ static int validate_table_offset(BlockDriverState *bs, uint64_t offset,
+ static int qcow2_open(BlockDriverState *bs, int flags)
+ {
+     BDRVQcowState *s = bs->opaque;
+-    int len, i, ret = 0;
++    unsigned int len, i;
++    int ret = 0;
+     QCowHeader header;
+     uint64_t ext_end;
+     uint64_t l1_vm_state_index;
+@@ -491,8 +492,10 @@ static int qcow2_open(BlockDriverState *bs, int flags)
+     /* read the backing file name */
+     if (header.backing_file_offset != 0) {
+         len = header.backing_file_size;
+-        if (len > 1023) {
+-            len = 1023;
++        if (len > MIN(1023, s->cluster_size - header.backing_file_offset)) {
++            report_unsupported(bs, "Backing file name too long");
++            ret = -EINVAL;
++            goto fail;
+         }
+         ret = bdrv_pread(bs->file, header.backing_file_offset,
+                          bs->backing_file, len);
+-- 
+1.7.10.4
+

@@ -1,0 +1,37 @@
+From: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+Date: Mon, 18 Jun 2012 14:00:57 +0100
+Subject: qcow2: preserve free_byte_offset when qcow2_alloc_bytes() fails
+
+When qcow2_alloc_clusters() error handling code was introduced in commit
+5d757b563d59142ca81e1073a8e8396750a0ad1a, the value of free_byte_offset
+was clobbered in the error case.  This patch keeps free_byte_offset at 0
+so we will try to allocate clusters again next time this function is
+called.
+
+Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 206e6d8551839008b6858cf8f500d2e644d2b561)
+(needed for the next commit, qcow2: Fix types in qcow2_alloc_clusters and alloc_clusters_noref)
+
+diff --git a/block/qcow2-refcount.c b/block/qcow2-refcount.c
+index e7c56ea..cf22dca 100644
+--- a/block/qcow2-refcount.c
++++ b/block/qcow2-refcount.c
+@@ -640,10 +640,11 @@ int64_t qcow2_alloc_bytes(BlockDriverState *bs, int size)
+     BLKDBG_EVENT(bs->file, BLKDBG_CLUSTER_ALLOC_BYTES);
+     assert(size > 0 && size <= s->cluster_size);
+     if (s->free_byte_offset == 0) {
+-        s->free_byte_offset = qcow2_alloc_clusters(bs, s->cluster_size);
+-        if (s->free_byte_offset < 0) {
+-            return s->free_byte_offset;
++        offset = qcow2_alloc_clusters(bs, s->cluster_size);
++        if (offset < 0) {
++            return offset;
+         }
++        s->free_byte_offset = offset;
+     }
+  redo:
+     free_in_cluster = s->cluster_size -
+-- 
+1.7.10.4
+
