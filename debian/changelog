@@ -1,3 +1,9 @@
+qemu (2.0.0+dfsg-6) UNRELEASED; urgency=low
+
+  * build-depend on libgnutls28-dev not libgnutls-dev
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 21 May 2014 23:36:27 +0400
+
 qemu (2.0.0+dfsg-5) unstable; urgency=medium
 
   * re-re-enable rbd (ceph) support again (Closes: #689239)
