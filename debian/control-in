@@ -16,6 +16,8 @@ Build-Depends: debhelper (>= 9),
  device-tree-compiler,
  texinfo,
  python:any,
+# compiling .dsl files in hw/i386/ instead of using included precompiled .hex
+ acpica-tools,
 # --enable-linux-aio	linux-*
  libaio-dev [linux-any],
 # --audio-drv-list=pa,alsa,sdl,oss	linux-*
