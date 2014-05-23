@@ -1,4 +1,4 @@
-qemu (2.0.0+dfsg-6) UNRELEASED; urgency=medium
+qemu (2.0.0+dfsg-6) unstable; urgency=medium
 
   * build-depend on libgnutls28-dev not libgnutls-dev
   * added qcow1 block format validation patches from upstream:
@@ -8,7 +8,7 @@ qemu (2.0.0+dfsg-6) UNRELEASED; urgency=medium
    block-fmt-validation/qcow1-validate-L2-table-size-CVE-2014-0222.patch
     (Finally closes: #742730, CVE-2014-0222, CVE-2014-0223)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 21 May 2014 23:36:27 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 23 May 2014 12:12:38 +0400
 
 qemu (2.0.0+dfsg-5) unstable; urgency=medium
 
