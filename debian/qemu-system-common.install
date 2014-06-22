@@ -1,5 +1,6 @@
 debian/qemu-ifdown etc/
 debian/tmp/usr/share/man/man1/qemu.1
+debian/tmp/usr/share/qemu/keymaps
 pc-bios/qemu-icon.bmp /usr/share/qemu/
 pc-bios/qemu_logo_no_text.svg /usr/share/qemu/
 # until we have qemu-docs package,
