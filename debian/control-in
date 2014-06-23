@@ -168,7 +168,7 @@ Depends: ${misc:Depends}, ${shlibs:Depends},
 # to fix wrong acl for newly created device node on ubuntu:
 :ubuntu: udev, acl
 Breaks:
-:ubuntu: qemu-common (<< 1.2.0.dfsg-1),
+:ubuntu: qemu-common,
 # qemu-system before qemu-system-split
   qemu-system (<< 1.3.0+dfsg-5),
 # qemu-utils had virtfs-proxy-helper
@@ -179,7 +179,7 @@ Breaks:
   iproute (<< 20110315-1)
 Replaces:
 :ubuntu: qemu (<< 1.3.0+dfsg-5),
-:ubuntu: qemu-common (<< 1.2.0.dfsg-1),
+:ubuntu: qemu-common,
   qemu-system (<< 1.3.0+dfsg-5),
   qemu-utils (<< 1.3.0+dfsg-4),
   qemu-keymaps,
@@ -494,15 +494,6 @@ Description: QEMU Full virtualization on x86 hardware
  .
  Please note that old qemu-kvm configuration files (in /etc/kvm/) are
  no longer used.
-
-:ubuntu:Package: qemu-common
-:ubuntu:Architecture: all
-:ubuntu:Depends: ${misc:Depends}, qemu-keymaps
-:ubuntu:Section: oldlibs
-:ubuntu:Description: dummy transitional package from qemu-common to qemu-keymaps
-:ubuntu: This transitional package helps users transition from the qemu-common package
-:ubuntu: to the qemu-keymaps package.  Once this package and its dependencies are
-:ubuntu: installed you can safely remove it.
 
 :ubuntu:Package: qemu-system-aarch64
 :ubuntu:Architecture: arm64
