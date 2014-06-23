@@ -187,6 +187,11 @@ ifeq ($(DEB_VENDOR),Ubuntu)
 		usr/bin/qemu-system-x86_64 usr/bin/qemu-system-x86_64-spice
 endif
 endif
+ifeq ($(DEB_VENDOR),Ubuntu)
+# apport hook is ubuntu-specific
+	dh_install -pqemu-system-common debian/source_qemu.py \
+		usr/share/apport/package-hooks/
+endif
 
 # virtfs-proxy-helper and qemu-bridge-helper are linux-specific
 	for f in usr/bin/virtfs-proxy-helper \
