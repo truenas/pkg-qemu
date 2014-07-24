@@ -12,6 +12,7 @@ qemu (2.0.0+dfsg-7) UNRELEASED; urgency=medium
    - make symlinks from /usr/share/doc/qemu-system-foo/common to ../q-s-c/
    - ship doc-base file for qemu-system-common too (for qemu-doc.html)
    - rename qemu.1 manpage to qemu-system.1
+  * qemu-user-static & qemu-user-binfmt conflict with each other, not break.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 23 May 2014 17:03:41 +0400
 
