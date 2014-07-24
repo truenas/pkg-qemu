@@ -421,7 +421,7 @@ Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 mips mipsel powerpc pow
 Multi-Arch: foreign
 Depends: ${misc:Depends}, qemu-user (= ${binary:Version}), binfmt-support
 Conflicts: qemu-user-static
-Description: QEMU user mode binfmt registration for qemu-user
+Description: QEMU user mode binfmt registration for qemu-user (empty package)
  QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
  SPARC and x86-64 emulation. By using dynamic translation it achieves
