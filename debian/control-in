@@ -102,6 +102,7 @@ Build-Depends: debhelper (>= 9),
 ##--enable-glusterfs todo
 ##--enable-lzo todo
 ##--enable-libnfs todo
+##:debian: libnfs-dev (>> 1.9.4)
 ##--enable-netmap todo bsd
 ##--enable-quorum todo needs gcrypt
 ##--enable-xen-pci-passthrough todo
