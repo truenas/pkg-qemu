@@ -50,7 +50,7 @@ Build-Depends: debhelper (>= 9),
 # --disable-vte
 # libiscsi is debian-only since ubuntu/libiscsi is in universe
 :debian:# --enable-libiscsi
-:debian: libiscsi-dev,
+:debian: libiscsi-dev (>> 1.9.0~),
 # --enable-curses
  libncurses5-dev,
 # --with-system-pixman
