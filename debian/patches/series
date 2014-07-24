@@ -2,3 +2,4 @@
 retry-pxe-after-efi.patch
 use-fixed-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
+qemu-options-fix-another-allows-to-for-net-l2tpv3.patch

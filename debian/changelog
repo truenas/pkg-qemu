@@ -4,6 +4,7 @@ qemu (2.1~rc3+dfsg-1) UNRELEASED; urgency=medium
     Closes: #739589 CVE-2014-3461
   * versioned build-depend on libiscsi-dev (>>1.9.0~)
   * added ppc64le user target
+  * qemu-options-fix-another-allows-to-for-net-l2tpv3.patch
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 24 Jul 2014 18:39:20 +0400
 
