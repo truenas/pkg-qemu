@@ -1,4 +1,4 @@
-qemu (2.0.0+dfsg-7) UNRELEASED; urgency=medium
+qemu (2.0.0+dfsg-7) unstable; urgency=medium
 
   * clarify description of qemu-user-binfmt a bit 
   * build-depend on acpica-tools (iasl) in order to rebuild .dsl files
@@ -15,7 +15,7 @@ qemu (2.0.0+dfsg-7) UNRELEASED; urgency=medium
   * qemu-user-static & qemu-user-binfmt conflict with each other, not break.
   * mention that qemu-user-binfmt is empty package (lintian)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 23 May 2014 17:03:41 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 24 Jul 2014 16:51:16 +0400
 
 qemu (2.0.0+dfsg-6) unstable; urgency=medium
 
