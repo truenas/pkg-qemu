@@ -1,5 +1,6 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/pkg-info.mk
 DEB_VENDOR := $(shell dpkg-vendor --query vendor)
 ifeq ($(DEB_VENDOR),Ubuntu)
 VENDOR := ubuntu
@@ -12,9 +13,6 @@ endif
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
   MAKEFLAGS += -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 endif
-
-# Packaging version
-DEB_VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
 
 # Compiler flags
 CFLAGS = $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
