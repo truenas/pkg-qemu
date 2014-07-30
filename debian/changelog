@@ -1,10 +1,9 @@
-qemu (2.1~rc3+dfsg-1) UNRELEASED; urgency=medium
+qemu (2.1~rc5+dfsg-1) UNRELEASED; urgency=medium
 
   * new upstream release candidate
     Closes: #739589 CVE-2014-3461
   * versioned build-depend on libiscsi-dev (>>1.9.0~)
   * added ppc64le user target
-  * qemu-options-fix-another-allows-to-for-net-l2tpv3.patch
   * fix description of qemu-user-binfmt wrt "empty" (Closes: #755988)
   * use /usr/share/dpkg/pkg-info.mk instead of inventing the same locally
   * added debian/get-orig-source.sh (and a d/rules target)
