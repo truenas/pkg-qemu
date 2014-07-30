@@ -269,5 +269,8 @@ debian/control: debian/control-in debian/rules
 	mv -f $@.tmp $@
 endif
 
-.PHONY: build clean binary-indep binary-arch binary install
+get-orig-source:
+	./debian/get-orig-source.sh ${DEB_VERSION}
+
+.PHONY: build clean binary-indep binary-arch binary install get-orig-source
 
