@@ -1,6 +1,7 @@
 qemu (2.1+dfsg-2) UNRELEASED; urgency=medium
 
   * l2tp-linux-only.patch: fix FTBFS on kfreebsd
+  * imx_timer_TIMER_MAX_clash.diff: fix ITIMER_MAX definition clash
   * remove kfreebsd hack which disabled usb support on this platform
     since qemu-1.3: it isn't needed anymore
 
