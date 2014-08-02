@@ -1,3 +1,10 @@
+qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
+
+  * set SHELL = /bin/sh -e, so that more complex shell constructs
+    in d/rules will fail if any command fail inside
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
+
 qemu (2.1+dfsg-2) unstable; urgency=medium
 
   * l2tp-linux-only.patch: fix FTBFS on kfreebsd

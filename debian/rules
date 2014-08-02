@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+SHELL = /bin/sh -e
 
 include /usr/share/dpkg/pkg-info.mk
 DEB_VENDOR := $(shell dpkg-vendor --query vendor)
