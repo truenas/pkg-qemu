@@ -2,6 +2,7 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
 
   * set SHELL = /bin/sh -e, so that more complex shell constructs
     in d/rules will fail if any command fail inside
+  * check for pipe2() being a stub too, like utimensat() etc
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
 
