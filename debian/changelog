@@ -1,3 +1,13 @@
+qemu (2.1+dfsg-2~bpo70+1) wheezy-backports; urgency=low
+
+  * Rebuild for wheezy-backports:
+    - disable seccomp (not in wheezy)
+    - s/python:any/python/ in build-depends
+    - build-depend on iasl|acpica-tools
+    - build-depend on gnutls-dev, not libgnutls28-dev
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 08 Aug 2014 10:39:46 +0400
+
 qemu (2.1+dfsg-2) unstable; urgency=medium
 
   * l2tp-linux-only.patch: fix FTBFS on kfreebsd
