@@ -57,8 +57,8 @@ Build-Depends: debhelper (>= 9),
  libpixman-1-dev,
 # audio-drv-list += pa
  libpulse-dev,
-# --enable-rbd		linux-*
- librados-dev [linux-any], librbd-dev [linux-any],
+## --enable-rbd		linux-*
+# librados-dev [linux-any], librbd-dev [linux-any],
 # --enable-vnc-sasl
  libsasl2-dev,
 # note: libsdl2-dev is in universe on ubuntu
