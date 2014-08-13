@@ -20,6 +20,7 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
   * include /usr/lib/qemu-bridge-helper binary, but not make it setuid
     due to security concerns outlined in #691138 (Closes: #691138)
   * make vnc-jpeg not debian-specific
+  * install kvm-spice symlinks on ubuntu
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
 

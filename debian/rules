@@ -181,6 +181,11 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	dh_install -pqemu-kvm debian/kvm /usr/bin/
 	dh_install -pqemu-kvm debian/kvm.1 /usr/share/man/man1/
+ifeq ($(DEB_VENDOR),Ubuntu)
+# on ubuntu there was kvm-spice package/binary which was used in libvirt xml
+	dh_link -pqemu-kvm usr/bin/kvm usr/bin/kvm-spice \
+		usr/bin/qemu-system-x86_64 usr/bin/qemu-system-x86_64-spice
+endif
 endif
 
 # virtfs-proxy-helper and qemu-bridge-helper are linux-specific
