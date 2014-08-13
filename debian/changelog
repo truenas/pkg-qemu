@@ -19,6 +19,7 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
     ROM, or else migration will fail due to rom size mismatch.
   * include /usr/lib/qemu-bridge-helper binary, but not make it setuid
     due to security concerns outlined in #691138 (Closes: #691138)
+  * make vnc-jpeg not debian-specific
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
 
