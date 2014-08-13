@@ -14,6 +14,9 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
     blobs in several (arch-specific) data directories instead of just one.
   * removed all blob/firmware symlinks from qemu-system-x86, using
     arch-specific datapath instead (/usr/share/seabios:/usr/lib/ipxe/qemu)
+  * removed retry-pxe-after-efi.patch and depend on ipxe-qemu which
+    introduced efi boot roms.  qemu should not try to load "wrong"
+    ROM, or else migration will fail due to rom size mismatch.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
 

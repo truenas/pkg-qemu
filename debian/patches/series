@@ -1,5 +1,4 @@
 02_kfreebsd.patch
-retry-pxe-after-efi.patch
 use-fixed-data-path.patch
 use-arch-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
