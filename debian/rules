@@ -30,10 +30,12 @@ BUILD_PACKAGES = $(shell dh_listpackages)
 enable_system = $(if $(filter qemu-system,${BUILD_PACKAGES}),enable,disable)
 enable_linux_user = $(if $(filter qemu-user,${BUILD_PACKAGES}),enable,disable)
 
+X86_DATAPATH = /usr/share/seabios:/usr/lib/ipxe/qemu
+
 # we add another set of configure options from debian/control
 common_configure_opts = \
 	--with-pkgversion="Debian $(DEB_VERSION)" \
-	--extra-cflags="$(CFLAGS)" \
+	--extra-cflags="$(CFLAGS) -DCONFIG_QEMU_X86_DATAPATH='\"${X86_DATAPATH}\"'" \
 	--extra-ldflags="$(LDFLAGS)" \
 	--prefix=/usr \
 	--sysconfdir=/etc \
