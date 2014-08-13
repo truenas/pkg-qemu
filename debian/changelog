@@ -8,6 +8,8 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
     backports and future versions)
   * build-depend on libjpeg-dev not libjpeg8-dev
   * minimum version of seabios is 1.7.5 (Closes: #757958)
+  * ide-only-constrain-read_write-requests-to-drive-size.diff
+    (Closes: #757927)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
 
