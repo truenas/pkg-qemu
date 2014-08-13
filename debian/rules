@@ -183,9 +183,11 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	dh_install -pqemu-kvm debian/kvm.1 /usr/share/man/man1/
 endif
 
-# virtfs-proxy-helper is linux-specific
+# virtfs-proxy-helper and qemu-bridge-helper are linux-specific
 	for f in usr/bin/virtfs-proxy-helper \
-	         usr/share/man/man1/virtfs-proxy-helper.1 ; do \
+	         usr/share/man/man1/virtfs-proxy-helper.1 \
+		 usr/lib/qemu-bridge-helper \
+	; do \
 	  mkdir -p debian/qemu-system-common/$${f%/*} ; \
 	  mv debian/tmp/$$f debian/qemu-system-common/$$f ; \
 	done
