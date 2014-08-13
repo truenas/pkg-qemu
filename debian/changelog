@@ -6,6 +6,7 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
   * build-depend on gnutls-dev, not libgnutls*-dev, so the
     buuld system will pick default gnutls impl (so it works for
     backports and future versions)
+  * build-depend on libjpeg-dev not libjpeg8-dev
   * minimum version of seabios is 1.7.5 (Closes: #757958)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400

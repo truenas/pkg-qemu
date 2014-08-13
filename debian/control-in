@@ -94,7 +94,7 @@ Build-Depends: debhelper (>= 9),
 # other optional features we enable
 # --enable-vnc
 :debian:# --enable-vnc-jpeg
-:debian: libjpeg8-dev,
+:debian: libjpeg-dev,
 # --enable-vnc-png
  libpng12-dev,
 # --enable-kvm		linux-*
