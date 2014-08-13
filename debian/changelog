@@ -10,6 +10,8 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
   * minimum version of seabios is 1.7.5 (Closes: #757958)
   * ide-only-constrain-read_write-requests-to-drive-size.diff
     (Closes: #757927)
+  * added use-arch-data-path.patch, to be able to search for binary
+    blobs in several (arch-specific) data directories instead of just one.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
 
