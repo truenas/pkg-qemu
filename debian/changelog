@@ -1,4 +1,4 @@
-qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
+qemu (2.1+dfsg-3) unstable; urgency=medium
 
   * set SHELL = /bin/sh -e, so that more complex shell constructs
     in d/rules will fail if any command fail inside
@@ -22,7 +22,7 @@ qemu (2.1+dfsg-3) UNRELEASED; urgency=medium
   * make vnc-jpeg not debian-specific
   * install kvm-spice symlinks on ubuntu
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Aug 2014 13:47:26 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 14 Aug 2014 14:30:24 +0400
 
 qemu (2.1+dfsg-2) unstable; urgency=medium
 
