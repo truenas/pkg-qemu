@@ -1,3 +1,9 @@
+qemu (2.1+dfsg-4) UNRELEASED; urgency=medium
+
+  * mention libnuma-dev but not enable for now
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 15 Aug 2014 12:32:30 +0400
+
 qemu (2.1+dfsg-3) unstable; urgency=medium
 
   * set SHELL = /bin/sh -e, so that more complex shell constructs
