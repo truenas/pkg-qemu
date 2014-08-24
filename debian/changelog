@@ -2,6 +2,8 @@ qemu (2.1+dfsg-4) UNRELEASED; urgency=medium
 
   * mention libnuma-dev but not enable for now
   * 9p-readdir.patch: fix readdir in 9p mapped mode (Closes: #755738)
+  * reserve-more-memory-for-ACPI-for-new-machine-types.diff: fix
+    linux -kernel not working with new qemu (observed on ubuntu)
   * mention that 2.1 closed #754336.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 15 Aug 2014 12:32:30 +0400
