@@ -9,6 +9,9 @@ qemu (2.1+dfsg-4) UNRELEASED; urgency=medium
     documentation fix
   * mention that 2.1 closed #754336.
   * move qemu-bridge-helper to /usr/lib/qemu/ subdir (lintian)
+  * debian/binfmt-update-in (Serge Hallyn):
+    - don't run in a container
+    - add ppc64le as target
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 15 Aug 2014 12:32:30 +0400
 
