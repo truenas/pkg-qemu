@@ -3,6 +3,7 @@ From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Message-ID: <1408568118-30083-1-git-send-email-mst@redhat.com>
 Subject: pc: reserve more memory for ACPI for new machine types
+Bug-Debian: http://bugs.debian.org/759522
 
 commit 868270f23d8db2cce83e4f082fe75e8625a5fbf9
     acpi-build: tweak acpi migration limits
