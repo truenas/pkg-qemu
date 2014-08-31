@@ -2,9 +2,8 @@ qemu (2.1+dfsg-4) UNRELEASED; urgency=medium
 
   * mention libnuma-dev but not enable for now
   * 9p-readdir.patch: fix readdir in 9p mapped mode (Closes: #755738)
-  * reserve-more-memory-for-ACPI-for-new-machine-types.diff: fix
-    linux -kernel not working with new qemu (observed on ubuntu)
-    (Closes: #759522)
+  * pc-reserve-more-memory-for-acpi.patch: fix linux -kernel not working
+    with new qemu (Closes: #759522)
   * qemu-options-add-missing--drive-discard-option-to-cmdline-help.diff -
     documentation fix
   * mention that 2.1 closed #754336.

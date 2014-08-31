@@ -6,5 +6,5 @@ l2tp-linux-only.patch
 imx_timer_TIMER_MAX_clash.diff
 ide-only-constrain-read_write-requests-to-drive-size.diff
 9p-readdir.patch
-reserve-more-memory-for-ACPI-for-new-machine-types.diff
+pc-reserve-more-memory-for-acpi.patch
 qemu-options-add-missing--drive-discard-option-to-cmdline-help.diff
