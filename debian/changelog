@@ -1,4 +1,4 @@
-qemu (2.1+dfsg-4) UNRELEASED; urgency=medium
+qemu (2.1+dfsg-4) unstable; urgency=medium
 
   * mention libnuma-dev but not enable for now
   * 9p-readdir.patch: fix readdir in 9p mapped mode (Closes: #755738)
@@ -13,7 +13,7 @@ qemu (2.1+dfsg-4) UNRELEASED; urgency=medium
     - add ppc64le as target
   * add apport hook from ubuntu package (ubuntu-only for now)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 15 Aug 2014 12:32:30 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 31 Aug 2014 09:32:59 +0400
 
 qemu (2.1+dfsg-3) unstable; urgency=medium
 
