@@ -1,7 +1,17 @@
+qemu (2.1+dfsg-5~bpo70+1) wheezy-backports; urgency=medium
+
+  * Rebuild for wheezy-backports:
+    - disable cepth (rbd) (still not in wheezy)
+    - disable seccomp (not in wheezy)
+    - build-depend on iasl|acpica-tools
+    - s/python:any/python/ in build-depends
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 18:05:40 +0400
+
 qemu (2.1+dfsg-5) unstable; urgency=medium
 
   * upstream bugfix release v2.1.2
-    (Closes: #762532 CVE-2014-3640 CVE-2014-5388)
+    (Closes: #762532 CVE-2014-3640 CVE-2014-5388 CVE-2014-3615)
   * Add x32 to the list of supported architectures
     (patch by Thorsten Glaser)
   * fix wrong reference in kvm.1 (Closes: #761137)
