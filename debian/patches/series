@@ -63,4 +63,8 @@ image-format-validation/0032-qcow2-fix-L1-allocation-size-in-qcow2_snapshot_load
 image-format-validation/0033-qcow2-check-maximum-L1-size-in-qcow2_snapshot_load_tmp-CVE-2014-0143.patch
 image-format-validation/0034-parallels-fix-catalog-size-integer-overflow-CVE-2014-0143.patch
 image-format-validation/0035-parallels-sanity-check-for-s-tracks-CVE-2014-0142.patch
-
+image-format-validation/0036-qcow1-make-padding-in-the-header-explicit.patch
+image-format-validation/0037-qcow1-check-maximum-cluster-size.patch
+image-format-validation/0038-qcow1-validate-L2-table-size-CVE-2014-0222.patch
+image-format-validation/0039-qcow1-validate-image-size-CVE-2014-0223.patch
+image-format-validation/0040-qcow1-stricter-backing-file-length-check.patch
