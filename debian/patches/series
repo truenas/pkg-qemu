@@ -7,4 +7,5 @@ use-arch-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
 imx_timer_TIMER_MAX_clash.diff
 9p-readdir.patch
+9p-use-little-endian-format-for-xattr-values.patch
 qemu-options-add-missing--drive-discard-option-to-cmdline-help.diff
