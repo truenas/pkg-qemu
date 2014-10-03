@@ -27,6 +27,8 @@ fix-entry-pointer-for-ELF-kernels-loaded-with--kernel-option.patch
 ide-correct-improper-smart-self-test-counter-reset-CVE-2014-2894.patch
 scsi-allocate-SCSITargetReq-r-buf-dynamically-CVE-2013-4344.patch
 slirp-udp-fix-NULL-pointer-deref-uninit-socket-CVE-2014-3640.patch
+spice-make-sure-we-don-t-overflow-ssd-buf-CVE-2014-3615.patch
+vbe-rework-sanity-checks-CVE-2014-3615.patch
 
 # #742730, http://bugs.debian.org/742730
 image-format-validation/0001-block-cloop-validate-block_size-header-field-CVE-2014-0144.patch

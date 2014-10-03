@@ -6,6 +6,8 @@ qemu (1.1.2+dfsg-6a+deb7u3+exp1) experimental; urgency=medium
     (Closes: #742730)
   * slirp-udp-fix-NULL-pointer-deref-uninit-socket-CVE-2014-3640.patch
     closing CVE-2014-3640 (Closes: #762532)
+  * spice-make-sure-we-don-t-overflow-ssd-buf-CVE-2014-3615.patch and
+    vbe-rework-sanity-checks-CVE-2014-3615.patch closing CVE-2014-3615
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 20 May 2014 09:49:42 +0400
 
