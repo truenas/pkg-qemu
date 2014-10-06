@@ -5,6 +5,8 @@ SHELL = /bin/sh -e
 include /usr/share/dpkg/pkg-info.mk
 # get DEB_HOST_ARCH DEB_HOST_ARCH_OS DEB_HOST_GNU_TYPE DEB_BUILD_GNU_TYPE
 include /usr/share/dpkg/architecture.mk
+# get CFLAGS LDFLAGS etc
+include /usr/share/dpkg/buildflags.mk
 
 ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
 VENDOR := ubuntu
@@ -18,9 +20,6 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
   MAKEFLAGS += -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 endif
 
-# Compiler flags
-CFLAGS = $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
-LDFLAGS = $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed
 # verbose build
 V ?= 1
 
@@ -35,8 +34,8 @@ X86_DATAPATH = /usr/share/seabios:/usr/lib/ipxe/qemu
 # we add another set of configure options from debian/control
 common_configure_opts = \
 	--with-pkgversion="Debian $(DEB_VERSION)" \
-	--extra-cflags="$(CFLAGS) -DCONFIG_QEMU_X86_DATAPATH='\"${X86_DATAPATH}\"'" \
-	--extra-ldflags="$(LDFLAGS)" \
+	--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_QEMU_X86_DATAPATH='\"${X86_DATAPATH}\"'" \
+	--extra-ldflags="$(LDFLAGS) -Wl,--as-needed" \
 	--prefix=/usr \
 	--sysconfdir=/etc \
 	--libexecdir=/usr/lib/qemu \
