@@ -90,8 +90,9 @@ configure-stamp: configure
 	dh_testdir
 
 	# system build
-	mkdir -p qemu-build && cd qemu-build && \
-	   ../configure ${common_configure_opts} --disable-user \
+	rm -rf qemu-build; mkdir qemu-build
+	cd qemu-build && \
+	    ../configure ${common_configure_opts} --disable-user \
 		--${enable_system}-system \
 		--${enable_linux_user}-linux-user \
 		$(shell sh debian/extract-config-opts \
@@ -102,10 +103,11 @@ configure-stamp: configure
 ifeq ($(enable_linux_user),enable)
 # do not use debian/configure-opts here, all optional stuff will be enabled
 # automatically, dependencies are already verified in the main build
-	mkdir -p user-static-build && cd user-static-build && \
-		../configure ${common_configure_opts} \
-			--static --disable-system \
-			--target-list="$(addsuffix -linux-user,${user_targets})"
+	rm -rf user-static-build; mkdir user-static-build
+	cd user-static-build && \
+	    ../configure ${common_configure_opts} \
+		--static --disable-system \
+		--target-list="$(addsuffix -linux-user,${user_targets})"
 endif
 	touch $@
 
@@ -130,8 +132,8 @@ endif
 
 clean:	debian/control
 	dh_testdir
-	rm -rf *-build/
-	rm -f *-stamp
+	rm -rf qemu-build user-static-build
+	rm -f configure-stamp build-stamp
 	find scripts/ -name '*.pyc' -delete || :
 	dh_clean
 
