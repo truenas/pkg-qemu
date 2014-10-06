@@ -4,6 +4,7 @@ qemu (2.1+dfsg-6) UNRELEASED; urgency=low
   * 9p-use-little-endian-format-for-xattr-values.patch (Closes: #755740)
   * mention closing of #760386
   * mention closing of more CVEs by 2.1+dfsg-1
+  * recognize ppc64el in qemu-debootstrap (Luca Falavigna) (Closes: #760949)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 23:27:26 +0400
 
