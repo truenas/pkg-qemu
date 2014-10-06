@@ -5,6 +5,7 @@ qemu (2.1+dfsg-6) UNRELEASED; urgency=low
   * mention closing of #760386
   * mention closing of more CVEs by 2.1+dfsg-1
   * recognize ppc64el in qemu-debootstrap (Luca Falavigna) (Closes: #760949)
+  * use dpkg-vendor to let derived distros to use our d/rules
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 23:27:26 +0400
 
