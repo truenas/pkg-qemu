@@ -9,10 +9,10 @@ include /usr/share/dpkg/architecture.mk
 include /usr/share/dpkg/buildflags.mk
 
 ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
-VENDOR := ubuntu
+VENDOR := UBUNTU
 DEB_BUILD_PARALLEL = yes
 else
-VENDOR := debian
+VENDOR := DEBIAN
 endif
 
 # support parallel build using DEB_BUILD_OPTIONS=parallel=N
@@ -180,13 +180,13 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	dh_install -pqemu-kvm debian/kvm /usr/bin/
 	dh_install -pqemu-kvm debian/kvm.1 /usr/share/man/man1/
-ifeq ($(VENDOR),ubuntu)
+ifeq ($(VENDOR),UBUNTU)
 # on ubuntu there was kvm-spice package/binary which was used in libvirt xml
 	dh_link -pqemu-kvm usr/bin/kvm usr/bin/kvm-spice \
 		usr/bin/qemu-system-x86_64 usr/bin/qemu-system-x86_64-spice
 endif
 endif
-ifeq ($(VENDOR),ubuntu)
+ifeq ($(VENDOR),UBUNTU)
 # apport hook is ubuntu-specific
 	dh_install -pqemu-system-common debian/source_qemu.py \
 		usr/share/apport/package-hooks/
@@ -269,8 +269,8 @@ endif
 ifneq (,$(wildcard debian/control-in))
 # only include rules for debian/control if debian/control-in is present
 debian/control: debian/control-in debian/rules
-	sed -e 's/^:${VENDOR}://' -e '/^:[a-z]*:/D' \
-		$< > $@.tmp
+	sed -e 's/^:$(shell echo ${VENDOR} | tr '[A-Z]' '[a-z]')://' \
+		-e '/^:[a-z]*:/D' $< > $@.tmp
 	mv -f $@.tmp $@
 endif
 
