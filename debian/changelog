@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-6a+deb7u5) UNRELEASED; urgency=medium
+
+  * apply 5 patches backported from upstream to fix a security issue in
+    vmware-vga (Closes: #765496 CVE-2014-3689)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 04 Nov 2014 23:01:59 +0300
+
 qemu (1.1.2+dfsg-6a+deb7u4) wheezy-security; urgency=medium
 
   * image-format-validation patch series backported from 2.0, closing
