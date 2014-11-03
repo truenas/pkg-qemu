@@ -1,4 +1,4 @@
-qemu (2.1+dfsg-6) UNRELEASED; urgency=low
+qemu (2.1+dfsg-6) unstable; urgency=medium
 
   * mention closing of CVE-2014-3615 by 2.1.2 (2.1+dfsg-5)
   * 9p-use-little-endian-format-for-xattr-values.patch (Closes: #755740)
@@ -18,7 +18,7 @@ qemu (2.1+dfsg-6) UNRELEASED; urgency=low
   * apply two patche from upstream to make qemu to work with samba4
     (Closes: #747636)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 23:27:26 +0400
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 03 Nov 2014 18:07:48 +0300
 
 qemu (2.1+dfsg-5) unstable; urgency=medium
 
