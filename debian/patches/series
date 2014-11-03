@@ -20,3 +20,6 @@ vnc-sanitize-bits_per_pixel-from-the-client-CVE-2014-7815.patch
 
 net-slirp-specify-logbase-for-smbd.patch
 slirp-smbd-modify-set-several-parameters-in-generated-smb-conf.patch
+
+block-raw-posix-Fix-disk-corruption-in-try_fiemap.patch
+block-raw-posix-use-seek_hole-ahead-of-fiemap.patch

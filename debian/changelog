@@ -3,6 +3,10 @@ qemu (2.1+dfsg-7) UNRELEASED; urgency=high
   * vnc-sanitize-bits_per_pixel-from-the-client-CVE-2014-7815.patch
     from upstream (Closes: CVE-2014-7815)
   * fix spelling mistake in previous changelog entry
+  * add two patches from upstream for block/raw-posix.c to work around
+    probs in FS_IOC_FIEMAP ioctl and to prefer seek_hole over fiemap.
+    This should fix a long-standing ghost data corruption observed
+    in various places.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 03 Nov 2014 18:43:21 +0300
 
