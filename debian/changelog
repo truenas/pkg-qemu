@@ -13,6 +13,8 @@ qemu (2.1+dfsg-6) UNRELEASED; urgency=low
   * do not treat ppc* and ppc*le as compatible for binfmt registrations
   * mention ACPI SLIC to RSDT id copying if slic table is supplied,
     thank you Tim Small for the patch (Closes: #765075)
+  * apply 5 patches from upstream to fix a security issue in
+    vmware-vga (Closes: #765496 CVE-2014-3689)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 23:27:26 +0400
 
