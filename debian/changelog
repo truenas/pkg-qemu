@@ -10,6 +10,7 @@ qemu (2.1+dfsg-6) UNRELEASED; urgency=low
     variables.  This restores cross building support.
   * use /usr/share/dpkg/buildflags.mk for CFLAGS LDFLAGS &Co
   * pass -DVENDOR_{DEBIAN,UBUNTU} to compiler
+  * do not treat ppc* and ppc*le as compatible for binfmt registrations
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 23:27:26 +0400
 
