@@ -15,3 +15,6 @@ CVE-2014-3689-vmware-vga/2-add-vmsvga_verify_rect.patch
 CVE-2014-3689-vmware-vga/3-use-vmsvga_verify_rect-in-vmsvga_update_rect.patch
 CVE-2014-3689-vmware-vga/4-use-vmsvga_verify_rect-in-vmsvga_copy_rect.patch
 CVE-2014-3689-vmware-vga/5-use-vmsvga_verify_rect-in-vmsvga_fill_rect.patch
+
+net-slirp-specify-logbase-for-smbd.patch
+slirp-smbd-modify-set-several-parameters-in-generated-smb-conf.patch

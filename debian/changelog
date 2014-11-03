@@ -15,6 +15,8 @@ qemu (2.1+dfsg-6) UNRELEASED; urgency=low
     thank you Tim Small for the patch (Closes: #765075)
   * apply 5 patches from upstream to fix a security issue in
     vmware-vga (Closes: #765496 CVE-2014-3689)
+  * apply two patche from upstream to make qemu to work with samba4
+    (Closes: #747636)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 23:27:26 +0400
 
