@@ -2,6 +2,7 @@ qemu (2.1+dfsg-7) UNRELEASED; urgency=high
 
   * vnc-sanitize-bits_per_pixel-from-the-client-CVE-2014-7815.patch
     from upstream (Closes: CVE-2014-7815)
+  * fix spelling mistake in previous changelog entry
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 03 Nov 2014 18:43:21 +0300
 
@@ -22,7 +23,7 @@ qemu (2.1+dfsg-6) unstable; urgency=medium
     thank you Tim Small for the patch (Closes: #765075)
   * apply 5 patches from upstream to fix a security issue in
     vmware-vga (Closes: #765496 CVE-2014-3689)
-  * apply two patche from upstream to make qemu to work with samba4
+  * apply two patches from upstream to make qemu to work with samba4
     (Closes: #747636)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 03 Nov 2014 18:07:48 +0300
