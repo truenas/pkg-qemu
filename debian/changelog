@@ -6,6 +6,9 @@ qemu (2.1+dfsg-8) UNRELEASED; urgency=low
   * run remove-alternatives in qemu-system.postinst (the metapkg)
     too, not only in qemu-system-XX.postinst, to handle upgrades
     from wheezy (Closes: #768244)
+  * several fixes for debian/qemu-user.1 manpage.  It needs more
+    work, but at least some easy and obvious errors are fixed now.
+    (Closes: #763841)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Nov 2014 09:32:13 +0300
 
