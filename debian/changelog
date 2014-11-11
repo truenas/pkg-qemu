@@ -1,3 +1,11 @@
+qemu (2.1+dfsg-8) UNRELEASED; urgency=low
+
+  * add Built-Using control field for qemu-user-static package:
+    take contents of qemu-user ${shlibs:Depends} and transform it
+    into list of source packages with versions.  (Closes: #768926)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Nov 2014 09:32:13 +0300
+
 qemu (2.1+dfsg-7) unstable; urgency=high
 
   * urgency is high due to 2 security fixes
