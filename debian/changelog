@@ -3,6 +3,9 @@ qemu (2.1+dfsg-8) UNRELEASED; urgency=low
   * add Built-Using control field for qemu-user-static package:
     take contents of qemu-user ${shlibs:Depends} and transform it
     into list of source packages with versions.  (Closes: #768926)
+  * run remove-alternatives in qemu-system.postinst (the metapkg)
+    too, not only in qemu-system-XX.postinst, to handle upgrades
+    from wheezy (Closes: #768244)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Nov 2014 09:32:13 +0300
 
