@@ -1,5 +1,6 @@
 qemu (2.1+dfsg-8) UNRELEASED; urgency=low
 
+  [ Michael Tokarev ]
   * add Built-Using control field for qemu-user-static package:
     take contents of qemu-user ${shlibs:Depends} and transform it
     into list of source packages with versions.  (Closes: #768926)
@@ -9,6 +10,10 @@ qemu (2.1+dfsg-8) UNRELEASED; urgency=low
   * several fixes for debian/qemu-user.1 manpage.  It needs more
     work, but at least some easy and obvious errors are fixed now.
     (Closes: #763841)
+
+  [ Aurelien Jarno ]
+  * Add tcg-mips-fix-store-softmmu-slow-path.patch from upstream to fix
+    TCG support on mips/mipsel hosts.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Nov 2014 09:32:13 +0300
 
