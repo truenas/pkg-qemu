@@ -15,7 +15,7 @@ qemu (2.1+dfsg-8) UNRELEASED; urgency=low
 
   [ Aurelien Jarno ]
   * Add tcg-mips-fix-store-softmmu-slow-path.patch from upstream to fix
-    TCG support on mips/mipsel hosts.
+    TCG support on mips/mipsel hosts (Closes: #769470).
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Nov 2014 09:32:13 +0300
 
