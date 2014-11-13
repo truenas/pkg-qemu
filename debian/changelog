@@ -10,6 +10,8 @@ qemu (2.1+dfsg-8) UNRELEASED; urgency=low
   * several fixes for debian/qemu-user.1 manpage.  It needs more
     work, but at least some easy and obvious errors are fixed now.
     (Closes: #763841)
+  * migration-fix-parameter-validation-on-ram-load.patch from upstream
+    (Closes: #769451 CVE-2014-7840)
 
   [ Aurelien Jarno ]
   * Add tcg-mips-fix-store-softmmu-slow-path.patch from upstream to fix
