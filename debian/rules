@@ -271,9 +271,14 @@ endif
 ifeq ($(enable_linux_user),enable)
 # after shlibdeps finished, grab ${shlibs:Depends} from -user package
 # and transform it into Built-Using field for -user-static.
-        pkgs=$$(sed -n -e's/([^)]*)//g' -e's/^shlibs:Depends=//p' debian/qemu-user.substvars); \
-        srcs="$$(dpkg-query -f '$${source:Package} (= $${source:Version}), ' -W $$pkgs)"; \
-        echo "built-using=$$srcs" >> debian/qemu-user-static.substvars
+# See also dpkg-query bug #588505
+	if [ -f debian/qemu-user.substvars ]; then \
+	  pkgs=$$(sed -n -e's/([^)]*)//g' -e's/,//g' -e's/^shlibs:Depends=//p' debian/qemu-user.substvars); \
+	  srcs=; for p in $$pkgs; do \
+	    srcs="$$srcs $$(dpkg-query -f '$${source:Package} (= $${source:Version}),' -W $$p)"; \
+	  done ; \
+	  echo "built-using=$$srcs" >> debian/qemu-user-static.substvars ; \
+	fi
 endif
 	dh_gencontrol ${ai}
 	dh_md5sums ${ai}
