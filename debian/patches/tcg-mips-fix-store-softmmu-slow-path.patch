@@ -1,7 +1,8 @@
 From 0a2923f8488498000eec54871456aa64a4391da4 Mon Sep 17 00:00:00 2001
 From: Aurelien Jarno <aurelien@aurel32.net>
 Date: Mon, 27 Oct 2014 15:53:35 +0100
-Subject: [PATCH] tcg/mips: fix store softmmu slow path
+Subject: tcg/mips: fix store softmmu slow path
+Bug-Debian: http://bugs.debian.org/769470
 
 Commit 9d8bf2d1 moved the softmmu slow path out of line and introduce a
 regression at the same time by always calling tcg_out_tlb_load with
