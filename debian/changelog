@@ -21,6 +21,8 @@ qemu (2.1+dfsg-8) UNRELEASED; urgency=low
     Some other binfmts ignore this field completely (with mask=0).
     Maybe some day we'll have 2 different binfmt registrations for
     the 2 different ABI types.  (Closes: #763043)
+  * usb-host-fix-usb_host_speed_compat-tyops.patch -- fix host usb devices
+    attach, without this patch many USB devices does not work
 
   [ Aurelien Jarno ]
   * Add tcg-mips-fix-store-softmmu-slow-path.patch from upstream to fix
