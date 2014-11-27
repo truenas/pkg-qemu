@@ -27,3 +27,4 @@ tcg-mips-fix-store-softmmu-slow-path.patch
 # CVE-2014-7840
 migration-fix-parameter-validation-on-ram-load.patch
 usb-host-fix-usb_host_speed_compat-tyops.patch
+xen_disk-fix-unmapping-of-persistent-grants.patch
