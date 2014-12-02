@@ -1,4 +1,4 @@
-qemu (2.1+dfsg-8) UNRELEASED; urgency=low
+qemu (2.1+dfsg-8) unstable; urgency=low
 
   [ Michael Tokarev ]
   * add Built-Using control field for qemu-user-static package:
@@ -34,7 +34,7 @@ qemu (2.1+dfsg-8) UNRELEASED; urgency=low
   * Backport patch to fix unmapping of persistent grants in the Xen qdisk
     backend (Closes: #770468).
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 11 Nov 2014 09:32:13 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Nov 2014 18:32:45 +0300
 
 qemu (2.1+dfsg-7) unstable; urgency=high
 
