@@ -80,3 +80,6 @@ CVE-2014-3689-vmware-vga/4-use-vmsvga_verify_rect-in-vmsvga_copy_rect.patch
 CVE-2014-3689-vmware-vga/5-use-vmsvga_verify_rect-in-vmsvga_fill_rect.patch
 
 vnc-sanitize-bits_per_pixel-from-the-client-CVE-2014-7815.patch
+
+CVE-2014-8106-1.patch
+CVE-2014-8106-2.patch

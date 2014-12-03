@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-6a+deb7u6) wheezy-security; urgency=high
+
+  * apply upstream patches for CVE-2014-8106 (buffer overflow
+    in cirrus vga emulation) (Closes: CVE-2014-8106)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 03 Dec 2014 23:46:51 +0300
+
 qemu (1.1.2+dfsg-6a+deb7u5) wheezy-security; urgency=medium
 
   * apply 5 patches backported from upstream to fix a security issue in
