@@ -15,9 +15,9 @@ Build-Depends: debhelper (>= 9),
 # pc-bios/*.dts => *.dtb (PPC firmware)
  device-tree-compiler,
  texinfo,
- python:any,
+ python,
 # compiling .dsl files in hw/i386/ instead of using included precompiled .hex
- acpica-tools,
+ iasl|acpica-tools,
 # --enable-linux-aio	linux-*
  libaio-dev [linux-any],
 # --audio-drv-list=pa,alsa,sdl,oss	linux-*
@@ -67,8 +67,8 @@ Build-Depends: debhelper (>= 9),
 # note: libsdl2-dev is in universe on ubuntu
 # --enable-sdl --with-sdlabi=1.2
  libsdl1.2-dev (>> 1.2.1),
-# --enable-seccomp	linux-amd64|linux-i386
- libseccomp-dev (>> 2.1.0) [linux-amd64 linux-i386],
+## --enable-seccomp	linux-amd64|linux-i386
+# libseccomp-dev (>> 2.1.0) [linux-amd64 linux-i386],
 # --enable-spice	linux-amd64|linux-i386
  libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386],
  libspice-protocol-dev (>= 0.12.3~) [linux-amd64 linux-i386],
