@@ -201,7 +201,9 @@ Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 2.0.0+dfsg-7~)
 Recommends: qemu-utils
-Suggests: samba, vde2
+Suggests: samba, vde2,
+# alpha uses vgabios
+ seabios
 Provides: ${sysprovides:misc}
 Breaks: qemu-system (<< 1.3.0+dfsg-5)
 Replaces: qemu-system (<< 1.3.0+dfsg-5)
@@ -256,7 +258,9 @@ Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 2.0.0+dfsg-7~)
 Recommends: qemu-utils
-Suggests: samba, vde2
+Suggests: samba, vde2,
+# all mips targets uses vgabios
+ seabios
 Provides: ${sysprovides:mips}
 Breaks: qemu-system (<< 1.3.0+dfsg-5)
 Replaces: qemu-system (<< 1.3.0+dfsg-5)
@@ -281,6 +285,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 2.0.0+dfsg-7
 # ubuntu can't Depend on openbios-ppc and openhackware as they're in universe
 :debian: openbios-ppc (>= 1.1+svn1229), openhackware
 Suggests: samba, vde2,
+# ppc targets use vgabios-stdvga
+ seabios
 :ubuntu: openbios-ppc (>= 1.1+svn1229), openhackware
 Recommends: qemu-utils
 Provides: ${sysprovides:ppc}
@@ -312,7 +318,9 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 2.0.0+dfsg-7
 # ubuntu/openbios-sparc is in universe
 :debian: openbios-sparc (>= 1.1+svn1229)
 Recommends: qemu-utils
-Suggests: samba, vde2
+Suggests: samba, vde2,
+# sparc64 uses vgabios-stdvga
+ seabios
 Provides: ${sysprovides:sparc}
 Breaks:
  qemu-system (<< 1.3.0+dfsg-5),
