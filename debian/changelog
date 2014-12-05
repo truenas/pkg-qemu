@@ -8,6 +8,11 @@ qemu (2.1+dfsg-10) UNRELEASED; urgency=medium
     packages contains emulators using vgabios which is part of
     seabios package (#772127).  Suggests only for now, may promote
     to Recommends or even Depends in the future.
+  * add ipxe-qemu to Suggests to qemu-system-misc, qemu-system-arm,
+    qemu-system-mips, qemu-system-ppc, qemu-system-sparc packages,
+    because these packages contains emulators using network boot
+    roms (#772127), in a similar way.  Also suggests for now, may
+    be promoted to Recommends (but not Depends).
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 05 Dec 2014 14:34:02 +0300
 
