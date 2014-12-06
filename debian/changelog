@@ -5,6 +5,10 @@ qemu (2.2+dfsg-1~) UNRELEASED; urgency=medium
     only keeping debian-specific changes
   * refreshed mjt-set-oem-in-rsdt-like-slic.diff
   * added tricore to qemu-system-misc package (new arch)
+  * restore upstream pc-bios/petalogix-*.dtb "blobs":
+    upstream says it is the canonical form, dtc is used
+    to convert from dts to dtb and back, the conversion
+    is reversible
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 09 Dec 2014 14:01:58 +0300
 
