@@ -9,6 +9,7 @@ qemu (2.2+dfsg-1~) UNRELEASED; urgency=medium
     upstream says it is the canonical form, dtc is used
     to convert from dts to dtb and back, the conversion
     is reversible
+  * install petalogix firmware for microblaze (Closes: #769068)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 09 Dec 2014 14:01:58 +0300
 
