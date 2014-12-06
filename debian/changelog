@@ -1,6 +1,6 @@
 qemu (2.2+dfsg-1~) UNRELEASED; urgency=medium
 
-  * new upstream release 2.2.0
+  * new upstream release 2.2.0 (Closes: #751078)
   * removed all patches which was cherry-picked from upstream,
     only keeping debian-specific changes
   * refreshed mjt-set-oem-in-rsdt-like-slic.diff
