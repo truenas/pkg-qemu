@@ -57,7 +57,7 @@ ifeq (${enable_system},enable)
 system_targets = \
  i386 x86_64 alpha aarch64 arm cris lm32 m68k microblaze microblazeel \
  mips mipsel mips64 mips64el moxie or32 ppc ppcemb ppc64 sh4 sh4eb \
- sparc sparc64 s390x xtensa xtensaeb unicore32
+ sparc sparc64 s390x tricore xtensa xtensaeb unicore32
 
 # qemu-system subpackages, from d/control
 sys_systems = arm mips ppc sparc x86
