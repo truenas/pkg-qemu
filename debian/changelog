@@ -1,4 +1,4 @@
-qemu (2.2+dfsg-1~) UNRELEASED; urgency=medium
+qemu (2.2+dfsg-1exp) unstable; urgency=medium
 
   * new upstream release 2.2.0 (Closes: #751078)
   * removed all patches which was cherry-picked from upstream,
@@ -11,7 +11,7 @@ qemu (2.2+dfsg-1~) UNRELEASED; urgency=medium
     is reversible
   * install petalogix firmware for microblaze (Closes: #769068)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 09 Dec 2014 14:01:58 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 09 Dec 2014 23:09:26 +0300
 
 qemu (2.1+dfsg-10) unstable; urgency=medium
 
