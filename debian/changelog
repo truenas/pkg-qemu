@@ -1,4 +1,4 @@
-qemu (2.1+dfsg-10) UNRELEASED; urgency=medium
+qemu (2.1+dfsg-10) unstable; urgency=medium
 
   * make (debian-specific) x86 data path (with seabios and ipxe
     in it) non-x86-specific, since other arches use firmware
@@ -12,7 +12,7 @@ qemu (2.1+dfsg-10) UNRELEASED; urgency=medium
     because these packages contains emulators using network boot
     roms (#772127), in a similar way.
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 05 Dec 2014 14:34:02 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 09 Dec 2014 13:47:36 +0300
 
 qemu (2.1+dfsg-9) unstable; urgency=high
 
