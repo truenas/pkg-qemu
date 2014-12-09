@@ -1,3 +1,10 @@
+qemu (1:2.1+dfsg-11) unstable; urgency=medium
+
+  * bump epoch and reupload to cancel 2.2+dfsg-1exp upload
+    mistakenly done to unstable.  No other changes.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 10 Dec 2014 00:52:28 +0300
+
 qemu (2.1+dfsg-10) unstable; urgency=medium
 
   * make (debian-specific) x86 data path (with seabios and ipxe
