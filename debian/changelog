@@ -5,6 +5,8 @@ qemu (1:2.2+dfsg-3exp) UNRELEASED; urgency=medium
     (Closes: #773033)
   * install qemu-system-misc firmware in d/*.install not d/rules,
     as other firmware files
+  * exec-change-default-exception_index-value-for-migration-to--1.patch:
+    cherry-picked commit adee64249ee37e from upstream
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 11 Dec 2014 21:08:27 +0300
 
