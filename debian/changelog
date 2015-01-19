@@ -8,6 +8,8 @@ qemu (1:2.2+dfsg-3exp) UNRELEASED; urgency=medium
   * exec-change-default-exception_index-value-for-migration-to--1.patch:
     cherry-picked commit adee64249ee37e from upstream
   * stop messing up with alternatives (qemu for qemu-system-*)
+  * stop shipping qemu-system-x86 initscript to load kvm modules
+    (kernel since 3.4 does that automatically) (Closes: #751754)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 11 Dec 2014 21:08:27 +0300
 
