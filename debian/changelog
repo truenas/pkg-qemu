@@ -1,4 +1,4 @@
-qemu (1:2.2+dfsg-3exp) UNRELEASED; urgency=medium
+qemu (1:2.2+dfsg-3exp) experimental; urgency=medium
 
   * mention closing of #753887 by 2.2
   * install only specific bamboo.dtb for ppc, not *.dtb
@@ -11,7 +11,7 @@ qemu (1:2.2+dfsg-3exp) UNRELEASED; urgency=medium
   * stop shipping qemu-system-x86 initscript to load kvm modules
     (kernel since 3.4 does that automatically) (Closes: #751754)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 11 Dec 2014 21:08:27 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 22 Jan 2015 09:28:01 +0300
 
 qemu (1:2.2+dfsg-2exp) experimental; urgency=medium
 
