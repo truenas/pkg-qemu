@@ -95,6 +95,7 @@ configure-stamp: configure
 	    ../configure ${common_configure_opts} --disable-user \
 		--${enable_system}-system \
 		--${enable_linux_user}-linux-user \
+		--enable-modules \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
 		$(QEMU_CONFIGURE_OPTIONS) || \
