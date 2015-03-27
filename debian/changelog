@@ -2,8 +2,8 @@ qemu (1:2.2+dfsg-6exp) UNRELEASED; urgency=medium
 
   * qemu 2.2.1 stable/bugfix release (remove included upstream
     exec-change-default-exception_index-value-for-migration-to--1.patch)
-  * added mips64(el) to list of architectures where qemu-utils is built
-    (Closes: #780200)
+  * added mips64(el) to list of architectures where qemu is built
+    (Closes: #780200, #781304)
   * added kvm-on-x32.patch from Adam Borowski (Closes: #778737)
   * create qemu-block-extra package
   * pass --enable-modules to configure
