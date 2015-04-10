@@ -8,6 +8,8 @@ qemu (1:2.2+dfsg-6exp) UNRELEASED; urgency=medium
   * create qemu-block-extra package
   * pass --enable-modules to configure
   * pass multiarch --libdir to configure
+  * mjt-set-oem-in-rsdt-like-slic.diff: update FACP table too,
+    not only RSDT.  FACP is needed for win7 booting in UEFI mode.
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 12 Mar 2015 09:03:16 +0300
 
