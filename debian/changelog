@@ -1,6 +1,7 @@
 qemu (2.1+dfsg-12) UNRELEASED; urgency=medium
 
   * CVE-2015-1779 (#781250) fix from upstream
+  * ide-correct-handling-of-malformed-short-PRDTs.patch
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 10 Apr 2015 11:42:03 +0300
 
