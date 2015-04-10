@@ -32,3 +32,6 @@ qdev-monitor-fix-segmentation-fault-on-qdev_device_h.patch
 
 cirrus-fix-blit-region-check-CVE-2014-8106.patch
 cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf-CVE-2014-8106.patch
+
+CVE-2015-1779-incrementally-decode-websocket-frames.patch
+CVE-2015-1779-limit-size-of-HTTP-headers-from-websockets-clients.patch
