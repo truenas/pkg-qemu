@@ -1,11 +1,11 @@
-qemu (2.1+dfsg-12) UNRELEASED; urgency=medium
+qemu (2.1+dfsg-12) unstable; urgency=medium
 
   * CVE-2015-1779 (#781250) fix from upstream (Closes: #781250)
   * ide-correct-handling-of-malformed-short-PRDTs.patch
   * CVE-2015-2756-xen-limit-guest-control-of-PCI-command-register.patch
     (Closes: CVE-2015-2756)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 10 Apr 2015 11:42:03 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 15 Apr 2015 16:41:46 +0300
 
 qemu (1:2.1+dfsg-11) unstable; urgency=medium
 
