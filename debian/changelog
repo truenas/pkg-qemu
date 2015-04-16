@@ -10,6 +10,13 @@ qemu (1:2.2+dfsg-6exp) UNRELEASED; urgency=medium
   * pass multiarch --libdir to configure
   * mjt-set-oem-in-rsdt-like-slic.diff: update FACP table too,
     not only RSDT.  FACP is needed for win7 booting in UEFI mode.
+  * enable libcacard (closes: #764971)
+   - build-depend on libnss3-dev & libtool-bin
+   - --enable-smartcard-nss
+   - run dh_makeshlibs
+   - rm libcacard.la
+   - add libcacard0, libcacard-dev and libcacard-tools packages
+   - add libcacard*.install and libcacard0.symbols
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 12 Mar 2015 09:03:16 +0300
 

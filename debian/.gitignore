@@ -3,6 +3,9 @@
 /*.debhelper.log
 /*.substvars
 /files
+/libcacard0/
+/libcacard-dev/
+/libcacard-tools/
 /qemu-common/
 /qemu-guest-agent/
 /qemu-keymaps/
