@@ -271,9 +271,9 @@ endif
 	dh_strip ${ai}
 	dh_compress ${ai}
 	dh_fixperms ${ai}
-	dh_installdeb ${ai}
 	dh_makeshlibs ${ai}
 	dh_shlibdeps ${ai}
+	dh_installdeb ${ai}
 ifeq ($(enable_linux_user),enable)
 # after shlibdeps finished, grab ${shlibs:Depends} from -user package
 # and transform it into Built-Using field for -user-static.
