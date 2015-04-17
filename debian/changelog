@@ -6,6 +6,7 @@ qemu (1:2.2+dfsg-6exp) UNRELEASED; urgency=medium
     (Closes: #780200)
   * added kvm-on-x32.patch from Adam Borowski (Closes: #778737)
   * create qemu-block-extra package
+  * rules.mak-fix-module-build.patch from upstream to fix module build
   * pass --enable-modules to configure
   * pass multiarch --libdir to configure
   * mjt-set-oem-in-rsdt-like-slic.diff: update FACP table too,

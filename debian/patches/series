@@ -5,3 +5,4 @@ use-fixed-data-path.patch
 use-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
 kvm-on-x32.patch
+rules.mak-fix-module-build.patch
