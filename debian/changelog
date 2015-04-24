@@ -1,8 +1,9 @@
-qemu (1:2.3+dfsg-1exp) UNRELEASED; urgency=medium
+qemu (1:2.3+dfsg-1) unstable; urgency=medium
 
   * new upstream release (2.3)
+    (Closes: #781250 #769299)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 18 Apr 2015 15:55:03 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 24 Apr 2015 17:33:46 +0300
 
 qemu (1:2.2+dfsg-6exp) experimental; urgency=medium
 
