@@ -35,5 +35,5 @@ cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf-CVE-2014-8106.patch
 
 CVE-2015-1779-incrementally-decode-websocket-frames.patch
 CVE-2015-1779-limit-size-of-HTTP-headers-from-websockets-clients.patch
-ide-correct-handling-of-malformed-short-PRDTs-CVE-2015-1779.patch
+ide-correct-handling-of-malformed-short-PRDTs-CVE-2014-9718.patch
 CVE-2015-2756-xen-limit-guest-control-of-PCI-command-register.patch
