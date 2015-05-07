@@ -3,6 +3,7 @@ qemu (1:2.3+dfsg-3) UNRELEASED; urgency=medium
   * fix the OSABI binfmt mask for x86_64 arch, to actually fix #763043.
     Original fix didn't work, because "someone" forgot arithmetics.
     (Really Closes: #763043)
+  * align binfmt magics/masks to be in single column
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 07 May 2015 15:04:55 +0300
 
