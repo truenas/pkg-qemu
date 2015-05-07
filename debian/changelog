@@ -1,3 +1,11 @@
+qemu (1:2.3+dfsg-3) UNRELEASED; urgency=medium
+
+  * fix the OSABI binfmt mask for x86_64 arch, to actually fix #763043.
+    Original fix didn't work, because "someone" forgot arithmetics.
+    (Really Closes: #763043)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 07 May 2015 15:04:55 +0300
+
 qemu (1:2.3+dfsg-2) unstable; urgency=medium
 
   * do not install upstream changelog file, it is unused for a long time
