@@ -1,4 +1,4 @@
-qemu (2.1+dfsg-12) unstable; urgency=medium
+qemu (1:2.1+dfsg-12) jessie-security; urgency=high
 
   * CVE-2015-1779 (#781250) fix from upstream (Closes: #781250)
   * ide-correct-handling-of-malformed-short-PRDTs-CVE-2014-9718.patch
@@ -11,7 +11,7 @@ qemu (2.1+dfsg-12) unstable; urgency=medium
     Original fix didn't work, because "someone" forgot arithmetics.
     (Really Closes: #763043)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 15 Apr 2015 16:41:46 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 08 May 2015 10:35:03 +0300
 
 qemu (1:2.1+dfsg-11) unstable; urgency=medium
 
