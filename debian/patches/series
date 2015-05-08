@@ -3,3 +3,4 @@ use-fixed-data-path.patch
 use-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
 qemu-options-trivial-spelling-fix-messsage.patch
+fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch

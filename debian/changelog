@@ -1,5 +1,7 @@
 qemu (1:2.3+dfsg-3) UNRELEASED; urgency=medium
 
+  * fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch
+    (Closes: CVE-2015-3456)
   * fix the OSABI binfmt mask for x86_64 arch, to actually fix #763043.
     Original fix didn't work, because "someone" forgot arithmetics.
     (Really Closes: #763043)
