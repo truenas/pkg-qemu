@@ -1,4 +1,4 @@
-qemu (1:2.3+dfsg-3) UNRELEASED; urgency=medium
+qemu (1:2.3+dfsg-3) unstable; urgency=high
 
   * fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch
     (Closes: CVE-2015-3456)
@@ -7,7 +7,7 @@ qemu (1:2.3+dfsg-3) UNRELEASED; urgency=medium
     (Really Closes: #763043)
   * align binfmt magics/masks to be in single column
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 07 May 2015 15:04:55 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 12 May 2015 23:02:29 +0300
 
 qemu (1:2.3+dfsg-2) unstable; urgency=medium
 
