@@ -1,3 +1,12 @@
+qemu (1:2.1+dfsg-12~bpo70+1) wheezy-backports; urgency=high
+
+  * Rebuild for wheezy-backports:
+    - disable seccomp (not in wheezy)
+    - build-depend on iasl|acpica-tools
+    - s/python:any/python/ in build-depends
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 04 Dec 2014 20:47:11 +0300
+
 qemu (1:2.1+dfsg-12) jessie-security; urgency=high
 
   * CVE-2015-1779 (#781250) fix from upstream (Closes: #781250)
