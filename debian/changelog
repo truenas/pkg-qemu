@@ -1,3 +1,12 @@
+qemu (1:2.1+dfsg-12+deb8u4~bpo70+1) wheezy-backports; urgency=high
+
+  * Rebuild for wheezy-backports:
+    - disable seccomp (not in wheezy)
+    - build-depend on iasl|acpica-tools
+    - s/python:any/python/ in build-depends
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 11 Oct 2015 16:37:54 +0300
+
 qemu (1:2.1+dfsg-12+deb8u4) jessie-security; urgency=high
 
   * ne2000-add-checks-to-validate-ring-buffer-pointers-CVE-2015-5279.patch
