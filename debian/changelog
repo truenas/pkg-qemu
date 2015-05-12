@@ -1,5 +1,7 @@
-qemu (1.1.2+dfsg-6a+deb7u7) UNRELEASED; urgency=medium
+qemu (1.1.2+dfsg-6a+deb7u7) UNRELEASED; urgency=high
 
+  * fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch
+    backported from upstream 2.3 (Closes: CVE-2015-3456)
   * rename CVE-2014-8106 patches to match upstream, add bug#
     (no actual code changed)
 
