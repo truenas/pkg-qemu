@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian QEMU Team <pkg-qemu-devel@lists.alioth.debian.org>
 Uploaders: Aurelien Jarno <aurel32@debian.org>, Riku Voipio <riku.voipio@iki.fi>, Vagrant Cascadian <vagrant@debian.org>
 DM-Upload-Allowed: yes
-Build-Depends: debhelper (>= 5), nasm, device-tree-compiler, libfdt-dev,
+Build-Depends: debhelper (>= 5), nasm, device-tree-compiler,
  libx11-dev, libsdl1.2-dev (>> 1.2.1), libncurses5-dev, zlib1g-dev,
  texi2html, sharutils, libbrlapi-dev,
  libpulse-dev, libcurl4-gnutls-dev, libgnutls-dev, libsasl2-dev, uuid-dev,
@@ -15,8 +15,7 @@ Build-Depends: debhelper (>= 5), nasm, device-tree-compiler, libfdt-dev,
  python,
  libspice-server-dev [amd64], libspice-protocol-dev [amd64],
  libxen-dev [amd64 i386],
- libiscsi-dev,
- libusbredirparser-dev [linux-any]
+ libiscsi-dev
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.3
 Homepage: http://www.qemu.org/

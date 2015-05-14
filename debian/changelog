@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-6a+deb7u7~bpo60+1) squeeze-backports; urgency=low
+
+  * Rebuild for squeeze-backports:
+    disable fdt and usbredir support for squeeze
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 14 May 2015 15:16:37 +0300
+
 qemu (1.1.2+dfsg-6a+deb7u7) wheezy-security; urgency=high
 
   * fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch
