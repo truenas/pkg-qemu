@@ -1,5 +1,5 @@
-# upstream 2.1.2 stable patch
-v2.1.2.diff
+# upstream 2.1.3 stable patch
+v2.1.3.diff
 
 02_kfreebsd.patch
 use-fixed-data-path.patch
@@ -9,12 +9,6 @@ imx_timer_TIMER_MAX_clash.diff
 9p-readdir.patch
 9p-use-little-endian-format-for-xattr-values.patch
 qemu-options-add-missing--drive-discard-option-to-cmdline-help.diff
-# 5 patches to fix CVE-2014-3689 from upstream, #765496
-CVE-2014-3689-vmware-vga/1-CVE-2014-3689-turn-off-hw-accel.patch
-CVE-2014-3689-vmware-vga/2-add-vmsvga_verify_rect.patch
-CVE-2014-3689-vmware-vga/3-use-vmsvga_verify_rect-in-vmsvga_update_rect.patch
-CVE-2014-3689-vmware-vga/4-use-vmsvga_verify_rect-in-vmsvga_copy_rect.patch
-CVE-2014-3689-vmware-vga/5-use-vmsvga_verify_rect-in-vmsvga_fill_rect.patch
 
 vnc-sanitize-bits_per_pixel-from-the-client-CVE-2014-7815.patch
 
@@ -23,7 +17,6 @@ slirp-smbd-modify-set-several-parameters-in-generated-smb-conf.patch
 
 block-raw-posix-Fix-disk-corruption-in-try_fiemap.patch
 block-raw-posix-use-seek_hole-ahead-of-fiemap.patch
-tcg-mips-fix-store-softmmu-slow-path.patch
 # CVE-2014-7840
 migration-fix-parameter-validation-on-ram-load.patch
 usb-host-fix-usb_host_speed_compat-tyops.patch
