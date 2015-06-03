@@ -18,3 +18,5 @@ xen-pt/08-xen-pt-mark-all-PCIe-capability-bits-read-only-CVE-2015-4106.patch
 xen-pt/09-xen-pt-mark-reserved-bits-in-PCI-config-space-fields-CVE-2015-4106.patch
 xen-pt/10-xen-pt-add-a-few-PCI-config-space-field-descriptions-CVE-2015-4106.patch
 xen-pt/11-xen-pt-unknown-PCI-config-space-fields-should-be-readonly-CVE-2015-4106.patch
+kbd-add-brazil-kbd-keys-to-qemu.patch
+kbd-add-brazil-kbd-keys-to-x11-evdev-map.patch

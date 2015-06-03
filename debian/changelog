@@ -4,6 +4,8 @@ qemu (1:2.3+dfsg-5) UNRELEASED; urgency=medium
     (Closes: CVE-2015-4037)
   * 11 patches for XEN PCI pass-through issues
     (Closes: #787547 CVE-2015-4103 CVE-2015-4104 CVE-2015-4105 CVE-2015-4106)
+  * kbd-add-brazil-kbd-keys-*.patch, adding two keys found on Brazilian
+    keyboards (Closes: #772422)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 03 Jun 2015 16:35:28 +0300
 
