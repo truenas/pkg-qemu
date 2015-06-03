@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-6a+deb7u8) UNRELEASED; urgency=high
+
+  * slirp-use-less-predictable-directory-name-in-tmp-CVE-2015-4037.patch
+    (Closes: CVE-2015-4037)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 03 Jun 2015 16:35:28 +0300
+
 qemu (1.1.2+dfsg-6a+deb7u7) wheezy-security; urgency=high
 
   * fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch

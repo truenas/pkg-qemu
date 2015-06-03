@@ -84,3 +84,4 @@ vnc-sanitize-bits_per_pixel-from-the-client-CVE-2014-7815.patch
 cirrus-fix-blit-region-check-CVE-2014-8106.patch
 cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf-CVE-2014-8106.patch
 fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch
+slirp-use-less-predictable-directory-name-in-tmp-CVE-2015-4037.patch
