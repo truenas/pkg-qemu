@@ -5,3 +5,4 @@ mjt-set-oem-in-rsdt-like-slic.diff
 qemu-options-trivial-spelling-fix-messsage.patch
 fdc-force-the-fifo-access-to-be-in-bounds-CVE-2015-3456.patch
 rules.mak-force-CFLAGS-for-all-objects-in-DSO.patch
+slirp-use-less-predictable-directory-name-in-tmp-CVE-2015-4037.patch
