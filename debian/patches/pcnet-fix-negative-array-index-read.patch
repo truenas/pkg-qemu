@@ -1,0 +1,99 @@
+From: Gonglei <arei.gonglei@huawei.com>
+Date: Thu Nov 20 19:35:02 2014 +0800
+Subject: pcnet: fix Negative array index read
+
+s->xmit_pos maybe assigned to a negative value (-1),
+but in this branch variable s->xmit_pos as an index to
+array s->buffer. Let's add a check for s->xmit_pos.
+
+Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Backported-to-1.1: Michael Tokarev <mjt@tls.msk.ru>
+  (deal with qemu_get_queue() changes)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ hw/pcnet.c | 53 +++++++++++++++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 24 deletions(-)
+
+diff --git a/hw/pcnet.c b/hw/pcnet.c
+index d769b08..046f82f 100644
+--- a/hw/pcnet.c
++++ b/hw/pcnet.c
+@@ -1209,7 +1209,7 @@ static void pcnet_transmit(PCNetState *s)
+     target_phys_addr_t xmit_cxda = 0;
+     int count = CSR_XMTRL(s)-1;
+     int add_crc = 0;
+-
++    int bcnt;
+     s->xmit_pos = -1;
+ 
+     if (!CSR_TXON(s)) {
+@@ -1244,34 +1244,39 @@ static void pcnet_transmit(PCNetState *s)
+             s->xmit_pos = -1;
+             goto txdone;
+         }
++
++        if (s->xmit_pos < 0) {
++            goto txdone;
++        }
++
++        bcnt = 4096 - GET_FIELD(tmd.length, TMDL, BCNT);
++        s->phys_mem_read(s->dma_opaque, PHYSADDR(s, tmd.tbadr),
++                         s->buffer + s->xmit_pos, bcnt, CSR_BSWP(s));
++        s->xmit_pos += bcnt;
++        
+         if (!GET_FIELD(tmd.status, TMDS, ENP)) {
+-            int bcnt = 4096 - GET_FIELD(tmd.length, TMDL, BCNT);
+-            s->phys_mem_read(s->dma_opaque, PHYSADDR(s, tmd.tbadr),
+-                             s->buffer + s->xmit_pos, bcnt, CSR_BSWP(s));
+-            s->xmit_pos += bcnt;
+-        } else if (s->xmit_pos >= 0) {
+-            int bcnt = 4096 - GET_FIELD(tmd.length, TMDL, BCNT);
+-            s->phys_mem_read(s->dma_opaque, PHYSADDR(s, tmd.tbadr),
+-                             s->buffer + s->xmit_pos, bcnt, CSR_BSWP(s));
+-            s->xmit_pos += bcnt;
++            goto txdone;
++        }
++
+ #ifdef PCNET_DEBUG
+-            printf("pcnet_transmit size=%d\n", s->xmit_pos);
++        printf("pcnet_transmit size=%d\n", s->xmit_pos);
+ #endif
+-            if (CSR_LOOP(s)) {
+-                if (BCR_SWSTYLE(s) == 1)
+-                    add_crc = !GET_FIELD(tmd.status, TMDS, NOFCS);
+-                s->looptest = add_crc ? PCNET_LOOPTEST_CRC : PCNET_LOOPTEST_NOCRC;
+-                pcnet_receive(&s->nic->nc, s->buffer, s->xmit_pos);
+-                s->looptest = 0;
+-            } else
+-                if (s->nic)
+-                    qemu_send_packet(&s->nic->nc, s->buffer, s->xmit_pos);
+-
+-            s->csr[0] &= ~0x0008;   /* clear TDMD */
+-            s->csr[4] |= 0x0004;    /* set TXSTRT */
+-            s->xmit_pos = -1;
++        if (CSR_LOOP(s)) {
++            if (BCR_SWSTYLE(s) == 1)
++                add_crc = !GET_FIELD(tmd.status, TMDS, NOFCS);
++            s->looptest = add_crc ? PCNET_LOOPTEST_CRC : PCNET_LOOPTEST_NOCRC;
++            pcnet_receive(&s->nic->nc, s->buffer, s->xmit_pos);
++            s->looptest = 0;
++        } else {
++            if (s->nic) {
++                qemu_send_packet(&s->nic->nc, s->buffer, s->xmit_pos);
++            }
+         }
+ 
++        s->csr[0] &= ~0x0008;   /* clear TDMD */
++        s->csr[4] |= 0x0004;    /* set TXSTRT */
++        s->xmit_pos = -1;
++
+     txdone:
+         SET_FIELD(&tmd.status, TMDS, OWN, 0);
+         TMDSTORE(&tmd, PHYSADDR(s,CSR_CXDA(s)));
+-- 
+2.1.4
+

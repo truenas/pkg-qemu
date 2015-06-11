@@ -2,6 +2,9 @@ qemu (1.1.2+dfsg-6a+deb7u8) UNRELEASED; urgency=high
 
   * slirp-use-less-predictable-directory-name-in-tmp-CVE-2015-4037.patch
     (Closes: CVE-2015-4037)
+  * pcnet-force-buffer-access-to-be-in-bounds-CVE-2015-3209.patch
+    with preparation bugfix pcnet-fix-negative-array-index-read.patch
+    from upstream (Closes: #788460 CVE-2015-3209)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 03 Jun 2015 16:35:28 +0300
 
