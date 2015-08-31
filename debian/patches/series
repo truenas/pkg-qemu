@@ -53,3 +53,26 @@ xen-pt/10-xen-pt-add-a-few-PCI-config-space-field-descriptions-CVE-2015-4106.pat
 xen-pt/11-xen-pt-unknown-PCI-config-space-fields-should-be-readonly-CVE-2015-4106.patch
 pcnet-fix-negative-array-index-read.patch
 pcnet-force-buffer-access-to-be-in-bounds-CVE-2015-3209.patch
+
+# CVE-2015-3214
+0001-i8254-fix-out-of-bounds-memory-access-in-pit_ioport_.patch
+
+# CVE-2015-5154
+0001-ide-Check-array-bounds-before-writing-to-io_buffer-C.patch
+0001-ide-atapi-Fix-START-STOP-UNIT-command-completion.patch
+0001-ide-Clear-DRQ-after-handling-all-expected-accesses.patch
+
+# CVE-2015-5225
+CVE-2015-5225.patch
+
+# CVE-2015-5745
+0001-virtio-serial-fix-ANY_LAYOUT.patch
+
+# CVE-2015-5165
+0001-rtl8139-avoid-nested-ifs-in-IP-header-parsing-CVE-20.patch
+0002-rtl8139-drop-tautologous-if-ip-.-statement-CVE-2015-.patch
+0003-rtl8139-skip-offload-on-short-Ethernet-IP-header-CVE.patch
+0004-rtl8139-check-IP-Header-Length-field-CVE-2015-5165.patch
+0005-rtl8139-check-IP-Total-Length-field-CVE-2015-5165.patch
+0006-rtl8139-skip-offload-on-short-TCP-header-CVE-2015-51.patch
+0007-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch

@@ -1,0 +1,45 @@
+From e1c120a9c54872f8a538ff9129d928de4e865cbd Mon Sep 17 00:00:00 2001
+From: Stefan Hajnoczi <stefanha@redhat.com>
+Date: Wed, 15 Jul 2015 14:30:37 +0100
+Subject: [PATCH 3/7] rtl8139: skip offload on short Ethernet/IP header
+ (CVE-2015-5165)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Transmit offload features access Ethernet and IP headers the packet.  If
+the packet is too short we must not attempt to access header fields:
+
+  int proto = be16_to_cpu(*(uint16_t *)(saved_buffer + 12));
+  ...
+  eth_payload_data = saved_buffer + ETH_HLEN;
+  ...
+  ip = (ip_header*)eth_payload_data;
+  if (IP_HEADER_VERSION(ip) != IP_HEADER_VERSION_4) {
+
+Reported-by: 朱东海(启路) <donghai.zdh@alibaba-inc.com>
+Reviewed-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ hw/net/rtl8139.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hw/net/rtl8139.c b/hw/net/rtl8139.c
+index db36b65..1c62076 100644
+--- a/hw/net/rtl8139.c
++++ b/hw/net/rtl8139.c
+@@ -2150,6 +2150,11 @@ static int rtl8139_cplus_transmit_one(RTL8139State *s)
+         {
+             DPRINTF("+++ C+ mode offloaded task checksum\n");
+ 
++            /* Large enough for Ethernet and IP headers? */
++            if (saved_size < ETH_HLEN + sizeof(ip_header)) {
++                goto skip_offload;
++            }
++
+             /* ip packet header */
+             ip_header *ip = NULL;
+             int hlen = 0;
+-- 
+2.5.0
+
