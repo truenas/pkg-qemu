@@ -2,3 +2,5 @@
 use-fixed-data-path.patch
 use-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
+
+vnc-fix-memory-corruption-CVE-2015-5225.patch
