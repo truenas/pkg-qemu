@@ -3,6 +3,7 @@ qemu (1:2.4+dfsg-1) UNRELEASED; urgency=medium
   * new upstream (2.4.0) release (Closes: CVE-2015-3214 #795461,
     CVE-2015-5154 #793811, CVE-2015-5165 #794610, CVE-2015-5745 #795087,
     CVE-2015-5166 #794611, CVE-2015-5158 #793388)
+    (Closes: #793817)
   * removed all upstreamed patches
   * remove --enable-vnc-ws option (not used anymore)
   * update mjt-set-oem-in-rsdt-like-slic.diff
