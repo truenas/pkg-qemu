@@ -8,6 +8,7 @@ qemu (1:2.4+dfsg-1) UNRELEASED; urgency=medium
   * update mjt-set-oem-in-rsdt-like-slic.diff
   * vnc-fix-memory-corruption-CVE-2015-5225.patch from upstream
     (Closes: CVE-2015-5225 #796465)
+  * remove now-unused /etc/qemu/target-x86_64.conf
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Aug 2015 12:29:44 +0300
 
