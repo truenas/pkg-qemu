@@ -1,3 +1,9 @@
+qemu (1:2.4+dfsg-1) UNRELEASED; urgency=medium
+
+  * new upstream (2.4.0) release
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Aug 2015 12:29:44 +0300
+
 qemu (1:2.3+dfsg-6a) unstable; urgency=medium
 
   * fix d/copyright leftover in previous upload
