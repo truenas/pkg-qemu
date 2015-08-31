@@ -1,17 +1,18 @@
-qemu (1:2.4+dfsg-1) UNRELEASED; urgency=medium
+qemu (1:2.4+dfsg-1a) unstable; urgency=medium
 
-  * new upstream (2.4.0) release (Closes: CVE-2015-3214 #795461,
-    CVE-2015-5154 #793811, CVE-2015-5165 #794610, CVE-2015-5745 #795087,
-    CVE-2015-5166 #794611, CVE-2015-5158 #793388)
-    (Closes: #793817)
+  * new upstream (2.4.0) release
+    Closes: #795461, #793811, #794610, #795087, #794611, #793388
+    CVE-2015-3214 CVE-2015-5154 CVE-2015-5165 CVE-2015-5745
+    CVE-2015-5166 CVE-2015-5158
+    Closes: #793817
   * removed all upstreamed patches
   * remove --enable-vnc-ws option (not used anymore)
   * update mjt-set-oem-in-rsdt-like-slic.diff
   * vnc-fix-memory-corruption-CVE-2015-5225.patch from upstream
-    (Closes: CVE-2015-5225 #796465)
+    Closes: #796465 CVE-2015-5225
   * remove now-unused /etc/qemu/target-x86_64.conf
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Aug 2015 12:29:44 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Aug 2015 16:28:08 +0300
 
 qemu (1:2.3+dfsg-6a) unstable; urgency=medium
 
