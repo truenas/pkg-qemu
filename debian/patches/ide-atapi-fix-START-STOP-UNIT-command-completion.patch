@@ -1,7 +1,8 @@
 From 03441c3a4a42beb25460dd11592539030337d0f8 Mon Sep 17 00:00:00 2001
 From: Kevin Wolf <kwolf@redhat.com>
 Date: Sun, 26 Jul 2015 23:42:53 -0400
-Subject: [PATCH] ide/atapi: Fix START STOP UNIT command completion
+Subject: ide/atapi: Fix START STOP UNIT command completion
+Bug-Debian: http://bugs.debian.org/793811
 
 The command must be completed on all code paths. START STOP UNIT with
 pwrcnd set should succeed without doing anything.

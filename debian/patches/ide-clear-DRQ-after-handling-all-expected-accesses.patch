@@ -1,7 +1,8 @@
 From cb72cba83021fa42719e73a5249c12096a4d1cfc Mon Sep 17 00:00:00 2001
 From: Kevin Wolf <kwolf@redhat.com>
 Date: Sun, 26 Jul 2015 23:42:53 -0400
-Subject: [PATCH] ide: Clear DRQ after handling all expected accesses
+Subject: ide: Clear DRQ after handling all expected accesses
+Bug-Debian: http://bugs.debian.org/793811
 
 This is additional hardening against an end_transfer_func that fails to
 clear the DRQ status bit. The bit must be unset as soon as the PIO
