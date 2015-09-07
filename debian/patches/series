@@ -88,14 +88,11 @@ slirp-use-less-predictable-directory-name-in-tmp-CVE-2015-4037.patch
 pcnet-fix-negative-array-index-read.patch
 pcnet-force-buffer-access-to-be-in-bounds-CVE-2015-3209.patch
 
-# CVE-2015-5165
-0001-rtl8139-avoid-nested-ifs-in-IP-header-parsing-CVE-20.patch
-0002-rtl8139-drop-tautologous-if-ip-.-statement-CVE-2015-.patch
-0003-rtl8139-skip-offload-on-short-Ethernet-IP-header-CVE.patch
-0004-rtl8139-check-IP-Header-Length-field-CVE-2015-5165.patch
-0005-rtl8139-check-IP-Total-Length-field-CVE-2015-5165.patch
-0006-rtl8139-skip-offload-on-short-TCP-header-CVE-2015-51.patch
-0007-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch
-
-# CVE-2015-5745
-0001-virtio-serial-fix-ANY_LAYOUT.patch
+virtio-serial-fix-ANY_LAYOUT-CVE-2015-5745.patch
+rtl8139-avoid-nested-ifs-in-IP-header-parsing-CVE-2015-5165.patch
+rtl8139-drop-tautologous-if-ip-statement-CVE-2015-5165.patch
+rtl8139-skip-offload-on-short-ethernet-IP-header-CVE-2015-5165.patch
+rtl8139-check-IP-header-length-field-CVE-2015-5165.patch
+rtl8139-check-IP-total-length-field-CVE-2015-5165.patch
+rtl8139-skip-offload-on-short-TCP-header-CVE-2015-5165.patch
+rtl8139-check-TCP-data-offset-field-CVE-2015-5165.patch
