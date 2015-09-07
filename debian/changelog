@@ -1,3 +1,10 @@
+qemu (1:2.1+dfsg-12+deb8u3) UNRELEASED; urgency=medium
+
+  * Acknowlege the previous update.  Thank you Salvatore for the hard
+    work you did fixing so many security issues.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 07 Sep 2015 16:54:32 +0300
+
 qemu (1:2.1+dfsg-12+deb8u2) jessie-security; urgency=high
 
   * Non-maintainer upload by the Security Team.
