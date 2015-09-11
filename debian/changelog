@@ -1,4 +1,4 @@
-qemu (1:2.1+dfsg-12+deb8u3) UNRELEASED; urgency=medium
+qemu (1:2.1+dfsg-12+deb8u3) jessie-security; urgency=high
 
   * Acknowlege the previous update.  Thank you Salvatore for the hard
     work you did fixing so many security issues.
