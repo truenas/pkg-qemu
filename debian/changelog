@@ -1,3 +1,10 @@
+qemu (1.1.2+dfsg-6a+deb7u10) UNRELEASED; urgency=medium
+
+  * Acknowlege the previous update.  Thank you Salvatore for the hard
+    work you did fixing so many security issues.
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Sep 2015 13:43:02 +0300
+
 qemu (1.1.2+dfsg-6a+deb7u9) wheezy-security; urgency=high
 
   * Non-maintainer upload by the Security Team.
