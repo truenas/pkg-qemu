@@ -1,3 +1,14 @@
+qemu (1.1.2+dfsg-6a+deb7u9) wheezy-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Add patches for CVE-2015-5165.
+    CVE-2015-5165: rtl8139 uninitialized heap memory information leakage to
+    guest. (Closes: #794610)
+  * Add 0001-virtio-serial-fix-ANY_LAYOUT.patch patch.
+    CVE-2015-5745: buffer overflow in virtio-serial. (Closes: #795087)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 29 Aug 2015 19:36:38 +0200
+
 qemu (1.1.2+dfsg-6a+deb7u8) wheezy-security; urgency=high
 
   * slirp-use-less-predictable-directory-name-in-tmp-CVE-2015-4037.patch
