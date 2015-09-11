@@ -4,6 +4,9 @@ qemu (1.1.2+dfsg-6a+deb7u10) UNRELEASED; urgency=medium
     work you did fixing so many security issues.
   * rename last patches removing numeric prefixes, so that different series
     wont intermix with each other, add Bug-Debian: headers.
+  * Add e1000-avoid-infinite-loop-in-transmit-CVE-2015-6815.patch.
+    CVE-2015-6815: net: e1000 infinite loop issue in processing transmit
+    descriptor.  (Closes: #798101 CVE-2015-6815)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Sep 2015 13:43:02 +0300
 

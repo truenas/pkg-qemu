@@ -96,3 +96,4 @@ rtl8139-check-IP-header-length-field-CVE-2015-5165.patch
 rtl8139-check-IP-total-length-field-CVE-2015-5165.patch
 rtl8139-skip-offload-on-short-TCP-header-CVE-2015-5165.patch
 rtl8139-check-TCP-data-offset-field-CVE-2015-5165.patch
+e1000-avoid-infinite-loop-in-transmit-CVE-2015-6815.patch
