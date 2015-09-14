@@ -1,3 +1,10 @@
+qemu (1:2.4+dfsg-3) UNRELEASED; urgency=medium
+
+  * some binfmt reorg:
+   - extend aarch64 to include one more byte as other arches do
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 14 Sep 2015 21:01:01 +0300
+
 qemu (1:2.4+dfsg-2) unstable; urgency=high
 
   * Add e1000-avoid-infinite-loop-in-transmit-CVE-2015-6815.patch.
