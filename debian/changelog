@@ -1,4 +1,4 @@
-qemu (1.1.2+dfsg-6a+deb7u11) UNRELEASED; urgency=medium
+qemu (1.1.2+dfsg-6a+deb7u11) wheezy-security; urgency=high
 
   * ne2000-add-checks-to-validate-ring-buffer-pointers-CVE-2015-5279.patch
     fix for Heap overflow vulnerability in ne2000_receive() function
