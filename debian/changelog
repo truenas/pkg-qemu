@@ -3,6 +3,8 @@ qemu (1:2.4+dfsg-3) UNRELEASED; urgency=medium
   * ne2000-add-checks-to-validate-ring-buffer-pointers-CVE-2015-5279.patch
     fix for Heap overflow vulnerability in ne2000_receive() function
     (Closes: #799074 CVE-2015-5279)
+  * ne2000-avoid-infinite-loop-when-receiving-packets-CVE-2015-5278.patch
+    (Closes: #799073 CVE-2015-5278) 
   * some binfmt reorg:
    - extend aarch64 to include one more byte as other arches do
    - set OSABI mask to 0xfc for i386, ppc*, s390x, sparc*, to recognize
