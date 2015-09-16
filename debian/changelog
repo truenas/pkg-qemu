@@ -9,7 +9,7 @@ qemu (1:2.4+dfsg-3) unstable; urgency=high
    - extend aarch64 to include one more byte as other arches do
    - set OSABI mask to 0xfc for i386, ppc*, s390x, sparc*, to recognize
      OSABI=3 (GNU/Linux) in addition to NONE/SysV
-     (Closes: #784605 #794737)
+     (Closes: #784605, #794737)
    - tighten sh4 & sh4eb, fixing OSABI mask to be \xfc not 0
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 15 Sep 2015 19:30:18 +0300
