@@ -2,6 +2,7 @@ qemu (1:2.4+dfsg-4) UNRELEASED; urgency=medium
 
   * applied 3 patches from upstream to fix virtio-net
     possible remote DoS (Closes: #799452 CVE-2015-7295)
+  * remove now-unused /etc/qemu too (Closes: #797608)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 02 Oct 2015 20:26:02 +0300
 
