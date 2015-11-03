@@ -1,3 +1,10 @@
+qemu (1:2.4+dfsg-5) UNRELEASED; urgency=medium
+
+  * trace-remove-malloc-tracing.patch from upstream.
+    (Closes: #802633)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 03 Nov 2015 10:34:23 +0300
+
 qemu (1:2.4+dfsg-4) unstable; urgency=medium
 
   * applied 3 patches from upstream to fix virtio-net
