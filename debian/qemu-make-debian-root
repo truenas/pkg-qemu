@@ -159,7 +159,7 @@ dd if=$IMAGE.ext2 of=$IMAGE seek=$((`stat -c%s $IMAGE` / 512)) bs=512
 rm $IMAGE.ext2
 
 # Repartition so one partition covers entire disk.
-echo '63,' | sfdisk -uS -H$HEADS -S$SECTORS -C$CYLINDERS $IMAGE
+echo '63,' | sfdisk -uS $IMAGE
 
 trap "" EXIT
 
