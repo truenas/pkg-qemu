@@ -2,3 +2,4 @@
 use-fixed-data-path.patch
 use-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
+enable-sigalitstack-everywhere.diff
