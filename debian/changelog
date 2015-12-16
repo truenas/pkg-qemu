@@ -5,6 +5,8 @@ qemu (1:2.5+dfsg-1) UNRELEASED; urgency=medium
     Closes: #806373 CVE-2015-8345
     Closes: #806742 CVE-2015-7504
     Closes: #806741 CVE-2015-7512
+    Closes: #808131 CVE-2015-7549
+    Closes: #808130 CVE-2015-8504
   * adopt for the new upstream:
    - removed patches which are upstream now
    - build-depend on libcacard-dev and stop requiring libtool
