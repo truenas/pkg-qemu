@@ -2,3 +2,4 @@
 use-fixed-data-path.patch
 use-data-path.patch
 mjt-set-oem-in-rsdt-like-slic.diff
+ehci-make-idt-processing-more-robust-CVE-2015-8558.patch
