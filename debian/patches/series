@@ -80,3 +80,4 @@ pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
 msix-implement-pba-write-but-read-only-CVE-2015-7549.patch
 eepro100-prevent-two-endless-loops-CVE-2015-8345.patch
 vnc-avoid-floating-point-exception-CVE-2015-8504.patch
+ehci-make-idt-processing-more-robust-CVE-2015-8558.patch
