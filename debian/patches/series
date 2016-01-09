@@ -83,3 +83,4 @@ vnc-avoid-floating-point-exception-CVE-2015-8504.patch
 ehci-make-idt-processing-more-robust-CVE-2015-8558.patch
 xenfb-avoid-reading-twice-the-same-fields-from-the-shared-page-CVE-2015-8550.patch
 xen-blkif-avoid-double-access-to-src-nr_segments-CVE-2015-8550.patch
+net-ne2000-fix-bounds-check-in-ioport-operations-CVE-2015-8743.patch
