@@ -110,3 +110,4 @@ eepro100-prevent-two-endless-loops-CVE-2015-8345.patch
 vnc-avoid-floating-point-exception-CVE-2015-8504.patch
 ehci-make-idt-processing-more-robust-CVE-2015-8558.patch
 net-ne2000-fix-bounds-check-in-ioport-operations-CVE-2015-8743.patch
+ide-ahci-reset-ncq-object-to-unused-on-error-CVE-2016-1568.patch
