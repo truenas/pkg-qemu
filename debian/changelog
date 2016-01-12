@@ -1,10 +1,11 @@
 qemu (1:2.5+dfsg-3) unstable; urgency=high
 
   [ Aurelien Jarno ]
-  * debian/copyright: fix a spelling error reported by lintian: dependecy -> dependency.
+  * debian/copyright:
+    fix a spelling error reported by lintian: dependecy -> dependency.
 
   [ Michael Tokarev ]
-  * net-vmxnet3-avoid-memory-leakage-in-activate_device-CVE-2015-8567-CVE-2015-8568.patch
+  * net-vmxnet3-avoid-memory-leakage-in-activate_device patch
     (Closes: #808145, CVE-2015-8567, CVE-2015-8568)
   * scsi-initialise-info-object-with-appropriate-size-CVE-2015-8613.patch
     (Closes: #809232, CVE-2015-8613)
