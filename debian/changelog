@@ -2,6 +2,30 @@ qemu (1:2.1+dfsg-12+deb8u5) UNRELEASED; urgency=high
 
   * applied 3 patches from upstream to fix virtio-net
     possible remote DoS (Closes: #799452 CVE-2015-7295)
+  * pcnet-add-check-to-validate-receive-data-size-CVE-2015-7504.patch
+    (Closes: #806742, CVE-2015-7504)
+  * pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
+    (Closes: #806741, CVE-2015-7512)
+  * msix-implement-pba-write-but-read-only-CVE-2015-7549.patch
+    (Closes: #808131, CVE-2015-7549)
+  * eepro100-prevent-two-endless-loops-CVE-2015-8345.patch
+    (Closes: #806373, CVE-2015-8345)
+  * vnc-avoid-floating-point-exception-CVE-2015-8504.patch
+    (Closes: #808130, CVE-2015-8504)
+  * ehci-make-idt-processing-more-robust-CVE-2015-8558.patch
+    (Closes: #808144, CVE-2015-8558)
+  * two upstream patches from xsa-155 fixing unsafe shared memory access in xen
+    (Closes: #809229, CVE-2015-8550)
+  * net-ne2000-fix-bounds-check-in-ioport-operations-CVE-2015-8743.patch
+    (Closes: #810519, CVE-2015-8743)
+  * net-vmxnet3-avoid-memory-leakage-in-activate_device-CVE-2015-8567-CVE-2015-8568.patch
+    (Closes: #808145, CVE-2015-8567, CVE-2015-8568)
+  * scsi-initialise-info-object-with-appropriate-size-CVE-2015-8613.patch
+    (Closes: #809232, CVE-2015-8613)
+  * vmxnet3-refine-l2-header-validation-CVE-2015-8744.patch
+    (Closes: CVE-2015-8744)
+  * vmxnet3-support-reading-IMR-registers-on-bar0-CVE-2015-8745.patch
+    (Closes: CVE-2015-8745)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 02 Oct 2015 20:26:02 +0300
 
