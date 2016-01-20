@@ -2,6 +2,20 @@ qemu (1.1.2+dfsg-6a+deb7u12) UNRELEASED; urgency=high
 
   * applied 3 patches from upstream to fix virtio-net
     possible remote DoS (Closes: #799452 CVE-2015-7295)
+  * pcnet-add-check-to-validate-receive-data-size-CVE-2015-7504.patch
+    (Closes: #806742, CVE-2015-7504)
+  * pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
+    (Closes: #806741, CVE-2015-7512)
+  * eepro100-prevent-two-endless-loops-CVE-2015-8345.patch
+    (Closes: #806373, CVE-2015-8345)
+  * vnc-avoid-floating-point-exception-CVE-2015-8504.patch
+    (Closes: #808130, CVE-2015-8504)
+  * ehci-make-idt-processing-more-robust-CVE-2015-8558.patch
+    (Closes: #808144, CVE-2015-8558)
+  * net-ne2000-fix-bounds-check-in-ioport-operations-CVE-2015-8743.patch
+    (Closes: #810519, CVE-2015-8743)
+  * ide-ahci-reset-ncq-object-to-unused-on-error-CVE-2016-1568.patch
+    (Closes: #810527, CVE-2016-1568)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 02 Oct 2015 20:26:02 +0300
 
