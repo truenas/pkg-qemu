@@ -77,3 +77,4 @@ virtio-introduce-virtqueue_discard-for-CVE-2015-7295.patch
 virtio-net-correctly-drop-truncated-packets-CVE-2015-7295.patch
 pcnet-add-check-to-validate-receive-data-size-CVE-2015-7504.patch
 pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
+msix-implement-pba-write-but-read-only-CVE-2015-7549.patch
