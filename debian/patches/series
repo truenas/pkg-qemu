@@ -106,3 +106,4 @@ virtio-introduce-virtqueue_discard-for-CVE-2015-7295.patch
 virtio-net-correctly-drop-truncated-packets-CVE-2015-7295.patch
 pcnet-add-check-to-validate-receive-data-size-CVE-2015-7504.patch
 pcnet-fix-rx-buffer-overflow-CVE-2015-7512.patch
+eepro100-prevent-two-endless-loops-CVE-2015-8345.patch
