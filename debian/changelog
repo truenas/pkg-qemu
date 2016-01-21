@@ -1,7 +1,7 @@
 qemu (1:2.5+dfsg-4) unstable; urgency=medium
 
   * change misspelling of won't in NEWS (lintian)
-  * two patches from upstream to enable sigaltstack syscal (linux-user)
+  * two patches from upstream to enable sigaltstack syscall (linux-user)
     (Closes: #805826)
   * word-wrapped last entry in debian/changelog
   * use type to find out whenever update-binfmts is available
