@@ -89,3 +89,4 @@ net-vmxnet3-avoid-memory-leakage-in-activate_device-CVE-2015-8567-CVE-2015-8568.
 scsi-initialise-info-object-with-appropriate-size-CVE-2015-8613.patch
 vmxnet3-refine-l2-header-validation-CVE-2015-8744.patch
 vmxnet3-support-reading-IMR-registers-on-bar0-CVE-2015-8745.patch
+fw_cfg-add-check-to-validate-current-entry-value-CVE-2016-1714.patch
