@@ -15,3 +15,4 @@ fw_cfg-add-check-to-validate-current-entry-value-CVE-2016-1714.patch
 # #805826, two patches are needed:
 unicore32-convert-get_sp_from_cpustate-from-macro-to-inline.patch
 linux-user-enable-sigaltstack-for-all-architectures.patch
+i386-avoid-null-pointer-dereference-CVE-2016-1922.patch
