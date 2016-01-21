@@ -26,6 +26,12 @@ qemu (1:2.1+dfsg-12+deb8u5) UNRELEASED; urgency=high
     (Closes: CVE-2015-8744)
   * vmxnet3-support-reading-IMR-registers-on-bar0-CVE-2015-8745.patch
     (Closes: CVE-2015-8745)
+  * ide-ahci-reset-ncq-object-to-unused-on-error-CVE-2016-1568.patch
+    (Closes: #810527, CVE-2016-1568)
+  * fw_cfg-add-check-to-validate-current-entry-value-CVE-2016-1714.patch
+    (Closes: CVE-2016-1714)
+  * i386-avoid-null-pointer-dereference-CVE-2016-1922.patch
+    (Closes: #811201, CVE-2016-1922)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 02 Oct 2015 20:26:02 +0300
 
