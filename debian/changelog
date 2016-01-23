@@ -6,7 +6,7 @@ qemu (1:2.5+dfsg-4) unstable; urgency=medium
   * word-wrapped last entry in debian/changelog
   * use type to find out whenever update-binfmts is available
   * fw_cfg-add-check-to-validate-current-entry-value-CVE-2016-1714.patch
-    (Partial) patch targetted 2.3 which fixes the read side of the issue
+    (Partial) patch targeted 2.3 which fixes the read side of the issue
     (Closes: CVE-2016-1714)
   * i386-avoid-null-pointer-dereference-CVE-2016-1922.patch
     (Closes: #811201, CVE-2016-1922)
