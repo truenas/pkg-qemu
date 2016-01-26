@@ -1,12 +1,19 @@
+qemu (1:2.5+dfsg-4~bpo8+1) jessie-backports; urgency=medium
+
+  * Rebuild for jessie-backports.
+  * fix misspelling in previous changelog entry
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 26 Jan 2016 22:48:14 +0300
+
 qemu (1:2.5+dfsg-4) unstable; urgency=medium
 
   * change misspelling of won't in NEWS (lintian)
-  * two patches from upstream to enable sigaltstack syscal (linux-user)
+  * two patches from upstream to enable sigaltstack syscall (linux-user)
     (Closes: #805826)
   * word-wrapped last entry in debian/changelog
   * use type to find out whenever update-binfmts is available
   * fw_cfg-add-check-to-validate-current-entry-value-CVE-2016-1714.patch
-    (Partial) patch targetted 2.3 which fixes the read side of the issue
+    (Partial) patch targeted 2.3 which fixes the read side of the issue
     (Closes: CVE-2016-1714)
   * i386-avoid-null-pointer-dereference-CVE-2016-1922.patch
     (Closes: #811201, CVE-2016-1922)
