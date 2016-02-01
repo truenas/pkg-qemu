@@ -1,4 +1,4 @@
-qemu (1:2.1+dfsg-12+deb8u5) UNRELEASED; urgency=high
+qemu (1:2.1+dfsg-12+deb8u5) jessie-security; urgency=high
 
   * applied 3 patches from upstream to fix virtio-net
     possible remote DoS (Closes: #799452 CVE-2015-7295)
@@ -18,7 +18,7 @@ qemu (1:2.1+dfsg-12+deb8u5) UNRELEASED; urgency=high
     (Closes: #809229, CVE-2015-8550)
   * net-ne2000-fix-bounds-check-in-ioport-operations-CVE-2015-8743.patch
     (Closes: #810519, CVE-2015-8743)
-  * net-vmxnet3-avoid-memory-leakage-in-activate_device-CVE-2015-8567-CVE-2015-8568.patch
+  * net-vmxnet3-avoid-memory-leakage-in-activate_device-[...].patch
     (Closes: #808145, CVE-2015-8567, CVE-2015-8568)
   * scsi-initialise-info-object-with-appropriate-size-CVE-2015-8613.patch
     (Closes: #809232, CVE-2015-8613)
@@ -33,7 +33,7 @@ qemu (1:2.1+dfsg-12+deb8u5) UNRELEASED; urgency=high
   * i386-avoid-null-pointer-dereference-CVE-2016-1922.patch
     (Closes: #811201, CVE-2016-1922)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 02 Oct 2015 20:26:02 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 01 Feb 2016 23:32:49 +0300
 
 qemu (1:2.1+dfsg-12+deb8u4) jessie-security; urgency=high
 
