@@ -1,4 +1,4 @@
-qemu (1:2.1+dfsg-12+deb8u5) jessie-security; urgency=high
+qemu (1:2.1+dfsg-12+deb8u5a) jessie-security; urgency=high
 
   * applied 3 patches from upstream to fix virtio-net
     possible remote DoS (Closes: #799452 CVE-2015-7295)
@@ -32,8 +32,12 @@ qemu (1:2.1+dfsg-12+deb8u5) jessie-security; urgency=high
     (Closes: CVE-2016-1714)
   * i386-avoid-null-pointer-dereference-CVE-2016-1922.patch
     (Closes: #811201, CVE-2016-1922)
+  * e1000-eliminate-infinite-loops-on-out-of-bounds-start-CVE-2016-1981.patch
+    (Closes: #812307, CVE-2016-1981)
+  * hmp-fix-sendkey-out-of-bounds-write-CVE-2015-8619.patch
+    (Closes: #809237, CVE-2015-8619)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 01 Feb 2016 23:32:49 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 08 Feb 2016 10:33:30 +0300
 
 qemu (1:2.1+dfsg-12+deb8u4) jessie-security; urgency=high
 
