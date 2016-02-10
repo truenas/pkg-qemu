@@ -52,9 +52,11 @@ Build-Depends: debhelper (>= 9),
 :debian: libiscsi-dev (>> 1.9.0~),
 # --enable-curses
  libncurses5-dev,
-# numa is not enabled: #682853
-## --enable-numa	i386|amd64|ia64|mips*|powerpc*|ppc64|x32
-# libnuma-dev,
+:debian:# numa is not enabled: #682853
+:debian:## --enable-numa	i386|amd64|ia64|mips*|powerpc*|ppc64|x32
+:debian:# libnuma-dev,
+:ubuntu:# --enable-numa i386|amd64|ia64|mips|mipsel|powerpc|powerpcspe|x32|ppc64|ppc64el|arm64|sparc|hppa
+:ubuntu: libnuma-dev [i386 amd64 ia64 mips mipsel powerpc powerpcspe x32 ppc64 ppc64el arm64 sparc hppa],
 # --enable-smartcard
  libcacard-dev,
 # --with-system-pixman
