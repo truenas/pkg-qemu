@@ -3,3 +3,4 @@ use-fixed-data-path.patch
 use-data-path.patch
 fix-some-typos-found-by-codespell.patch
 s390x-virtio-ccw-fix-spelling.patch
+hw-ipmi-fix-spelling.patch
