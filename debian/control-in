@@ -227,7 +227,7 @@ Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}),
 Provides: ${sysprovides:misc}
 Breaks: qemu-system (<< 1.3.0+dfsg-5)
 Replaces: qemu-system (<< 1.3.0+dfsg-5)
-Description: QEMU full system emulation binaries (miscelaneous)
+Description: QEMU full system emulation binaries (miscellaneous)
  QEMU is a fast processor emulator: currently the package supports
  ARM, CRIS, M68k (ColdFire), MicroBlaze, and SH4
  emulation. By using dynamic translation it achieves
