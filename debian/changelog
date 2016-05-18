@@ -1,4 +1,4 @@
-qemu (1:2.6+dfsg-1) UNRELEASED; urgency=medium
+qemu (1:2.6+dfsg-1) unstable; urgency=medium
 
   * new upstream release
    Closes: #799115
@@ -21,8 +21,12 @@ qemu (1:2.6+dfsg-1) UNRELEASED; urgency=medium
    - removed all patches applied upstream
    - removed mjt-set-oem-in-rsdt-like-slic.diff, feature has been
      implemented in upstream differently
+   - refreshed local patches
+  * do not recommend sharutils for qemu-utils anymore (Closes: #820449)
+  * typo fix in qemu-system-misc description (Closes: #822883)
+  * allow qemu-debootstrap to create mips64el chroot (Closes: #817234)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 17 May 2016 11:04:37 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 18 May 2016 14:44:14 +0300
 
 qemu (1:2.5+dfsg-5) unstable; urgency=medium
 
