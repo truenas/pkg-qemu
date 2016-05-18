@@ -1,6 +1,26 @@
 qemu (1:2.6+dfsg-1) UNRELEASED; urgency=medium
 
   * new upstream release
+   Closes: #799115
+   Closes: #822369, #823588
+   Closes: #813698
+   Closes: #807006
+   Closes: #805827
+   Closes: #813585
+   Closes: #823830 CVE-2016-3710 CVE-2016-3712
+   Closes: #813193 CVE-2016-2198
+   Closes: #813194 CVE-2016-2197
+   Closes: #815008 CVE-2016-2392
+   Closes: #815009 CVE-2016-2391
+   Closes: #815680 CVE-2016-2538
+   Closes: #821038 CVE-2016-4001
+   Closes: #822344 CVE-2016-4037
+   Closes: #817181 CVE-2016-2841
+   Closes: #817182 CVE-2016-2857
+   Closes: #817183 CVE-2016-2858
+   - removed all patches applied upstream
+   - removed mjt-set-oem-in-rsdt-like-slic.diff, feature has been
+     implemented in upstream differently
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 17 May 2016 11:04:37 +0300
 
