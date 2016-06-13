@@ -6,6 +6,7 @@ s390x-virtio-ccw-fix-spelling.patch
 hw-ipmi-fix-spelling.patch
 docs-specify-spell-fix.patch
 fsdev-spelling-fix.patch
+hw-dma-omap-spelling-fix-endianness.patch
 vga-add-sr_vbe-register-set.patch
 fix-linking-relocatable-objects-on-sparc.patch
 net-mipsnet-check-packet-length-against-buffer-CVE-2016-4002.patch
