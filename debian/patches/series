@@ -9,3 +9,4 @@ fsdev-spelling-fix.patch
 vga-add-sr_vbe-register-set.patch
 fix-linking-relocatable-objects-on-sparc.patch
 net-mipsnet-check-packet-length-against-buffer-CVE-2016-4002.patch
+i386-kvmvapic-initialise-imm32-variable-CVE-2016-4020.patch
