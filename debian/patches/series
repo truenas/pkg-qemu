@@ -18,3 +18,4 @@ scsi-megasas-use-appropriate-property-buffer-size-CVE-2016-5106.patch
 scsi-megasas-initialise-local-configuration-data-buffer-CVE-2016-5105.patch
 scsi-megasas-check-read_queue_head-index-value-CVE-2016-5107.patch
 block-iscsi-avoid-potential-overflow-of-acb-task-cdb-CVE-2016-5126.patch
+scsi-esp-check-TI-buffer-index-before-read-write-CVE-2016-5338.patch
