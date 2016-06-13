@@ -6,3 +6,4 @@ s390x-virtio-ccw-fix-spelling.patch
 hw-ipmi-fix-spelling.patch
 docs-specify-spell-fix.patch
 fsdev-spelling-fix.patch
+vga-add-sr_vbe-register-set.patch
