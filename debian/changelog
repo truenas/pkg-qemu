@@ -1,3 +1,40 @@
+qemu (1:2.6+dfsg-2) unstable; urgency=medium
+
+  * add missing log entries for previous upload,
+    remove closing of #807006 (it is not closed)
+  * Added vga-add-sr_vbe-register-set.patch from upstream
+    This fixes regression (in particular with win7 installer)
+    introduced by the fix for CVE-2016-3712 (commit fd3c136)
+  * fix-linking-relocatable-objects-on-sparc.patch (Closes: #807006)
+  * Lots of security patches from upstream:
+  - net-mipsnet-check-packet-length-against-buffer-CVE-2016-4002.patch
+    (Closes: #821061, CVE-2016-4002)
+  - i386-kvmvapic-initialise-imm32-variable-CVE-2016-4020.patch
+    (Closes: #821062, CVE-2016-4020)
+  - esp-check-command-buffer-length-before-write-CVE-2016-4439.patch,
+    esp-check-dma-length-before-reading-scsi-command-CVE-2016-4441.patch
+    (Closes: #824856, CVE-2016-4439, CVE-2016-4441)
+  - scsi-mptsas-infinite-loop-while-fetching-requests-CVE-2016-4964.patch
+    (Closes: #825207, CVE-2016-4964)
+  - scsi-pvscsi-check-command-descriptor-ring-buffer-size-CVE-2016-4952.patch
+    (Closes: #825210, CVE-2016-4952)
+  - scsi-megasas-use-appropriate-property-buffer-size-CVE-2016-5106.patch
+    (Closes: #825615, CVE-2016-5106)
+  - scsi-megasas-initialise-local-configuration-data-buffer-CVE-2016-5105.patch
+    (Closes: #825614, CVE-2016-5105)
+  - scsi-megasas-check-read_queue_head-index-value-CVE-2016-5107.patch
+    (Closes: #825616, CVE-2016-5107)
+  - block-iscsi-avoid-potential-overflow-of-acb-task-cdb-CVE-2016-5126.patch
+    (Closes: #826151, CVE-2016-5126)
+  - scsi-esp-check-TI-buffer-index-before-read-write-CVE-2016-5338.patch
+    (Closes: #827024, CVE-2016-5338)
+  - scsi-megasas-null-terminate-bios-version-buffer-CVE-2016-5337.patch
+    (Closes: #827026, CVE-2016-5337)
+  * hw-dma-omap-spelling-fix-endianness.patch (lintian)
+  * arm-spelling-fix-mismatch.patch (lintian)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 13 Jun 2016 12:10:44 +0300
+
 qemu (1:2.6+dfsg-1) unstable; urgency=medium
 
   * new upstream release
