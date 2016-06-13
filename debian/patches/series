@@ -12,3 +12,4 @@ net-mipsnet-check-packet-length-against-buffer-CVE-2016-4002.patch
 i386-kvmvapic-initialise-imm32-variable-CVE-2016-4020.patch
 esp-check-command-buffer-length-before-write-CVE-2016-4439.patch
 esp-check-dma-length-before-reading-scsi-command-CVE-2016-4441.patch
+scsi-mptsas-infinite-loop-while-fetching-requests-CVE-2016-4964.patch
