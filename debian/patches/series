@@ -25,3 +25,4 @@ scsi-megasas-null-terminate-bios-version-buffer-CVE-2016-5337.patch
 vmsvga-move-fifo-sanity-checks-to-vmsvga_fifo_length-CVE-2016-4454.patch
 vmsvga-add-more-fifo-checks-CVE-2016-4454.patch
 vmsvga-shadow-fifo-registers-CVE-2016-4454.patch
+vmsvga-don-t-process-more-than-1024-fifo-commands-at-once-CVE-2016-4453.patch
