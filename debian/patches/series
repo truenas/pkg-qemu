@@ -26,3 +26,4 @@ vmsvga-move-fifo-sanity-checks-to-vmsvga_fifo_length-CVE-2016-4454.patch
 vmsvga-add-more-fifo-checks-CVE-2016-4454.patch
 vmsvga-shadow-fifo-registers-CVE-2016-4454.patch
 vmsvga-don-t-process-more-than-1024-fifo-commands-at-once-CVE-2016-4453.patch
+scsi-check-buffer-length-before-reading-scsi-command-CVE-2016-5238.patch
