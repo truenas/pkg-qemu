@@ -10,3 +10,4 @@ scsi-mptconfig-fix-an-assert-expression-CVE-2016-7157.patch
 scsi-mptconfig-fix-misuse-of-MPTSAS_CONFIG_PACK-CVE-2016-7157.patch
 usb-xhci-fix-memory-leak-in-usb_xhci_exit-CVE-2016-7466.patch
 scsi-mptsas-use-g_new0-to-allocate-MPTSASRequest-obj-CVE-2016-7423.patch
+virtio-add-check-for-descriptor-s-mapped-address-CVE-2016-7422.patch
