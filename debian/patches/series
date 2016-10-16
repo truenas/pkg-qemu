@@ -93,3 +93,12 @@ fw_cfg-add-check-to-validate-current-entry-value-CVE-2016-1714.patch
 i386-avoid-null-pointer-dereference-CVE-2016-1922.patch
 e1000-eliminate-infinite-loops-on-out-of-bounds-start-CVE-2016-1981.patch
 hmp-fix-sendkey-out-of-bounds-write-CVE-2015-8619.patch
+
+# CVE-2016-3710
+vga-fix-banked-access-bounds-checking-CVE-2016-3710.patch
+
+# CVE-2016-3712
+vga-add-vbe_enabled-helper.patch
+vga-factor-out-vga-register-setup.patch
+vga-update-vga-register-setup-on-vbe-changes.patch
+vga-make-sure-vga-register-setup-for-vbe-stays-intac.patch

@@ -1,3 +1,12 @@
+qemu (1:2.1+dfsg-12+deb8u6) jessie-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * CVE-2016-3710: Banked access to VGA memory (VBE) uses inconsistent
+    bounds checks
+  * CVE-2016-3712: potential integer overflow or OOB read access issues
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 08 May 2016 15:33:50 +0200
+
 qemu (1:2.1+dfsg-12+deb8u5a) jessie-security; urgency=high
 
   * applied 3 patches from upstream to fix virtio-net
