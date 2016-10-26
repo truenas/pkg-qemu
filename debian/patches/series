@@ -1,6 +1,7 @@
 02_kfreebsd.patch
 use-fixed-data-path.patch
 use-data-path.patch
+PIE.patch
 hw-dma-omap-spelling-fix-endianness.patch
 arm-spelling-fix-mismatch.patch
 scsi-pvscsi-check-page-count-while-initialising-descriptor-rings-CVE-2016-7155.patch
