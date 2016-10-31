@@ -24,4 +24,17 @@ then
   chmod 0660 /dev/kvm
 fi
 
+# Remove group::--- acl mistakenly placed on /dev/kvm by udev-acl
+# This can be removed when udev-acl+consolekit are removed in favor
+# of logind.
+if [ -c /dev/kvm -a ! -L /dev/kvm ]
+ then
+  /usr/bin/setfacl -m g::rw /dev/kvm
+ fi
+# udev rules for /dev/kvm have changed, so have udev
+# recalculate:
+if [ -f /sbin/udevd ]; then
+  udevadm trigger --subsystem-match=misc --action=change
+fi
+
 exit 0
