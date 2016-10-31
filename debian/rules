@@ -131,6 +131,10 @@ ifeq ($(enable_linux_user),enable)
 	# we use this invocation to build just the binaries
 	$(MAKE) -C user-static-build V=${V} $(foreach t,${user_targets},subdir-${t}-linux-user)
 endif
+
+ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
+	$(MAKE) -C qemu-build/pc-bios/s390-ccw V=${V}
+endif
 	touch $@
 
 clean:	debian/control
@@ -214,6 +218,10 @@ ifeq ($(VENDOR),UBUNTU)
 		usr/bin/qemu-system-x86_64 usr/bin/qemu-system-x86_64-spice
 endif
 endif
+ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
+	install -D -m755 qemu-build/pc-bios/s390-ccw/s390-ccw.img debian/qemu-system-s390x/usr/share/qemu/s390-ccw.img
+endif
+
 ifeq ($(VENDOR),UBUNTU)
 # apport hook is ubuntu-specific
 	dh_install -pqemu-system-common debian/source_qemu.py \
