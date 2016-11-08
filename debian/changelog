@@ -36,6 +36,7 @@ qemu (1:2.8+dfsg-1) UNRELEASED; urgency=medium
   * install trace-events-all in qemu-system-common
   * do not install qemu-tech.html (not provided by upstream anymore)
   * switch from sdl1 to gtk3 (Closes: #839695)
+  * enable virtio gpu (virglrenderer) and opengl support (Closes: #813658)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 23 Dec 2016 14:54:28 +0300
 
