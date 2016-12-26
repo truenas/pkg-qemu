@@ -1,6 +1,11 @@
 qemu (1:2.8+dfsg-1) UNRELEASED; urgency=medium
 
   * new upstream release
+    Closes: #847960, CVE-2016-9921 CVE-2016-9922
+    Closes: #847957, CVE-2016-9923
+    Closes: #847953, CVE-2016-9907
+    Closes: #847951, CVE-2016-9911
+    Closes: #847496, CVE-2016-9913 CVE-2016-9914 CVE-2016-9915 CVE-2016-9916
   * remove all patches which were applied upstream (most of them)
   * actually close: #841060
 
