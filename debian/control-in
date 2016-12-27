@@ -51,7 +51,7 @@ Build-Depends: debhelper (>= 9),
 :debian:# --enable-libiscsi
 :debian: libiscsi-dev (>> 1.9.0~),
 # --enable-curses
- libncurses5-dev,
+ libncursesw5-dev,
 :debian:# numa is not enabled: #682853
 :debian:## --enable-numa	i386|amd64|ia64|mips*|powerpc*|ppc64|x32
 :debian:# libnuma-dev,
