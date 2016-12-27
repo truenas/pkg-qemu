@@ -27,6 +27,7 @@ qemu (1:2.8+dfsg-1) UNRELEASED; urgency=medium
    Closes: #847957, CVE-2016-9923
    Closes: #819755, #833162
    Hopefully closes: #844361
+  * remove unicore32 linux-user target, removed upstream
   * remove all patches which were applied upstream (most of them)
   * actually close: #841060
   * doc-don-t-mention-memory-it-is-m.patch, Closes: #833619
