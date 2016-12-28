@@ -39,6 +39,7 @@ qemu (1:2.8+dfsg-1) UNRELEASED; urgency=medium
   * enable virtio gpu (virglrenderer) and opengl support (Closes: #813658)
   * strip out -ldrm out of OPENGL_LIBS, since libdrm is actually not needed
   * enable nfs support (libnfs-dev), in qemu-block-extra
+  * enable numa support (libnuma-dev) (Closes: #758189)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 23 Dec 2016 14:54:28 +0300
 

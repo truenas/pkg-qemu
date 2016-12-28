@@ -58,11 +58,8 @@ Build-Depends: debhelper (>= 9),
  libncursesw5-dev,
 :debian:# --enable-libnfs
 :debian: libnfs-dev (>> 1.9.3),
-:debian:# numa is not enabled: #682853
-:debian:## --enable-numa	i386|amd64|ia64|mips*|powerpc*|ppc64|x32
-:debian:# libnuma-dev,
-:ubuntu:# --enable-numa i386|amd64|ia64|mips|mipsel|powerpc|powerpcspe|x32|ppc64|ppc64el|arm64|sparc|hppa
-:ubuntu: libnuma-dev   [i386 amd64 ia64 mips mipsel powerpc powerpcspe x32 ppc64 ppc64el arm64 sparc hppa],
+# --enable-numa i386|amd64|ia64|mips|mipsel|powerpc|powerpcspe|x32|ppc64|ppc64el|arm64|sparc|hppa
+ libnuma-dev   [i386 amd64 ia64 mips mipsel powerpc powerpcspe x32 ppc64 ppc64el arm64 sparc hppa],
 # --enable-smartcard
  libcacard-dev,
 # --with-system-pixman
