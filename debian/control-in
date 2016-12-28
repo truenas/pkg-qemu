@@ -56,6 +56,8 @@ Build-Depends: debhelper (>= 9),
 :debian: libiscsi-dev (>> 1.9.0~),
 # --enable-curses
  libncursesw5-dev,
+:debian:# --enable-libnfs
+:debian: libnfs-dev (>> 1.9.3),
 :debian:# numa is not enabled: #682853
 :debian:## --enable-numa	i386|amd64|ia64|mips*|powerpc*|ppc64|x32
 :debian:# libnuma-dev,
@@ -110,8 +112,6 @@ Build-Depends: debhelper (>= 9),
 # --enable-vhost-net	linux-*	# is it really linux-specific?
 ##--enable-glusterfs todo
 ##--enable-lzo todo
-##--enable-libnfs todo
-##:debian: libnfs-dev (>> 1.9.4)
 ##--enable-netmap todo bsd
 ##--enable-quorum todo needs gcrypt
 ##--enable-xen-pci-passthrough todo
