@@ -33,6 +33,7 @@ qemu (1:2.8+dfsg-1) UNRELEASED; urgency=medium
   * doc-don-t-mention-memory-it-is-m.patch, Closes: #833619
   * don't pass --enable-uuid (always enabled)
   * build-depend on libncursesw5-dev, not libncurses5-dev
+  * install trace-events-all in qemu-system-common
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 23 Dec 2016 14:54:28 +0300
 
