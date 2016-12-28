@@ -14,7 +14,8 @@ qemu (1:2.8+dfsg-1) UNRELEASED; urgency=medium
    Closes: #840945, CVE-2016-8669
    Closes: #841950, CVE-2016-8909
    Closes: #841955, CVE-2016-8910
-   Closes: #842463, CVE-2016-9102 CVE-2016-9103 CVE-2016-9104 CVE-2016-9105 CVE-2016-9106
+   Closes: #842463, CVE-2016-9102 CVE-2016-9103 CVE-2016-9104
+                    CVE-2016-9105 CVE-2016-9106
    Closes: #846797, CVE-2016-9776
    Closes: #847381, CVE-2016-9845
    Closes: #847382, CVE-2017-9846
@@ -29,7 +30,7 @@ qemu (1:2.8+dfsg-1) UNRELEASED; urgency=medium
    Hopefully closes: #844361
   * remove unicore32 linux-user target, removed upstream
   * remove all patches which were applied upstream (most of them)
-  * actually close: #841060
+  * actually fix #841060
   * doc-don-t-mention-memory-it-is-m.patch, Closes: #833619
   * don't pass --enable-uuid (always enabled)
   * build-depend on libncursesw5-dev, not libncurses5-dev
