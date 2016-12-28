@@ -68,6 +68,8 @@ Build-Depends: debhelper (>= 9),
  libpulse-dev,
 # --enable-rbd		linux-*
  librados-dev [linux-any], librbd-dev [linux-any],
+# --enable-glusterfs
+ glusterfs-common,
 # --enable-vnc-sasl
  libsasl2-dev,
 # sdl display (see also gtk display)
@@ -107,7 +109,6 @@ Build-Depends: debhelper (>= 9),
  libpng-dev,
 # --enable-kvm		linux-*
 # --enable-vhost-net	linux-*	# is it really linux-specific?
-##--enable-glusterfs todo
 ##--enable-lzo todo
 ##--enable-netmap todo bsd
 ##--enable-quorum todo needs gcrypt
