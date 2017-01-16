@@ -14,6 +14,12 @@ case "$arch" in
         fi
         ;;
     ppc*)
+        SMT=$(/usr/sbin/ppc64_cpu --smt | grep "SMT=[248]")
+        if [ -n "$SMT" ]
+        then
+          logger -t qemu-kvm "Error: You must disable SMT if you want to run QEMU/KVM on ppc64le archtecture"
+          logger -t qemu-kvm "In order to disable SMT, run: # ppc64_cpu --smt=off"
+        fi
         kvm=/usr/bin/qemu-system-ppc64
         if [ `uname -m` != "ppc64le" ]; then
             exit 0
