@@ -48,8 +48,8 @@ Build-Depends: debhelper (>= 9),
 # vte is used together with gtk
 # --disable-vte
 # libiscsi is debian-only since ubuntu/libiscsi is in universe
-:debian:# --enable-libiscsi
-:debian: libiscsi-dev (>> 1.9.0~),
+# --enable-libiscsi
+ libiscsi-dev (>> 1.9.0~),
 # --enable-curses
  libncursesw5-dev,
 :debian:# --enable-libnfs
