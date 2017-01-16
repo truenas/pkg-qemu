@@ -60,13 +60,14 @@ system_targets = \
  sparc sparc64 s390x tricore xtensa xtensaeb unicore32
 
 # qemu-system subpackages, from d/control
-sys_systems = arm mips ppc sparc x86
+sys_systems = arm mips ppc sparc x86 s390x
 systems = ${sys_systems} misc
 sysarch_arm   = $(filter aarch64 arm,${system_targets})
 sysarch_mips  = $(filter mips mipsel mips64 mips64el,${system_targets})
 sysarch_ppc   = $(filter ppc ppc64 ppcemb,${system_targets})
 sysarch_sparc = $(filter sparc sparc64,${system_targets})
 sysarch_x86   = $(filter i386 x86_64,${system_targets})
+sysarch_s390x = $(filter s390x,${system_targets})
 sysarch_misc  = $(filter-out $(foreach s,${sys_systems},${sysarch_$s}),${system_targets})
 
 else
@@ -128,6 +129,10 @@ ifeq ($(enable_linux_user),enable)
 	# user-static build
 	# we use this invocation to build just the binaries
 	$(MAKE) -C user-static-build V=${V} $(foreach t,${user_targets},subdir-${t}-linux-user)
+endif
+
+ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
+	$(MAKE) -C qemu-build/pc-bios/s390-ccw V=${V}
 endif
 	touch $@
 
@@ -212,6 +217,10 @@ ifeq ($(VENDOR),UBUNTU)
 		usr/bin/qemu-system-x86_64 usr/bin/qemu-system-x86_64-spice
 endif
 endif
+ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
+	install -D -m755 qemu-build/pc-bios/s390-ccw/s390-ccw.img debian/qemu-system-s390x/usr/share/qemu/s390-ccw.img
+endif
+
 ifeq ($(VENDOR),UBUNTU)
 # apport hook is ubuntu-specific
 	dh_install -pqemu-system-common debian/source_qemu.py \
