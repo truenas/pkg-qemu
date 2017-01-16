@@ -61,13 +61,14 @@ system_targets = \
  sparc sparc64 s390x tricore xtensa xtensaeb unicore32
 
 # qemu-system subpackages, from d/control
-sys_systems = arm mips ppc sparc x86
+sys_systems = arm mips ppc sparc x86 s390x
 systems = ${sys_systems} misc
 sysarch_arm   = $(filter aarch64 arm,${system_targets})
 sysarch_mips  = $(filter mips mipsel mips64 mips64el,${system_targets})
 sysarch_ppc   = $(filter ppc ppc64 ppcemb,${system_targets})
 sysarch_sparc = $(filter sparc sparc64,${system_targets})
 sysarch_x86   = $(filter i386 x86_64,${system_targets})
+sysarch_s390x = $(filter s390x,${system_targets})
 sysarch_misc  = $(filter-out $(foreach s,${sys_systems},${sysarch_$s}),${system_targets})
 
 else
