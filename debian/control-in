@@ -473,8 +473,10 @@ Description: QEMU user mode binfmt registration for qemu-user
 Package: qemu-utils
 Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel mips64 mips64el powerpc powerpcspe ppc64 ppc64el s390x sparc sparc64 x32
 Multi-Arch: foreign
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Suggests: debootstrap, qemu-block-extra (= ${binary:Version}),
+Depends: ${shlibs:Depends}, ${misc:Depends},
+:ubuntu: qemu-block-extra (= ${binary:Version})
+Suggests: debootstrap,
+:debian: qemu-block-extra (= ${binary:Version}),
 :ubuntu:Conflicts: qemu-user (<< 0.11.1-2), qemu-kvm (<< 1.2.0.dfsg-1)
 :ubuntu:Replaces: qemu-user (<< 0.11.1-2), qemu-kvm (<< 1.2.0.dfsg-1)
 Description: QEMU utilities
