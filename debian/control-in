@@ -186,6 +186,7 @@ Multi-Arch: foreign
 Pre-Depends: adduser
 Provides: qemu-keymaps
 Depends: ${misc:Depends}, ${shlibs:Depends},
+:ubuntu: qemu-block-extra (= ${binary:Version}),
 # to fix wrong acl for newly created device node on ubuntu:
 :ubuntu: acl
 Breaks:
