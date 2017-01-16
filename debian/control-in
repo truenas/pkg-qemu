@@ -475,6 +475,7 @@ Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends},
 :ubuntu: qemu-block-extra (= ${binary:Version})
+:ubuntu:Recommends: sharutils
 Suggests: debootstrap,
 :debian: qemu-block-extra (= ${binary:Version}),
 :ubuntu:Conflicts: qemu-user (<< 0.11.1-2), qemu-kvm (<< 1.2.0.dfsg-1)
