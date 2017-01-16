@@ -8,3 +8,4 @@ pc-bios/qemu_logo_no_text.svg usr/share/qemu
 debian/tmp/usr/share/doc/qemu/qemu-doc.* usr/share/doc/qemu-system-common
 debian/tmp/usr/share/man/man7/qemu-qmp-ref.7
 debian/tmp/usr/share/doc/qemu/qemu-qmp-ref.* usr/share/doc/qemu-system-common
+debian/qemu-kvm-init /usr/share/qemu/init
