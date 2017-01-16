@@ -1,1 +1,2 @@
 debian/qemu-ifdown etc/
+debian/qemu-kvm-init /usr/share/qemu/init
