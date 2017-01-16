@@ -153,6 +153,7 @@ Depends: ${misc:Depends},
  qemu-system-ppc, 
  qemu-system-sparc, 
  qemu-system-x86,
+:ubuntu: qemu-system-s390x [s390x],
  qemu-system-misc
 Description: QEMU full system emulation binaries
  QEMU is a fast processor emulator: currently the package supports
@@ -547,3 +548,25 @@ Description: QEMU Full virtualization on x86 hardware
 :ubuntu: .
 :ubuntu: This is a transition package as qemu-system-aarch64 has been moved into
 :ubuntu: qemu-system-arm.
+
+:ubuntu:Package: qemu-system-s390x
+:ubuntu:Architecture: s390x
+:ubuntu:Multi-Arch: foreign
+:ubuntu:Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 2.0.0+dfsg-8~),
+:ubuntu:Recommends: qemu-utils,
+:ubuntu:Suggests: qemu-block-extra (= ${binary:Version}), 
+:ubuntu:Provides: ${sysprovides:s390x}
+:ubuntu:Breaks: qemu-system-misc (<< 1:2.5+dfsg-5ubuntu8~)
+:ubuntu:Replaces: qemu-system-misc (<< 1:2.5+dfsg-5ubuntu8~)
+:ubuntu:Description: QEMU full system emulation binaries (s390x)
+:ubuntu: QEMU is a fast processor emulator: currently the package supports
+:ubuntu: s390x emulation. By using dynamic translation it achieves reasonable
+:ubuntu: speed while being easy to port on new host CPUs.
+:ubuntu: .
+:ubuntu: This package provides the full system emulation binaries to emulate
+:ubuntu: the following s390x hardware: ${sysarch:s390x}.
+:ubuntu: .
+:ubuntu: In system emulation mode QEMU emulates a full system, including a processor
+:ubuntu: and various peripherals.  It enables easier testing and debugging of system
+:ubuntu: code.  It can also be used to provide virtual hosting of several virtual
+:ubuntu: machines on a single server.
