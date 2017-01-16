@@ -188,7 +188,7 @@ Pre-Depends: adduser
 Provides: qemu-keymaps
 Depends: ${misc:Depends}, ${shlibs:Depends},
 # to fix wrong acl for newly created device node on ubuntu:
-:ubuntu: udev, acl
+:ubuntu: acl
 Breaks:
 :ubuntu: qemu-common,
 # qemu-system before qemu-system-split
