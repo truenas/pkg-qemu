@@ -1,8 +1,8 @@
 #! /bin/sh
 ### BEGIN INIT INFO
 # Provides:          qemu-system-x86
-# Required-Start:    mountkernfs
-# Required-Stop:     
+# Required-Start:    $remote_fs mountkernfs
+# Required-Stop:     $remote_fs
 # Should-Start:      udev devfsd
 # Should-Stop:       
 # Default-Start:     S
