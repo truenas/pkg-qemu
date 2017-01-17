@@ -1,3 +1,34 @@
+qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=low
+
+  The ubuntu specific machine types for Trusty, Utopic and Vivid had a bug in
+  former versions. Those bugs made them non-unique by effectivly picking up
+  the current qemu versions compat level instead to stay at their defined one.
+
+  Machine Type:  Broken in:
+  Trusty         Xenial, Yakkety, Cloud-Archive Mitaka
+  Utopic         Vivid, Wily, Xenial, Cloud-Archive Liberty
+
+  Despite multiple releases being affected by the bad type definition, most
+  common migration paths today like LTS->LTS from Trusty to Xenial are working
+  fine for now. But a latter Migration to a newer System would fail as then
+  source and traget would disagree on what the guest type exactly is.
+
+  The only known real case of a related issue so far is a Utopic machine type on
+  Trusty plus Ubuntu Cloud Archive Liberty migrating to Xenial.
+
+  SRUs for bug 1641532 are rolled out into all affected releases to fix that
+  issue and let qemu do the right for the machine type definition as it was
+  meant to do.
+
+  If you have a guest with an affected machine type running on one of the
+  affected releases and are hit by the migration issues the procedure to get
+  migrations working again required a guest restart to pick up the changes.
+    1. With this fix installed restart the guest to pick up the "fixed" machine
+       type (the same as with many CVE qemu fixes).
+    2. Now it can be migrated to a target Host with the fix applied as well
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 17 Jan 2017 11:57:47 +0100
+
 qemu (1.7.0+dfsg-2) unstable; urgency=low
 
   Since version 1.7.0+dfsg-2, qemu-system-x86 switched from vgabios for
