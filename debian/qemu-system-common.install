@@ -7,3 +7,5 @@ pc-bios/qemu_logo_no_text.svg usr/share/qemu
 # qemu-doc.html is duplicated here and in qemu metapackage
 debian/tmp/usr/share/doc/qemu/qemu-doc.html usr/share/doc/qemu-system-common
 debian/tmp/usr/share/doc/qemu/qmp-commands.txt usr/share/doc/qemu-system-common
+debian/qemu-kvm.service /lib/systemd/system
+debian/qemu-kvm-init /usr/share/qemu/init
