@@ -29,7 +29,7 @@ fi
 # of logind.
 if [ -c /dev/kvm -a ! -L /dev/kvm ]
  then
-  /usr/bin/setfacl -m g::rw /dev/kvm
+  setfacl -m g::rw /dev/kvm
  fi
 # udev rules for /dev/kvm have changed, so have udev
 # recalculate:
