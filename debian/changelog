@@ -127,6 +127,7 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
       init.d-script-missing-dependency-on-remote_fs
     - d/qemu-system-common.postinst: fix lintian error type
       command-with-path-in-maintainer-script
+    - Transition qemu-kvm to a systemd unit
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
