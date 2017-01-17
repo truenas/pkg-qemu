@@ -121,6 +121,7 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
       header and non writable permissions
     - fixed moving trusty machine type definition which made it
       ambiguous (LP: #1641532)
+      - d/qemu-system-x86.NEWS describe the issue
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
