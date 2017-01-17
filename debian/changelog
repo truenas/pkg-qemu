@@ -125,6 +125,8 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
     - Enable seccomp for ppc64el (LP: #1644639)
     - d/qemu-system-common.qemu-kvm.init: fix lintian error type
       init.d-script-missing-dependency-on-remote_fs
+    - d/qemu-system-common.postinst: fix lintian error type
+      command-with-path-in-maintainer-script
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
