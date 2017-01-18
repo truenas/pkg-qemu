@@ -122,6 +122,7 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
     - fixed moving trusty machine type definition which made it
       ambiguous (LP: #1641532)
       - d/qemu-system-x86.NEWS describe the issue
+    - Enable seccomp for ppc64el (LP: #1644639)
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
