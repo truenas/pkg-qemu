@@ -64,8 +64,9 @@ Build-Depends: debhelper (>= 9),
  libpulse-dev,
 # --enable-rbd		linux-*
  librados-dev [linux-any], librbd-dev [linux-any],
-# --enable-glusterfs
- glusterfs-common,
+# glusterfs is debian-only since ubuntu/glusterfs is in universe (MIR LP: #1274247)
+:debian:# --enable-glusterfs
+:debian: glusterfs-common,
 # --enable-vnc-sasl
  libsasl2-dev,
 # note: libsdl2-dev is in universe on ubuntu
