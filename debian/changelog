@@ -123,6 +123,7 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
       ambiguous (LP: #1641532)
       - d/qemu-system-x86.NEWS describe the issue
     - Enable seccomp for ppc64el (LP: #1644639)
+    - Enable numa support for s390x
     - d/qemu-system-common.qemu-kvm.init: fix lintian error type
       init.d-script-missing-dependency-on-remote_fs
     - d/qemu-system-common.postinst: fix lintian error type
