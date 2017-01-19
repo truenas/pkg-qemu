@@ -228,6 +228,9 @@ ifneq ($(filter $(DEB_HOST_ARCH),ppc64 ppc64el powerpc),)
 	install -D -m755 debian/kvm.powerpc debian/qemu-kvm/usr/bin/kvm
 endif
 ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
+	install -D -m755 debian/kvm.s390x debian/qemu-kvm/usr/bin/kvm
+endif
+ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
 	install -D -m755 qemu-build/pc-bios/s390-ccw/s390-ccw.img debian/qemu-system-s390x/usr/share/qemu/s390-ccw.img
 endif
 
