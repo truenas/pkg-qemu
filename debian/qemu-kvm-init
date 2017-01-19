@@ -24,6 +24,9 @@ case "$arch" in
         if [ `uname -m` != "ppc64le" ]; then
             exit 0
         fi
+        if systemd-detect-virt --quiet --vm; then
+            echo "Info: second level virtualization not supported, kvm-hv load might fail"
+        fi
         modlist="kvm-hv"
         ;;
     *)
