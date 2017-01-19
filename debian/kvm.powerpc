@@ -20,7 +20,7 @@ case "$CPU" in
   *)
     case "$(uname -m)" in
       ppc64*)
-        SMT=$(/usr/sbin/ppc64_cpu --smt | grep "SMT=[248]")
+        SMT=$(/usr/sbin/ppc64_cpu --smt 2>&1 | grep -q "SMT=[248]")
         if [ -n "$SMT" ]
         then
           logger -t qemu-kvm "Error: You must disable SMT if you want to run QEMU/KVM on ppc64le archtecture"
