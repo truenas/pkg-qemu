@@ -26,6 +26,7 @@ qemu (1:2.8+dfsg-1) unstable; urgency=medium
    Closes: #847496, CVE-2016-9913 CVE-2016-9914 CVE-2016-9915 CVE-2016-9916
    Closes: #847960, CVE-2016-9921 CVE-2016-9922
    Closes: #847957, CVE-2016-9923
+   Closes: #842455, CVE-2016-9101 (git2634ab7fe29b3f75d0865b719caf8f310d634aae)
    Closes: #819755, #833162
    Hopefully closes: #844361
   * remove unicore32 linux-user target, removed upstream
