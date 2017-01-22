@@ -72,6 +72,7 @@ qemu (1:2.7+dfsg-1) unstable; urgency=medium
   * New upstream release, 2.7 (Closes: #748043, #839292)
     Closes: #838850, CVE-2016-7161
     Closes: #473240 (qcow encryption support has been removed)
+    Closes: #769983 (multi-threaded linux-user)
   * removed patches which went upstream, refreshed use-data-path.patch
   * renamed remaining patches to include CVE#s and added Bug-Debian headers
   * added Depends on lsb-base to qemu-guest-agent (Closes: #840740)
