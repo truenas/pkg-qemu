@@ -68,8 +68,8 @@ Build-Depends: debhelper (>= 9),
 # note: libsdl2-dev is in universe on ubuntu
 # --enable-sdl --with-sdlabi=2.0
  libsdl2-dev,
-# --enable-seccomp	linux-amd64|linux-i386
- libseccomp-dev (>> 2.1.0) [linux-amd64 linux-i386],
+# --enable-seccomp	linux-amd64|linux-i386|linux-ppc64el
+ libseccomp-dev (>= 2.3.0) [linux-amd64 linux-i386 linux-ppc64el],
 # --enable-spice	linux-amd64|linux-i386
  libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386],
  libspice-protocol-dev (>= 0.12.3~) [linux-amd64 linux-i386],
