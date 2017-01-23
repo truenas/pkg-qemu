@@ -132,6 +132,7 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
     - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check avoid unwanted output
     - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check keep output local so
       that it shows up where the user expects (sytemctl status, kvm stdout)
+    - d/qemu-kvm-init ppc64el warn on expected second level kvm-hv load failure
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
