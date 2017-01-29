@@ -6,3 +6,4 @@ doc-don-t-mention-memory-it-is-m.patch
 audio-ac97-add-exit-function-CVE-2017-5525.patch
 audio-es1370-add-exit-function-CVE-2017-5526.patch
 watchdog-6300esb-add-exit-function-CVE-2016-10155.patch
+serial-fix-memory-leak-in-serial-exit-CVE-2017-5579.patch
