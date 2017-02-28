@@ -2,6 +2,7 @@
 use-fixed-data-path.patch
 use-data-path.patch
 linux-user-fix-s390x-safe-syscall-for-z900.patch
+s390x-use-qemu-cpu-model-in-user-mode.patch
 doc-don-t-mention-memory-it-is-m.patch
 vnc-do-not-disconnect-on-EAGAIN.patch
 xhci-fix-event-queue-IRQ-handling.patch
