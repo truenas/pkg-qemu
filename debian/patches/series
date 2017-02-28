@@ -10,3 +10,4 @@ serial-fix-memory-leak-in-serial-exit-CVE-2017-5579.patch
 cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cputovideo-CVE-2017-2620.patch
 nbd_client-fix-drop_sync-CVE-2017-2630.patch
 sd-sdhci-check-transfer-mode-register-in-multi-block-CVE-2017-5987.patch
+vmxnet3-netrxpkt-fix-memory-corruption-on-vlan-header-stripping-CVE-2017-6058.patch
