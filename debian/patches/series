@@ -9,3 +9,4 @@ watchdog-6300esb-add-exit-function-CVE-2016-10155.patch
 serial-fix-memory-leak-in-serial-exit-CVE-2017-5579.patch
 cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cputovideo-CVE-2017-2620.patch
 nbd_client-fix-drop_sync-CVE-2017-2630.patch
+sd-sdhci-check-transfer-mode-register-in-multi-block-CVE-2017-5987.patch
