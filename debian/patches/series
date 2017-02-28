@@ -15,4 +15,5 @@ sd-sdhci-check-data-length-during-dma_memory_read-CVE-2017-5667.patch
 megasas-fix-guest-triggered-memory-leak-CVE-2017-5856.patch
 usb-ccid-check-ccid-apdu-length-CVE-2017-5898.patch
 virtio-crypto-fix-possible-integer-and-heap-overflow-CVE-2017-5931.patch
+xhci-apply-limits-to-loops-CVE-2017-5973.patch
 virtio-gpu-fix-resource-leak-in-virgl_cmd_resource-CVE-2017-5857.patch
