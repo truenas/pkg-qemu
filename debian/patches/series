@@ -11,3 +11,6 @@ cirrus-add-blit_is_unsafe-call-to-cirrus_bitblt_cputovideo-CVE-2017-2620.patch
 nbd_client-fix-drop_sync-CVE-2017-2630.patch
 sd-sdhci-check-transfer-mode-register-in-multi-block-CVE-2017-5987.patch
 vmxnet3-netrxpkt-fix-memory-corruption-on-vlan-header-stripping-CVE-2017-6058.patch
+sd-sdhci-check-data-length-during-dma_memory_read-CVE-2017-5667.patch
+megasas-fix-guest-triggered-memory-leak-CVE-2017-5856.patch
+virtio-gpu-fix-resource-leak-in-virgl_cmd_resource-CVE-2017-5857.patch
