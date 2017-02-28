@@ -6,6 +6,7 @@ doc-don-t-mention-memory-it-is-m.patch
 vnc-do-not-disconnect-on-EAGAIN.patch
 xhci-fix-event-queue-IRQ-handling.patch
 xhci-only-free-completed-transfers.patch
+char-fix-ctrl-a-b-not-working.patch
 audio-ac97-add-exit-function-CVE-2017-5525.patch
 audio-es1370-add-exit-function-CVE-2017-5526.patch
 watchdog-6300esb-add-exit-function-CVE-2016-10155.patch
