@@ -129,6 +129,7 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
     - d/qemu-system-common.postinst: fix lintian error type
       command-with-path-in-maintainer-script
     - Transition qemu-kvm to a systemd unit
+    - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check avoid unwanted output
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
