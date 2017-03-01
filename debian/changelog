@@ -1,3 +1,64 @@
+qemu (1:2.8+dfsg-3ubuntu1) zesty; urgency=medium
+
+  * Merge with Debian;
+    This fixes several CVEs that were reported against qemu 2.8 and also
+    includes a few important functional backports (LP: #1667033); remaining
+    changes:
+    - add qemu-kvm init script and defaults file
+      (d/qemu-system-common.qemu-kvm.*)
+    - d/rules, d/qemu-kvm-init: add and install script loading kvm
+      modules and handling /etc/default/qemu-kvm
+    - qemu-system-common.preinst: add kvm group if needed
+    - Enable nesting by default on intel.
+      - set default module option
+      - re-load kvm_intel.ko if it was loaded without nested=1
+      - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by
+        default in qemu64 cpu type.
+    - Enable svm by default for qemu64 on amd
+    - d/p/ubuntu/define-ubuntu-machine-types.patch, d/qemu-system-x86.NEWS:
+      define distro machine types to ease future live vm migration (includes
+      all former follow up fixes).
+    - Make qemu-system-common depend on qemu-block-extra
+    - Make qemu-utils depend on qemu-block-extra
+    - s390x support
+      - Create qemu-system-s390x package
+      - Include s390-ccw.img firmware
+    - qemu-system-common.postinst:
+      - change acl placed by udev, and add udevadm trigger.
+    - d/qemu-kvm-init, d/kvm.powerpc, d/control-in: check SMT on ppc64el
+    - Several changes were applied but missing in the changelog so far
+      - d/qemu-system-ppc.links provide usr/bin/qemu-system-ppc64le symlink
+      - arch aware kvm wrapper
+      - update VCS links
+      - let qemu-utils recommend sharutils
+      - disable x32 architecture
+    - Enable seccomp for ppc64el
+    - Enable numa support for s390x
+    - d/qemu-system-common.qemu-kvm.init: fix lintian error type
+      init.d-script-missing-dependency-on-remote_fs
+    - d/qemu-system-common.postinst: fix lintian error type
+      command-with-path-in-maintainer-script
+    - Transition qemu-kvm to a systemd unit
+    - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check avoid unwanted output
+    - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check keep output local so
+      that it shows up where the user expects (sytemctl status, kvm stdout)
+    - d/qemu-kvm-init ppc64el warn on expected second level kvm-hv load failure
+    - add arch aware kvm wrapper for s390x
+  * Dropped Changes (in Debian now):
+    - d/p/ubuntu/ctrl-a-b-fix-fb5e19d2.patch: char: fix ctrl-a b not working
+    - d/control-in: change dependencies for fix of wrong acl for newly
+      created device node on ubuntu
+    - have qemu-system-arm suggest: qemu-efi; this should be a stronger
+      relationship, but qemu-efi is still in universe right now.
+    - Disable glusterfs (Universe dependency)
+    - no more skip disable libiscsi on Ubuntu
+    - d/rules, d/control-in: avoid people editing d/control
+  * Added Changes:
+    - d/control: bump libseccomp-dev dependency as enabling libseccomp for
+      power makes 2.3 the minimum level.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 01 Mar 2017 14:23:16 +0100
+
 qemu (1:2.8+dfsg-3) unstable; urgency=high
 
   * urgency high due to security fixes
@@ -129,11 +190,13 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
     - d/qemu-system-common.postinst: fix lintian error type
       command-with-path-in-maintainer-script
     - Transition qemu-kvm to a systemd unit
+    - Disable glusterfs (Universe dependency)
     - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check avoid unwanted output
     - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check keep output local so
       that it shows up where the user expects (sytemctl status, kvm stdout)
     - d/qemu-kvm-init ppc64el warn on expected second level kvm-hv load failure
     - add arch aware kvm wrapper for s390x
+    - d/p/ubuntu/ctrl-a-b-fix-fb5e19d2.patch: char: fix ctrl-a b not working
     - Enable DDW in Yakkety machine type because "Enable GPU Passthru for
       ppc64le" was released as part of qemu 2.6 (can be dropped at 18.10,
       merged in d/p/ubuntu/define-ubuntu-machine-types.patch)
