@@ -134,6 +134,9 @@ qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
       that it shows up where the user expects (sytemctl status, kvm stdout)
     - d/qemu-kvm-init ppc64el warn on expected second level kvm-hv load failure
     - add arch aware kvm wrapper for s390x
+    - Enable DDW in Yakkety machine type because "Enable GPU Passthru for
+      ppc64le" was released as part of qemu 2.6 (can be dropped at 18.10,
+      merged in d/p/ubuntu/define-ubuntu-machine-types.patch)
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
