@@ -1,3 +1,10 @@
+qemu (1:2.8+dfsg-3ubuntu2) zesty; urgency=medium
+
+  * d/p/ubuntu/spapr-pci-populate-PCI-DT-in-reverse-order.patch: backport
+    "spapr/pci: populate PCI DT in reverse order" (LP: #1670481).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 07 Mar 2017 09:23:08 +0100
+
 qemu (1:2.8+dfsg-3ubuntu1) zesty; urgency=medium
 
   * Merge with Debian;
