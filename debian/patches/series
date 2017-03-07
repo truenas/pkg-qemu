@@ -32,3 +32,4 @@ cirrus-fix-oob-access-issue-CVE-2017-2615.patch
 ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/define-ubuntu-machine-types.patch
 ubuntu/enable-svm-by-default.patch
+ubuntu/spapr-pci-populate-PCI-DT-in-reverse-order.patch
