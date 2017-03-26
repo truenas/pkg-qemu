@@ -26,4 +26,5 @@ xhci-apply-limits-to-loops-CVE-2017-5973.patch
 net-imx-limit-buffer-descriptor-count-CVE-2016-7907.patch
 virtio-gpu-fix-resource-leak-in-virgl_cmd_resource-CVE-2017-5857.patch
 cirrus-fix-oob-access-issue-CVE-2017-2615.patch
+cirrus-vnc-zap-bitblit-support-from-console-code-CVE-2016-9603.patch
 9pfs-symlink-attack-fixes-CVE-2016-9602.patch
