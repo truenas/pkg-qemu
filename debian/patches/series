@@ -28,3 +28,4 @@ virtio-gpu-fix-resource-leak-in-virgl_cmd_resource-CVE-2017-5857.patch
 cirrus-fix-oob-access-issue-CVE-2017-2615.patch
 cirrus-vnc-zap-bitblit-support-from-console-code-CVE-2016-9603.patch
 9pfs-symlink-attack-fixes-CVE-2016-9602.patch
+usb-ohci-limit-the-number-of-link-eds-CVE-2017-6505.patch
