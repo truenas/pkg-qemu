@@ -18,3 +18,4 @@ xhci-apply-limits-to-loops-CVE-2017-5973.patch
 net-imx-limit-buffer-descriptor-count-CVE-2016-7907.patch
 virtio-gpu-fix-resource-leak-in-virgl_cmd_resource-CVE-2017-5857.patch
 usb-ohci-limit-the-number-of-link-eds-CVE-2017-6505.patch
+9pfs-fix-file-descriptor-leak-CVE-2017-7377.patch
