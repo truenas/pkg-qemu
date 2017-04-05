@@ -7,6 +7,8 @@ xhci-fix-event-queue-IRQ-handling.patch
 xhci-only-free-completed-transfers.patch
 char-drop-data-written-to-a-disconnected-pty.patch
 linux-user-fix-apt-get-update-on-linux-user-hppa.patch
+slirp-make-RA-build-more-flexible.patch
+slirp-send-RDNSS-in-RA-only-if-host-has-an-IPv6-DNS.patch
 audio-ac97-add-exit-function-CVE-2017-5525.patch
 audio-es1370-add-exit-function-CVE-2017-5526.patch
 watchdog-6300esb-add-exit-function-CVE-2016-10155.patch
