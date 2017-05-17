@@ -27,3 +27,4 @@ dma-rc4030-limit-interval-timer-reload-value-CVE-2016-8667.patch
 vmw_pvscsi-check-message-ring-page-count-at-init-CVE-2017-8112.patch
 scsi-avoid-an-off-by-one-error-in-megasas_mmio_write-CVE-2017-8380.patch
 input-limit-kbd-queue-depth-CVE-2017-8379.patch
+audio-release-capture-buffers-CVE-2017-8309.patch
