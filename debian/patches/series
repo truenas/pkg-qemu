@@ -26,3 +26,4 @@ dma-rc4030-limit-interval-timer-reload-value-CVE-2016-8667.patch
 9pfs-xattr-fix-memory-leak-in-v9fs_list_xattr-CVE-2017-8086.patch
 vmw_pvscsi-check-message-ring-page-count-at-init-CVE-2017-8112.patch
 scsi-avoid-an-off-by-one-error-in-megasas_mmio_write-CVE-2017-8380.patch
+input-limit-kbd-queue-depth-CVE-2017-8379.patch
