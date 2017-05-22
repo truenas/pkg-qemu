@@ -33,3 +33,16 @@ ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/define-ubuntu-machine-types.patch
 ubuntu/enable-svm-by-default.patch
 ubuntu/spapr-pci-populate-PCI-DT-in-reverse-order.patch
+CVE-2016-8667.patch
+CVE-2016-9602.patch
+CVE-2016-9603.patch
+CVE-2016-9908.patch
+CVE-2016-9912.patch
+CVE-2016-9914.patch
+CVE-2016-10028.patch
+CVE-2017-5552.patch
+CVE-2017-5578.patch
+CVE-2017-5987-1.patch
+CVE-2017-5987-3.patch
+CVE-2017-5987-4.patch
+CVE-2017-6505.patch
