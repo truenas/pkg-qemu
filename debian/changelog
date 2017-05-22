@@ -1,3 +1,51 @@
+qemu (1:2.8+dfsg-3ubuntu2.2) zesty-security; urgency=medium
+
+  * SECURITY UPDATE: denial of service via leak in virtFS
+    - debian/patches/CVE-2017-7377.patch: fix file descriptor leak in
+      hw/9pfs/9p.c.
+    - CVE-2017-7377
+  * SECURITY UPDATE: denial of service in cirrus_vga
+    - debian/patches/CVE-2017-7718.patch: check parameters in
+      hw/display/cirrus_vga_rop.h.
+    - CVE-2017-7718
+  * SECURITY UPDATE: code execution via cirrus_vga OOB r/w
+    - debian/patches/CVE-2017-7980-1.patch: handle negative pitch in
+      hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-2.patch: allow zero source pitch in
+      hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-3.patch: fix blit address mask handling
+      in hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-4.patch: fix patterncopy checks in
+      hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-5.patch: revert allow zero source pitch
+      in hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-6.patch: stop passing around dst
+      pointers in hw/display/cirrus_vga.c, hw/display/cirrus_vga_rop.h,
+      hw/display/cirrus_vga_rop2.h.
+    - debian/patches/CVE-2017-7980-7.patch: stop passing around src
+      pointers in hw/display/cirrus_vga.c, hw/display/cirrus_vga_rop.h,
+      hw/display/cirrus_vga_rop2.h.
+    - debian/patches/CVE-2017-7980-8.patch: fix off-by-one in
+      hw/display/cirrus_vga_rop.h.
+    - debian/patches/CVE-2017-7980-9.patch: fix cirrus_invalidate_region in
+      hw/display/cirrus_vga.c.
+    - CVE-2017-7980
+  * SECURITY UPDATE: denial of service via memory leak in virtFS
+    - debian/patches/CVE-2017-8086.patch: fix leak in hw/9pfs/9p-xattr.c.
+    - CVE-2017-8086
+  * SECURITY UPDATE: denial of service via leak in audio
+    - debian/patches/CVE-2017-8309.patch: release capture buffers in
+      audio/audio.c.
+    - CVE-2017-8309
+  * SECURITY UPDATE: denial of service via leak in keyboard
+    - debian/patches/CVE-2017-8379-1.patch: limit kbd queue depth in
+      ui/input.c.
+    - debian/patches/CVE-2017-8379-2.patch: don't queue delay if paused in
+      ui/input.c.
+    - CVE-2017-8379
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 10 May 2017 08:48:06 -0400
+
 qemu (1:2.8+dfsg-3ubuntu2.1) zesty-security; urgency=medium
 
   * SECURITY UPDATE: DoS in virtio GPU device
