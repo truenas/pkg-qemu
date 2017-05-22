@@ -1,3 +1,10 @@
+qemu (1:2.8+dfsg-3ubuntu2.3) zesty; urgency=medium
+
+  * debian/rules: fix installation of /etc/default/qemu-kvm (LP: #1692530)
+    This was inadvertently dropped on 2.8 merge.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 22 May 2017 15:45:58 +0200
+
 qemu (1:2.8+dfsg-3ubuntu2.2) zesty-security; urgency=medium
 
   * SECURITY UPDATE: denial of service via leak in virtFS
