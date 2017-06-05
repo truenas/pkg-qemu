@@ -30,3 +30,4 @@ scsi-avoid-an-off-by-one-error-in-megasas_mmio_write-CVE-2017-8380.patch
 input-limit-kbd-queue-depth-CVE-2017-8379.patch
 audio-release-capture-buffers-CVE-2017-8309.patch
 net-e1000e-fix-an-infinite-loop-issue-CVE-2017-9310.patch
+usb-ohci-fix-error-return-code-in-servicing-iso-td-CVE-2017-9330.patch
