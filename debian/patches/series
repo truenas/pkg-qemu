@@ -33,3 +33,4 @@ net-e1000e-fix-an-infinite-loop-issue-CVE-2017-9310.patch
 usb-ohci-fix-error-return-code-in-servicing-iso-td-CVE-2017-9330.patch
 ide-core-add-cleanup-function.patch
 ide-ahci-call-cleanup-function-in-ahci-unit-CVE-2017-9373.patch
+xhci-guard-xhci_kick_epctx-against-recursive-calls-CVE-2017-9375.patch
