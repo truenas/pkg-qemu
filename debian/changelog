@@ -1,3 +1,25 @@
+qemu (1:2.8+dfsg-6+deb9u1) stretch-security; urgency=high
+
+  * net-e1000e-fix-an-infinite-loop-issue-CVE-2017-9310.patch
+    Closes: #863840, CVE-2017-9310
+  * usb-ohci-fix-error-return-code-in-servicing-iso-td-CVE-2017-9330.patch
+    Closes: #863943, CVE-2017-9330
+  * ide-ahci-call-cleanup-function-in-ahci-unit-CVE-2017-9373.patch
+    Closes: #864216, CVE-2017-9373
+  * xhci-guard-xhci_kick_epctx-against-recursive-calls-CVE-2017-9375.patch
+    Closes: #864219, CVE-2017-9375
+  * usb-ehci-fix-memory-leak-in-ehci-CVE-2017-9374.patch
+    Closes: #864568, CVE-2017-9374
+  * nbd-ignore-SIGPIPE-CVE-2017-10664.patch
+    Closes: #866674, CVE-2017-10664
+  * nbd-fully-initialize-client-in-case-of-failed-negotiation-CVE-2017-9524.patch
+    nbd-fix-regression-on-resiliency-to-port-scan-CVE-2017-9524.patch
+    Closes: #865755, CVE-2017-9524
+  * xen-disk-don-t-leak-stack-data-via-response-ring-CVE-2017-10911.patch
+    Closes: CVE-2017-10911
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 12 Jul 2017 11:05:16 +0300
+
 qemu (1:2.8+dfsg-6) unstable; urgency=high
 
   * 9pfs-local-forbid-client-access-to-metadata-CVE-2017-7493.patch
