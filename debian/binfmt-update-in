@@ -88,7 +88,7 @@ case "$DPKG_MAINTSCRIPT_NAME:$1" in
 	    eval "case $fmt in $omit) magic= ;; *) magic=\"\$${fmt}_magic\" mask=\"\$${fmt}_mask\" ;; esac"
 	    if [ -n "$magic" ]; then
 		update-binfmts --package @PACKAGE@ --install qemu-$fmt /usr/bin/qemu-$fmt@SUFFIX@ \
-			--magic "$magic" --mask "$mask" --offset 0 --credential yes
+			--magic "$magic" --mask "$mask" --offset 0 --credential yes @FIX_BINARY@
 	    else
 		remove_binfmt $fmt
 	    fi

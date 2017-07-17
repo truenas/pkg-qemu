@@ -363,7 +363,7 @@ Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 mips mipsel mips64 mips
 Built-Using: ${built-using}
 Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: binfmt-support
+Recommends: binfmt-support (>= 2.1.7)
 Provides: qemu-user-binfmt
 Conflicts: qemu-user-binfmt
 Suggests: sudo

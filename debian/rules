@@ -256,9 +256,9 @@ ifeq ($(enable_linux_user),enable)
 
 	# binfmt support
 	for x in postinst prerm; do \
-	    sed -e s/@SUFFIX@/-static/ -e s/@PACKAGE@/qemu-user-static/ \
+	    sed -e s/@SUFFIX@/-static/ -e s/@PACKAGE@/qemu-user-static/ -e "s/@FIX_BINARY@/--fix-binary yes/" \
 		debian/binfmt-update-in >> debian/qemu-user-static.$$x.debhelper ; \
-	    sed -e s/@SUFFIX@// -e s/@PACKAGE@/qemu-user-binfmt/ \
+	    sed -e s/@SUFFIX@// -e s/@PACKAGE@/qemu-user-binfmt/ -e s/@FIX_BINARY@// \
 		debian/binfmt-update-in >> debian/qemu-user-binfmt.$$x.debhelper ; \
 	done
 
