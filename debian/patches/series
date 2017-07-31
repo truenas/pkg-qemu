@@ -39,3 +39,4 @@ nbd-ignore-SIGPIPE-CVE-2017-10664.patch
 nbd-fully-initialize-client-in-case-of-failed-negotiation-CVE-2017-9524.patch
 nbd-fix-regression-on-resiliency-to-port-scan-CVE-2017-9524.patch
 xen-disk-don-t-leak-stack-data-via-response-ring-CVE-2017-10911.patch
+slirp-check-len-against-dhcp-options-array-end-CVE-2017-11434.patch
