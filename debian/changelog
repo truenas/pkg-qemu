@@ -1,3 +1,10 @@
+qemu (1:2.8+dfsg-7) unstable; urgency=medium
+
+  * uploading to unstable all fixes which went to stretch-security
+    (exactly the same as 2.8+dfsg-6+deb9u2)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Aug 2017 16:35:01 +0300
+
 qemu (1:2.8+dfsg-6+deb9u2) stretch-security; urgency=high
 
   * actually apply the nbd server patches, not only include in debian/patches/
