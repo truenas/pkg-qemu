@@ -6,3 +6,4 @@ tcg-i386-Fix-dup_vec-in-non-AVX2-codepath.patch
 # ubuntu patches
 ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
+ubuntu/define-ubuntu-machine-types.patch
