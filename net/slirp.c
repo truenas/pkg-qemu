@@ -37,7 +37,7 @@
 #include "qemu/sockets.h"
 #include "slirp/libslirp.h"
 #include "slirp/ip6.h"
-#include "sysemu/char.h"
+#include "chardev/char-fe.h"
 #include "sysemu/sysemu.h"
 #include "qemu/cutils.h"
 #include "qapi/error.h"
@@ -80,7 +80,7 @@ typedef struct SlirpState {
     Slirp *slirp;
     Notifier exit_notifier;
 #ifndef _WIN32
-    char smb_dir[128];
+    gchar *smb_dir;
 #endif
 } SlirpState;
 
@@ -487,7 +487,7 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str,
         goto fail_syntax;
     }
     host_port = strtol(buf, &end, 0);
-    if (*end != '\0' || host_port < 1 || host_port > 65535) {
+    if (*end != '\0' || host_port < 0 || host_port > 65535) {
         goto fail_syntax;
     }
 
@@ -558,11 +558,10 @@ int net_slirp_redir(const char *redir_str)
 /* automatic user mode samba server configuration */
 static void slirp_smb_cleanup(SlirpState *s)
 {
-    char cmd[128];
     int ret;
 
-    if (s->smb_dir[0] != '\0') {
-        snprintf(cmd, sizeof(cmd), "rm -rf %s", s->smb_dir);
+    if (s->smb_dir) {
+        gchar *cmd = g_strdup_printf("rm -rf %s", s->smb_dir);
         ret = system(cmd);
         if (ret == -1 || !WIFEXITED(ret)) {
             error_report("'%s' failed.", cmd);
@@ -570,15 +569,17 @@ static void slirp_smb_cleanup(SlirpState *s)
             error_report("'%s' failed. Error code: %d",
                          cmd, WEXITSTATUS(ret));
         }
-        s->smb_dir[0] = '\0';
+        g_free(cmd);
+        g_free(s->smb_dir);
+        s->smb_dir = NULL;
     }
 }
 
 static int slirp_smb(SlirpState* s, const char *exported_dir,
                      struct in_addr vserver_addr)
 {
-    char smb_conf[128];
-    char smb_cmdline[128];
+    char *smb_conf;
+    char *smb_cmdline;
     struct passwd *passwd;
     FILE *f;
 
@@ -600,19 +601,19 @@ static int slirp_smb(SlirpState* s, const char *exported_dir,
         return -1;
     }
 
-    snprintf(s->smb_dir, sizeof(s->smb_dir), "/tmp/qemu-smb.XXXXXX");
-    if (!mkdtemp(s->smb_dir)) {
-        error_report("could not create samba server dir '%s'", s->smb_dir);
-        s->smb_dir[0] = 0;
+    s->smb_dir = g_dir_make_tmp("qemu-smb.XXXXXX", NULL);
+    if (!s->smb_dir) {
+        error_report("could not create samba server dir");
         return -1;
     }
-    snprintf(smb_conf, sizeof(smb_conf), "%s/%s", s->smb_dir, "smb.conf");
+    smb_conf = g_strdup_printf("%s/%s", s->smb_dir, "smb.conf");
 
     f = fopen(smb_conf, "w");
     if (!f) {
         slirp_smb_cleanup(s);
         error_report("could not create samba server configuration file '%s'",
                      smb_conf);
+        g_free(smb_conf);
         return -1;
     }
     fprintf(f,
@@ -651,15 +652,18 @@ static int slirp_smb(SlirpState* s, const char *exported_dir,
             );
     fclose(f);
 
-    snprintf(smb_cmdline, sizeof(smb_cmdline), "%s -l %s -s %s",
+    smb_cmdline = g_strdup_printf("%s -l %s -s %s",
              CONFIG_SMBD_COMMAND, s->smb_dir, smb_conf);
+    g_free(smb_conf);
 
     if (slirp_add_exec(s->slirp, 0, smb_cmdline, &vserver_addr, 139) < 0 ||
         slirp_add_exec(s->slirp, 0, smb_cmdline, &vserver_addr, 445) < 0) {
         slirp_smb_cleanup(s);
+        g_free(smb_cmdline);
         error_report("conflicting/invalid smbserver address");
         return -1;
     }
+    g_free(smb_cmdline);
     return 0;
 }
 
@@ -748,7 +752,7 @@ static int slirp_guestfwd(SlirpState *s, const char *config_str,
         }
     } else {
         Error *err = NULL;
-        CharDriverState *chr = qemu_chr_new(buf, p);
+        Chardev *chr = qemu_chr_new(buf, p);
 
         if (!chr) {
             error_report("could not open guest forwarding device '%s'", buf);
@@ -774,7 +778,7 @@ static int slirp_guestfwd(SlirpState *s, const char *config_str,
         fwd->slirp = s->slirp;
 
         qemu_chr_fe_set_handlers(&fwd->hd, guestfwd_can_read, guestfwd_read,
-                                 NULL, fwd, NULL, true);
+                                 NULL, NULL, fwd, NULL, true);
     }
     return 0;
 
