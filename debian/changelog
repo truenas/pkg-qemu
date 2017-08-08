@@ -1,3 +1,71 @@
+qemu (1:2.10~rc3+dfsg-0ubuntu1) artful; urgency=medium
+
+  * Merge with Debian unstable (2.8) and Upstream 2.10-rci3; This fixes
+    a set of bugs
+    - [FFE] Qemu 2.10 in Artful (LP: #1699968)
+    - CPU hot unplug fails after migrating a CPU hotplugged guest
+      from source (LP: #1677552)
+    - [Feature] KNL/KNM: Numa Distance on KVM(LP: #1647902)
+    - New KVM 288 Pass Through (LP: #1672447)
+    - aarch64: MSI is not supported by interrupt controller (LP: #1706630)
+  * Remaining changes:
+    - qemu-kvm to systemd unit
+      - d/qemu-kvm-init: script for QEMU KVM preparation modules, ksm,
+        hugepages and architecture specifics
+      - d/qemu-kvm.service: systemd unit to call qemu-kvm-init
+      - d/qemu-system-common.install: install systemd unit and helper script
+      - d/qemu-system-common.maintscript: clean old sysv and upstart scripts
+      - d/qemu-system-common.qemu-kvm.default: defaults for
+        /etc/default/qemu-kvm
+      - d/rules: install /etc/default/qemu-kvm
+    - Enable nesting by default
+      - set nested=1 module option on intel. (is default on amd)
+      - re-load kvm_intel.ko if it was loaded without nested=1
+      - d/p/ubuntu/expose-vmx_qemu64cpu.patch: expose nested kvm by default
+        in qemu64 cpu type.
+      - d/p/ubuntu/enable-svm-by-default.patch: Enable nested svm by default
+        in qemu64 on amd
+    - libvirt/qemu user/group support
+      - qemu-system-common.postinst: remove acl placed by udev, and add udevadm
+        trigger.
+      - qemu-system-common.preinst: add kvm group if needed
+    - Distribution specific machine type
+      - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+        types to ease future live vm migration.
+      - d/qemu-system-x86.NEWS Info on fixed machine type defintions
+    - improved dependencies
+      - Make qemu-system-common depend on qemu-block-extra
+      - Make qemu-utils depend on qemu-block-extra
+      - let qemu-utils recommend sharutils
+    - s390x support
+      - Create qemu-system-s390x package
+      - Include s390-ccw.img firmware
+      - Enable numa support for s390x
+    - ppc64[le] support
+      - d/qemu-system-ppc.links provide usr/bin/qemu-system-ppc64le symlink
+      - Enable seccomp for ppc64el
+      - bump libseccomp-dev dependency, 2.3 is the minimum for ppc64
+    - arch aware kvm wrappers
+    - disable missing x32 architecture
+    - update VCS links
+  * Added changes
+      - d/rules: or32 is now named or1k (since 4a09d0bb)
+      - d/qemu-system-common.docs: new paths since (ac06724a)
+      - d/qemu-system-common.install: qmp-commands.txt removed, but replaced
+        by qapi-schema.json which is already packaged (since 4d8bb958)
+      - Updates in debian/patches to match qemu 2.10
+        - d/p/02_kfreebsd.patch: utimensat is no more optional upstream
+        - d/p/ubuntu/enable-svm-by-default.patch: target-i386 -> target/i386
+        - d/p/ubuntu/expose-vmx_qemu64cpu.patch: target-i386 -> target/i386
+        - d/p/ubuntu/define-ubuntu-machine-types.patch: new 2.10 ubuntu types
+        - update VCS-git to match the Artful branch
+  * Dropped changes (integrated upstream):
+    - d/p/ubuntu/spapr-pci-populate-PCI-DT-in-reverse-order.patch: backport
+      "spapr/pci: populate PCI DT in reverse order" (LP 1670481).
+    - All CVE fixes formerly applied are upstream and thereby dropped.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 08 Aug 2017 16:59:19 +0200
+
 qemu (1:2.8+dfsg-7) unstable; urgency=medium
 
   * uploading to unstable all fixes which went to stretch-security
@@ -107,6 +175,179 @@ qemu (1:2.8+dfsg-4) unstable; urgency=high
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 03 Apr 2017 16:28:49 +0300
 
+qemu (1:2.8+dfsg-3ubuntu4) artful; urgency=medium
+
+  * debian/rules: fix installation of /etc/default/qemu-kvm (LP: #1692530)
+    This was inadvertently dropped on 2.8 merge.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 22 May 2017 15:45:58 +0200
+
+qemu (1:2.8+dfsg-3ubuntu3) artful; urgency=medium
+
+  * SECURITY UPDATE: denial of service via leak in virtFS
+    - debian/patches/CVE-2017-7377.patch: fix file descriptor leak in
+      hw/9pfs/9p.c.
+    - CVE-2017-7377
+  * SECURITY UPDATE: denial of service in cirrus_vga
+    - debian/patches/CVE-2017-7718.patch: check parameters in
+      hw/display/cirrus_vga_rop.h.
+    - CVE-2017-7718
+  * SECURITY UPDATE: code execution via cirrus_vga OOB r/w
+    - debian/patches/CVE-2017-7980-1.patch: handle negative pitch in
+      hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-2.patch: allow zero source pitch in
+      hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-3.patch: fix blit address mask handling
+      in hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-4.patch: fix patterncopy checks in
+      hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-5.patch: revert allow zero source pitch
+      in hw/display/cirrus_vga.c.
+    - debian/patches/CVE-2017-7980-6.patch: stop passing around dst
+      pointers in hw/display/cirrus_vga.c, hw/display/cirrus_vga_rop.h,
+      hw/display/cirrus_vga_rop2.h.
+    - debian/patches/CVE-2017-7980-7.patch: stop passing around src
+      pointers in hw/display/cirrus_vga.c, hw/display/cirrus_vga_rop.h,
+      hw/display/cirrus_vga_rop2.h.
+    - debian/patches/CVE-2017-7980-8.patch: fix off-by-one in
+      hw/display/cirrus_vga_rop.h.
+    - debian/patches/CVE-2017-7980-9.patch: fix cirrus_invalidate_region in
+      hw/display/cirrus_vga.c.
+    - CVE-2017-7980
+  * SECURITY UPDATE: denial of service via memory leak in virtFS
+    - debian/patches/CVE-2017-8086.patch: fix leak in hw/9pfs/9p-xattr.c.
+    - CVE-2017-8086
+  * SECURITY UPDATE: denial of service via leak in audio
+    - debian/patches/CVE-2017-8309.patch: release capture buffers in
+      audio/audio.c.
+    - CVE-2017-8309
+  * SECURITY UPDATE: denial of service via leak in keyboard
+    - debian/patches/CVE-2017-8379-1.patch: limit kbd queue depth in
+      ui/input.c.
+    - debian/patches/CVE-2017-8379-2.patch: don't queue delay if paused in
+      ui/input.c.
+    - CVE-2017-8379
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 18 May 2017 09:20:54 -0400
+
+qemu (1:2.8+dfsg-3ubuntu2.1) zesty-security; urgency=medium
+
+  * SECURITY UPDATE: DoS in virtio GPU device
+    - debian/patches/CVE-2016-10028.patch: check virgl capabilities
+      max_size in hw/display/virtio-gpu-3d.c.
+    - CVE-2016-10028
+  * SECURITY UPDATE: DoS in JAZZ RC4030 chipset emulation
+    - debian/patches/CVE-2016-8667.patch: limit interval timer reload value
+      in hw/dma/rc4030.c.
+    - CVE-2016-8667
+  * SECURITY UPDATE: host filesystem access via virtFS
+    - debian/patches/CVE-2016-9602.patch: don't follow symlinks in
+      hw/9pfs/*.
+    - CVE-2016-9602
+  * SECURITY UPDATE: arbitrary code execution via Cirrus VGA
+    - debian/patches/CVE-2016-9603.patch: remove bitblit support from
+      console code in hw/display/cirrus_vga.c, include/ui/console.h,
+      ui/console.c, ui/vnc.c.
+    - CVE-2016-9603
+  * SECURITY UPDATE: information leak in virtio GPU device
+    - debian/patches/CVE-2016-9908.patch: properly clear out memory in
+      hw/display/virtio-gpu-3d.c.
+    - CVE-2016-9908
+  * SECURITY UPDATE: DoS via memory leak in virtio GPU device
+    - debian/patches/CVE-2016-9912.patch: properly free memory in
+      hw/display/virtio-gpu.c.
+    - CVE-2016-9912
+  * SECURITY UPDATE: DoS via virtFS
+    - debian/patches/CVE-2016-9914.patch: add cleanup operations to
+      fsdev/file-op-9p.h, hw/9pfs/9p.c.
+    - CVE-2016-9914
+  * SECURITY UPDATE: DoS via memory leak in virtio GPU device
+    - debian/patches/CVE-2017-5552.patch: check return value in
+      hw/display/virtio-gpu-3d.c.
+    - CVE-2017-5552
+  * SECURITY UPDATE: DoS via memory leak in virtio GPU device
+    - debian/patches/CVE-2017-5578.patch: check res->iov in
+      hw/display/virtio-gpu.c.
+    - CVE-2017-5578
+  * SECURITY UPDATE: DoS via infinite loop in SDHCI device emulation
+    - debian/patches/CVE-2017-5987-*.patch: fix transfer mode register
+      handling in hw/sd/sdhci.c.
+    - CVE-2017-5987
+  * SECURITY UPDATE: DoS via infinite loop in USB OHCI emulation
+    - debian/patches/CVE-2017-6505.patch: limit the number of link eds in
+      hw/usb/hcd-ohci.c.
+    - CVE-2017-6505
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 24 Apr 2017 07:30:11 -0400
+
+qemu (1:2.8+dfsg-3ubuntu2) zesty; urgency=medium
+
+  * d/p/ubuntu/spapr-pci-populate-PCI-DT-in-reverse-order.patch: backport
+    "spapr/pci: populate PCI DT in reverse order" (LP: #1670481).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 07 Mar 2017 09:23:08 +0100
+
+qemu (1:2.8+dfsg-3ubuntu1) zesty; urgency=medium
+
+  * Merge with Debian;
+    This fixes several CVEs that were reported against qemu 2.8 and also
+    includes a few important functional backports (LP: #1667033); remaining
+    changes:
+    - add qemu-kvm init script and defaults file
+      (d/qemu-system-common.qemu-kvm.*)
+    - d/rules, d/qemu-kvm-init: add and install script loading kvm
+      modules and handling /etc/default/qemu-kvm
+    - qemu-system-common.preinst: add kvm group if needed
+    - Enable nesting by default on intel.
+      - set default module option
+      - re-load kvm_intel.ko if it was loaded without nested=1
+      - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by
+        default in qemu64 cpu type.
+    - Enable svm by default for qemu64 on amd
+    - d/p/ubuntu/define-ubuntu-machine-types.patch, d/qemu-system-x86.NEWS:
+      define distro machine types to ease future live vm migration (includes
+      all former follow up fixes).
+    - Make qemu-system-common depend on qemu-block-extra
+    - Make qemu-utils depend on qemu-block-extra
+    - s390x support
+      - Create qemu-system-s390x package
+      - Include s390-ccw.img firmware
+    - qemu-system-common.postinst:
+      - change acl placed by udev, and add udevadm trigger.
+    - d/qemu-kvm-init, d/kvm.powerpc, d/control-in: check SMT on ppc64el
+    - Several changes were applied but missing in the changelog so far
+      - d/qemu-system-ppc.links provide usr/bin/qemu-system-ppc64le symlink
+      - arch aware kvm wrapper
+      - update VCS links
+      - let qemu-utils recommend sharutils
+      - disable x32 architecture
+    - Enable seccomp for ppc64el
+    - Enable numa support for s390x
+    - d/qemu-system-common.qemu-kvm.init: fix lintian error type
+      init.d-script-missing-dependency-on-remote_fs
+    - d/qemu-system-common.postinst: fix lintian error type
+      command-with-path-in-maintainer-script
+    - Transition qemu-kvm to a systemd unit
+    - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check avoid unwanted output
+    - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check keep output local so
+      that it shows up where the user expects (sytemctl status, kvm stdout)
+    - d/qemu-kvm-init ppc64el warn on expected second level kvm-hv load failure
+    - add arch aware kvm wrapper for s390x
+  * Dropped Changes (in Debian now):
+    - d/p/ubuntu/ctrl-a-b-fix-fb5e19d2.patch: char: fix ctrl-a b not working
+    - d/control-in: change dependencies for fix of wrong acl for newly
+      created device node on ubuntu
+    - have qemu-system-arm suggest: qemu-efi; this should be a stronger
+      relationship, but qemu-efi is still in universe right now.
+    - Disable glusterfs (Universe dependency)
+    - no more skip disable libiscsi on Ubuntu
+    - d/rules, d/control-in: avoid people editing d/control
+  * Added Changes:
+    - d/control: bump libseccomp-dev dependency as enabling libseccomp for
+      power makes 2.3 the minimum level.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 01 Mar 2017 14:23:16 +0100
+
 qemu (1:2.8+dfsg-3) unstable; urgency=high
 
   * urgency high due to security fixes
@@ -166,6 +407,90 @@ qemu (1:2.8+dfsg-3) unstable; urgency=high
     created device node on ubuntu
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 28 Feb 2017 11:40:18 +0300
+
+qemu (1:2.8+dfsg-2ubuntu1) zesty; urgency=medium
+
+  * Merge with Debian; remaining changes:
+    - add qemu-kvm init script and defaults file
+      (d/qemu-system-common.qemu-kvm.*)
+    - d/rules, d/qemu-kvm-init: add and install script loading kvm
+      modules and handling /etc/default/qemu-kvm
+    - qemu-system-common.preinst: add kvm group if needed
+    - Enable nesting by default on intel.
+      - set default module option
+      - re-load kvm_intel.ko if it was loaded without nested=1
+      - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by
+        default in qemu64 cpu type.
+    - Enable svm by default for qemu64 on amd
+    - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+      types to ease future live vm migration.
+    - Make qemu-system-common depend on qemu-block-extra
+    - Make qemu-utils depend on qemu-block-extra
+    - s390x support
+      - Create qemu-system-s390x package
+      - Include s390-ccw.img firmware
+    - qemu-system-common.postinst:
+      - change acl placed by udev, and add udevadm trigger.
+      - d/control-in: change dependencies for fix of wrong acl for newly
+        created device node on ubuntu
+    - have qemu-system-arm suggest: qemu-efi; this should be a stronger
+      relationship, but qemu-efi is still in universe right now.
+    - d/qemu-kvm-init, d/kvm.powerpc, d/control-in: check SMT on ppc64el
+    - Several changes were applied but missing in the changelog so far
+      - d/qemu-system-ppc.links provide usr/bin/qemu-system-ppc64le symlink
+      - arch aware kvm wrapper
+      - update VCS links
+      - no more skip disable libiscsi on Ubuntu
+      - let qemu-utils recommend sharutils
+      - disable x32 architecture
+  * Dropped Changes:
+    - Several changes were applied but missing in the changelog so far
+      but are no more needed
+      - no pie for relocatable LD calls, with toolchain defaulting to
+        pie (fixed upstream)
+      - enable libnuma-dev (now in Debian)
+      - transition for moved init scripts (can be dropped after LTS
+        containing >=2.5 which is Xenial)
+      - --enable-seccomp related whitespace change (had no effect)
+    - apport hook for qemu source package (In Debian)
+    - add upstart script (d/qemu-system-common.qemu-kvm.upstart)
+    - d/qemu-system-x86.maintscript: transition off of
+      /etc/init.d/qemu-system-x86 (can be dropped after Xenial)
+    - Enable pie by default, on ubuntu/s390x. (Is the default since
+      >=Xenial, no cloud archive backport <=Xenial to consider)
+    - no pie for relocatable LD calls (fixed upstream in commit
+      7ecf44a5)
+    - CVEs: CVE-2016-5403, CVE-2016-6351, CVE-2016-6490 (now Upstream)
+    - Revert fix for CVE-2016-5403, causes regression see USN-3047-2.
+      (Improved fix included by upstream)
+    - Enable GPU Passthru for ppc64le (is upstream in qemu 2.7)
+    - Fixed wrong migration blocker when vhost is used (is upstream in
+      qemu 2.8)
+  * Added Changes:
+    - d/rules, d/control-in: avoid people editing d/control by warning
+      header and non writable permissions
+    - fixed moving trusty machine type definition which made it
+      ambiguous (LP: #1641532)
+      - d/qemu-system-x86.NEWS describe the issue
+    - Enable seccomp for ppc64el (LP: #1644639)
+    - Enable numa support for s390x
+    - d/qemu-system-common.qemu-kvm.init: fix lintian error type
+      init.d-script-missing-dependency-on-remote_fs
+    - d/qemu-system-common.postinst: fix lintian error type
+      command-with-path-in-maintainer-script
+    - Transition qemu-kvm to a systemd unit
+    - Disable glusterfs (Universe dependency)
+    - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check avoid unwanted output
+    - d/qemu-kvm-init, d/kvm.powerpc ppc64el SMT check keep output local so
+      that it shows up where the user expects (sytemctl status, kvm stdout)
+    - d/qemu-kvm-init ppc64el warn on expected second level kvm-hv load failure
+    - add arch aware kvm wrapper for s390x
+    - d/p/ubuntu/ctrl-a-b-fix-fb5e19d2.patch: char: fix ctrl-a b not working
+    - Enable DDW in Yakkety machine type because "Enable GPU Passthru for
+      ppc64le" was released as part of qemu 2.6 (can be dropped at 18.10,
+      merged in d/p/ubuntu/define-ubuntu-machine-types.patch)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Jan 2017 16:27:11 +0100
 
 qemu (1:2.8+dfsg-2) unstable; urgency=medium
 
@@ -285,6 +610,67 @@ qemu (1:2.7+dfsg-1) unstable; urgency=medium
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 14 Oct 2016 13:31:40 +0300
 
+qemu (1:2.6.1+dfsg-0ubuntu5) yakkety; urgency=medium
+
+  * No-change rebuild to compile against new libxen version.
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Fri, 30 Sep 2016 14:24:37 +0200
+
+qemu (1:2.6.1+dfsg-0ubuntu4) yakkety; urgency=medium
+
+  * retain older xenial machine type to avoid issues starting guests
+    created on xenial prior to the SRU for bug 1621042. In that regard the old
+    broken xenial machine type and the new fixed one have both to be considered
+    as valid LTS machine types (LP: #1626070).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 21 Sep 2016 14:57:09 +0200
+
+qemu (1:2.6.1+dfsg-0ubuntu3) yakkety; urgency=medium
+
+  * fix default ubuntu machine types. (LP: #1621042)
+    - add dep3 header to d/p/ubuntu/define-ubuntu-machine-types.patch
+    - remove double default and double ubuntu alias
+    - drop former devel releases utopic, vivid, wily
+    - add xenial and yakkety machine types
+    - add q35 based ubuntu machine type starting at xenial
+    - add ubuntu machine types on ppc64el and s390x starting at xenial
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 19 Sep 2016 07:50:50 +0200
+
+qemu (1:2.6.1+dfsg-0ubuntu2) yakkety; urgency=medium
+
+  * Enable GPU Passthru for ppc64le (LP: #1541902)
+    - 0001-spapr-ensure-device-trees-are-always-associated-with.patch
+    - 0002-spapr_pci-Use-correct-DMA-LIOBN-when-composing-the-d.patch
+    - 0003-spapr_iommu-Finish-renaming-vfio_accel-to-need_vfio.patch
+    - 0004-spapr_iommu-Move-table-allocation-to-helpers.patch
+    - 0005-vmstate-Define-VARRAY-with-VMS_ALLOC.patch
+    - 0006-spapr_iommu-Introduce-enabled-state-for-TCE-table.patch
+    - 0007-spapr_iommu-Migrate-full-state.patch
+    - 0008-spapr_iommu-Add-root-memory-region.patch
+    - 0009-spapr_pci-Reset-DMA-config-on-PHB-reset.patch
+    - 0010-spapr_pci-Add-and-export-DMA-resetting-helper.patch
+    - 0011-memory-Add-reporting-of-supported-page-sizes.patch
+    - 0012-memory-Add-MemoryRegionIOMMUOps.notify_started-stopp.patch
+    - 0013-intel_iommu-Throw-hw_error-on-notify_started.patch
+    - 0014-spapr_iommu-Realloc-guest-visible-TCE-table-when-sta.patch
+    - 0015-vfio-spapr-Add-DMA-memory-preregistering-SPAPR-IOMMU.patch
+    - 0016-vfio-Add-host-side-DMA-window-capabilities.patch
+    - 0017-vfio-spapr-Create-DMA-window-dynamically-SPAPR-IOMMU.patch
+    - 0018-spapr_pci-spapr_pci_vfio-Support-Dynamic-DMA-Windows.patch
+    - 0019-vfio-spapr-Remove-stale-ioctl-call.patch
+    - 0020-spapr-Fix-undefined-behaviour-in-spapr_tce_reset.patch
+    - 0021-memory-Fix-IOMMU-replay-base-address.patch
+
+ -- Jon Grimm <jon.grimm@canonical.com>  Fri, 16 Sep 2016 14:14:47 -0500
+
+qemu (1:2.6.1+dfsg-0ubuntu1) yakkety; urgency=medium
+
+  * New upstream release. LP: #1617055.
+  * Revert fix for CVE-2016-5403, causes regression see USN-3047-2.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Fri, 09 Sep 2016 23:33:57 +0100
+
 qemu (1:2.6+dfsg-3.1) unstable; urgency=high
 
   * Non-maintainer upload.
@@ -317,6 +703,55 @@ qemu (1:2.6+dfsg-3.1) unstable; urgency=high
      (Closes: #837603, CVE-2016-7157)
 
  -- Andrew James <ajames@hpe.com>  Wed, 14 Sep 2016 00:56:18 -0600
+
+qemu (1:2.6+dfsg-3ubuntu2) yakkety; urgency=medium
+
+  * SECURITY UPDATE: DoS via unbounded memory allocation
+    - debian/patches/CVE-2016-5403.patch: check size in hw/virtio/virtio.c.
+    - CVE-2016-5403
+  * SECURITY UPDATE: oob write access while reading ESP command
+    - debian/patches/CVE-2016-6351.patch: make cmdbuf big enough for
+      maximum CDB size and handle migration in hw/scsi/esp.c,
+      include/hw/scsi/esp.h, include/migration/vmstate.h.
+    - CVE-2016-6351
+  * SECURITY UPDATE: infinite loop in virtqueue_pop
+    - debian/patches/CVE-2016-6490.patch: check vring descriptor buffer
+      length in hw/virtio/virtio.c.
+    - CVE-2016-6490
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 03 Aug 2016 08:36:16 -0400
+
+qemu (1:2.6+dfsg-3ubuntu1) yakkety; urgency=medium
+
+  * Merge with Debian; remaining changes:
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+      types to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - Make qemu-system-common and qemu-utils depend on qemu-block-extra
+      to fix errors with missing block backends.
+    - s390x:
+      * Create qemu-system-s390x package
+      * Enable pie by default, on ubuntu/s390x.
+      * Enable svm by default for qemu64 on amd
+      * Include s390-ccw.img firmware
+      * have qemu-system-aarch64 Suggest: qemu-efi; this should be a stronger
+        relationship, but qemu-efi is still in universe right now.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 15 Jun 2016 16:49:49 -0500
 
 qemu (1:2.6+dfsg-3) unstable; urgency=high
 
@@ -371,6 +806,39 @@ qemu (1:2.6+dfsg-2) unstable; urgency=medium
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 13 Jun 2016 12:10:44 +0300
 
+qemu (1:2.6+dfsg-1ubuntu1) yakkety; urgency=medium
+
+  * Merge with Debian; remaining changes:  (LP: #1583775)
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+      types to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - Make qemu-system-common and qemu-utils depend on qemu-block-extra
+      to fix errors with missing block backends. (LP: #1495895)
+    - s390x:
+      * Create qemu-system-s390x package
+      * Enable pie by default, on ubuntu/s390x.
+      * Enable svm by default for qemu64 on amd
+      * Include s390-ccw.img firmware
+      * have qemu-system-aarch64 Suggest: qemu-efi; this should be a stronger
+        relationship, but qemu-efi is still in universe right now.
+  * Drop patches which have been applied upstream:
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 19 May 2016 12:11:36 -0500
+
 qemu (1:2.6+dfsg-1) unstable; urgency=medium
 
   * new upstream release
@@ -407,6 +875,106 @@ qemu (1:2.6+dfsg-1) unstable; urgency=medium
   * fold long list of supported arches in package descriptions
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 18 May 2016 14:44:14 +0300
+
+qemu (1:2.5+dfsg-5ubuntu12) yakkety; urgency=medium
+
+  * Cherrypick upstream patches to support the query-gic-version QMP command
+    (LP: #1566564)
+
+ -- dann frazier <dannf@ubuntu.com>  Tue, 05 Apr 2016 16:56:11 -0600
+
+qemu (1:2.5+dfsg-5ubuntu11) yakkety; urgency=medium
+
+  [Stefan Bader]
+  * Enable svm by default for qemu64 on amd (LP: #1561019)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 22 Apr 2016 16:53:55 -0500
+
+qemu (1:2.5+dfsg-5ubuntu10) xenial; urgency=medium
+
+  * qemu-system-s390x only available on s390x, so qemu-system should only
+    depend on it on this arch.
+  * have qemu-system-aarch64 Suggest: qemu-efi; this should be a stronger
+    relationship, but qemu-efi is still in universe right now.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 19 Apr 2016 13:41:37 -0700
+
+qemu (1:2.5+dfsg-5ubuntu9) xenial; urgency=medium
+
+  * And actually ship the right things in qemu-system-s390x.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 19 Apr 2016 16:49:00 +0100
+
+qemu (1:2.5+dfsg-5ubuntu8) xenial; urgency=medium
+
+  * Create qemu-system-s390x package on ubuntu only.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 18 Apr 2016 10:16:19 +0100
+
+qemu (1:2.5+dfsg-5ubuntu7) xenial; urgency=medium
+
+  * Cherrypick patch from mailing list to fix qemu in sandbox.  (LP: #1560149)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 11 Apr 2016 15:13:06 -0500
+
+qemu (1:2.5+dfsg-5ubuntu6) xenial; urgency=medium
+
+  * Cherrypick upstream patch vhost-user-interrupt-management-fixes.patch
+    (LP: #1556306)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 16 Mar 2016 16:35:22 -0700
+
+qemu (1:2.5+dfsg-5ubuntu5) xenial; urgency=medium
+
+  * Cherrypick upstream patch to fix snapshot regression (LP: #1533728)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 07 Mar 2016 18:53:34 -0800
+
+qemu (1:2.5+dfsg-5ubuntu4) xenial; urgency=medium
+
+  * d/control{-in}: Re-generate and build with libiscsi-dev now
+    that its in Ubuntu main (LP: #1271653).
+
+ -- James Page <james.page@ubuntu.com>  Wed, 24 Feb 2016 17:59:13 +0000
+
+qemu (1:2.5+dfsg-5ubuntu3) xenial; urgency=medium
+
+  * Make -no-pie conditional, on $(CC) supporting -no-pie flag.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Wed, 24 Feb 2016 14:40:19 +0000
+
+qemu (1:2.5+dfsg-5ubuntu2) xenial; urgency=medium
+
+  * No-change rebuild for gnutls transition.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 17 Feb 2016 22:27:20 +0000
+
+qemu (1:2.5+dfsg-5ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian; remaining changes:
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+      types to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - Make qemu-system-common and qemu-utils depend on qemu-block-extra
+      to fix errors with missing block backends. (LP: #1495895)
+    - Enable pie by default, on ubuntu/s390x.
+    - Include s390-ccw.img firmware.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 09 Feb 2016 10:24:49 -0800
 
 qemu (1:2.5+dfsg-5) unstable; urgency=medium
 
@@ -465,6 +1033,113 @@ qemu (1:2.5+dfsg-2) unstable; urgency=high
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 09 Jan 2016 21:40:43 +0300
 
+qemu (1:2.5+dfsg-1ubuntu5) xenial; urgency=medium
+
+  * SECURITY UPDATE: paravirtualized drivers incautious about shared memory
+    contents
+    - debian/patches/CVE-2015-8550-1.patch: avoid double access in
+      hw/block/xen_blkif.h.
+    - debian/patches/CVE-2015-8550-2.patch: avoid reading twice in
+      hw/display/xenfb.c.
+    - CVE-2015-8550
+  * SECURITY UPDATE: infinite loop in ehci_advance_state
+    - debian/patches/CVE-2015-8558.patch: make idt processing more robust
+      in hw/usb/hcd-ehci.c.
+    - CVE-2015-8558
+  * SECURITY UPDATE: host memory leakage in vmxnet3
+    - debian/patches/CVE-2015-856x.patch: avoid memory leakage in
+      hw/net/vmxnet3.c.
+    - CVE-2015-8567
+    - CVE-2015-8568
+  * SECURITY UPDATE: buffer overflow in megasas_ctrl_get_info
+    - debian/patches/CVE-2015-8613.patch: initialise info object with
+      appropriate size in hw/scsi/megasas.c.
+    - CVE-2015-8613
+  * SECURITY UPDATE: DoS via Human Monitor Interface
+    - debian/patches/CVE-2015-8619.patch: fix sendkey out of bounds write
+      in hmp.c, include/ui/console.h, ui/input-legacy.c.
+    - CVE-2015-8619
+  * SECURITY UPDATE: incorrect array bounds check in rocker
+    - debian/patches/CVE-2015-8701.patch: fix an incorrect array bounds
+      check in hw/net/rocker/rocker.c.
+    - CVE-2015-8701
+  * SECURITY UPDATE: ne2000 OOB r/w in ioport operations
+    - debian/patches/CVE-2015-8743.patch: fix bounds check in ioport
+      operations in hw/net/ne2000.c.
+    - CVE-2015-8743
+  * SECURITY UPDATE: ahci use-after-free vulnerability in aio port commands
+    - debian/patches/CVE-2016-1568.patch: reset ncq object to unused on
+      error in hw/ide/ahci.c.
+    - CVE-2016-1568
+  * SECURITY UPDATE: DoS via null pointer dereference in vapic_write()
+    - debian/patches/CVE-2016-1922.patch: avoid null pointer dereference in
+      hw/i386/kvmvapic.c.
+    - CVE-2016-1922
+  * SECURITY UPDATE: e1000 infinite loop
+    - debian/patches/CVE-2016-1981.patch: eliminate infinite loops on
+      out-of-bounds transfer start in hw/net/e1000.c
+    - CVE-2016-1981
+  * SECURITY UPDATE: AHCI NULL pointer dereference when using FIS CLB
+    engines
+    - debian/patches/CVE-2016-2197.patch: add check before calling
+      dma_memory_unmap in hw/ide/ahci.c.
+    - CVE-2016-2197
+  * SECURITY UPDATE: ehci null pointer dereference in ehci_caps_write
+    - debian/patches/CVE-2016-2198.patch: add capability mmio write
+      function in hw/usb/hcd-ehci.c.
+    - CVE-2016-2198
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 01 Feb 2016 09:39:01 -0500
+
+qemu (1:2.5+dfsg-1ubuntu4) xenial; urgency=medium
+
+  * debian/qemu-kvm-init: Call systemd-detect-virt instead of the
+    Ubuntu specific running-in-container wrapper. (LP: #1539016)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu, 28 Jan 2016 13:24:51 +0100
+
+qemu (1:2.5+dfsg-1ubuntu3) xenial; urgency=high
+
+  * Include s390-ccw.img firmware.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 12 Jan 2016 15:53:43 +0000
+
+qemu (1:2.5+dfsg-1ubuntu2) xenial; urgency=medium
+
+  * Place qemu-kvm.defaults file in qemu-system-common, next to the init
+    scripts.  Fix the comparison operator when checking KVM_HUGEPAGES.
+    Thanks Simon.  (LP: #1531191)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 06 Jan 2016 09:45:37 -0800
+
+qemu (1:2.5+dfsg-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian; remaining changes:
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+      types to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - Make qemu-system-common and qemu-utils depend on qemu-block-extra
+      to fix errors with missing block backends. (LP: #1495895)
+    - Enable pie by default, on ubuntu/s390x.
+  * Drop vGICv3 support patches - all is now upstream
+  * debian/qemu-kvm-init: handle KVM_HUGEPAGES being unset (LP: #1531191)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 05 Jan 2016 15:42:50 -0800
+
 qemu (1:2.5+dfsg-1) unstable; urgency=medium
 
   * new upstream release
@@ -491,6 +1166,49 @@ qemu (1:2.5+dfsg-1) unstable; urgency=medium
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 16 Dec 2015 20:00:04 +0300
 
+qemu (1:2.4+dfsg-5ubuntu3) xenial; urgency=high
+
+  * Enable pie by default, on ubuntu/s390x.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 07 Dec 2015 16:04:16 +0000
+
+qemu (1:2.4+dfsg-5ubuntu2) xenial; urgency=medium
+
+  * undo the libseccomp delta from debian.  libseccomp is indeed available
+    on other arches, but we need qemu's configure script to be fixed before
+    we can use it on anything other than amd64|i386.  Fixes FTBFS.
+    (LP: #1522531)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 03 Dec 2015 12:44:46 -0600
+
+qemu (1:2.4+dfsg-5ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian; remaining changes:
+    - Update the ubuntu machine types patch to reflect upstream churn
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - Make qemu-system-common and qemu-utils depend on qemu-block-extra
+      to fix errors with missing block backends. (LP: #1495895)
+    - control-in: build with libseccomp an all architectures
+    - Add vGICv3 support
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 02 Dec 2015 21:31:36 +0100
+
 qemu (1:2.4+dfsg-5) unstable; urgency=medium
 
   * trace-remove-malloc-tracing.patch from upstream.
@@ -502,6 +1220,57 @@ qemu (1:2.4+dfsg-5) unstable; urgency=medium
     we will switch to external libcacard. (Closes: #805410)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 29 Nov 2015 12:22:52 +0300
+
+qemu (1:2.4+dfsg-4ubuntu3) xenial; urgency=medium
+
+  * SECURITY UPDATE: loopback mode heap overflow vulnerability in pcnet
+    - debian/patches/CVE-2015-7504.patch: leave room for CRC code in
+      hw/net/pcnet.c.
+    - CVE-2015-7504
+  * SECURITY UPDATE: non-loopback mode buffer overflow in pcnet
+    - debian/patches/CVE-2015-7512.patch: check packet length in
+      hw/net/pcnet.c.
+    - CVE-2015-7512
+  * SECURITY UPDATE: infinite loop in eepro100
+    - debian/patches/CVE-2015-8345.patch: prevent endless loop in
+      hw/net/eepro100.c.
+    - CVE-2015-8345
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 01 Dec 2015 13:36:40 -0500
+
+qemu (1:2.4+dfsg-4ubuntu2) xenial; urgency=medium
+
+  * d/p/u/define-ubuntu-machine-type.patch: Fix typo in utopic definition.
+
+ -- dann frazier <dann.frazier@canonical.com>  Tue, 03 Nov 2015 08:05:46 -0700
+
+qemu (1:2.4+dfsg-4ubuntu1) xenial; urgency=medium
+
+  * Merge 2.4 from unstable.  Remaining changes:
+    - Update the ubuntu machine types patch to reflect upstream churn
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - Make qemu-system-common and qemu-utils depend on qemu-block-extra
+      to fix errors with missing block backends. (LP: #1495895)
+    - control-in: build with libseccomp an all architectures.
+  * Add vGICv3 support
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 27 Oct 2015 13:28:58 -0500
 
 qemu (1:2.4+dfsg-4) unstable; urgency=medium
 
@@ -569,6 +1338,137 @@ qemu (1:2.3+dfsg-6) unstable; urgency=high
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 11 Jun 2015 20:03:40 +0300
 
+qemu (1:2.3+dfsg-5ubuntu10) xenial; urgency=medium
+
+  * debian/patches/fix-curses-with-xterm-256.patch (LP: #1508466)
+
+ -- Ryan Harper <ryan.harper@canonical.com>  Wed, 21 Oct 2015 08:59:29 -0500
+
+qemu (1:2.3+dfsg-5ubuntu9) wily; urgency=low
+
+  * debian/patches/upstream-fix-irq-route-entries.patch
+    Fix "kvm_irqchip_commit_routes: Assertion 'ret == 0' failed"
+    (LP: #1465935)
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Fri, 09 Oct 2015 15:38:53 +0200
+
+qemu (1:2.3+dfsg-5ubuntu8) wily; urgency=medium
+
+  * Build using libseccomp on all architectures.
+
+ -- Matthias Klose <doko@ubuntu.com>  Sat, 03 Oct 2015 21:12:15 +0200
+
+qemu (1:2.3+dfsg-5ubuntu7) wily; urgency=medium
+
+  * SECURITY UPDATE: denial of service via NE2000 driver
+    - debian/patches/CVE-2015-5278.patch: fix infinite loop in
+      hw/net/ne2000.c.
+    - CVE-2015-5278
+  * SECURITY UPDATE: denial of service and possible code execution via
+    heap overflow in NE2000 driver
+    - debian/patches/CVE-2015-5279.patch: validate ring buffer pointers in
+      hw/net/ne2000.c.
+    - CVE-2015-5279
+  * SECURITY UPDATE: denial of service via e1000 infinite loop
+    - debian/patches/CVE-2015-6815.patch: check bytes in hw/net/e1000.c.
+    - CVE-2015-6815
+  * SECURITY UPDATE: denial of service via illegal ATAPI commands
+    - debian/patches/CVE-2015-6855.patch: fix ATAPI command permissions in
+      hw/ide/core.c.
+    - CVE-2015-6855
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 23 Sep 2015 15:05:51 -0400
+
+qemu (1:2.3+dfsg-5ubuntu6) wily; urgency=medium
+
+  * Make qemu-system-common and qemu-utils depend on qemu-block-extra
+    to fix errors with missing block backends. (LP: #1495895)
+  * Cherry pick fixes for vmdk stream-optimized subformat (LP: #1006655)
+  * Apply fix for memory corruption during live-migration in tcg mode
+    (LP: #1493049)
+  * Apply tracing patch to remove use of custom vtable in newer glibc
+    (LP: #1491972)
+
+ -- Ryan Harper <ryan.harper@canonical.com>  Tue, 15 Sep 2015 09:37:23 -0500
+
+qemu (1:2.3+dfsg-5ubuntu5) wily; urgency=medium
+
+  * Import qcow2-handle-eagain-from-update_refcount from upstream
+    to fix errors when using qemu-img convert -c.  (LP: #1491050)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 04 Sep 2015 16:35:56 -0500
+
+qemu (1:2.3+dfsg-5ubuntu4) wily; urgency=medium
+
+  * SECURITY UPDATE: process heap memory disclosure
+    - debian/patches/CVE-2015-5165.patch: check sizes in hw/net/rtl8139.c.
+    - CVE-2015-5165
+  * SECURITY UPDATE: privilege escalation via block device unplugging
+    - debian/patches/CVE-2015-5166.patch: properly unhook from BlockBackend
+      in hw/ide/piix.c.
+    - CVE-2015-5166
+  * SECURITY UPDATE: privilege escalation via memory corruption in vnc
+    - debian/patches/CVE-2015-5225.patch: use bytes per scanline to apply
+      limits in ui/vnc.c.
+    - CVE-2015-5225
+  * SECURITY UPDATE: denial of service via virtio-serial
+    - debian/patches/CVE-2015-5745.patch: don't assume a specific layout
+      for control messages in hw/char/virtio-serial-bus.c.
+    - CVE-2015-5745
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 25 Aug 2015 09:38:43 -0400
+
+qemu (1:2.3+dfsg-5ubuntu3) wily; urgency=medium
+
+  * SECURITY UPDATE: out-of-bounds memory access in pit_ioport_read()
+    - debian/patches/CVE-2015-3214.patch: ignore read in hw/timer/i8254.c.
+    - CVE-2015-3214
+  * SECURITY UPDATE: heap overflow when processing ATAPI commands
+    - debian/patches/CVE-2015-5154.patch: check bounds and clear DRQ in
+      hw/ide/core.c, make sure command is completed in hw/ide/atapi.c.
+    - CVE-2015-5154
+  * SECURITY UPDATE: buffer overflow in scsi_req_parse_cdb
+    - debian/patches/CVE-2015-5158.patch: check length in
+      hw/scsi/scsi-bus.c.
+    - CVE-2015-5158
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 27 Jul 2015 10:07:05 -0400
+
+qemu (1:2.3+dfsg-5ubuntu2) wily; urgency=medium
+
+  * SECURITY UPDATE: heap overflow in PCNET controller
+    - debian/patches/CVE-2015-3209.patch: check bounds in hw/net/pcnet.c.
+    - CVE-2015-3209
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 11 Jun 2015 14:25:05 -0400
+
+qemu (1:2.3+dfsg-5ubuntu1) wily; urgency=medium
+
+  * Merge 1:2.3+dfsg-5 from Debian.
+  * Remaining changes:
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+  * Refreshed patches:
+    - ubuntu/expose-vmx_qemu64cpu.patch
+    - ubuntu/define-ubuntu-machine-types.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 10 Jun 2015 14:28:39 -0500
+
 qemu (1:2.3+dfsg-5) unstable; urgency=high
 
   * slirp-use-less-predictable-directory-name-in-tmp-CVE-2015-4037.patch
@@ -579,6 +1479,35 @@ qemu (1:2.3+dfsg-5) unstable; urgency=high
     keyboards (Closes: #772422)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 03 Jun 2015 17:18:58 +0300
+
+qemu (1:2.3+dfsg-4ubuntu1) wily; urgency=medium
+
+  * Merge 1:2.3+dfsg-4 from Debian.
+  * Remaining changes:
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+  * Dropped all patches which are applied upstream
+  * Move the upstart jobs to a generic script
+    - add new qemu-kvm-init script
+    - call that from upstart and sysvrc qemu-kvm scripts
+    - move to qemu-system-common, which must now B/R qemu-system-{x86,ppc}
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 03 Jun 2015 13:36:36 -0500
 
 qemu (1:2.3+dfsg-4) unstable; urgency=medium
 
@@ -641,6 +1570,98 @@ qemu (1:2.2+dfsg-6exp) experimental; urgency=medium
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 17 Apr 2015 21:54:53 +0300
 
+qemu (1:2.2+dfsg-5expubuntu10) wily; urgency=medium
+
+  * SECURITY UPDATE: denial of service in vnc web
+    - debian/patches/CVE-2015-1779-1.patch: incrementally decode websocket
+      frames in ui/vnc-ws.c, ui/vnc-ws.h, ui/vnc.h.
+    - debian/patches/CVE-2015-1779-2.patch: limit size of HTTP headers from
+      websockets clients in ui/vnc-ws.c.
+    - CVE-2015-1779
+  * SECURITY UPDATE: host code execution via floppy device (VEMON)
+    - debian/patches/CVE-2015-3456.patch: force the fifo access to be in
+      bounds of the allocated buffer in hw/block/fdc.c.
+    - CVE-2015-3456
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 13 May 2015 07:25:59 -0400
+
+qemu (1:2.2+dfsg-5expubuntu9) vivid; urgency=low
+
+  * CVE-2015-2756 / XSA-126
+    - xen: limit guest control of PCI command register
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Wed, 08 Apr 2015 10:17:45 +0200
+
+qemu (1:2.2+dfsg-5expubuntu8) vivid; urgency=medium
+
+  * debian/qemu-system-x86.qemu-kvm.upstart: fix redirection to not
+    accidentally create /1
+
+ -- Steve Beattie <sbeattie@ubuntu.com>  Thu, 12 Mar 2015 16:46:51 -0700
+
+qemu (1:2.2+dfsg-5expubuntu7) vivid; urgency=low
+
+  * No-change rebuild to pull in libxl-4.5 (take 2: step to the right).
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Thu, 26 Feb 2015 08:55:35 +0100
+
+qemu (1:2.2+dfsg-5expubuntu6) vivid; urgency=low
+
+  * No-change rebuild to pull in libxl-4.5.
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Wed, 25 Feb 2015 13:58:37 +0100
+
+qemu (1:2.2+dfsg-5expubuntu5) vivid; urgency=medium
+
+  * debian/control-in: enable numa on architectures where numa is built
+    (LP: #1417937)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 12 Feb 2015 23:18:58 -0600
+
+qemu (1:2.2+dfsg-5expubuntu4) vivid; urgency=medium
+
+  [Scott Moser]
+  * update d/kvm.powerpc to avoid use of awk, which isn't allowed by aa
+    profile when started by libvirt.
+  
+  [Serge Hallyn]
+  * add symlink qemu-system-ppc64le -> qemu-system-ppc64
+  * debian/rules: fix DEB_HOST_ARCh fix to ppc64el for installing qemu-kvm init script
+    (LP: #1419855)
+  
+  [Chris J Arges]
+  * Determine if we are running inside a virtual environment. If running inside
+    a virtualized enviornment do _not_ automatically enable KSM. (LP: #1414153)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 12 Feb 2015 13:04:21 -0600
+
+qemu (1:2.2+dfsg-5expubuntu1) vivid; urgency=medium
+
+  * Merge 1:2.2+dfsg-5exp from Debian.  (LP: #1409308)
+    - debian/rules: do not drop the init scripts loading kvm modules
+      (still needed in precise in cloud archive)
+  * Remaining changes:
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+  * Dropped all patches which are applied upstream
+  * Update ubuntu-vivid machine type to default to std graphics (following
+    upstream's lead for pc-i440fx-2.2 machine type)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 09 Feb 2015 22:31:09 -0600
+
 qemu (1:2.2+dfsg-5exp) experimental; urgency=medium
 
   * fix initscript removal once again
@@ -689,6 +1710,47 @@ qemu (2.2+dfsg-1exp) unstable; urgency=medium
   * install petalogix firmware for microblaze (Closes: #769068)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 09 Dec 2014 23:09:26 +0300
+
+qemu (1:2.1+dfsg-11ubuntu2) vivid; urgency=medium
+
+  * Cherrypick upstream patch needed to allow ESx hosts to run under
+    kvm (LP: #1411575)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 16 Jan 2015 16:32:48 -0600
+
+qemu (1:2.1+dfsg-11ubuntu1) vivid; urgency=medium
+
+  * Merge 2.1+dfsg-11.  Remaining changes:
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - debian/qemu-system-alternatives.in: use a later version as ubuntu
+      removed the alternatives bit later.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - debian/binfmt-update-in: support ppcle
+      * debian/binfmt-update-in
+      * Support-ppcle.patch
+    - Upstream patches to fix AArch64 emulation ignoring SPSel=0:
+      * d/p/target-arm-A64-Break-out-aarch64_save-restore_sp.patch
+      * d/p/target-arm-A64-Respect-SPSEL-in-ERET-SP-restore.patch
+      * d/p/target-arm-A64-Respect-SPSEL-when-taking-exceptions.patch:
+  * Dropped patches (upstream or now in debian's tree):
+    - upstream-xen_disk-fix-unmapping-of-persistent-grants.patch
+    - CVE-2014-7840.patch
+    - CVE-2014-8106.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 17 Dec 2014 13:57:34 -0600
 
 qemu (1:2.1+dfsg-11) unstable; urgency=medium
 
@@ -759,6 +1821,81 @@ qemu (2.1+dfsg-8) unstable; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 27 Nov 2014 18:32:45 +0300
 
+qemu (2.1+dfsg-7ubuntu5) vivid; urgency=medium
+
+  * SECURITY UPDATE: code execution via savevm data
+    - debian/patches/CVE-2014-7840.patch: validate parameters in
+      arch_init.c.
+    - CVE-2014-7840
+  * SECURITY UPDATE: code execution via cirrus vga blit regions
+    (LP: #1400775)
+    - debian/patches/CVE-2014-8106.patch: properly validate blit regions in
+      hw/display/cirrus_vga.c.
+    - CVE-2014-8106
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 11 Dec 2014 14:11:52 -0500
+
+qemu (2.1+dfsg-7ubuntu4) vivid; urgency=low
+
+  * d/rules: Fix vendor check to make kvm-spice symlinks (DEB_VENDOR got
+    dropped and VENDOR now will be all capital UBUNTU).
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Mon, 08 Dec 2014 14:45:31 +0100
+
+qemu (2.1+dfsg-7ubuntu3) vivid; urgency=medium
+
+  * d/p/target-arm-A64-Break-out-aarch64_save-restore_sp.patch
+    d/p/target-arm-A64-Respect-SPSEL-in-ERET-SP-restore.patch
+    d/p/target-arm-A64-Respect-SPSEL-when-taking-exceptions.patch:
+    Cherry-pick of upstream patches in order to fix AArch64 emulation ignoring
+    SPSel=0 in certain conditions. (LP: #1349277)
+
+ -- Chris J Arges <chris.j.arges@canonical.com>  Thu, 04 Dec 2014 14:17:01 -0600
+
+qemu (2.1+dfsg-7ubuntu2) vivid; urgency=low
+
+  * d/p/upstream-xen_disk-fix-unmapping-of-persistent-grants.patch:
+    Cherry-pick of qemu-upstream patch to fix issues with persistent
+    grants and the PV backend (Qdisk) (LP: #1394327).
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Fri, 28 Nov 2014 13:14:37 +0100
+
+qemu (2.1+dfsg-7ubuntu1) vivid; urgency=medium
+
+  * Merge 2.1+dfsg-7.  Remaining changes:
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - debian/qemu-system-alternatives.in: use a later version as ubuntu
+      removed the alternatives bit later.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - debian/binfmt-update-in: support ppcle
+      * debian/binfmt-update-in
+      * Support-ppcle.patch
+  * Dropped patches (upstream or now in debian's tree):
+    - pc-reserve-more-memory-for-acpi.patch
+    - CVE-2014-5388.patch
+    - 501-block-raw-posix-fix-disk-corruption-in-try-fiemap and
+      502-block-raw-posic-use-seek-hole-ahead-of-fiemap (combined
+      in debian)
+    - CVE-2014-3615.patch
+    - CVE-2014-3640.patch
+    - CVE-2014-3689.patch
+    - CVE-2014-7815.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Sat, 22 Nov 2014 18:36:53 -0600
+
 qemu (2.1+dfsg-7) unstable; urgency=high
 
   * urgency is high due to 2 security fixes
@@ -810,6 +1947,119 @@ qemu (2.1+dfsg-5) unstable; urgency=medium
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 26 Sep 2014 17:43:26 +0400
 
+qemu (2.1+dfsg-4ubuntu9) vivid; urgency=medium
+
+  * SECURITY UPDATE: information disclosure via vga driver
+    - debian/patches/CVE-2014-3615.patch: return the correct memory size,
+      sanity check register writes, and don't use fixed buffer sizes in
+      hw/display/qxl.c, hw/display/vga.c, hw/display/vga_int.h,
+      ui/spice-display.c.
+    - CVE-2014-3615
+  * SECURITY UPDATE: denial of service via slirp NULL pointer deref
+    - debian/patches/CVE-2014-3640.patch: make sure socket is not just a
+      stub in slirp/udp.c.
+    - CVE-2014-3640
+  * SECURITY UPDATE: possible privilege escalation via vmware-vga driver
+    - debian/patches/CVE-2014-3689.patch: verify rectangles in
+      hw/display/vmware_vga.c.
+    - CVE-2014-3689
+  * SECURITY UPDATE: denial of service via VNC console
+    - debian/patches/CVE-2014-7815.patch: validate bits_per_pixel in
+      ui/vnc.c.
+    - CVE-2014-7815
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 13 Nov 2014 07:31:03 -0500
+
+qemu (2.1+dfsg-4ubuntu8) vivid; urgency=medium
+
+  * Support qemu-kvm on x32, arm64, ppc64 and pp64el architectures
+    (LP: #1389897)  (Patch thanks to mwhudson, BenC, and infinity)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 11 Nov 2014 15:51:47 -0600
+
+qemu (2.1+dfsg-4ubuntu7) vivid; urgency=medium
+
+  * Apply two patches to fix intermittent qemu-img corruption
+    (LP: #1368815)
+    - 501-block-raw-posix-fix-disk-corruption-in-try-fiemap
+    - 502-block-raw-posic-use-seek-hole-ahead-of-fiemap
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 29 Oct 2014 22:31:43 -0500
+
+qemu (2.1+dfsg-4ubuntu6) utopic; urgency=medium
+
+  * debian/control: slof is moving into main, so we can depend on qemu-slof as
+    debian does.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 15 Oct 2014 22:01:27 +0200
+
+qemu (2.1+dfsg-4ubuntu5) utopic; urgency=medium
+
+  * debian/binfmt-update-in: don't blacklist ppc64le on ppc64 and vice
+    versa.
+  * Drop Support-ppc64le.pach, as that architecture appears to not exist yet.
+  * update d/p/ubuntu/define-ubuntu-machine-types.patch to keep -M pc pointing
+    to latest upstream machine type, rather than distro one.  Add 'ubuntu'
+    machine type for that.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 06 Oct 2014 13:41:31 -0500
+
+qemu (2.1+dfsg-4ubuntu4) utopic; urgency=medium
+
+  * debian/qemu-system-x86.qemu-kvm.upstart: create /dev/kvm in a
+    container. (LP: #1370199)
+  * load kvm module on ppc64le at boot (LP: #1369785)
+    - debian/rules: install qemu-kvm on ppc64el
+    - add debian/qemu-system-ppc.qemu-kvm.{upstart,default} to autoload the
+      kvm-hv module if available
+  * qemu-system-x86.maintscript: remove accidentally installed
+    /etc/init.d/qemu-system-x86 (from 2.0.0+dfsg-6ubuntu1 and a few earlier)
+  * rename qemu-system-x86 init script to qemu-kvm so it gets installed in
+    ubuntu.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 17 Sep 2014 14:20:12 -0500
+
+qemu (2.1+dfsg-4ubuntu3) utopic; urgency=medium
+
+  * Re-stick the trusty machine type to 2.0 (where it must always stay) and
+    define a new, default, pc-i440fx-utopic machine type (LP: #1369481)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 15 Sep 2014 14:04:57 -0500
+
+qemu (2.1+dfsg-4ubuntu2) utopic; urgency=medium
+
+  * move kvm_intel nested setting to qemu-system-x86.postinst.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 12 Sep 2014 23:12:52 +0000
+
+qemu (2.1+dfsg-4ubuntu1) utopic; urgency=medium
+
+  * Merge new debian release
+  * Remaining changes:
+    - qemu-system-common.postinst:
+      * remove acl placed by udev, and add udevadm trigger.
+      * reload kvm_intel if needed to set nested=1
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - debian/qemu-system-alternatives.in: use a later version as ubuntu
+      removed the alternatives bit later.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+    - debian/binfmt-update-in: support ppcle
+      * debian/binfmt-update-in
+      * Support-ppcle.patch
+    - d/p/CVE-2014-5388.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 09 Sep 2014 17:56:15 -0500
+
 qemu (2.1+dfsg-4) unstable; urgency=medium
 
   * mention libnuma-dev but not enable for now
@@ -826,6 +2076,59 @@ qemu (2.1+dfsg-4) unstable; urgency=medium
   * add apport hook from ubuntu package (ubuntu-only for now)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 31 Aug 2014 09:32:59 +0400
+
+qemu (2.1+dfsg-3ubuntu4) utopic; urgency=medium
+
+  * SECURITY UPDATE: memory disclosure via out-of-bounds array access
+    - debian/patches/CVE-2014-5388.patch: fix check in hw/acpi/pcihp.c.
+    - CVE-2014-5388
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 09 Sep 2014 08:26:24 -0400
+
+qemu (2.1+dfsg-3ubuntu3) utopic; urgency=medium
+
+  * replace d/p/revert-acpi-table-size-bump with
+    pc-reserve-more-memory-for-acpi.patch from upstream
+  * debian/binfmt-update-in
+    - don't run in a container
+    - add ppc64le as target (LP: #1358268)
+  * Add experimental ppcle support (LP: #1358268)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 27 Aug 2014 18:24:32 -0500
+
+qemu (2.1+dfsg-3ubuntu2) utopic; urgency=medium
+
+  * revert-acpi-table-size-bump - get qemu -kernel working again.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 15 Aug 2014 15:33:24 -0500
+
+qemu (2.1+dfsg-3ubuntu1) utopic; urgency=medium
+
+  * Merge new debian release
+  * Remaining changes:
+    - control-in: stick to libsdl1.2-dev.
+    - qemu-system-common.install: add debian/tmp/usr/lib to install the
+      qemu-bridge-helper
+    - qemu-system-common.postinst: remove acl placed by udev,
+      and add udevadm trigger.
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - debian/qemu-system-alternatives.in: use a later version as ubuntu
+      removed the alternatives bit later.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+  * Upstart job: use getent group to check for kvm group
+  * apport: 'qemu' doesn't exist any more, so check for any qemu* tasks
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 15 Aug 2014 08:44:54 -0500
 
 qemu (2.1+dfsg-3) unstable; urgency=medium
 
@@ -853,6 +2156,42 @@ qemu (2.1+dfsg-3) unstable; urgency=medium
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 14 Aug 2014 14:30:24 +0400
 
+qemu (2.1+dfsg-2ubuntu2) utopic; urgency=medium
+
+  * reload kvm_intel if needed to set the nested=Y flag (LP: #1324174)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 11 Aug 2014 12:58:50 -0500
+
+qemu (2.1+dfsg-2ubuntu1) utopic; urgency=medium
+
+  * Merge new debian release
+  * Remaining changes:
+    - qemu-system-x86.links: add eepro100.rom link, drop links which we
+      have in ipxe-qemu package.
+    - control-in: stick to libsdl1.2-dev.
+    - qemu-system-common.install: add debian/tmp/usr/lib to install the
+      qemu-bridge-helper
+    - qemu-system-common.postinst: remove acl placed by udev,
+      and add udevadm trigger.
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - debian/rules: add qemu-kvm-spice
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - binfmt-update-in: make sure to filter out compat arches.
+    - debian/qemu-system-alternatives.in: use a later version as ubuntu
+      removed the alternatives bit later.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - apport hook for qemu source package: d/source_qemu-kvm.py,
+      d/qemu-system-common.install
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 05 Aug 2014 13:53:06 -0500
+
 qemu (2.1+dfsg-2) unstable; urgency=medium
 
   * l2tp-linux-only.patch: fix FTBFS on kfreebsd
@@ -865,16 +2204,9 @@ qemu (2.1+dfsg-2) unstable; urgency=medium
 qemu (2.1+dfsg-1) unstable; urgency=medium
 
   * new upstream release
-    Closes: #739589:
-     CVE-2013-4148 CVE-2013-4149 CVE-2013-4150 CVE-2013-4151
-     CVE-2013-4526 CVE-2013-4527 CVE-2013-4528
-     CVE-2013-4530 CVE-2013-4531 CVE-2013-4532 CVE-2013-4533 CVE-2013-4534
-     CVE-2013-4535 CVE-2013-4536 CVE-2013-4537 CVE-2013-4538 CVE-2013-4539
-     CVE-2013-4540 CVE-2013-4541 CVE-2013-4542
-     CVE-2013-6399 CVE-2014-0182 CVE-2014-3461
+    Closes: #739589 CVE-2014-3461
     Closes: #735618
     Closes: #754336
-    Closes: CVE-2014-3471 (pcie hotplug/hotunplug)
   * versioned build-depend on libiscsi-dev (>>1.9.0~)
   * added ppc64le user target
   * fix description of qemu-user-binfmt wrt "empty" (Closes: #755988)
@@ -903,6 +2235,43 @@ qemu (2.0.0+dfsg-7) unstable; urgency=medium
   * mention that qemu-user-binfmt is empty package (lintian)
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 24 Jul 2014 16:51:16 +0400
+
+qemu (2.0.0+dfsg-6ubuntu2) utopic; urgency=medium
+
+  * d/qemu-system-x86.qemu-kvm.upstart: change the early-exit check from
+    /usr/bin/kvm to qemu-system-x86_64. (LP: #1348551)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 25 Jul 2014 08:35:02 -0500
+
+qemu (2.0.0+dfsg-6ubuntu1) utopic; urgency=medium
+
+  * Merge 2.0.0+dfsg-6.  Remaining changes:
+    - qemu-system-x86.links: add eepro100.rom link, drop links which we
+      have in ipxe-qemu package.
+    - control-in: stick to libgnutls-dev and libsdl1.2-dev.
+    - qemu-system-common.install: add debian/tmp/usr/lib to install the
+      qemu-bridge-helper
+    - qemu-system-common.postinst: remove acl placed by udev,
+      and add udevadm trigger.
+    - qemu-system-common.preinst: add kvm group if needed
+    - add qemu-kvm upstart job and defaults file (rules,
+      qemu-system-x86.qemu-kvm.default, qemu-system-x86.qemu-kvm.upstart)
+    - debian/rules: add qemu-kvm-spice
+    - rules,qemu-system-x86.modprobe: support use under older udevs which
+      do not auto-load the kvm kernel module.  Enable nesting by default
+      on intel.
+    - binfmt-update-in: make sure to filter out compat arches.
+    - debian/qemu-system-alternatives.in: use a later version as ubuntu
+      removed the alternatives bit later.
+    - d/p/ubuntu/expose-vmx_qemu64cpu.patch: enable nested kvm by default
+      in qemu64 cpu type.
+    - d/p/ubuntu/define-trusty-machine-type.patch: define a default trusty
+      machine type to ease future live vm migration.
+    - re-introduce apport hook for qemu source package:
+      d/source_qemu-kvm.py, d/qemu-system-common.install
+  * enable-build-dep on libjpeg8-dev - which is now in main
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 23 Jun 2014 14:52:54 -0500
 
 qemu (2.0.0+dfsg-6) unstable; urgency=medium
 
@@ -947,6 +2316,59 @@ qemu (2.0.0+dfsg-3) unstable; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 21 Apr 2014 12:34:03 +0400
 
+qemu (2.0.0+dfsg-2ubuntu3) utopic; urgency=medium
+
+  * remove alternatives for qemu: different architectures
+    aren't really alternatives and never had been  (LP: #1316829)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 07 May 2014 15:12:33 +0000
+
+qemu (2.0.0+dfsg-2ubuntu2) utopic; urgency=medium
+
+  * debian/rules: install the proper /etc/init/qemu-kvm.conf (LP: #1315402)
+  * debian/control: drop the versioning requirement from libfdt-dev
+    build-dependency, as it is longer needed (LP: #1295072)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 02 May 2014 11:43:44 -0500
+
+qemu (2.0.0+dfsg-2ubuntu1) trusty-proposed; urgency=medium
+
+  * Merge 2.0.0+dfsg-2
+  * Incorporates a fix for spice users (LP: #1309452)
+  * drop patch kvm_physical_sync_dirty_bitmap-ignore-ENOENT-from-kv.patch, as
+    the regression requiring it was reverted for 2.0 upstream.
+  * remove qemu-system-common depends on the qemu-system-aarch64 metapackage
+  * debian/qemu-debootstrap: add arm64
+  * Remaining changes from debian:
+    - keep qemu 'alternative' (not something to change in SRU)
+    - debian/control and debian/control-in:
+      * versioned libfdt-dev check, until libfdt is fixed in precise
+      * enable rbd
+      * remove ovmf Recommends, as it is in multiverse
+      * use libsdl1.2, not libsdl2, since libsdl2-dev is in universe
+      * add a qemu-system-aarch64 metapackage for transitions from trusty
+        development version.  This can be removed after trusty.
+    - qemu-system-common.install: add debian/tmp/usr/lib to install the
+      qemu-bridge-helper
+    - qemu-system-common.postinst: fix /dev/kvm acls
+    - qemu-system-common.preinst: add kvm group if needed
+    - qemu-system-x86.links: add eepro100.rom link, drop links which we
+      have in ipxe-qemu package.
+    - qemu-system-x86.modprobe: set module options for older releases
+    - qemu-system-x86.qemu-kvm.default: defaults for the upstart job
+    - qemu-system-x86.qemu-kvm.upstart: qemu-kvm upstart job
+    - qemu-user-static.postinst-in: remove qemu-arm64-static on arm64
+    - debian/rules
+      * add legacy kvm-spice link
+      * fix ppc and arm slections
+      * add aarch64 to user_targets
+    - debian/patches/ubuntu/define-trusty-machine-type.patch: define a
+      pc-i440fx-trusty machine type as the default.
+    - debian/patches/ubuntu/expose-vmx_qemu64cpu.patch: support nesting by
+      default in qemu64 cpu time.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 18 Apr 2014 09:23:27 -0500
+
 qemu (2.0.0+dfsg-2) unstable; urgency=medium
 
   * resurrect 02_kfreebsd.patch, -- without it qemu FTBFS on current
@@ -956,9 +2378,6 @@ qemu (2.0.0+dfsg-2) unstable; urgency=medium
 
 qemu (2.0.0+dfsg-1) unstable; urgency=low
 
-  * new upstream major release
-     Closes: #744213 CVE-2013-4544
-     Closes: #745157 CVE-2014-2894
   * 2.0 actually does not close #739589,
     remove it from from last changelog entry
   * mention closing of #707629 by 2.0
@@ -1006,69 +2425,147 @@ qemu (2.0.0~rc1+dfsg-1exp) experimental; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Apr 2014 16:23:48 +0400
 
-qemu (1.7.0+dfsg-9) unstable; urgency=medium
+qemu (2.0.0~rc1+dfsg-0ubuntu3) trusty; urgency=medium
 
-  * remove rbd/rados/ceph support *again*, till they'll actually provide
-    some symbol/library version mechanism
-    (Closes:  #744364, Reopens: #729961, #689239)
+  * d/p/ubuntu/kvm_physical_sync_dirty_bitmap-ignore-ENOENT-from-kv.patch
+    don't abort() just because the kernel has no dirty bitmap.
+    (LP: #1303926)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 13 Apr 2014 18:49:46 +0400
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 08 Apr 2014 22:32:00 -0500
 
-qemu (1.7.0+dfsg-8) unstable; urgency=low
+qemu (2.0.0~rc1+dfsg-0ubuntu2) trusty; urgency=medium
 
-  * fix a brown-paper-bag bug in the previous upload
+  * define-trusty-machine-type.patch: update the trusty machine type name to
+    pc-i440fx-trusty (LP: #1304107)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Apr 2014 22:01:32 +0400
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 08 Apr 2014 11:49:04 -0500
 
-qemu (1.7.0+dfsg-7) unstable; urgency=high
+qemu (2.0.0~rc1+dfsg-0ubuntu1) trusty; urgency=medium
 
-  * fix guest-triggerable buffer overrun in virtio-net device
-    (Closes: #744221 CVE-2014-0150)
+  * Merge 2.0.0-rc1
+  * debian/rules: consolidate ppc filter entries.
+  * Move qemu-system-arch64 into qemu-system-arm
+  * debian/patches/define-trusty-machine-type.patch: define a trusty machine
+    type, currently the same as pc-i440fx-2.0, to put is in a better position
+    to enable live migrations from trusty onward.  (LP: #1294823)
+  * debian/control: build-dep on libfdt >= 1.4.0  (LP: #1295072)
+  * Merge latest upstream git to commit dc9528f
+  * Debian/rules:
+    - remove -enable-uname-release=2.6.32
+    - don't make the aarch64 target Ubuntu-specific.
+  * Remove patches which are now upstream:
+    - fix-smb-security-share.patch
+    - slirp-smb-redirect-port-445-too.patch 
+    - linux-user-Implement-sendmmsg-syscall.patch (better version is upstream)
+    - signal-added-a-wrapper-for-sigprocmask-function.patch
+    - ubuntu/signal-sigsegv-protection-on-do_sigprocmask.patch
+    - ubuntu/Don-t-block-SIGSEGV-at-more-places.patch
+    - ubuntu/ppc-force-cpu-threads-count-to-be-power-of-2.patch
+  * add link for /usr/share/qemu/bios-256k.bin
+  * Remove all linaro patches.
+  * Remove all arm64/ patches.  Many but not all are upstream.
+  * Remove CVE-2013-4377.patch which is upstream.
+  * debian/control-in: don't make qemu-system-aarch64 ubuntu-specific
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 11 Apr 2014 20:27:16 +0400
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 25 Feb 2014 22:31:43 -0600
 
-qemu (1.7.0+dfsg-6) unstable; urgency=medium
+qemu (1.7.0+dfsg-3ubuntu7) trusty; urgency=low
 
-  * make ceph (rbd) support linux-only, since it exists only on linux
+  * No-change rebuild to build with libxen-4.4.
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 05 Apr 2014 13:59:48 +0400
+ -- Stefan Bader <stefan.bader@canonical.com>  Fri, 21 Mar 2014 10:04:36 +0100
 
-qemu (1.7.0+dfsg-5) unstable; urgency=medium
+qemu (1.7.0+dfsg-3ubuntu6) trusty; urgency=medium
 
-  * remove OVMF.fd symlink added in -4, it belongs to ovmf (Closes: #741494)
-  * qemu-debootstrap: add support for arm64 architecture (Closes: #740112)
-  * mention closing of #725176 by 1.7.0
+  * d/p/ubuntu/ppc-force-cpu-threads-count-to-be-power-of-2.patch: cherrypick
+    upstream patch to force cpu count on ppc to be a power of 2. (LP: #1279682)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 13 Mar 2014 06:21:01 +0400
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 11 Mar 2014 00:03:00 -0500
 
-qemu (1.7.0+dfsg-4) unstable; urgency=medium
+qemu (1.7.0+dfsg-3ubuntu5) trusty; urgency=medium
 
-  [ Michael Tokarev ]
-  * 1.7.1 stable upstream release (Closes: #719633)
-    Closes: CVE-2013-4377
-  * implement-posix-timers.diff from upstream (Closes: #732258)
-  * address_space_translate-do-not-cross-page-boundaries.diff -
-    upstream bugfix for xen
-  * break libvirt << 1.2, not just 1.0, we need 1.2+ after qemu-1.6.
-  * add linux-user-fixed-s390x-clone-argument-order.patch (Closes: #739800)
-  * re-enable cepth (rbd) support (Closes: #729961, #689239)
+  [ dann frazier ]
+  * Add patches from the susematz tree to avoid intermittent segfaults:
+     - ubuntu/signal-added-a-wrapper-for-sigprocmask-function.patch
+     - ubuntu/signal-sigsegv-protection-on-do_sigprocmask.patch
+     - ubuntu/Don-t-block-SIGSEGV-at-more-places.patch
+
+  [ Serge Hallyn ]
+  * Modify do_sigprocmask to only change behavior for aarch64.
+    (LP: #1285363)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 06 Mar 2014 16:15:50 -0600
+
+qemu (1.7.0+dfsg-3ubuntu4) trusty; urgency=medium
 
   [ Steve Langasek ]
-  * (from Ubuntu) add symlink for OVMF.fd, which is now available in Debian
-    non-free.
-  * libusbredir is enabled in Ubuntu too, so sync debian/control.
-  * Enable building for ppc64el (in both Debian and Ubuntu): Debian does not
-    have a ppc64el port yet, but qemu builds out of the box there so it's
-    safe/appropriate to enable.
-  * Merge in Ubuntu-specific (and Ubuntu-tagged) debian/control changes.
-  * Enable building for arm64; the arm64 target is not yet merged, but the
-    package doesn't need arm64 target support to build for an arm64 host.
+  * Merge debian/control with unreleased Debian branch: our architecture
+    lists should now be in sync.
 
-  [ Riku Voipio ]
-  * control: build-depend on python:any (change originally made
-    in Aug-2013 but reverted by mjt later)
+  [ Dann Frazier ]
+  * ubuntu/linux-user-Implement-sendmmsg-syscall.patch: Fix user mode DNS
+    on arm64 and maybe others. (LP: #1284344)
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 12 Mar 2014 18:34:03 +0400
+  [ Serge Hallyn ]
+  * Move the OVMF.fd link to the ovmf package.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 21 Feb 2014 12:14:53 -0800
+
+qemu (1.7.0+dfsg-3ubuntu3) trusty; urgency=medium
+
+  * Add ppc64el to the architecture list (supposedly added in the previous
+    upload, but really wasn't).
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 20 Feb 2014 23:40:07 -0800
+
+qemu (1.7.0+dfsg-3ubuntu2) trusty; urgency=medium
+
+  * Backport changes to enable qemu-user-static support for aarch64
+  * debian/control: add ppc64el to Architectures
+  * debian/rules: only install qemu-system-aarch64 on arm64.
+    Fixes a FTBFS  when built twice in a row on non-arm64 due to a stale
+    debian/qemu-system-aarch64 directory
+
+ -- dann frazier <dann.frazier@canonical.com>  Tue, 11 Feb 2014 15:41:53 -0700
+
+qemu (1.7.0+dfsg-3ubuntu1) trusty; urgency=medium
+
+  * Fix broken filter_binfmts
+  * Remove use of dpkg-version in postinsts, as we're not Depending on
+    dpkg-dev.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 05 Feb 2014 21:57:38 -0600
+
+qemu (1.7.0+dfsg-3ubuntu1~ppa1) trusty; urgency=medium
+
+  * Merge 1.7.0+dfsg-3 from debian.  Remaining changes:
+    - debian/patches/ubuntu:
+      * expose-vmx_qemu64cpu.patch
+      * linaro (omap3) and arm64 patches
+      * ubuntu/target-ppc-add-stubs-for-kvm-breakpoints: fix FTBFS
+        on ppc
+      * ubuntu/CVE-2013-4377.patch: fix denial of service via virtio
+    - debian/qemu-system-x86.modprobe: set kvm_intel nested=1 options
+    - debian/control:
+      * add arm64 to Architectures
+      * add qemu-common and qemu-system-aarch64 packages
+    - debian/qemu-system-common.install: add debian/tmp/usr/lib
+    - debian/qemu-system-common.preinst: add kvm group
+    - debian/qemu-system-common.postinst: remove acl placed by udev,
+      and add udevadm trigger.
+    - qemu-system-x86.links: add eepro100.rom, remove pxe-virtio,
+      pxe-e1000 and pxe-rtl8139.
+    - add qemu-system-x86.qemu-kvm.upstart and .default
+    - qemu-user-static.postinst-in: remove arm64 binfmt
+    - debian/rules:
+      * allow parallel build
+      * add aarch64 to system_targets and sys_systems
+      * add qemu-kvm-spice links
+      * install qemu-system-x86.modprobe
+    - add debian/qemu-system-common.links for OVMF.fd link
+  * Remove kvm-img, kvm-nbd, kvm-ifup and kvm-ifdown symlinks.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 04 Feb 2014 12:13:08 -0600
 
 qemu (1.7.0+dfsg-3) unstable; urgency=low
 
@@ -1095,6 +2592,121 @@ qemu (1.7.0+dfsg-3) unstable; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 16 Jan 2014 15:17:46 +0400
 
+qemu (1.7.0+dfsg-2ubuntu9) trusty; urgency=medium
+
+  * debian/qemu-user-static.postinst-in: remove arm64 qemu-user binfmt, which
+    may have been installed up to 1.6.0+dfsg-2ubuntu4 (LP: #1273654)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 28 Jan 2014 14:41:20 +0000
+
+qemu (1.7.0+dfsg-2ubuntu8) trusty; urgency=medium
+
+  * SECURITY UPDATE: denial of service via virtio device hot-plugging
+    - debian/patches/CVE-2013-4377.patch: upstream commits to refactor
+      virtio device unplugging.
+    - CVE-2013-4377
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 27 Jan 2014 09:10:37 -0500
+
+qemu (1.7.0+dfsg-2ubuntu7) trusty; urgency=medium
+
+  * d/p/target-ppc-add-stubs-for-kvm-breakpoints: fix FTBFS on
+    powerpc.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 22 Jan 2014 11:59:26 -0600
+
+qemu (1.7.0+dfsg-2ubuntu6) trusty; urgency=medium
+
+  [ Serge Hallyn ]
+  * add arm64 patchset from upstream.  The three arm virt patches previously
+    pushed are in that set, so drop them.
+
+  [ dann frazier ]
+  * Add packaging for qemu-system-aarch64. This package is currently only
+    available for arm64, as full software emulation is not yet supported.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 10 Jan 2014 12:19:08 -0600
+
+qemu (1.7.0+dfsg-2ubuntu5) trusty; urgency=medium
+
+  * Drop d/p/fix-pci-add: upstream does not intend for pci_add to be
+    supported any longer.
+  * Add patchset from git://git.linaro.org/qemu/qemu-linaro.git#rebasing
+  * Refresh debian/patches/hw_arm_add_virt_platform.patch against context
+    churn caused by linaro patchset.
+  * debian/rules: enable parallel builds.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 03 Jan 2014 10:53:17 -0600
+
+qemu (1.7.0+dfsg-2ubuntu4) trusty; urgency=medium
+
+  * d/control: enable usbredir (LP: 1126390)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 02 Jan 2014 08:55:43 -0600
+
+qemu (1.7.0+dfsg-2ubuntu3) trusty; urgency=medium
+
+  * add missing arm virt patches from the mach-virt-v7 branch of
+    git://git.linaro.org/people/cdall/qemu-arm.git
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 18 Dec 2013 12:25:59 -0600
+
+qemu (1.7.0+dfsg-2ubuntu2) trusty; urgency=medium
+
+  * debian/control: add arm64 to list of architectures.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 12 Dec 2013 10:22:47 -0600
+
+qemu (1.7.0+dfsg-2ubuntu1) trusty; urgency=low
+
+  * Merge 1.7.0+dfsg-2 from debian experimental.  Remaining changes:
+    - debian/control
+      * update maintainer
+      * remove libiscsi, usb-redir, vde, vnc-jpeg, and libssh2-1-dev
+        from build-deps
+      * enable rbd
+      * add qemu-system and qemu-common B/R to qemu-keymaps
+      * add D:udev, R:qemu, R:qemu-common and B:qemu-common to
+        qemu-system-common
+      * qemu-system-arm, qemu-system-ppc, qemu-system-sparc:
+        - add qemu-common, qemu-kvm, kvm to B/R
+        - remove openbios-sparc from qemu-system-sparc D
+        - drop openbios-ppc and openhackware Depends to Suggests (for now)
+      * qemu-system-x86:
+        - add qemu-common to Breaks/Replaces.
+        - add cpu-checker to Recommends.
+      * qemu-user: add B/R:qemu-kvm
+      * qemu-kvm:
+        - add armhf armel powerpc sparc to Architecture
+        - C/R/P: qemu-kvm-spice
+      * add qemu-common package
+      * drop qemu-slof which is not packaged in ubuntu
+    - add qemu-system-common.links for tap ifup/down scripts and OVMF link.
+    - qemu-system-x86.links:
+      * remove pxe rom links which are in kvm-ipxe
+    - debian/rules
+      * add kvm-spice symlink to qemu-kvm
+      * call dh_installmodules for qemu-system-x86
+      * update dh_installinit to install upstart script
+      * run dh_installman (Closes: #709241) (cherrypicked from 1.5.0+dfsg-2)
+    - Add qemu-utils.links for kvm-* symlinks.
+    - Add qemu-system-x86.qemu-kvm.upstart and .default
+    - Add qemu-system-x86.modprobe to set nesting=1
+    - Add qemu-system-common.preinst to add kvm group
+    - qemu-system-common.postinst: remove bad group acl if there, then have
+      udev relabel /dev/kvm.
+    - New linaro patches from qemu-linaro rebasing branch
+    - Dropped patches:
+      * linaro patchset
+      * mach-virt patchset
+    - Kept patches:
+      * expose_vms_qemu64cpu.patch
+      * fix-pci-add
+  * qemu-system-common.install: add debian/tmp/usr/lib to install the
+    qemu-bridge-helper
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Sat, 07 Dec 2013 06:08:11 +0000
+
 qemu (1.7.0+dfsg-2) unstable; urgency=low
 
   * switch from vgabios to seavgabios
@@ -1112,7 +2724,7 @@ qemu (1.7.0+dfsg-2) unstable; urgency=low
 
 qemu (1.7.0+dfsg-1) unstable; urgency=low
 
-  * new upstream release (Closes: #724758, #326886, #390444, #706237, #725176)
+  * new upstream release (Closes: #724758, #326886, #390444, #706237)
     Also fixes CVE-2013-4375 (xen-specific qemu disk backend (qdisk)
     resource leak)
   * tweak kvm loading script to not load module for 3.4+ kernel
@@ -1124,10 +2736,77 @@ qemu (1.7.0+dfsg-1) unstable; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 28 Nov 2013 03:14:21 +0400
 
+qemu (1.6.0+dfsg-2ubuntu2) trusty; urgency=low
+
+  * debian/control: qemu-utils must Replace: qemu-kvm as it did in raring,
+    to prevent lts-to-lts updates from breaking.  (LP: #1243403)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 23 Oct 2013 14:31:05 -0500
+
+qemu (1.6.0+dfsg-2ubuntu1) trusty; urgency=low
+
+  * Merge 1.6.0~rc0+dfsg-2exp from debian experimental.  Remaining changes:
+    - debian/control
+      * update maintainer
+      * remove libiscsi, usb-redir, vde, vnc-jpeg, and libssh2-1-dev
+        from build-deps
+      * enable rbd
+      * add qemu-system and qemu-common B/R to qemu-keymaps
+      * add D:udev, R:qemu, R:qemu-common and B:qemu-common to
+        qemu-system-common
+      * qemu-system-arm, qemu-system-ppc, qemu-system-sparc:
+        - add qemu-kvm to Provides
+        - add qemu-common, qemu-kvm, kvm to B/R
+        - remove openbios-sparc from qemu-system-sparc D
+        - drop openbios-ppc and openhackware Depends to Suggests (for now)
+      * qemu-system-x86:
+        - add qemu-common to Breaks/Replaces.
+        - add cpu-checker to Recommends.
+      * qemu-user: add B/R:qemu-kvm
+      * qemu-kvm:
+        - add armhf armel powerpc sparc to Architecture
+        - C/R/P: qemu-kvm-spice
+      * add qemu-common package
+      * drop qemu-slof which is not packaged in ubuntu
+    - add qemu-system-common.links for tap ifup/down scripts and OVMF link.
+    - qemu-system-x86.links:
+      * remove pxe rom links which are in kvm-ipxe
+      * add symlink for kvm.1 manpage
+    - debian/rules
+      * add kvm-spice symlink to qemu-kvm
+      * call dh_installmodules for qemu-system-x86
+      * update dh_installinit to install upstart script
+      * run dh_installman (Closes: #709241) (cherrypicked from 1.5.0+dfsg-2)
+    - Add qemu-utils.links for kvm-* symlinks.
+    - Add qemu-system-x86.qemu-kvm.upstart and .default
+    - Add qemu-system-x86.modprobe to set nesting=1
+    - Add qemu-system-common.preinst to add kvm group
+    - qemu-system-common.postinst: remove bad group acl if there, then have
+      udev relabel /dev/kvm.
+    - New linaro patches from qemu-linaro rebasing branch
+    - Dropped patches:
+      * xen-simplify-xen_enabled.patch
+      * sparc-linux-user-fix-missing-symbols-in-.rel-.rela.plt-sections.patch
+      * main_loop-do-not-set-nonblocking-if-xen_enabled.patch
+      * xen_machine_pv-do-not-create-a-dummy-CPU-in-machine-.patch
+      * virtio-rng-fix-crash
+    - Kept patches:
+      * expose_vms_qemu64cpu.patch - updated
+      * linaro arm patches from qemu-linaro rebasing branch
+    - New patches:
+      * fix-pci-add: change CONFIG variable in ifdef to make sure that
+        pci_add is defined.
+  * Add linaro patches
+  * Add experimental mach-virt patches for arm virtualization.
+  * qemu-system-common.install: add debian/tmp/usr/lib to install the
+    qemu-bridge-helper
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 22 Oct 2013 22:47:07 -0500
+
 qemu (1.6.0+dfsg-2) unstable; urgency=low
 
   * Build-depend in seccomp again once it is in -testing
-  * 1.6.1 upstream bugfix release (Closes: #725944, #721713, #710971)
+  * 1.6.1 upstream bugfix release (Closes: #725944, #721713)
   * fix "allows [one] to" in qemu-ga description
   * fix descriptions for qemu-system and qemu-system-common packages
 
@@ -1135,7 +2814,8 @@ qemu (1.6.0+dfsg-2) unstable; urgency=low
 
 qemu (1.6.0+dfsg-1) unstable; urgency=low
 
-  * final upstream v1.6.0 (Closes: #718180, #714273, #605525, #701855, #674201)
+  [ Michael Tokarev ]
+  * final upstream v1.6.0 (Closes: #718180, #714273, #605525, #701855)
   * removed configure-explicitly-disable-virtfs-if-softmmu=no.patch
   * mention closing of #717724 by 1.6
   * mention closing of #710971 by 1.5 (which disabled gtk support)
@@ -1194,6 +2874,89 @@ qemu (1.5.0+dfsg-4) unstable; urgency=medium
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 06 Jun 2013 01:50:32 +0400
 
+qemu (1.5.0+dfsg-3ubuntu6) trusty; urgency=low
+
+  * No change rebuild for new seccomp.
+
+ -- Stéphane Graber <stgraber@ubuntu.com>  Mon, 21 Oct 2013 18:34:50 -0400
+
+qemu (1.5.0+dfsg-3ubuntu5) saucy; urgency=low
+
+  * Cherrypick upstream patch to fix crash with rng device (LP: #1235017)
+    - virtio-rng-fix-crash
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 09 Oct 2013 17:46:49 -0500
+
+qemu (1.5.0+dfsg-3ubuntu4) saucy; urgency=low
+
+  * Re-introduce snippet in upstart job to load kvm modules if needed.
+    (LP: #1218459)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 16 Sep 2013 22:43:52 +0000
+
+qemu (1.5.0+dfsg-3ubuntu3) saucy; urgency=low
+
+  * Cherry-picking three Xen related patches targetted for qemu-stable:
+    * xen-simplify-xen_enabled.patch
+    * main_loop-do-not-set-nonblocking-if-xen_enabled.patch
+    * xen_machine_pv-do-not-create-a-dummy-CPU-in-machine-.patch
+
+ -- Stefan Bader <stefan.bader@canonical.com>  Fri, 26 Jul 2013 15:01:44 +0200
+
+qemu (1.5.0+dfsg-3ubuntu2) saucy; urgency=low
+
+  * Drop openbios-ppc and openhackware Depends to Suggests for now.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 05 Jun 2013 03:23:56 -0600
+
+qemu (1.5.0+dfsg-3ubuntu1) saucy; urgency=low
+
+  * Merge 1.5.0+dfs-3 from debian unstable.  Remaining changes:
+    - debian/control
+      * update maintainer
+      * remove libiscsi, usb-redir, vde, vnc-jpeg, and libssh2-1-dev
+        from build-deps
+      * enable rbd
+      * add qemu-system and qemu-common B/R to qemu-keymaps
+      * add D:udev, R:qemu, R:qemu-common and B:qemu-common to
+        qemu-system-common
+      * qemu-system-arm, qemu-system-ppc, qemu-system-sparc:
+        - add qemu-kvm to Provides
+        - add qemu-common, qemu-kvm, kvm to B/R
+        - remove openbios-sparc from qemu-system-sparc D
+      * qemu-system-x86:
+        - add qemu-common to Breaks/Replaces.
+        - add cpu-checker to Recommends.
+      * qemu-user: add B/R:qemu-kvm
+      * qemu-kvm:
+        - add armhf armel powerpc sparc to Architecture
+        - C/R/P: qemu-kvm-spice
+      * add qemu-common package
+      * drop qemu-slof which is not packaged in ubuntu
+    - add qemu-system-common.links for tap ifup/down scripts and OVMF link.
+    - qemu-system-x86.links:
+      * remove pxe rom links which are in kvm-ipxe
+      * add symlink for kvm.1 manpage
+    - debian/rules
+      * add kvm-spice symlink to qemu-kvm
+      * call dh_installmodules for qemu-system-x86
+      * update dh_installinit to install upstart script
+      * run dh_installman (Closes: #709241) (cherrypicked from 1.5.0+dfsg-2)
+    - Add qemu-utils.links for kvm-* symlinks.
+    - Add qemu-system-x86.qemu-kvm.upstart and .default
+    - Add qemu-system-x86.modprobe to set nesting=1
+    - Add qemu-system-common.preinst to add kvm group
+    - qemu-system-common.postinst: remove bad group acl if there, then have
+      udev relabel /dev/kvm.
+    - Dropped patches:
+      * 0001-fix-wrong-output-with-info-chardev-for-tcp-socket.patch
+    - Kept patches:
+      * expose_vms_qemu64cpu.patch - updated
+      * gridcentric patch - updated
+      * linaro arm patches from qemu-linaro rebasing branch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 04 Jun 2013 22:56:43 +0200
+
 qemu (1.5.0+dfsg-3) unstable; urgency=low
 
   * fix sections: misc => otherosfs
@@ -1212,6 +2975,54 @@ qemu (1.5.0+dfsg-3) unstable; urgency=low
   * use verbose build by default (V=1) and let it to be overridden
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 02 Jun 2013 01:49:47 +0400
+
+qemu (1.5.0+dfsg-2ubuntu1) saucy; urgency=low
+
+  * Merge 1.5.0+dfs-2 from debian unstable.  Remaining changes:
+    - debian/control
+      * update maintainer
+      * remove libiscsi, usb-redir, vde, vnc-jpeg, and libssh2-1-dev
+        from build-deps
+      * enable rbd
+      * add qemu-system and qemu-common B/R to qemu-keymaps
+      * add D:udev, R:qemu, R:qemu-common and B:qemu-common to
+        qemu-system-common
+      * qemu-system-arm, qemu-system-ppc, qemu-system-sparc:
+        - add qemu-kvm to Provides
+        - add qemu-common, qemu-kvm, kvm to B/R
+        - remove openbios-sparc from qemu-system-sparc D
+      * qemu-system-x86:
+        - add qemu-common to Breaks/Replaces.
+        - add cpu-checker to Recommends.
+      * qemu-user: add B/R:qemu-kvm
+      * qemu-kvm:
+        - add armhf armel powerpc sparc to Architecture
+        - C/R/P: qemu-kvm-spice
+      * add qemu-common package
+      * drop qemu-slof which is not packaged in ubuntu
+    - add qemu-system-common.links for tap ifup/down scripts and OVMF link.
+    - qemu-system-x86.links:
+      * remove pxe rom links which are in kvm-ipxe
+      * add symlink for kvm.1 manpage
+    - debian/rules
+      * add kvm-spice symlink to qemu-kvm
+      * call dh_installmodules for qemu-system-x86
+      * update dh_installinit to install upstart script
+      * run dh_installman (Closes: #709241) (cherrypicked from 1.5.0+dfsg-2)
+    - Add qemu-utils.links for kvm-* symlinks.
+    - Add qemu-system-x86.qemu-kvm.upstart and .default
+    - Add qemu-system-x86.modprobe to set nesting=1
+    - Add qemu-system-common.preinst to add kvm group
+    - qemu-system-common.postinst: remove bad group acl if there, then have
+      udev relabel /dev/kvm.
+    - Dropped patches:
+      * 0001-fix-wrong-output-with-info-chardev-for-tcp-socket.patch
+    - Kept patches:
+      * expose_vms_qemu64cpu.patch - updated
+      * gridcentric patch - updated
+      * linaro arm patches from qemu-linaro rebasing branch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 28 May 2013 08:18:30 -0500
 
 qemu (1.5.0+dfsg-2) unstable; urgency=low
 
@@ -1280,6 +3091,76 @@ qemu (1.4.0+dfsg-2exp) experimental; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 18 Apr 2013 14:45:30 +0400
 
+qemu (1.4.0+dfsg-1expubuntu4) raring; urgency=low
+
+  * re-add qemu-system-x86.modprobe to set nesting=1 (LP: #1155177)
+  * qemu-system-x86.qemu-kvm.upstart:
+    - remove NESTED workarounds from upstart file.
+    - remove loading of modules which is now always done
+    - remove TAPR define which is no longer used
+  * move customizable defines back to qemu-kvm.default
+  * copy creation of group kvm to preinst - the group must exist when the
+    kvm udev rule is installed (LP: #1103022) (LP: #1092715)
+  * add adduser to qemu-system-common Pre-Depends for use by preinst.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 14 Mar 2013 14:21:53 -0500
+
+qemu (1.4.0+dfsg-1expubuntu3) raring; urgency=low
+
+  * debian/rules: add a symlink from kvm-spice to kvm in qemu-kvm, on
+    i386/amd64 targets.  (LP: #1126258)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 28 Feb 2013 15:17:16 -0600
+
+qemu (1.4.0+dfsg-1expubuntu2) raring; urgency=low
+
+  * substitute (apparently identical) patches from 1.4.0 qemu-linaro rebasing
+    tree.
+  * add qemu-common to qemu-system-common B/R (was accidentally dropped from
+    1.3.0 in 1.4.0 merge).
+  * debian/control: fix kvm P/C/B/R:
+    - make all C/B/R against kvm versioned
+    - don't have any qemu-system-* other than x86 Provides: kvm
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 22 Feb 2013 13:34:07 -0600
+
+qemu (1.4.0+dfsg-1expubuntu1) raring; urgency=low
+
+  * Merge 1.4.0+dfsg-1exp from debian.  Remaining changes:
+    - debian/control:
+      * update maintainer
+      * remove libiscsi, usb-redir, vde, and vnc-jpeg from build-deps
+      * enable rbd
+      * add qemu-system and qemu-common B/R to qemu-keymaps
+      * add D:udev and R:qemu to qemu-system-common
+      * qemu-system-arm, qemu-system-ppc, qemu-system-sparc:
+        - add qemu-kvm and kvm to Provides
+        - add qemu-common and qemu-kvm to Breaks/Replaces qemu-system-ppc,
+          qemu-system-sparc:
+        - remove openbios-$arch from Depends
+      * qemu-system-x86:
+        - add qemu-common to Breaks/Replaces.
+        - add cpu-checker to Recommends.
+      * qemu-user:
+        - add B/R qemu-kvm
+      * qemu-utils:
+        - add B/R qemu-user and qemu-kvm
+      * qemu-kvm: add armhf armel powerpc sparc to Architecture
+      * add qemu-common package
+    - add qemu-system-common.links for tap ifup/down scripts and OVMF link.
+    - qemu-system-x86.links:
+      * remove pxe rom links which are in kvm-ipxe
+      * add symlink for kvm.1 manpage
+    - Add qemu-utils.links for kvm-* symlinks.
+    - Add qemu-kvm.conf upstart job to qemu-system
+    - Clear /dev/kvm acls on install
+    - Add linaro arm patches.
+    - Add gridcentric patches.
+    - Re-add expose_vms_qemu64cpu.patch (from Daviey)
+  * Add 0001-fix-wrong-output-with-info-chardev-for-tcp-socket.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 20 Feb 2013 11:58:27 -0600
+
 qemu (1.4.0+dfsg-1exp) experimental; urgency=low
 
   [ Michael Tokarev ]
@@ -1293,6 +3174,11 @@ qemu (1.4.0+dfsg-1exp) experimental; urgency=low
   * fix manpage "links" generation (man qemu-system-* was broken)
   * change Vcs fields to point to anonscm.debian.org (lintian)
   * add a check for (lxc) container to qemu-system-x86 initscript
+
+  [ Michael Tokarev - committed after 1.4.0+dfsg-1exp]
+  * fix distribution field in last qemu-system.NEWS entry
+  * bump Standards-Version to 3.9.4 (no changes needed)
+  * pre-Depend on adduser for qemu-system-common (Closes: #700840)
 
   [ Steve Langasek ]
   * Pass --enable-uname-release=2.6.32 for the user emulation builds, so that
@@ -1334,6 +3220,116 @@ qemu (1.4.0~rc0+dfsg-1exp) experimental; urgency=low
     didn't work with qemu 1.3+ correctly
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 02 Feb 2013 21:05:28 +0400
+
+qemu (1.3.0+dfsg-5expubuntu5) raring; urgency=low
+
+  * qemu-system-common.postinst: only run setfacl when /dev/kvm exists.
+    (LP: #1130591)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 20 Feb 2013 08:58:53 -0600
+
+qemu (1.3.0+dfsg-5expubuntu4) raring; urgency=low
+
+  * Update workarounds for udev/inotify:  (LP: #1092715)
+    - qemu-system-common.udev: go back to original, simple rule
+    - qemu-system-common.postinst: manually run setfacl
+    - (keep Depends: on acl as well)
+    - this can be removed once bug 1092715 is fixed.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 19 Feb 2013 12:41:22 -0600
+
+qemu (1.3.0+dfsg-5expubuntu3) raring; urgency=low
+
+  * Now that qemu provides spice support, and qemu-kvm-spice is removed from
+    the archive, have qemu-kvm (which qemu-kvm-spice always depended on)
+    P/C/R qemu-kvm-spice.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 14 Feb 2013 13:43:27 -0600
+
+qemu (1.3.0+dfsg-5expubuntu2) raring; urgency=low
+
+  * Enable spice.
+  * Address lintian warning by adding ${misc:Depends} to qemu-common and
+    qemu-kvm.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 12 Feb 2013 16:07:04 -0600
+
+qemu (1.3.0+dfsg-5expubuntu1) raring; urgency=low
+
+  [ Serge Hallyn ]
+  * Merge 1.3.0+dfsg-5exp from Debian.
+  * remaining changes from 1.3.0+dfsg-1~exp3ubuntu1:
+    - debian/control:
+      * update maintainer
+      * remove vde2 recommends
+      * build-deps: remove libusbredir, libvdeplug2-dev,
+        libspice-server-dev, libspice-protocol-dev, libiscsi-dev
+      * qemu-system:
+        - break/replace qemu-common
+        - depend on udev
+        - remove openbios-ppc, openbios-sparc, and openhackware from
+          Depends.  (Intend to add them back once we can build them.)
+      * qemu-utils: break/replace qemu-kvm
+    - qemu-kvm.upstart:
+      - add qemu-system.qemu-kvm.upstart
+      - debian/rules: add dh_installinit to get qemu-system.upstart installed.
+      - take the defaults from the old qemu-kvm.defaults, and move them into
+        the upstart job
+    - debian/patches:
+      - apply gridcentric patches from lp:~amscanne/+junk/gridcentric-qemu-patches
+      - apply arm patches from git://git.linaro.org/qemu/qemu-linaro.git
+    - add links for qemu-ifup/down in qemu-system-common.links
+    - debian/qemu-system-common.postinst
+      - udevadm trigger to fix up /dev/kvm perms
+    - debian/qemu-system.links:
+      - remove pxe-virtio, pxe-e1000 and pxe-rtl8139 links (which conflict
+        with ones from kvm-ipxe).  We may want to move the links from kvm-ipxe
+        back to qemu-system at some point.
+  * remaining changes from after 1.3.0+dfsg-1~exp3ubuntu1:
+    - qemu-system-common.links: add link for OVMF
+    - Add qemu-utils.links for kvm-img and kvm-nbd utils and manpages.
+    - qemu-system.links:
+      * Add link to usr/share/ovmf/OVMF.fd
+      * Fix target of /etc/kvm/kvm-if{up,down} links
+    - debian/control: qemu-system should Recommend cpu-checker
+    - Add qemu-kvm breaks/replaces to qemu-user, to handle conflict over
+      (i.e.) qemu-x86_64.
+    - add qemu-kvm, and qemu-common transitional packages.
+    - Add breaks/replaces to qemu-keymaps for qemu-system.
+    - Add provides: qemu-kvm and kvm to qemu-system-ppc.
+    - Add breaks/replaces to qemu-system-ppc for qemu-kvm and qemu-common.
+    - Add breaks/replaces to qemu-kvm for qemu-common.
+    - Add breaks/replaces to qemu-utils for qemu-user and qemu-kvm.
+    - Add armhf, armel, powerpc and sparc arches to qemu-kvm transitional
+      package.
+    - Add qemu-common package.
+    - Make sure /dev/kvm gets its acls cleared:
+      * Add acl to qemu-system.depends
+      * update qemu-system.udev to run setfacl to set g::rw acl
+    - Remove vnc-jpeg, libiscsi-dev, and vde from debian/configure-opts
+  * dropped debian/patches/CVE-2012-6075.patch (duplicate of
+    e1000-discard-oversize-packets-based-on-SBP_LPE.patch)
+  * debian/{control,configure-opts}: enable rbd (LP: #1118406)
+  * add symlink for kvm.1 -> qemu.1 manpage (LP: #1117636)
+  * add replaces to qemu-system-common for qemu - we briefly moved conflicting
+    docs to qemu, which debian moved to qemu-system-common.  This can be
+    dropped after raring.
+  * move qemu-kvm.upstart from qemu-system to qemu-system-x86.
+  * Support upgrade from qemu-kvm on non-x86 arches:
+    - Add Provides: qemu-kvm, kvm to qemu-system-{arm,ppc,sparc,x86}
+    - Add Breaks/Replaces for qemu-{common,system,kvm} and kvm.
+  * Re-add expose_vms_qemu64cpu.patch (from Daviey) from quantal.
+
+  [ Steve Langasek ]
+  * Pass --enable-uname-release=2.6.32 for the user emulation builds, so that
+    we have a sensible baseline kernel value regardless of what the
+    underlying host kernel is.  This makes eglibc happier when running under
+    emulation on a very old kernel for instance (whose host syscall ABI has
+    nothing to do with what emulated syscalls are supported), and probably
+    also lets us steer clear for the moment of code that has problem with
+    the new kernel upstream versioning convention.  LP: #921078.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 07 Feb 2013 14:15:26 -0600
 
 qemu (1.3.0+dfsg-5exp) experimental; urgency=low
 
@@ -1414,6 +3410,106 @@ qemu (1.3.0+dfsg-2exp) experimental; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 20 Jan 2013 22:12:11 +0400
 
+qemu (1.3.0+dfsg-1~exp3ubuntu8) raring; urgency=low
+
+  * qemu-system.links:
+    - Add link to usr/share/ovmf/OVMF.fd (LP: #1074207)
+    - Fix target of /etc/kvm/kvm-if{up,down} links
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 29 Jan 2013 10:52:22 -0600
+
+qemu (1.3.0+dfsg-1~exp3ubuntu7) raring; urgency=low
+
+  * debian/control: qemu-system should Recommend cpu-checker (LP: #1103982)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 28 Jan 2013 11:52:10 -0600
+
+qemu (1.3.0+dfsg-1~exp3ubuntu6) raring; urgency=low
+
+  * configure-opts: add audio-cards list (LP: #1102487)
+  * configure-opts: change order of audio-drv-list for ubuntu, putting pa
+    first.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 21 Jan 2013 12:02:09 -0600
+
+qemu (1.3.0+dfsg-1~exp3ubuntu5) raring; urgency=low
+
+  * Add qemu-kvm breaks/replaces to qemu-user, to handle conflict over
+    (i.e.) qemu-x86_64. (LP: #1102332)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 21 Jan 2013 08:58:07 -0600
+
+qemu (1.3.0+dfsg-1~exp3ubuntu4) raring; urgency=low
+
+  * Move three docs from qemu-system.install to qemu.docs (LP: #1101798)
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Sat, 19 Jan 2013 20:12:48 -0700
+
+qemu (1.3.0+dfsg-1~exp3ubuntu3) raring; urgency=low
+
+  * debian/patches/CVE-2012-6075.patch: Fix guest denial of service and
+    possible code execution in hw/e1000.c by dropping oversize packets.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Sat, 19 Jan 2013 07:31:50 -0700
+
+qemu (1.3.0+dfsg-1~exp3ubuntu2) raring; urgency=low
+
+  * debian/rules: empty MAKEFLAGS when building spapr-rtas.bin on powerpc, to
+    fix FTBFS due to parallel compile.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 18 Jan 2013 15:51:09 -0600
+
+qemu (1.3.0+dfsg-1~exp3ubuntu1) raring; urgency=low
+
+  * Merge 1.3.0+dfsg-1~exp3.  Remaining ubuntu delta:
+    - debian/control:
+      * update maintainer
+      * remove vde2 recommends
+      * build-deps: remove libusbredir, libvdeplug2-dev,
+        libspice-server-dev, libspice-protocol-dev, libiscsi-dev,
+        and libxen-dev.
+      * qemu-keymaps: break/replace qemu-common
+      * qemu-system:
+        - break/replace qemu-common
+        - depend on udev
+        - remove openbios-ppc, openbios-sparc, and openhackware from
+          Depends.  (Intend to add them back once we can build them.)
+        - provides: qemu-kvm
+      * qemu-utils: break/replace qemu-kvm
+      * set up transitional packages for qemu-kvm, qemu-common, and kvm.
+    - qemu-kvm.upstart:
+      - add qemu-system.qemu-kvm.upstart
+      - debian/rules: add dh_installinit to get qemu-system.upstart installed.
+      - take the defaults from the old qemu-kvm.defaults, and move them into
+        the upstart job
+    - debian/patches:
+      - apply gridcentric patches from lp:~amscanne/+junk/gridcentric-qemu-patches
+      - apply arm patches from git://git.linaro.org/qemu/qemu-linaro.git
+    - ifup/down:
+      - copy Debian qemu-kvm's kvm-ifup/down into debian/
+      - fix dh_install for kvm-ifup/down in debian/rules
+      - add links for qemu-ifup/down in qemu-system.links
+      - remove (debian's original) qemu-ifup from qemu-system.install
+    - debian/qemu-system.postinst
+      - udevadm trigger to fix up /dev/kvm perms
+      - make the 'qemu' symlink point to qemu-system-x86_64, not -i386.
+    - debian/qemu-system.links:
+      - point 'kvm' to qemu-system-x86_64
+      - remove pxe-virtio, pxe-e1000 and pxe-rtl8139 links (which conflict
+        with ones from kvm-ipxe).  We may want to move the links from kvm-ipxe
+        back to qemu-system at some point.
+  * Add note about kvm to qemu-system.README.debian.
+  * Copy kvm-ifup and kvm-ifdown from debian's qemu-kvm
+  * Remove TAPBR from qemu-kvm.conf.
+  * Make sure /dev/kvm gets its acls cleared:
+    - Add acl to qemu-system.depends
+    - update qemu-system.udev to run setfacl to set g::rw acl
+  * qemu-system.qemu-kvm.conf: don't rmmod at stop
+  * Remove vnc-jpeg, libiscsi-dev, and vde from debian/configure-opts
+  * Remove hugepages sysctl file - qemu now supports transparent hugepages.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 14 Jan 2013 23:22:51 -0600
+
 qemu (1.3.0+dfsg-1~exp3) experimental; urgency=low
 
   * enable vde on kFreebsd too (no idea why it was disabled)
@@ -1464,7 +3560,74 @@ qemu (1.3.0+dfsg-1~exp2) experimental; urgency=low
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 31 Dec 2012 01:40:35 +0400
 
-qemu (1.3.0+dfsg-1~exp1) experimental; urgency=low
+qemu (1.2.0.dfsg-1~exp1-0ubuntu2) raring; urgency=low
+
+  * Remove kvm package
+    - make qemu-system P/C/B: kvm.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 14 Jan 2013 12:03:19 -0600
+
+qemu (1.2.0.dfsg-1~exp1-0ubuntu1) raring; urgency=low
+
+  [ Serge Hallyn ]
+  * debian/control:
+    - update maintainer
+    - remove vde2 recommends
+    - build-deps: remove libusbredir, libvdeplug2-dev,
+      libspice-server-dev, libspice-protocol-dev, libiscsi-dev,
+      and libxen-dev.
+    - qemu-keymaps: break/replace qemu-common
+    - qemu-system:
+      - break/replace qemu-common
+      - depend on udev
+      - remove openbios-ppc, openbios-sparc, and openhackware from
+        Depends.  (Intend to add them back once we can build them.)
+      - provides: qemu-kvm
+    - qemu-utils: break/replace qemu-kvm
+    - set up transitional packages for qemu-kvm, qemu-common, and kvm.
+  * debian/rules:
+    - install kvm-ifup and kvm-ifdown
+    - dh_installinit the qemu-kvm upstart job
+  * install a 30-qemu-kvm.conf into /etc/sysctl.c for nr_hugepages.
+  * qemu-kvm.upstart:
+    - add qemu-system.qemu-kvm.upstart
+    - add mv_confile to qemu-system.preinst, postinst, and .postrm to rename
+      /etc/init/qemu-kvm.conf to qemu-system.conf
+    - debian/rules: add dh_installinit to get qemu-system.upstart installed.
+    - take the defaults from the old qemu-kvm.defaults, and move them into
+      the upstart job
+  * debian/patches:
+    - apply gridcentric patches from lp:~amscanne/+junk/gridcentric-qemu-patches
+    - apply arm patches from git://git.linaro.org/qemu/qemu-linaro.git
+    - apply nbd-fixes-to-read-only-handling.patch from upstream to
+      make read-write mount after read-only mount work.  (LP: #1077838)
+  * ifup/down:
+    - copy Ubuntu qemu-kvm's kvm-ifup/down into debian/
+    - fix dh_install for kvm-ifup/down in debian/rules
+    - add links for qemu-ifup/down in qemu-system.links
+    - remove (debian's original) qemu-ifup from qemu-system.install
+  * debian/qemu-system.postinst
+    - udevadm trigger to fix up /dev/kvm perms
+    - make the 'qemu' symlink point to qemu-system-x86_64, not -i386.
+  * debian/qemu-system.links:
+    - point 'kvm' to qemu-system-x86_64
+    - remove pxe-virtio, pxe-e1000 and pxe-rtl8139 links (which conflict
+      with ones from kvm-ipxe).  We may want to move the links from kvm-ipxe
+      back to qemu-system at some point.
+    - add qemu-ifdown and qemu-ifup links
+  * debian/qemu-system.install:
+    - remove /etc/qemu-ifup link
+    - add /etc/sysctl.d/30-qemu-kvm.conf
+
+  [ Adam Conrad ]
+  * Appease apt-get's dist-upgrade resolver by creating a qemu-common
+    transitional package to upgrade more gracefully to qemu-keymaps.
+  * Move all the empty transitional packages to the oldlibs section.
+  * Restore the versioned dep from qemu-kvm (and kvm) to qemu-system.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 04 Jan 2013 08:50:24 -0600
+
+qemu (1.2.0+dfsg-1~exp1) UNRELEASED; urgency=low
 
   [ Michael Tokarev ]
   * new upstream version (1.3.0)
