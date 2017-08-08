@@ -7,24 +7,23 @@ defined.
 
 The same applies to pipe2() call.
 
+Since qemu 2.9 there is no clear way to go without utimensat
+commit 24df3371d97a7516605aef8abbc253a8c162b211
+Author: Greg Kurz <groug@kaod.org>
+Date:   Thu May 25 10:30:14 2017 +0200
+
+    9pfs: assume utimensat() and futimens() are present
+
+    The utimensat() and futimens() syscalls have been around for ages (ie,
+    glibc 2.6 and linux 2.6.22), and the decision was already taken to
+    switch to utimensat() anyway when fixing CVE-2016-9602 in 2.9.
+
+    Signed-off-by: Greg Kurz <groug@kaod.org>
+    Reviewed-by: Eric Blake <eblake@redhat.com>
+
 --- a/configure
 +++ b/configure
-@@ -3135,6 +3135,14 @@ cat > $TMPC << EOF
- #include <fcntl.h>
- #include <sys/stat.h>
- 
-+#if defined __stub_futimens || defined __stub___futimens
-+choke me
-+#endif
-+
-+#if defined __stub_utimensat || defined __stub___utimensat
-+choke me
-+#endif
-+
- int main(void)
- {
-     utimensat(AT_FDCWD, "foo", NULL, 0);
-@@ -3152,6 +3161,10 @@ cat > $TMPC << EOF
+@@ -3704,6 +3704,10 @@
  #include <unistd.h>
  #include <fcntl.h>
  
