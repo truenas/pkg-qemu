@@ -24,10 +24,10 @@ Index: qemu/hw/i386/pc_piix.c
  }
  
  static void pc_compat_2_0(MachineState *machine)
-Index: qemu/target-i386/cpu.c
+Index: qemu/target/i386/cpu.c
 ===================================================================
---- qemu.orig/target-i386/cpu.c
-+++ qemu/target-i386/cpu.c
+--- qemu.orig/target/i386/cpu.c
++++ qemu/target/i386/cpu.c
 @@ -1403,7 +1403,6 @@ static PropValue kvm_default_props[] = {
      { "x2apic", "on" },
      { "acpi", "off" },
