@@ -1,0 +1,335 @@
+Description: Carry Ubuntu specific machine types
+
+Since Ubuntu is a downstream of qemu carrying patches it needs custom machine
+types to be able to identify and manage the delta that might affect machine
+types.
+
+This is an important piece to keep cross release migration supported for any
+downstream.
+
+Since the p->t transition these types are mostly stable copies of the upstream
+type (in the past this was more unstable upstream, so there was more delta),
+but they need to stay specific to reflect the delta we have. And even more so
+to have something to base off for affecting SRU changes.
+
+Also add a hint if instantiating fails due to now unsupported old guest
+types (LP: #1637936).
+
+Package maintainers please see https://wiki.ubuntu.com/QemuKVMMigration when
+maintaining this patch on SRU, merge or other packaging activity.
+
+Original-Author: Serge Hallyn <serge.hallyn@ubuntu.com>
+Original-Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/1304107
+Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/1621042
+Forwarded: no
+
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -441,7 +441,7 @@
+ {
+     pc_i440fx_machine_options(m);
+     m->alias = "pc";
+-    m->is_default = 1;
++    m->is_default = 0;
+ }
+ 
+ DEFINE_I440FX_MACHINE(v2_8, "pc-i440fx-2.8", NULL,
+@@ -1103,3 +1103,56 @@
+ DEFINE_PC_MACHINE(xenfv, "xenfv", pc_xen_hvm_init,
+                   xenfv_machine_options);
+ #endif
++
++/* Ubuntu machine types */
++static void pc_trusty_machine_options(MachineClass *m)
++{
++    pc_i440fx_2_0_machine_options(m);
++    m->desc = "Ubuntu 14.04 PC (i440FX + PIIX, 1996)";
++}
++DEFINE_I440FX_MACHINE(trusty, "pc-i440fx-trusty", pc_compat_2_0,
++                      pc_trusty_machine_options)
++
++static void pc_xenial_machine_options(MachineClass *m)
++{
++    pc_i440fx_2_5_machine_options(m);
++    m->desc = "Ubuntu 16.04 PC (i440FX + PIIX, 1996)";
++}
++DEFINE_I440FX_MACHINE(xenial, "pc-i440fx-xenial", NULL,
++                      pc_xenial_machine_options);
++
++static void pc_yakkety_machine_options(MachineClass *m)
++{
++    pc_i440fx_2_6_machine_options(m);
++    m->desc = "Ubuntu 16.10 PC (i440FX + PIIX, 1996)";
++}
++DEFINE_I440FX_MACHINE(yakkety, "pc-i440fx-yakkety", NULL,
++                      pc_yakkety_machine_options);
++
++static void pc_zesty_machine_options(MachineClass *m)
++{
++    pc_i440fx_2_8_machine_options(m);
++    m->desc = "Ubuntu 17.04 PC (i440FX + PIIX, 1996)";
++    m->alias = "ubuntu";
++    m->is_default = 1;
++}
++DEFINE_I440FX_MACHINE(zesty, "pc-i440fx-zesty", NULL,
++                      pc_zesty_machine_options);
++
++/*
++ * Due to bug 1621042 we have to consider the broken old wily machine
++ * type as valid xenial type to ensure older VMs that got created prio
++ * to fixing 1621042 will still work.
++ * Therefore we have to keep it as-is (sans alias and being default) for
++ * the same time we keep the fixed xenial type above.
++ */
++static void pc_wily_machine_options(MachineClass *m)
++{
++    pc_i440fx_2_4_machine_options(m);
++    pc_i440fx_machine_options(m);
++    m->desc = "Ubuntu 15.04 PC (i440FX + PIIX, 1996)",
++    m->default_display = "std";
++}
++
++DEFINE_I440FX_MACHINE(wily, "pc-i440fx-wily", pc_compat_2_3,
++                      pc_wily_machine_options);
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -348,3 +348,30 @@
+ 
+ DEFINE_Q35_MACHINE(v2_4, "pc-q35-2.4", NULL,
+                    pc_q35_2_4_machine_options);
++
++/* Ubuntu machine types */
++static void pc_q35_xenial_machine_options(MachineClass *m)
++{
++    pc_q35_2_5_machine_options(m);
++    m->desc = "Ubuntu 16.04 PC (Q35 + ICH9, 2009)";
++}
++DEFINE_Q35_MACHINE(xenial, "pc-q35-xenial", NULL,
++                   pc_q35_xenial_machine_options);
++
++static void pc_q35_yakkety_machine_options(MachineClass *m)
++{
++    pc_q35_2_6_machine_options(m);
++    m->desc = "Ubuntu 16.10 PC (Q35 + ICH9, 2009)";
++}
++DEFINE_Q35_MACHINE(yakkety, "pc-q35-yakkety", NULL,
++                   pc_q35_yakkety_machine_options);
++
++static void pc_q35_zesty_machine_options(MachineClass *m)
++{
++    pc_q35_2_8_machine_options(m);
++    m->desc = "Ubuntu 17.04 PC (Q35 + ICH9, 2009)";
++    /* The ubuntu alias and default is on the i440fx type */
++    m->alias = NULL;
++}
++DEFINE_Q35_MACHINE(zesty, "pc-q35-zesty", NULL,
++                   pc_q35_zesty_machine_options);
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2716,12 +2716,12 @@
+     },
+ };
+ 
+-#define DEFINE_SPAPR_MACHINE(suffix, verstr, latest)                 \
++#define DEFINE_SPAPR_MACHINE_NAMED(qemuver, suffix, verstr, latest)  \
+     static void spapr_machine_##suffix##_class_init(ObjectClass *oc, \
+                                                     void *data)      \
+     {                                                                \
+         MachineClass *mc = MACHINE_CLASS(oc);                        \
+-        spapr_machine_##suffix##_class_options(mc);                  \
++        spapr_machine_##qemuver##_class_options(mc);                 \
+         if (latest) {                                                \
+             mc->alias = "pseries";                                   \
+             mc->is_default = 1;                                      \
+@@ -2730,7 +2730,7 @@
+     static void spapr_machine_##suffix##_instance_init(Object *obj)  \
+     {                                                                \
+         MachineState *machine = MACHINE(obj);                        \
+-        spapr_machine_##suffix##_instance_options(machine);          \
++        spapr_machine_##qemuver##_instance_options(machine);         \
+     }                                                                \
+     static const TypeInfo spapr_machine_##suffix##_info = {          \
+         .name = MACHINE_TYPE_NAME("pseries-" verstr),                \
+@@ -2744,6 +2744,9 @@
+     }                                                                \
+     type_init(spapr_machine_register_##suffix)
+ 
++#define DEFINE_SPAPR_MACHINE(suffix, verstr, latest)                 \
++    DEFINE_SPAPR_MACHINE_NAMED(suffix, suffix, verstr, latest)
++
+ /*
+  * pseries-2.8
+  */
+@@ -2756,7 +2759,7 @@
+     /* Defaults for the latest behaviour inherited from the base class */
+ }
+ 
+-DEFINE_SPAPR_MACHINE(2_8, "2.8", true);
++DEFINE_SPAPR_MACHINE(2_8, "2.8", false);
+ 
+ /*
+  * pseries-2.7
+@@ -2857,12 +2860,7 @@
+  * pseries-2.6
+  */
+ #define SPAPR_COMPAT_2_6 \
+-    HW_COMPAT_2_6 \
+-    { \
+-        .driver   = TYPE_SPAPR_PCI_HOST_BRIDGE,\
+-        .property = "ddw",\
+-        .value    = stringify(off),\
+-    },
++    HW_COMPAT_2_6
+ 
+ static void spapr_machine_2_6_instance_options(MachineState *machine)
+ {
+@@ -2881,12 +2879,21 @@
+ /*
+  * pseries-2.5
+  */
++/*
++ * ddw was backported to 2.6 (Yakkety), so we have to disable it in <=2.5
++ * can be dropped when dropping Yakkety machine type (18.10)
++ */
+ #define SPAPR_COMPAT_2_5 \
+     HW_COMPAT_2_5 \
+     { \
+         .driver   = "spapr-vlan", \
+         .property = "use-rx-buffer-pools", \
+         .value    = "off", \
++    }, \
++    { \
++        .driver   = TYPE_SPAPR_PCI_HOST_BRIDGE,\
++        .property = "ddw",\
++        .value    = stringify(off),\
+     },
+ 
+ static void spapr_machine_2_5_instance_options(MachineState *machine)
+@@ -2996,6 +3003,11 @@
+ }
+ DEFINE_SPAPR_MACHINE(2_1, "2.1", false);
+ 
++/* Ubuntu machine types */
++DEFINE_SPAPR_MACHINE_NAMED(2_5, ubuntu_xenial, "xenial", false);
++DEFINE_SPAPR_MACHINE_NAMED(2_6, ubuntu_yakkety, "yakkety", false);
++DEFINE_SPAPR_MACHINE_NAMED(2_8, ubuntu_zesty, "zesty", true);
++
+ static void spapr_machine_register_types(void)
+ {
+     type_register_static(&spapr_machine_info);
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -306,13 +306,13 @@
+     },
+ };
+ 
+-#define DEFINE_CCW_MACHINE(suffix, verstr, latest)                            \
++#define DEFINE_CCW_MACHINE_NAMED(qemuver, suffix, verstr, latest)             \
+     static void ccw_machine_##suffix##_class_init(ObjectClass *oc,            \
+                                                   void *data)                 \
+     {                                                                         \
+         MachineClass *mc = MACHINE_CLASS(oc);                                 \
+-        ccw_machine_##suffix##_class_options(mc);                             \
+-        mc->desc = "VirtIO-ccw based S390 machine v" verstr;                  \
++        ccw_machine_##qemuver##_class_options(mc);                            \
++        mc->desc = "VirtIO-ccw based S390 machine " verstr;                   \
+         if (latest) {                                                         \
+             mc->alias = "s390-ccw-virtio";                                    \
+             mc->is_default = 1;                                               \
+@@ -321,7 +321,7 @@
+     static void ccw_machine_##suffix##_instance_init(Object *obj)             \
+     {                                                                         \
+         MachineState *machine = MACHINE(obj);                                 \
+-        ccw_machine_##suffix##_instance_options(machine);                     \
++        ccw_machine_##qemuver##_instance_options(machine);                      \
+     }                                                                         \
+     static const TypeInfo ccw_machine_##suffix##_info = {                     \
+         .name = MACHINE_TYPE_NAME("s390-ccw-virtio-" verstr),                 \
+@@ -351,6 +351,9 @@
+             .value    = "off",\
+         },
+ 
++#define DEFINE_CCW_MACHINE(suffix, verstr, latest)                            \
++    DEFINE_CCW_MACHINE_NAMED(suffix, suffix, verstr, latest)
++
+ #define CCW_COMPAT_2_5 \
+         CCW_COMPAT_2_6 \
+         HW_COMPAT_2_5
+@@ -402,7 +405,7 @@
+ static void ccw_machine_2_8_class_options(MachineClass *mc)
+ {
+ }
+-DEFINE_CCW_MACHINE(2_8, "2.8", true);
++DEFINE_CCW_MACHINE(2_8, "2.8", false);
+ 
+ static void ccw_machine_2_7_instance_options(MachineState *machine)
+ {
+@@ -444,7 +447,7 @@
+     ccw_machine_2_6_class_options(mc);
+     SET_MACHINE_COMPAT(mc, CCW_COMPAT_2_5);
+ }
+-DEFINE_CCW_MACHINE(2_5, "2.5", false);
++DEFINE_CCW_MACHINE(2_5, "v2.5", false);
+ 
+ static void ccw_machine_2_4_instance_options(MachineState *machine)
+ {
+@@ -456,7 +459,12 @@
+     ccw_machine_2_5_class_options(mc);
+     SET_MACHINE_COMPAT(mc, CCW_COMPAT_2_4);
+ }
+-DEFINE_CCW_MACHINE(2_4, "2.4", false);
++DEFINE_CCW_MACHINE(2_4, "v2.4", false);
++
++/* Ubuntu machine types */
++DEFINE_CCW_MACHINE_NAMED(2_5, ubuntu_xenial, "xenial", false);
++DEFINE_CCW_MACHINE_NAMED(2_6, ubuntu_yakkety, "yakkety", false);
++DEFINE_CCW_MACHINE_NAMED(2_8, ubuntu_zesty, "zesty", true);
+ 
+ static void ccw_machine_register_types(void)
+ {
+--- a/vl.c
++++ b/vl.c
+@@ -2675,6 +2675,17 @@
+                   object_class_get_name(OBJECT_CLASS(mc1)));
+ }
+ 
++static int EndsWith(const char *str, const char *suffix)
++{
++    if (!str || !suffix)
++        return 0;
++    size_t lenstr = strlen(str);
++    size_t lensuffix = strlen(suffix);
++    if (lensuffix >  lenstr)
++        return 0;
++    return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
++}
++
+  static MachineClass *machine_parse(const char *name)
+ {
+     MachineClass *mc = NULL;
+@@ -2688,8 +2699,23 @@
+         return mc;
+     }
+     if (name && !is_help_option(name)) {
+-        error_report("unsupported machine type");
++        error_report("unsupported machine type '%s'", name);
+         error_printf("Use -machine help to list supported machines\n");
++
++        /*
++         * check for formerly supported, but now dropped distro
++         * specific types. Add extra hint to the error on match.
++         * This is arch-independent as it only checks for the suffix.
++         */
++        if (EndsWith(name, "precise") ||
++            EndsWith(name, "utopic") ||
++            EndsWith(name, "vivid")) {
++            error_printf("The machine type is old and out of support now\n");
++            error_printf("Please study https://wiki.ubuntu.com/"
++                         "QemuKVMMigration#Upgrade_machine_type how to"
++                         "upgrade machine types");
++        }
++
+     } else {
+         printf("Supported machines are:\n");
+         machines = g_slist_sort(machines, machine_class_cmp);

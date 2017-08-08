@@ -5,3 +5,4 @@ use-data-path.patch
 # ubuntu patches
 ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
+ubuntu/define-ubuntu-machine-types.patch
