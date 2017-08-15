@@ -59,6 +59,7 @@ qemu (1:2.10~rc3+dfsg-0ubuntu1) artful; urgency=medium
         - d/p/ubuntu/expose-vmx_qemu64cpu.patch: target-i386 -> target/i386
         - d/p/ubuntu/define-ubuntu-machine-types.patch: new 2.10 ubuntu types
         - update VCS-git to match the Artful branch
+      - s390x package now builds correctly on all architectures (LP: #1710695)
   * Dropped changes (integrated upstream):
     - d/p/ubuntu/spapr-pci-populate-PCI-DT-in-reverse-order.patch: backport
       "spapr/pci: populate PCI DT in reverse order" (LP 1670481).
