@@ -60,6 +60,8 @@ qemu (1:2.10~rc4+dfsg-0ubuntu1) artful; urgency=medium
     - d/not-installed: ignore further generated (since 56e8bdd4) files in
       dh_missing that are already provided in other formats qemu-doc,
       qemu-qmp-ref,qemu-ga-ref
+    - d/p/ubuntu/define-ubuntu-machine-types.patch: update to match new
+      changes in 2.10-rc4
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Fri, 25 Aug 2017 07:49:30 +0200
 
