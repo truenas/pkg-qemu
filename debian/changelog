@@ -1,5 +1,53 @@
-qemu (1:2.10~rc3+dfsg-0ubuntu2) UNRELEASED; urgency=medium
+qemu (1:2.10~rc4+dfsg-0ubuntu1) artful; urgency=medium
 
+  * Merge with Upstream 2.10-rc4; This fixes a migration issue (LP: #1711602);
+    Remaining changes:
+    - qemu-kvm to systemd unit
+      - d/qemu-kvm-init: script for QEMU KVM preparation modules, ksm,
+        hugepages and architecture specifics
+      - d/qemu-kvm.service: systemd unit to call qemu-kvm-init
+      - d/qemu-system-common.install: install systemd unit and helper script
+      - d/qemu-system-common.maintscript: clean old sysv and upstart scripts
+      - d/qemu-system-common.qemu-kvm.default: defaults for
+        /etc/default/qemu-kvm
+      - d/rules: install /etc/default/qemu-kvm
+    - Enable nesting by default
+      - set nested=1 module option on intel. (is default on amd)
+      - re-load kvm_intel.ko if it was loaded without nested=1
+      - d/p/ubuntu/expose-vmx_qemu64cpu.patch: expose nested kvm by default
+        in qemu64 cpu type.
+      - d/p/ubuntu/enable-svm-by-default.patch: Enable nested svm by default
+        in qemu64 on amd
+    - libvirt/qemu user/group support
+      - qemu-system-common.postinst: remove acl placed by udev, and add udevadm
+        trigger.
+      - qemu-system-common.preinst: add kvm group if needed
+    - Distribution specific machine type
+      - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+        types to ease future live vm migration.
+      - d/qemu-system-x86.NEWS Info on fixed machine type defintions
+    - improved dependencies
+      - Make qemu-system-common depend on qemu-block-extra
+      - Make qemu-utils depend on qemu-block-extra
+      - let qemu-utils recommend sharutils
+    - s390x support
+      - Create qemu-system-s390x package
+      - Include s390-ccw.img firmware
+      - Enable numa support for s390x
+    - ppc64[le] support
+      - d/qemu-system-ppc.links provide usr/bin/qemu-system-ppc64le symlink
+      - Enable seccomp for ppc64el
+      - bump libseccomp-dev dependency, 2.3 is the minimum for ppc64
+    - arch aware kvm wrappers
+    - update VCS-git to match the Artful branch
+    - disable missing x32 architecture
+    - d/rules: or32 is now named or1k (since 4a09d0bb)
+    - d/qemu-system-common.docs: new paths since (ac06724a)
+    - d/qemu-system-common.install: qmp-commands.txt removed, but replaced
+      by qapi-schema.json which is already packaged (since 4d8bb958)
+    - d/p/02_kfreebsd.patch: utimensat is no more optional upstream (Update
+      to Debian patch to match qemu 2.10)
+    - s390x package now builds correctly on all architectures (LP 1710695)
   * Added changes:
     - d/qemu-system-common.docs: adapt new path of live-block-operations.rst
       since 8508eee7
