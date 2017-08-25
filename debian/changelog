@@ -5,6 +5,13 @@ qemu (1:2.10~rc3+dfsg-0ubuntu2) UNRELEASED; urgency=medium
       since 8508eee7
     - d/qemu-system-common.docs: adapt q35 config paths since 9ca019c1
     - make nios2/hppa not installed explicitly until further stablized
+    - d/qemu-guest-agent.install: add the new guest agent reference man page
+      qemu-ga-ref
+    - d/qemu-system-common.install: add the now generated qapi/qmp reference
+      along the qapi intro
+    - d/not-installed: ignore further generated (since 56e8bdd4) files in
+      dh_missing that are already provided in other formats qemu-doc,
+      qemu-qmp-ref,qemu-ga-ref
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Fri, 25 Aug 2017 07:49:30 +0200
 
