@@ -1,0 +1,4 @@
+# not installed/packaged intentionally until further stablized and/or requested
+usr/bin/qemu-hppa
+usr/bin/qemu-system-nios2
+usr/bin/qemu-nios2
