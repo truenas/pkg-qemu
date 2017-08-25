@@ -3,7 +3,7 @@ docs/devel/blkverify.txt
 docs/bootindex.txt
 docs/ccid.txt
 docs/config/ich9-ehci-uhci.cfg
-docs/interop/live-block-ops.txt
+docs/interop/live-block-operations.rst
 #docs/devel/memory.txt
 #docs/devel/migration.txt
 docs/config/q35-chipset.cfg
