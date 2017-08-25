@@ -6,7 +6,9 @@ docs/config/ich9-ehci-uhci.cfg
 docs/interop/live-block-operations.rst
 #docs/devel/memory.txt
 #docs/devel/migration.txt
-docs/config/q35-chipset.cfg
+docs/config/q35-emulated.cfg
+docs/config/q35-virtio-graphical.cfg
+docs/config/q35-virtio-serial.cfg
 #docs/devel/qapi-code-gen.txt
 docs/qdev-device-use.txt
 docs/qemupciserial.inf
