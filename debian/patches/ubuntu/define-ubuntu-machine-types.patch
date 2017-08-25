@@ -26,16 +26,16 @@ Forwarded: no
 
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -439,7 +439,7 @@
+@@ -439,7 +439,7 @@ static void pc_i440fx_2_10_machine_optio
  {
      pc_i440fx_machine_options(m);
      m->alias = "pc";
 -    m->is_default = 1;
 +    m->is_default = 0;
-     m->numa_auto_assign_ram = numa_legacy_auto_assign_ram;
  }
  
-@@ -1121,3 +1121,64 @@
+ DEFINE_I440FX_MACHINE(v2_10, "pc-i440fx-2.10", NULL,
+@@ -1121,3 +1121,64 @@ static void xenfv_machine_options(Machin
  DEFINE_PC_MACHINE(xenfv, "xenfv", pc_xen_hvm_init,
                    xenfv_machine_options);
  #endif
@@ -102,7 +102,7 @@ Forwarded: no
 +                      pc_wily_machine_options);
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -376,3 +376,38 @@
+@@ -376,3 +376,38 @@ static void pc_q35_2_4_machine_options(M
  
  DEFINE_Q35_MACHINE(v2_4, "pc-q35-2.4", NULL,
                     pc_q35_2_4_machine_options);
@@ -143,7 +143,7 @@ Forwarded: no
 +                   pc_q35_artful_machine_options);
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -3491,12 +3491,12 @@
+@@ -3509,12 +3509,12 @@ static const TypeInfo spapr_machine_info
      },
  };
  
@@ -158,7 +158,7 @@ Forwarded: no
          if (latest) {                                                \
              mc->alias = "pseries";                                   \
              mc->is_default = 1;                                      \
-@@ -3505,7 +3505,7 @@
+@@ -3523,7 +3523,7 @@ static const TypeInfo spapr_machine_info
      static void spapr_machine_##suffix##_instance_init(Object *obj)  \
      {                                                                \
          MachineState *machine = MACHINE(obj);                        \
@@ -167,7 +167,7 @@ Forwarded: no
      }                                                                \
      static const TypeInfo spapr_machine_##suffix##_info = {          \
          .name = MACHINE_TYPE_NAME("pseries-" verstr),                \
-@@ -3519,6 +3519,9 @@
+@@ -3537,6 +3537,9 @@ static const TypeInfo spapr_machine_info
      }                                                                \
      type_init(spapr_machine_register_##suffix)
  
@@ -177,7 +177,7 @@ Forwarded: no
  /*
   * pseries-2.10
   */
-@@ -3531,7 +3534,7 @@
+@@ -3549,7 +3552,7 @@ static void spapr_machine_2_10_class_opt
      /* Defaults for the latest behaviour inherited from the base class */
  }
  
@@ -186,7 +186,7 @@ Forwarded: no
  
  /*
   * pseries-2.9
-@@ -3686,12 +3689,7 @@
+@@ -3704,12 +3707,7 @@ DEFINE_SPAPR_MACHINE(2_7, "2.7", false);
   * pseries-2.6
   */
  #define SPAPR_COMPAT_2_6 \
@@ -200,7 +200,7 @@ Forwarded: no
  
  static void spapr_machine_2_6_instance_options(MachineState *machine)
  {
-@@ -3710,12 +3708,21 @@
+@@ -3728,12 +3726,21 @@ DEFINE_SPAPR_MACHINE(2_6, "2.6", false);
  /*
   * pseries-2.5
   */
@@ -222,7 +222,7 @@ Forwarded: no
      },
  
  static void spapr_machine_2_5_instance_options(MachineState *machine)
-@@ -3822,6 +3829,12 @@
+@@ -3840,6 +3847,12 @@ static void spapr_machine_2_1_class_opti
  }
  DEFINE_SPAPR_MACHINE(2_1, "2.1", false);
  
@@ -237,7 +237,7 @@ Forwarded: no
      type_register_static(&spapr_machine_info);
 --- a/hw/s390x/s390-virtio-ccw.c
 +++ b/hw/s390x/s390-virtio-ccw.c
-@@ -402,13 +402,13 @@
+@@ -402,13 +402,13 @@ bool css_migration_enabled(void)
      return get_machine_class()->css_migration_enabled;
  }
  
@@ -254,7 +254,7 @@ Forwarded: no
          if (latest) {                                                         \
              mc->alias = "s390-ccw-virtio";                                    \
              mc->is_default = 1;                                               \
-@@ -418,7 +418,7 @@
+@@ -418,7 +418,7 @@ bool css_migration_enabled(void)
      {                                                                         \
          MachineState *machine = MACHINE(obj);                                 \
          current_mc = S390_MACHINE_CLASS(MACHINE_GET_CLASS(machine));          \
@@ -263,7 +263,7 @@ Forwarded: no
      }                                                                         \
      static const TypeInfo ccw_machine_##suffix##_info = {                     \
          .name = MACHINE_TYPE_NAME("s390-ccw-virtio-" verstr),                 \
-@@ -506,6 +506,9 @@
+@@ -506,6 +506,9 @@ bool css_migration_enabled(void)
              .value    = "0",\
          },
  
@@ -273,7 +273,7 @@ Forwarded: no
  static void ccw_machine_2_10_instance_options(MachineState *machine)
  {
      if (css_migration_enabled()) {
-@@ -516,7 +519,7 @@
+@@ -516,7 +519,7 @@ static void ccw_machine_2_10_instance_op
  static void ccw_machine_2_10_class_options(MachineClass *mc)
  {
  }
@@ -282,7 +282,7 @@ Forwarded: no
  
  static void ccw_machine_2_9_instance_options(MachineState *machine)
  {
-@@ -591,7 +594,7 @@
+@@ -591,7 +594,7 @@ static void ccw_machine_2_5_class_option
      ccw_machine_2_6_class_options(mc);
      SET_MACHINE_COMPAT(mc, CCW_COMPAT_2_5);
  }
@@ -291,7 +291,7 @@ Forwarded: no
  
  static void ccw_machine_2_4_instance_options(MachineState *machine)
  {
-@@ -603,7 +606,13 @@
+@@ -603,7 +606,13 @@ static void ccw_machine_2_4_class_option
      ccw_machine_2_5_class_options(mc);
      SET_MACHINE_COMPAT(mc, CCW_COMPAT_2_4);
  }
@@ -308,7 +308,7 @@ Forwarded: no
  {
 --- a/vl.c
 +++ b/vl.c
-@@ -2638,6 +2638,17 @@
+@@ -2640,6 +2640,17 @@ static gint machine_class_cmp(gconstpoin
                    object_class_get_name(OBJECT_CLASS(mc1)));
  }
  
@@ -326,7 +326,7 @@ Forwarded: no
   static MachineClass *machine_parse(const char *name)
  {
      MachineClass *mc = NULL;
-@@ -2651,8 +2662,23 @@
+@@ -2653,8 +2664,23 @@ static gint machine_class_cmp(gconstpoin
          return mc;
      }
      if (name && !is_help_option(name)) {
