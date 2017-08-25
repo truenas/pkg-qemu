@@ -2,3 +2,11 @@
 usr/bin/qemu-hppa
 usr/bin/qemu-system-nios2
 usr/bin/qemu-nios2
+# now generates more versions, html version is already in qemu-system-common
+usr/share/doc/qemu/qemu-doc.txt
+# generates more versions, man added in qemu-guest-agent
+usr/share/doc/qemu/qemu-ga-ref.html
+usr/share/doc/qemu/qemu-ga-ref.txt
+# generates more versions, txt added in qemu-system-common
+usr/share/man/man7/qemu-qmp-ref.7
+usr/share/doc/qemu/qemu-qmp-ref.html
