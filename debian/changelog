@@ -18,6 +18,7 @@ qemu (1:2.10.0-1) unstable; urgency=medium
     Closes: #865754, CVE-2017-9503
     Closes: #864219, CVE-2017-9375
     Closes: #869945
+    Closes: #867978
     Closed in this upstream release:
      #865755, CVE-2017-9524
      #863840, CVE-2017-9310
