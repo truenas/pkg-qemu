@@ -45,3 +45,4 @@ exec-use-qemu_ram_ptr_length-to-access-guest-ram-CVE-2017-11334.patch
 usb-redir-fix-stack-overflow-in-usbredir_log_data-CVE-2017-10806.patch
 ide-do-not-flush-empty-CDROM-drives-CVE-2017-12809.patch
 vga-stop-passing-pointers-to-vga_draw_line-functions-CVE-2017-13672.patch
+multiboot-validate-multiboot-header-address-values-CVE-2017-14167.patch
