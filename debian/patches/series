@@ -1,2 +1,3 @@
 use-fixed-data-path.patch
 use-data-path.patch
+vga-stop-passing-pointers-to-vga_draw_line-functions-CVE-2017-13672.patch
