@@ -28,9 +28,12 @@ qemu (1:2.10.0-1) unstable; urgency=medium
   * added hppa binfmt entry
   * refreshed docs lists for various packages
   * new (security) patches:
-    vga-stop-passing-pointers-to-vga_draw_line-functions-CVE-2017-13672.patch (#873851)
-    multiboot-validate-multiboot-header-address-values-CVE-2017-14167.patch (#874606)
-    slirp-fix-clearing-ifq_so-from-pending-packets-CVE-2017-13711.patch (#873875)
+    vga-stop-passing-pointers-to-vga_draw_line-functions-CVE-2017-13672.patch
+    Closes: #873851, CVE-2017-13672
+    multiboot-validate-multiboot-header-address-values-CVE-2017-14167.patch
+    Closes: #874606, CVE-2017-14167
+    slirp-fix-clearing-ifq_so-from-pending-packets-CVE-2017-13711.patch
+    Closes: #873875, CVE-2017-13711
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 23 Sep 2017 16:47:02 +0300
 
