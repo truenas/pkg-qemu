@@ -1,3 +1,11 @@
+qemu (1:2.10.0+dfsg-3) UNRELEASED; urgency=medium
+
+  [ Aurelien Jarno ]
+  * debian/control-in: build qemu-system and qemu-user on mips64 and
+    mips64el.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 24 Sep 2017 02:06:34 +0200
+
 qemu (1:2.10.0+dfsg-2) unstable; urgency=medium
 
   * update to upstream 2.10.1 point release
