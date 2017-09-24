@@ -1,4 +1,4 @@
-qemu (1:2.8+dfsg-6+deb9u3) UNRELEASED; urgency=high
+qemu (1:2.8+dfsg-6+deb9u3) stretch-security; urgency=high
 
   * xhci-dont-kick-in-xhci_submit-and-xhci_fire_ctl_transfer.patch
     This is a pre-required patch for the next patch to work right.
@@ -14,8 +14,12 @@ qemu (1:2.8+dfsg-6+deb9u3) UNRELEASED; urgency=high
     Closes: #874606, CVE-2017-14167
   * slirp-fix-clearing-ifq_so-from-pending-packets-CVE-2017-13711.patch
     Closes: #873875, CVE-2017-13711
+  * exec-add-lock-parameter-to-qemu_ram_ptr_length.patch
+    upstream patch fixing memory leak after
+    exec-use-qemu_ram_ptr_length-to-access-guest-ram-CVE-2017-11334.patch
+    Closes: #871648, #871702, #872257
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 23 Sep 2017 17:09:09 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 02 Oct 2017 16:11:47 +0300
 
 qemu (1:2.8+dfsg-6+deb9u2) stretch-security; urgency=high
 
