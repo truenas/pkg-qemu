@@ -89,8 +89,6 @@ Build-Depends: debhelper (>= 9),
  libx11-dev,
 # --enable-xen	linux-amd64|linux-i386
  libxen-dev [linux-amd64 linux-i386],
-# XXX need to check minimum linux-headers requiriment
- linux-libc-dev (>= 2.6.34) [linux-any],
 ## always enabled: --enable-uuid
  uuid-dev,
 # --enable-xfsctl	linux-*
