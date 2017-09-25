@@ -1,3 +1,11 @@
+qemu (1:2.10.0+dfsg-2) UNRELEASED; urgency=medium
+
+  * drop dh_makeshlibs call (was for libcacard)
+  * drop linux-libc-dev build-dependency (it gets pulled by libc-dev)
+  * switch from sdl1 to sdl2 (Closes: #870025)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 25 Sep 2017 09:47:03 +0300
+
 qemu (1:2.10.0+dfsg-1) unstable; urgency=medium
 
   * remove blobs, to DFSG'ify it again (there's still
@@ -10,7 +18,7 @@ qemu (1:2.10.0+dfsg-1) unstable; urgency=medium
     Closes: #874606, CVE-2017-14167
     Closes: #873875, CVE-2017-13711
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 23 Sep 2017 18:35:29 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 25 Sep 2017 09:46:53 +0300
 
 qemu (1:2.10.0-1) unstable; urgency=medium
 
