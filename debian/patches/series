@@ -6,3 +6,4 @@ use-data-path.patch
 ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
 ubuntu/define-ubuntu-machine-types.patch
+qemu-2.10.1.diff
