@@ -1,3 +1,9 @@
+qemu (1:2.10+dfsg-0ubuntu2) artful; urgency=medium
+
+  * update to upstream 2.10.1 point release (LP: #1722808)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 11 Oct 2017 15:33:40 +0200
+
 qemu (1:2.10+dfsg-0ubuntu1) artful; urgency=medium
 
   * Merge with Upstream 2.10.0 to pick up final fixes of the 2.10 release
