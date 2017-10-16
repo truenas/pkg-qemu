@@ -1,3 +1,12 @@
+qemu (1:2.10+dfsg-0ubuntu3) artful; urgency=medium
+
+  * fix enablement of qemu-kvm service (LP: #1720397)
+    - rename d/qemu-kvm.service to d/qemu-system-common.qemu-kvm.service
+    - d/rules: add proper enablement debhelper calls
+    - d/qemu-system-common.install: install covered by dh_installinit
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 16 Oct 2017 11:28:39 +0200
+
 qemu (1:2.10+dfsg-0ubuntu2) artful; urgency=medium
 
   * update to upstream 2.10.1 point release (LP: #1722808)
