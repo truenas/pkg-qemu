@@ -295,8 +295,10 @@ ifeq (${enable_system},enable)
 # qemu-ifup is arch-specific
 	install -D debian/qemu-ifup.$(DEB_HOST_ARCH_OS) \
 		debian/qemu-system-common/etc/qemu-ifup
-	# to place /etc/default/qemu-kvm
-	dh_installinit -pqemu-system-common --no-restart-on-upgrade --error-handler=true --name=qemu-kvm
+	# install and enable qemu-kvm.service as well as /etc/default/qemu-kvm
+	dh_systemd_enable ${ai} -pqemu-system-common --name=qemu-kvm
+	dh_installinit ${ai} -pqemu-system-common --no-restart-on-upgrade --error-handler=true --name=qemu-kvm
+	dh_systemd_start ${ai} -pqemu-system-common --no-restart-on-upgrade --name=qemu-kvm
 endif
 	dh_installinit -pqemu-guest-agent
 endif
