@@ -1,3 +1,12 @@
+qemu (1:2.8+dfsg-3ubuntu2.6) zesty; urgency=medium
+
+  * fix enablement of qemu-kvm service (LP: #1720397)
+    - rename d/qemu-kvm.service to d/qemu-system-common.qemu-kvm.service
+    - d/rules: add proper enablement debhelper calls
+    - d/qemu-system-common.install: install covered by dh_installinit
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 17 Oct 2017 11:31:53 +0200
+
 qemu (1:2.8+dfsg-3ubuntu2.5) zesty-security; urgency=medium
 
   * SECURITY REGRESSION: regression in in USB xHCI emulation (LP: #1718222)
