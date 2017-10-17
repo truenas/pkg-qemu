@@ -1,3 +1,86 @@
+qemu (1:2.8+dfsg-3ubuntu2.4) zesty-security; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation via virtFS
+    - debian/patches/CVE-2017-7493.patch: forbid client access to metadata
+      in hw/9pfs/9p-local.c.
+    - CVE-2017-7493
+  * SECURITY UPDATE: DoS via message ring page count
+    - debian/patches/CVE-2017-8112.patch: check page count in
+      hw/scsi/vmw_pvscsi.c.
+    - CVE-2017-8112
+  * SECURITY UPDATE: DoS via OOB read in MegaSAS
+    - debian/patches/CVE-2017-8380.patch: avoid off-by-one in
+      hw/scsi/megasas.c.
+    - CVE-2017-8380
+  * SECURITY UPDATE: DoS in virtio GPU device
+    - debian/patches/CVE-2017-9060.patch: fix memory leak in
+      hw/display/virtio-gpu.c.
+    - CVE-2017-9060
+  * SECURITY UPDATE: DoS in e1000e NIC
+    - debian/patches/CVE-2017-9310.patch: fix infinite loop in
+      hw/net/e1000e_core.c.
+    - CVE-2017-9310
+  * SECURITY UPDATE: DoS in USB OHCI emulation
+    - debian/patches/CVE-2017-9330.patch: fix error code in
+      hw/usb/hcd-ohci.c.
+    - CVE-2017-9330
+  * SECURITY UPDATE: DoS in IDE AHCI emulation
+    - debian/patches/CVE-2017-9373-1.patch: add cleanup function in
+      hw/ide/core.c, include/hw/ide/internal.h.
+    - debian/patches/CVE-2017-9373-2.patch: call cleanup function in
+      hw/ide/ahci.c.
+    - CVE-2017-9373
+  * SECURITY UPDATE: DoS in USB EHCI emulation
+    - debian/patches/CVE-2017-9374.patch: fix memory leak in
+      hw/usb/hcd-ehci-pci.c, hw/usb/hcd-ehci.c, hw/usb/hcd-ehci.h.
+    - CVE-2017-9374
+  * SECURITY UPDATE: DoS in USB xHCI emulation
+    - debian/patches/CVE-2017-9375.patch: guard against recursive calls in
+      hw/usb/hcd-xhci.c.
+    - CVE-2017-9375
+  * SECURITY UPDATE: DoS in MegaSAS
+    - debian/patches/CVE-2017-9503-1.patch: add test to
+      tests/Makefile.include, tests/megasas-test.c.
+    - debian/patches/CVE-2017-9503-2.patch: do not read sense length more
+      than once in hw/scsi/megasas.c.
+    - debian/patches/CVE-2017-9503-3.patch: do not read iovec count more
+      than once in hw/scsi/megasas.c.
+    - debian/patches/CVE-2017-9503-4.patch: do not read DCMD opcode more
+      than once in hw/scsi/megasas.c.
+    - debian/patches/CVE-2017-9503-5.patch: do not read command more than
+      once in hw/scsi/megasas.c.
+    - debian/patches/CVE-2017-9503-6.patch: do not read SCSI req parameters
+      more than once in hw/scsi/megasas.c.
+    - debian/patches/CVE-2017-9503-7.patch: always store SCSIRequest* into
+      MegasasCmd in hw/scsi/megasas.c, added test to tests/megasas-test.c.
+    - CVE-2017-9503
+  * SECURITY UPDATE: DoS in NBD server support
+    - debian/patches/CVE-2017-9524-1.patch: fully initialize client in
+      nbd/server.c, qemu-nbd.c.
+    - debian/patches/CVE-2017-9524-2.patch: fix regression in
+      blockdev-nbd.c, include/block/nbd.h, nbd/server.c, qemu-nbd.c.
+    - CVE-2017-9524
+  * SECURITY UPDATE: DoS via incorrect SIGPIPE handling
+    - debian/patches/CVE-2017-10664.patch: ignore SIGPIPE in qemu-nbd.c.
+    - CVE-2017-10664
+  * SECURITY UPDATE: stack overflow in usbredir_log_data
+    - debian/patches/CVE-2017-10806.patch: use qemu_hexdump in
+      hw/usb/redirect.c.
+    - CVE-2017-10806
+  * SECURITY UPDATE: memory disclosure in Xen block-interface responses
+    - debian/patches/CVE-2017-10911.patch: fill the fields directly in
+      hw/block/xen_disk.c.
+    - CVE-2017-10911
+  * SECURITY UPDATE: DoS via crafted DHCP options string
+    - debian/patches/CVE-2017-11434.patch: check length in slirp/bootp.c.
+    - CVE-2017-11434
+  * SECURITY UPDATE: DoS via flushing empty CDROM drives
+    - debian/patches/CVE-2017-12809.patch: don't flush empty drives in
+      hw/ide/core.c.
+    - CVE-2017-12809
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 22 Aug 2017 08:04:37 -0400
+
 qemu (1:2.8+dfsg-3ubuntu2.3) zesty; urgency=medium
 
   * debian/rules: fix installation of /etc/default/qemu-kvm (LP: #1692530)
