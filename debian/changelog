@@ -1,3 +1,11 @@
+qemu (1:2.8+dfsg-3ubuntu2.5) zesty-security; urgency=medium
+
+  * SECURITY REGRESSION: regression in in USB xHCI emulation (LP: #1718222)
+    - debian/patches/CVE-2017-9375-regression.patch: don't kick in
+      xhci_submit and xhci_fire_ctl_transfer in hw/usb/hcd-xhci.c.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 20 Sep 2017 07:22:48 -0400
+
 qemu (1:2.8+dfsg-3ubuntu2.4) zesty-security; urgency=medium
 
   * SECURITY UPDATE: privilege escalation via virtFS
