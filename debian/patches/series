@@ -85,3 +85,4 @@ CVE-2017-10806.patch
 CVE-2017-10911.patch
 CVE-2017-11434.patch
 CVE-2017-12809.patch
+CVE-2017-9375-regression.patch
