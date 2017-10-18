@@ -1,3 +1,11 @@
+qemu (1:2.8+dfsg-3ubuntu2.7) zesty; urgency=medium
+
+  * d/p/ubuntu/virtio-Fix-no-interrupt-when-not-creating-msi-contro.patch:
+    on Arm fix no interrupt when not creating msi controller. That fixes
+    broken networking if running with virtio-mmio only (LP: #1719196).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 18 Oct 2017 16:17:34 +0200
+
 qemu (1:2.8+dfsg-3ubuntu2.6) zesty; urgency=medium
 
   * fix enablement of qemu-kvm service (LP: #1720397)
