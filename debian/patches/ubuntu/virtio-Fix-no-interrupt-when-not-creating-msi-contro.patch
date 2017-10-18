@@ -1,0 +1,59 @@
+From b4b9862b536f41fcdf6ad193a306a852c5b5b71a Mon Sep 17 00:00:00 2001
+From: "Michael S. Tsirkin" <mst@redhat.com>
+Date: Fri, 17 Feb 2017 04:52:16 +0200
+Subject: [PATCH] virtio: Fix no interrupt when not creating msi controller
+
+For ARM virt machine, if we use virt-2.7 which will not create ITS node,
+the virtio-net can not recieve interrupts so it can't get ip address
+through dhcp.
+This fixes commit 83d768b(virtio: set ISR on dataplane notifications).
+
+Signed-off-by: Shannon Zhao <shannon.zhao@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+
+Forwarded: no (backport)
+Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Original-Author: Michael S. Tsirkin <mst@redhat.com>
+Origin: https://git.qemu.org/?p=qemu.git;a=commit;h=b4b9862b536f41fcdf6ad193a306a852c5b5b71a
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1719196
+Last-Update: 2017-10-18
+---
+ hw/virtio/virtio.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -1380,6 +1380,12 @@ void virtio_notify_irqfd(VirtIODevice *v
+     event_notifier_set(&vq->guest_notifier);
+ }
+ 
++static void virtio_irq(VirtQueue *vq)
++{
++    virtio_set_isr(vq->vdev, 0x1);
++    virtio_notify_vector(vq->vdev, vq->vector);
++}
++
+ void virtio_notify(VirtIODevice *vdev, VirtQueue *vq)
+ {
+     if (!virtio_should_notify(vdev, vq)) {
+@@ -1387,8 +1393,7 @@ void virtio_notify(VirtIODevice *vdev, V
+     }
+ 
+     trace_virtio_notify(vdev, vq);
+-    virtio_set_isr(vq->vdev, 0x1);
+-    virtio_notify_vector(vdev, vq->vector);
++    virtio_irq(vq);
+ }
+ 
+ void virtio_notify_config(VirtIODevice *vdev)
+@@ -2014,7 +2019,7 @@ static void virtio_queue_guest_notifier_
+ {
+     VirtQueue *vq = container_of(n, VirtQueue, guest_notifier);
+     if (event_notifier_test_and_clear(n)) {
+-        virtio_notify_vector(vq->vdev, vq->vector);
++        virtio_irq(vq);
+     }
+ }
+ 
