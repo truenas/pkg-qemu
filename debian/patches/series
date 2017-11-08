@@ -11,3 +11,4 @@ ubuntu/lp1743560-linux-headers-update-to-4.15-rc1.patch
 ubuntu/lp1743560-linux-headers-update-to-4.15-rc9.patch
 ubuntu/lp1743560-s390x-kvm-Handle-bpb-feature.patch
 ubuntu/lp1743560-s390x-kvm-provide-stfle.81.patch
+ubuntu/pre-bionic-256k-ipxe-efi-roms.patch
