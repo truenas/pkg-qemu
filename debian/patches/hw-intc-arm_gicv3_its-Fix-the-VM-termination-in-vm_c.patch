@@ -1,0 +1,51 @@
+From 3a575cd2c2411f139a95ace4b2523bc1dfd21755 Mon Sep 17 00:00:00 2001
+From: Shanker Donthineni <shankerd@codeaurora.org>
+Date: Tue, 7 Nov 2017 13:03:51 +0000
+Subject: [PATCH] hw/intc/arm_gicv3_its: Fix the VM termination in
+ vm_change_state_handler()
+
+The commit cddafd8f353d ("hw/intc/arm_gicv3_its: Implement state save
+/restore") breaks the backward compatibility with the older kernels
+where vITS save/restore support is not available. The vmstate function
+vm_change_state_handler() should not be registered if the running kernel
+doesn't support ITS save/restore feature. Otherwise VM instance will be
+killed whenever vmstate callback function is invoked.
+
+Observed a virtual machine shutdown with QEMU-2.10+linux-4.11 when testing
+the reboot command "virsh reboot <domain> --mode acpi" instead of reboot.
+
+KVM Error: 'KVM_SET_DEVICE_ATTR failed: Group 4 attr 0x00000000000001'
+
+Signed-off-by: Shanker Donthineni <shankerd@codeaurora.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Message-id: 1509712671-16299-1-git-send-email-shankerd@codeaurora.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+Forwarded: no (backport)
+Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Original-Author: Shanker Donthineni <shankerd@codeaurora.org>
+Origin: https://git.qemu.org/?p=qemu.git;a=commit;h=3a575cd2c2411f139a95ace4b2523bc1dfd21755
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1731051
+Last-Update: 2017-11-10
+---
+ hw/intc/arm_gicv3_its_kvm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/hw/intc/arm_gicv3_its_kvm.c
++++ b/hw/intc/arm_gicv3_its_kvm.c
+@@ -111,13 +111,13 @@ static void kvm_arm_its_realize(DeviceSt
+             error_free(s->migration_blocker);
+             return;
+         }
++    } else {
++        qemu_add_vm_change_state_handler(vm_change_state_handler, s);
+     }
+ 
+     kvm_msi_use_devid = true;
+     kvm_gsi_direct_mapping = false;
+     kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
+-
+-    qemu_add_vm_change_state_handler(vm_change_state_handler, s);
+ }
+ 
+ static void kvm_arm_its_init(Object *obj)

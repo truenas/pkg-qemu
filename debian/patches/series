@@ -7,3 +7,4 @@ ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
 ubuntu/define-ubuntu-machine-types.patch
 qemu-2.10.1.diff
+hw-intc-arm_gicv3_its-Fix-the-VM-termination-in-vm_c.patch
