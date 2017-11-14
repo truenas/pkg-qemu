@@ -1,3 +1,9 @@
+qemu (1:2.8+dfsg-3ubuntu2.8) zesty; urgency=medium
+
+  * Backport support for GICv3/vITS save/restore (LP: #1710019).
+
+ -- dann frazier <dannf@ubuntu.com>  Tue, 14 Nov 2017 08:27:31 -0700
+
 qemu (1:2.8+dfsg-3ubuntu2.7) zesty; urgency=medium
 
   * d/p/ubuntu/virtio-Fix-no-interrupt-when-not-creating-msi-contro.patch:
