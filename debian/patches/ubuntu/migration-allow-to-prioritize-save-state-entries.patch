@@ -1,0 +1,119 @@
+Subject: [PATCH] migration: allow to prioritize save state entries
+ During migration, save state entries are saved/loaded without a specific
+ order - we just traverse the savevm_state.handlers list and do it one by
+ one. This might not be enough.
+ .
+ There are requirements that we need to load specific device's vmstate
+ first before others. For example, VT-d IOMMU contains DMA address
+ remapping information, which is required by all the PCI devices to do
+ address translations. We need to make sure IOMMU's device state is
+ loaded before the rest of the PCI devices, so that DMA address
+ translation can work properly.
+ .
+ This patch provide a VMStateDescription.priority value to allow specify
+ the priority of the saved states. The loadvm operation will be done with
+ those devices with higher vmsd priority.
+ .
+ Before this patch, we are possibly achieving the ordering requirement by
+ an assumption that the ordering will be the same with the ordering that
+ objects are created. A better way is to mark it out explicitly in the
+ VMStateDescription table, like what this patch does.
+ .
+ Current ordering logic is still naive and slow, but after all that's not
+ a critical path so IMO it's a workable solution for now.
+ .
+ Signed-off-by: Peter Xu <peterx@redhat.com>
+ Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+ Reviewed-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+Origin: https://git.qemu.org/gitweb.cgi?p=qemu.git;a=commit;h=f37bc03623cd22f3934264f50af926b9b63f6598
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1710019
+Author: Peter Xu <peterx@redhat.com>
+Last-Update: 2017-08-10
+
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 1638ee57f7..1a228872fa 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -186,6 +186,11 @@ enum VMStateFlags {
+     VMS_MULTIPLY_ELEMENTS = 0x4000,
+ };
+ 
++typedef enum {
++    MIG_PRI_DEFAULT = 0,
++    MIG_PRI_MAX,
++} MigrationPriority;
++
+ typedef struct {
+     const char *name;
+     size_t offset;
+@@ -207,6 +212,7 @@ struct VMStateDescription {
+     int version_id;
+     int minimum_version_id;
+     int minimum_version_id_old;
++    MigrationPriority priority;
+     LoadStateHandler *load_state_old;
+     int (*pre_load)(void *opaque);
+     int (*post_load)(void *opaque, int version_id);
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 0363372acc..f9c06e9f96 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -532,6 +532,34 @@ static int calculate_compat_instance_id(const char *idstr)
+     return instance_id;
+ }
+ 
++static inline MigrationPriority save_state_priority(SaveStateEntry *se)
++{
++    if (se->vmsd) {
++        return se->vmsd->priority;
++    }
++    return MIG_PRI_DEFAULT;
++}
++
++static void savevm_state_handler_insert(SaveStateEntry *nse)
++{
++    MigrationPriority priority = save_state_priority(nse);
++    SaveStateEntry *se;
++
++    assert(priority <= MIG_PRI_MAX);
++
++    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
++        if (save_state_priority(se) < priority) {
++            break;
++        }
++    }
++
++    if (se) {
++        QTAILQ_INSERT_BEFORE(se, nse, entry);
++    } else {
++        QTAILQ_INSERT_TAIL(&savevm_state.handlers, nse, entry);
++    }
++}
++
+ /* TODO: Individual devices generally have very little idea about the rest
+    of the system, so instance_id should be removed/replaced.
+    Meanwhile pass -1 as instance_id if you do not already have a clearly
+@@ -578,8 +606,7 @@ int register_savevm_live(DeviceState *dev,
+         se->instance_id = instance_id;
+     }
+     assert(!se->compat || se->instance_id == 0);
+-    /* add at the end of list */
+-    QTAILQ_INSERT_TAIL(&savevm_state.handlers, se, entry);
++    savevm_state_handler_insert(se);
+     return 0;
+ }
+ 
+@@ -662,8 +689,7 @@ int vmstate_register_with_alias_id(DeviceState *dev, int instance_id,
+         se->instance_id = instance_id;
+     }
+     assert(!se->compat || se->instance_id == 0);
+-    /* add at the end of list */
+-    QTAILQ_INSERT_TAIL(&savevm_state.handlers, se, entry);
++    savevm_state_handler_insert(se);
+     return 0;
+ }
+ 
+-- 
+2.11.0
+

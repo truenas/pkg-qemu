@@ -1,0 +1,83 @@
+Subject: [PATCH 1/4] hw/intc/arm_gicv3_kvm: Add ICC_SRE_EL1 register to vmstate
+ To Save and Restore ICC_SRE_EL1 register introduce vmstate
+ subsection and load only if non-zero.
+ Also initialize icc_sre_el1 with to 0x7 in pre_load
+ function.
+ .
+ Signed-off-by: Vijaya Kumar K <Vijaya.Kumar@cavium.com>
+ Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+ Reviewed-by: Eric Auger <eric.auger@redhat.com>
+ Message-id: 1487850673-26455-3-git-send-email-vijay.kilari@gmail.com
+ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+ [ dannf: backport involved only context adjustments ]
+Origin: https://git.qemu.org/gitweb.cgi?p=qemu.git;a=commit;h=6692aac41119906409dfa634ecbe3ef1634b5e5c
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1710019
+Author: Vijaya Kumar K <Vijaya.Kumar@cavium.com>
+Last-Update: 2017-08-10
+
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_common.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_common.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_common.c
+@@ -49,6 +49,38 @@ static int gicv3_post_load(void *opaque,
+     return 0;
+ }
+ 
++static int icc_sre_el1_reg_pre_load(void *opaque)
++{
++    GICv3CPUState *cs = opaque;
++
++   /*
++    * If the sre_el1 subsection is not transferred this
++    * means SRE_EL1 is 0x7 (which might not be the same as
++    * our reset value).
++    */
++    cs->icc_sre_el1 = 0x7;
++    return 0;
++}
++
++static bool icc_sre_el1_reg_needed(void *opaque)
++{
++    GICv3CPUState *cs = opaque;
++
++    return cs->icc_sre_el1 != 7;
++}
++
++const VMStateDescription vmstate_gicv3_cpu_sre_el1 = {
++    .name = "arm_gicv3_cpu/sre_el1",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .pre_load = icc_sre_el1_reg_pre_load,
++    .needed = icc_sre_el1_reg_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64(icc_sre_el1, GICv3CPUState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_gicv3_cpu = {
+     .name = "arm_gicv3_cpu",
+     .version_id = 1,
+@@ -75,6 +107,10 @@ static const VMStateDescription vmstate_
+         VMSTATE_UINT64_ARRAY(icc_igrpen, GICv3CPUState, 3),
+         VMSTATE_UINT64(icc_ctlr_el3, GICv3CPUState),
+         VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * []) {
++        &vmstate_gicv3_cpu_sre_el1,
++        NULL
+     }
+ };
+ 
+Index: qemu-2.8+dfsg/include/hw/intc/arm_gicv3_common.h
+===================================================================
+--- qemu-2.8+dfsg.orig/include/hw/intc/arm_gicv3_common.h
++++ qemu-2.8+dfsg/include/hw/intc/arm_gicv3_common.h
+@@ -166,6 +166,7 @@ struct GICv3CPUState {
+     uint8_t gicr_ipriorityr[GIC_INTERNAL];
+ 
+     /* CPU interface */
++    uint64_t icc_sre_el1;
+     uint64_t icc_ctlr_el1[2];
+     uint64_t icc_pmr_el1;
+     uint64_t icc_bpr[3];

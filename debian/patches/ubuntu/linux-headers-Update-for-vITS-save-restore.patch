@@ -1,0 +1,66 @@
+Description: linux-headers: Update for vITS save/restore
+ This is a linux header update against 4.11-rc6 plus the non
+ upstreamed ITS migration series.
+ .
+ https://github.com/eauger/linux/tree/v4.11-rc6-its-mig-v5
+ .
+ It aims at enhancing the KVM user API with vITS save/restore
+ capability. Those are new attributes supported in the
+ ITS and GICv3 KVM device KVM_DEV_ARM_VGIC_GRP_CTRL groups.
+ .
+ Signed-off-by: Eric Auger <eric.auger@redhat.com>
+ [ dannf: This was fixed upstream by syncing the headers
+   w/ 4.12-rc1. For this backport, I'm instead using a patch
+   from the mailing list that only adds the definitions
+   required by the following vITS save/restore series.
+   Porting only involved context changes. ]
+Origin: https://patchwork.kernel.org/patch/9681213/
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1710019
+Author: Eric Auger <eric.auger@redhat.com>
+Last-Update: 2017-08-10
+Applied-Upstream: https://git.qemu.org/gitweb.cgi?p=qemu.git;a=commitdiff;h=74c98e20a604b9db58284b8727688df70e9bf643
+
+Index: qemu-2.8+dfsg/linux-headers/asm-arm/kvm.h
+===================================================================
+--- qemu-2.8+dfsg.orig/linux-headers/asm-arm/kvm.h
++++ qemu-2.8+dfsg/linux-headers/asm-arm/kvm.h
+@@ -183,12 +183,16 @@ struct kvm_arch_memory_slot {
+ #define KVM_DEV_ARM_VGIC_GRP_REDIST_REGS 5
+ #define KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS 6
+ #define KVM_DEV_ARM_VGIC_GRP_LEVEL_INFO  7
++#define KVM_DEV_ARM_VGIC_GRP_ITS_REGS	8
+ #define KVM_DEV_ARM_VGIC_LINE_LEVEL_INFO_SHIFT	10
+ #define KVM_DEV_ARM_VGIC_LINE_LEVEL_INFO_MASK \
+ 			(0x3fffffULL << KVM_DEV_ARM_VGIC_LINE_LEVEL_INFO_SHIFT)
+ #define KVM_DEV_ARM_VGIC_LINE_LEVEL_INTID_MASK 0x3ff
+ #define VGIC_LEVEL_INFO_LINE_LEVEL	0
+-#define   KVM_DEV_ARM_VGIC_CTRL_INIT    0
++#define   KVM_DEV_ARM_VGIC_CTRL_INIT		0
++#define   KVM_DEV_ARM_ITS_SAVE_TABLES		1
++#define   KVM_DEV_ARM_ITS_RESTORE_TABLES	2
++#define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
+ 
+ /* KVM_IRQ_LINE irq field index values */
+ #define KVM_ARM_IRQ_TYPE_SHIFT		24
+Index: qemu-2.8+dfsg/linux-headers/asm-arm64/kvm.h
+===================================================================
+--- qemu-2.8+dfsg.orig/linux-headers/asm-arm64/kvm.h
++++ qemu-2.8+dfsg/linux-headers/asm-arm64/kvm.h
+@@ -212,12 +212,16 @@ struct kvm_arch_memory_slot {
+ #define KVM_DEV_ARM_VGIC_GRP_REDIST_REGS 5
+ #define KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS 6
+ #define KVM_DEV_ARM_VGIC_GRP_LEVEL_INFO  7
++#define KVM_DEV_ARM_VGIC_GRP_ITS_REGS 8
+ #define KVM_DEV_ARM_VGIC_LINE_LEVEL_INFO_SHIFT	10
+ #define KVM_DEV_ARM_VGIC_LINE_LEVEL_INFO_MASK \
+ 			(0x3fffffULL << KVM_DEV_ARM_VGIC_LINE_LEVEL_INFO_SHIFT)
+ #define KVM_DEV_ARM_VGIC_LINE_LEVEL_INTID_MASK	0x3ff
+ #define VGIC_LEVEL_INFO_LINE_LEVEL	0
+-#define   KVM_DEV_ARM_VGIC_CTRL_INIT	0
++#define   KVM_DEV_ARM_VGIC_CTRL_INIT		0
++#define   KVM_DEV_ARM_ITS_SAVE_TABLES           1
++#define   KVM_DEV_ARM_ITS_RESTORE_TABLES        2
++#define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
+ 
+ /* Device Control API on vcpu fd */
+ #define KVM_ARM_VCPU_PMU_V3_CTRL	0

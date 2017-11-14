@@ -1,0 +1,75 @@
+Subject: [PATCH 3/4] target-arm: Add GICv3CPUState in CPUARMState struct
+ Add gicv3state void pointer to CPUARMState struct
+ to store GICv3CPUState.
+ .
+ In case of usecase like CPU reset, we need to reset
+ GICv3CPUState of the CPU. In such scenario, this pointer
+ becomes handy.
+ .
+ Signed-off-by: Vijaya Kumar K <Vijaya.Kumar@cavium.com>
+ Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+ Reviewed-by: Eric Auger <eric.auger@redhat.com>
+ Message-id: 1487850673-26455-5-git-send-email-vijay.kilari@gmail.com
+ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+ [ dannf: backported to deal with target/arm/cpu.h->target-arm
+Origin: https://git.qemu.org/gitweb.cgi?p=qemu.git;a=commit;h=d3a3e529626fbee5cf0fb33414a85c9493adc280
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1710019
+Author: Vijaya Kumar K <Vijaya.Kumar@cavium.com>
+Last-Update: 2017-08-10
+
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_common.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_common.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_common.c
+@@ -221,6 +221,8 @@ static void arm_gicv3_common_realize(Dev
+ 
+         s->cpu[i].cpu = cpu;
+         s->cpu[i].gic = s;
++        /* Store GICv3CPUState in CPUARMState gicv3state pointer */
++        gicv3_set_gicv3state(cpu, &s->cpu[i]);
+ 
+         /* Pre-construct the GICR_TYPER:
+          * For our implementation:
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_cpuif.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_cpuif.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_cpuif.c
+@@ -17,6 +17,14 @@
+ #include "gicv3_internal.h"
+ #include "cpu.h"
+ 
++void gicv3_set_gicv3state(CPUState *cpu, GICv3CPUState *s)
++{
++    ARMCPU *arm_cpu = ARM_CPU(cpu);
++    CPUARMState *env = &arm_cpu->env;
++
++    env->gicv3state = (void *)s;
++};
++
+ static GICv3CPUState *icc_cs_from_env(CPUARMState *env)
+ {
+     /* Given the CPU, find the right GICv3CPUState struct.
+Index: qemu-2.8+dfsg/hw/intc/gicv3_internal.h
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/gicv3_internal.h
++++ qemu-2.8+dfsg/hw/intc/gicv3_internal.h
+@@ -329,4 +329,6 @@ static inline void gicv3_cache_all_targe
+     }
+ }
+ 
++void gicv3_set_gicv3state(CPUState *cpu, GICv3CPUState *s);
++
+ #endif /* QEMU_ARM_GICV3_INTERNAL_H */
+Index: qemu-2.8+dfsg/target-arm/cpu.h
+===================================================================
+--- qemu-2.8+dfsg.orig/target-arm/cpu.h
++++ qemu-2.8+dfsg/target-arm/cpu.h
+@@ -507,6 +507,8 @@ typedef struct CPUARMState {
+ 
+     void *nvic;
+     const struct arm_boot_info *boot_info;
++    /* Store GICv3CPUState to access from this struct */
++    void *gicv3state;
+ } CPUARMState;
+ 
+ /**

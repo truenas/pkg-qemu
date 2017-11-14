@@ -87,3 +87,14 @@ CVE-2017-11434.patch
 CVE-2017-12809.patch
 CVE-2017-9375-regression.patch
 ubuntu/virtio-Fix-no-interrupt-when-not-creating-msi-contro.patch
+ubuntu/kernel-Add-definitions-for-GICv3-attributes.patch
+ubuntu/hw-intc-arm_gicv3_kvm-Add-ICC_SRE_EL1-register-to-vm.patch
+ubuntu/hw-intc-arm_gicv3_kvm-Implement-get-put-functions.patch
+ubuntu/target-arm-Add-GICv3CPUState-in-CPUARMState-struct.patch
+ubuntu/hw-intc-arm_gicv3_kvm-Reset-GICv3-cpu-interface-regi.patch
+ubuntu/linux-headers-Update-for-vITS-save-restore.patch
+ubuntu/kvm-all-Pass-an-error-object-to-kvm_device_access.patch
+ubuntu/hw-intc-arm_gicv3_its-Implement-state-save-restore.patch
+ubuntu/hw-intc-arm_gicv3_kvm-Implement-pending-table-save.patch
+ubuntu/migration-allow-to-prioritize-save-state-entries.patch
+ubuntu/hw-intc-arm_gicv3_its-Allow-save-restore.patch

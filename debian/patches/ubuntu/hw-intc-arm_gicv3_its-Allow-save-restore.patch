@@ -1,0 +1,77 @@
+Subject: [PATCH 4/4] hw/intc/arm_gicv3_its: Allow save/restore
+ We change the restoration priority of both the GICv3 and ITS. The
+ GICv3 must be restored before the ITS and the ITS needs to be restored
+ before PCIe devices since it translates their MSI transactions.
+ .
+ Signed-off-by: Eric Auger <eric.auger@redhat.com>
+ Reviewed-by: Juan Quintela <quintela@redhat.com>
+ Message-id: 1497023553-18411-5-git-send-email-eric.auger@redhat.com
+ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+ [ dannf: backported for compat with the migrate_add_blocker() API prior to
+  'fe44dc91 migration: disallow migrate_add_blocker during migration' ]
+Origin: https://git.qemu.org/gitweb.cgi?p=qemu.git;a=commit;h=252a7a6a968c279a4636a86b0559ba3a930a90b5
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1710019
+Author: Eric Auger <eric.auger@redhat.com>
+Last-Update: 2017-08-10
+
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_common.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_common.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_common.c
+@@ -120,6 +120,7 @@ static const VMStateDescription vmstate_
+     .minimum_version_id = 1,
+     .pre_save = gicv3_pre_save,
+     .post_load = gicv3_post_load,
++    .priority = MIG_PRI_GICV3,
+     .fields = (VMStateField[]) {
+         VMSTATE_UINT32(gicd_ctlr, GICv3State),
+         VMSTATE_UINT32_ARRAY(gicd_statusr, GICv3State, 2),
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_its_common.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_its_common.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_its_common.c
+@@ -48,7 +48,7 @@ static const VMStateDescription vmstate_
+     .name = "arm_gicv3_its",
+     .pre_save = gicv3_its_pre_save,
+     .post_load = gicv3_its_post_load,
+-    .unmigratable = true,
++    .priority = MIG_PRI_GICV3_ITS,
+     .fields = (VMStateField[]) {
+         VMSTATE_UINT32(ctlr, GICv3ITSState),
+         VMSTATE_UINT32(iidr, GICv3ITSState),
+Index: qemu-2.8+dfsg/include/migration/vmstate.h
+===================================================================
+--- qemu-2.8+dfsg.orig/include/migration/vmstate.h
++++ qemu-2.8+dfsg/include/migration/vmstate.h
+@@ -188,6 +188,8 @@ enum VMStateFlags {
+ 
+ typedef enum {
+     MIG_PRI_DEFAULT = 0,
++    MIG_PRI_GICV3_ITS,          /* Must happen before PCI devices */
++    MIG_PRI_GICV3,              /* Must happen before the ITS */
+     MIG_PRI_MAX,
+ } MigrationPriority;
+ 
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_its_kvm.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_its_kvm.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_its_kvm.c
+@@ -100,12 +100,12 @@ static void kvm_arm_its_realize(DeviceSt
+ 
+     gicv3_its_init_mmio(s, NULL);
+ 
+-    /*
+-     * Block migration of a KVM GICv3 ITS device: the API for saving and
+-     * restoring the state in the kernel is not yet available
+-     */
+-    error_setg(&s->migration_blocker, "vITS migration is not implemented");
+-    migrate_add_blocker(s->migration_blocker);
++    if (!kvm_device_check_attr(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++        GITS_CTLR)) {
++        error_setg(&s->migration_blocker, "This operating system kernel "
++                   "does not support vITS migration");
++        migrate_add_blocker(s->migration_blocker);
++    }
+ 
+     kvm_msi_use_devid = true;
+     kvm_gsi_direct_mapping = false;

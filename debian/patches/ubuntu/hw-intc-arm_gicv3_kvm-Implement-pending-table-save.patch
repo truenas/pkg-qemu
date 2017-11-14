@@ -1,0 +1,77 @@
+Subject: [PATCH 3/4] hw/intc/arm_gicv3_kvm: Implement pending table save
+ .
+ This patch adds the flush of the LPI pending bits into the
+ redistributor pending tables. This happens on VM stop.
+ .
+ There is no explicit restore as the tables are implicitly sync'ed
+ on ITS table restore and on LPI enable at redistributor level.
+ .
+ Signed-off-by: Eric Auger <eric.auger@redhat.com>
+ Message-id: 1497023553-18411-4-git-send-email-eric.auger@redhat.com
+ Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+ [ dannf: backport involved only context adjustments ]
+Origin: https://git.qemu.org/gitweb.cgi?p=qemu.git;a=commit;h=d5aa0c229ab5d46c1a4ff497553671cd46486749
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1710019
+Author: Eric Auger <eric.auger@redhat.com>
+Last-Update: 2017-08-10
+
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_kvm.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_kvm.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_kvm.c
+@@ -25,6 +25,7 @@
+ #include "hw/sysbus.h"
+ #include "qemu/error-report.h"
+ #include "sysemu/kvm.h"
++#include "sysemu/sysemu.h"
+ #include "kvm_arm.h"
+ #include "gicv3_internal.h"
+ #include "vgic_common.h"
+@@ -675,6 +676,35 @@ static const ARMCPRegInfo gicv3_cpuif_re
+     REGINFO_SENTINEL
+ };
+ 
++/**
++ * vm_change_state_handler - VM change state callback aiming at flushing
++ * RDIST pending tables into guest RAM
++ *
++ * The tables get flushed to guest RAM whenever the VM gets stopped.
++ */
++static void vm_change_state_handler(void *opaque, int running,
++                                    RunState state)
++{
++    GICv3State *s = (GICv3State *)opaque;
++    Error *err = NULL;
++    int ret;
++
++    if (running) {
++        return;
++    }
++
++    ret = kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++                           KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES,
++                           NULL, true, &err);
++    if (err) {
++        error_report_err(err);
++    }
++    if (ret < 0 && ret != -EFAULT) {
++        abort();
++    }
++}
++
++
+ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+ {
+     GICv3State *s = KVM_ARM_GICV3(dev);
+@@ -741,6 +771,10 @@ static void kvm_arm_gicv3_realize(Device
+                                           "not support vGICv3 migration");
+         migrate_add_blocker(s->migration_blocker);
+     }
++    if (kvm_device_check_attr(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++                              KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES)) {
++        qemu_add_vm_change_state_handler(vm_change_state_handler, s);
++    }
+ }
+ 
+ static void kvm_arm_gicv3_class_init(ObjectClass *klass, void *data)

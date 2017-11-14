@@ -1,0 +1,219 @@
+Subject: [PATCH 2/4] hw/intc/arm_gicv3_its: Implement state save/restore
+ We need to handle both registers and ITS tables. While
+ register handling is standard, ITS table handling is more
+ challenging since the kernel API is devised so that the
+ tables are flushed into guest RAM and not in vmstate buffers.
+ .
+ Flushing the ITS tables on device pre_save() is too late
+ since the guest RAM is already saved at this point.
+ .
+ Table flushing needs to happen when we are sure the vcpus
+ are stopped and before the last dirty page saving. The
+ right point is RUN_STATE_FINISH_MIGRATE but sometimes the
+ VM gets stopped before migration launch so let's simply
+ flush the tables each time the VM gets stopped.
+ .
+ For regular ITS registers we just can use vmstate pre_save()
+ and post_load() callbacks.
+ .
+ Signed-off-by: Eric Auger <eric.auger@redhat.com>
+ Message-id: 1497023553-18411-3-git-send-email-eric.auger@redhat.com
+ Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+ [ dannf: backport involved only context adjustments ]
+Origin: https://git.qemu.org/gitweb.cgi?p=qemu.git;a=commit;h=cddafd8f353d2d251b1a5c6c948a577a85838582
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1710019
+Author: Eric Auger <eric.auger@redhat.com>
+Last-Update: 2017-08-10
+
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_its_common.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_its_common.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_its_common.c
+@@ -49,6 +49,15 @@ static const VMStateDescription vmstate_
+     .pre_save = gicv3_its_pre_save,
+     .post_load = gicv3_its_post_load,
+     .unmigratable = true,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT32(ctlr, GICv3ITSState),
++        VMSTATE_UINT32(iidr, GICv3ITSState),
++        VMSTATE_UINT64(cbaser, GICv3ITSState),
++        VMSTATE_UINT64(cwriter, GICv3ITSState),
++        VMSTATE_UINT64(creadr, GICv3ITSState),
++        VMSTATE_UINT64_ARRAY(baser, GICv3ITSState, 8),
++        VMSTATE_END_OF_LIST()
++    },
+ };
+ 
+ static MemTxResult gicv3_its_trans_read(void *opaque, hwaddr offset,
+@@ -118,6 +127,7 @@ static void gicv3_its_common_reset(Devic
+     s->cbaser = 0;
+     s->cwriter = 0;
+     s->creadr = 0;
++    s->iidr = 0;
+     memset(&s->baser, 0, sizeof(s->baser));
+ 
+     gicv3_its_post_load(s, 0);
+Index: qemu-2.8+dfsg/hw/intc/arm_gicv3_its_kvm.c
+===================================================================
+--- qemu-2.8+dfsg.orig/hw/intc/arm_gicv3_its_kvm.c
++++ qemu-2.8+dfsg/hw/intc/arm_gicv3_its_kvm.c
+@@ -53,6 +53,33 @@ static int kvm_its_send_msi(GICv3ITSStat
+     return kvm_vm_ioctl(kvm_state, KVM_SIGNAL_MSI, &msi);
+ }
+ 
++/**
++ * vm_change_state_handler - VM change state callback aiming at flushing
++ * ITS tables into guest RAM
++ *
++ * The tables get flushed to guest RAM whenever the VM gets stopped.
++ */
++static void vm_change_state_handler(void *opaque, int running,
++                                    RunState state)
++{
++    GICv3ITSState *s = (GICv3ITSState *)opaque;
++    Error *err = NULL;
++    int ret;
++
++    if (running) {
++        return;
++    }
++
++    ret = kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++                            KVM_DEV_ARM_ITS_SAVE_TABLES, NULL, true, &err);
++    if (err) {
++        error_report_err(err);
++    }
++    if (ret < 0 && ret != -EFAULT) {
++        abort();
++    }
++}
++
+ static void kvm_arm_its_realize(DeviceState *dev, Error **errp)
+ {
+     GICv3ITSState *s = ARM_GICV3_ITS_COMMON(dev);
+@@ -83,6 +110,8 @@ static void kvm_arm_its_realize(DeviceSt
+     kvm_msi_use_devid = true;
+     kvm_gsi_direct_mapping = false;
+     kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
++
++    qemu_add_vm_change_state_handler(vm_change_state_handler, s);
+ }
+ 
+ static void kvm_arm_its_init(Object *obj)
+@@ -96,6 +125,80 @@ static void kvm_arm_its_init(Object *obj
+                              &error_abort);
+ }
+ 
++/**
++ * kvm_arm_its_pre_save - handles the saving of ITS registers.
++ * ITS tables are flushed into guest RAM separately and earlier,
++ * through the VM change state handler, since at the moment pre_save()
++ * is called, the guest RAM has already been saved.
++ */
++static void kvm_arm_its_pre_save(GICv3ITSState *s)
++{
++    int i;
++
++    for (i = 0; i < 8; i++) {
++        kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                          GITS_BASER + i * 8, &s->baser[i], false,
++                          &error_abort);
++    }
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CTLR, &s->ctlr, false, &error_abort);
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CBASER, &s->cbaser, false, &error_abort);
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CREADR, &s->creadr, false, &error_abort);
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CWRITER, &s->cwriter, false, &error_abort);
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_IIDR, &s->iidr, false, &error_abort);
++}
++
++/**
++ * kvm_arm_its_post_load - Restore both the ITS registers and tables
++ */
++static void kvm_arm_its_post_load(GICv3ITSState *s)
++{
++    int i;
++
++    if (!s->iidr) {
++        return;
++    }
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_IIDR, &s->iidr, true, &error_abort);
++
++    /*
++     * must be written before GITS_CREADR since GITS_CBASER write
++     * access resets GITS_CREADR.
++     */
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CBASER, &s->cbaser, true, &error_abort);
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CREADR, &s->creadr, true, &error_abort);
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CWRITER, &s->cwriter, true, &error_abort);
++
++
++    for (i = 0; i < 8; i++) {
++        kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                          GITS_BASER + i * 8, &s->baser[i], true,
++                          &error_abort);
++    }
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
++                      KVM_DEV_ARM_ITS_RESTORE_TABLES, NULL, true,
++                      &error_abort);
++
++    kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_ITS_REGS,
++                      GITS_CTLR, &s->ctlr, true, &error_abort);
++}
++
+ static void kvm_arm_its_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -103,6 +206,8 @@ static void kvm_arm_its_class_init(Objec
+ 
+     dc->realize = kvm_arm_its_realize;
+     icc->send_msi = kvm_its_send_msi;
++    icc->pre_save = kvm_arm_its_pre_save;
++    icc->post_load = kvm_arm_its_post_load;
+ }
+ 
+ static const TypeInfo kvm_arm_its_info = {
+Index: qemu-2.8+dfsg/include/hw/intc/arm_gicv3_its_common.h
+===================================================================
+--- qemu-2.8+dfsg.orig/include/hw/intc/arm_gicv3_its_common.h
++++ qemu-2.8+dfsg/include/hw/intc/arm_gicv3_its_common.h
+@@ -28,6 +28,13 @@
+ #define ITS_TRANS_SIZE   0x10000
+ #define ITS_SIZE         (ITS_CONTROL_SIZE + ITS_TRANS_SIZE)
+ 
++#define GITS_CTLR        0x0
++#define GITS_IIDR        0x4
++#define GITS_CBASER      0x80
++#define GITS_CWRITER     0x88
++#define GITS_CREADR      0x90
++#define GITS_BASER       0x100
++
+ struct GICv3ITSState {
+     SysBusDevice parent_obj;
+ 
+@@ -43,6 +50,7 @@ struct GICv3ITSState {
+ 
+     /* Registers */
+     uint32_t ctlr;
++    uint32_t iidr;
+     uint64_t cbaser;
+     uint64_t cwriter;
+     uint64_t creadr;
