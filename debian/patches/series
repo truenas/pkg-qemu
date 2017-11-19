@@ -4,3 +4,4 @@ qemu-2.10.1.diff
 9pfs-use-g_malloc0-to-allocate-space-for-xattr-CVE-2017-15038.patch
 remove-trailing-whitespace-from-qemu-options.hx.patch
 io-monitor-encoutput-buffer-size-from-websocket-GSource-CVE-2017-15268.patch
+cirrus-fix-oob-access-in-mode4and5-write-functions-CVE-2017-15289.patch
