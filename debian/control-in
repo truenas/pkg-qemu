@@ -85,8 +85,6 @@ Build-Depends: debhelper (>= 9),
 # vde is debian-only since ubuntu/vde2 is in universe
 :debian:# --enable-vde
 :debian: libvdeplug-dev,
-# needed for sdl
- libx11-dev,
 # --enable-xen	linux-amd64|linux-i386
  libxen-dev [linux-amd64 linux-i386],
 ## always enabled: --enable-uuid
