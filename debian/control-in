@@ -19,8 +19,8 @@ Build-Depends: debhelper (>= 9),
  acpica-tools,
 # --enable-linux-aio	linux-*
  libaio-dev [linux-any],
-# --audio-drv-list=pa,alsa,sdl,oss	linux-*
-# --audio-drv-list=pa,oss,sdl		kfreebsd-*
+# --audio-drv-list=pa,alsa,oss	linux-*
+# --audio-drv-list=pa,oss	kfreebsd-*
  libasound2-dev [linux-any],
 # for virtfs
 # --enable-attr
