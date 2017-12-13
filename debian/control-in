@@ -21,6 +21,7 @@ Build-Depends: debhelper (>= 9),
  libaio-dev [linux-any],
 # --audio-drv-list=pa,alsa,oss	linux-*
 # --audio-drv-list=pa,oss	kfreebsd-*
+ libpulse-dev,
  libasound2-dev [linux-any],
 # for virtfs
 # --enable-attr
@@ -58,8 +59,6 @@ Build-Depends: debhelper (>= 9),
  libcacard-dev,
 # --with-system-pixman
  libpixman-1-dev,
-# audio-drv-list += pa
- libpulse-dev,
 # --enable-rbd		linux-*
  librados-dev [linux-any], librbd-dev [linux-any],
 # glusterfs is debian-only since ubuntu/glusterfs is in universe (MIR LP: #1274247)
