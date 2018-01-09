@@ -1,4 +1,4 @@
-qemu (1:2.10.0+dfsg-3) UNRELEASED; urgency=medium
+qemu (1:2.11.0+dfsg-1) UNRELEASED; urgency=medium
 
   [ Aurelien Jarno ]
   * debian/control-in: build qemu-system and qemu-user on mips64 and
