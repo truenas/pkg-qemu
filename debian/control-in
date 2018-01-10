@@ -449,6 +449,3 @@ Description: QEMU Full virtualization on x86 hardware
  QEMU is a fast processor emulator.  This package provides just a wrapper
  script /usr/bin/kvm which run qemu-system-x86 in kvm mode for backwards
  compatibility.
- .
- Please note that old qemu-kvm configuration files (in /etc/kvm/) are
- no longer used.
