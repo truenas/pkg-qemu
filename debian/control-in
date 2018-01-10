@@ -57,7 +57,6 @@ Build-Depends: debhelper (>= 9),
  libnuma-dev   [i386 amd64 ia64 mips mipsel mips64 mips64el powerpc powerpcspe x32 ppc64 ppc64el arm64 sparc hppa],
 # --enable-smartcard
  libcacard-dev,
-# --with-system-pixman
  libpixman-1-dev,
 # --enable-rbd		linux-*
  librados-dev [linux-any], librbd-dev [linux-any],
