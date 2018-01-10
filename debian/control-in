@@ -298,6 +298,7 @@ Recommends: qemu-utils,
 # sparc64 uses vgabios-stdvga and bootroms
  seabios, ipxe-qemu (>= 1.0.0+git-20131111.c3d1e78-1~)
 Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}), 
+:ubuntu: openbios-sparc (>> 1.1+svn1395-1~)
 Provides: ${sysprovides:sparc}
 Description: QEMU full system emulation binaries (sparc)
  QEMU is a fast processor emulator: currently the package supports
