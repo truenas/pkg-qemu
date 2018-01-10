@@ -9,7 +9,7 @@ qemu (1:2.11.0-1) UNRELEASED; urgency=medium
 
   [ Aurelien Jarno ]
   * debian/control-in: build qemu-system and qemu-user on mips64 and
-    mips64el.
+    mips64el.  Closes: #880485.
 
  -- Aurelien Jarno <aurel32@debian.org>  Sun, 24 Sep 2017 02:06:34 +0200
 
