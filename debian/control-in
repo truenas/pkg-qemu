@@ -455,15 +455,3 @@ Description: QEMU Full virtualization on x86 hardware
  .
  Please note that old qemu-kvm configuration files (in /etc/kvm/) are
  no longer used.
-
-:ubuntu:Package: qemu-system-aarch64
-:ubuntu:Architecture: arm64
-:ubuntu:Multi-Arch: foreign
-:ubuntu:Depends: ${misc:Depends}, qemu-system-arm (>= 2.0~git-20140403.de03c31-0ubuntu2)
-:ubuntu:Description: QEMU full system emulation binaries (aarch64)
-:ubuntu: QEMU is a fast processor emulator: currently the package supports
-:ubuntu: ARM emulation. By using dynamic translation it achieves
-:ubuntu: reasonable speed while being easy to port on new host CPUs.
-:ubuntu: .
-:ubuntu: This is a transition package as qemu-system-aarch64 has been moved into
-:ubuntu: qemu-system-arm.
