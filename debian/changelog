@@ -1,4 +1,11 @@
-qemu (1:2.11.0+dfsg-1) UNRELEASED; urgency=medium
+qemu (1:2.11.0-1) UNRELEASED; urgency=medium
+
+  * update to new upstream (2.11) release
+    Closes: #883625, CVE-2017-17381
+    Closes: #880832, CVE-2017-15289
+    Closes: #880836, CVE-2017-15268
+    Closes: #883399, CVE-2017-15119
+    Closes: #883406, CVE-2017-15118
 
   [ Aurelien Jarno ]
   * debian/control-in: build qemu-system and qemu-user on mips64 and
