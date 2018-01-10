@@ -445,9 +445,6 @@ Package: qemu-kvm
 Multi-Arch: foreign
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends}, qemu-system-x86
-:ubuntu:Provides:  qemu-kvm-spice
-:ubuntu:Conflicts: qemu-kvm-spice
-:ubuntu:Replaces:  qemu-kvm-spice
 Description: QEMU Full virtualization on x86 hardware
  QEMU is a fast processor emulator.  This package provides just a wrapper
  script /usr/bin/kvm which run qemu-system-x86 in kvm mode for backwards
