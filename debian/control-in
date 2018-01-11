@@ -15,8 +15,8 @@ Build-Depends: debhelper (>= 9),
  device-tree-compiler,
  texinfo,
  python:any,
-# compiling .dsl files in hw/i386/ instead of using included precompiled .hex
- acpica-tools,
+# iasl (from acpica-tools) is used only in a single test these days, not for building
+# acpica-tools,
 # --enable-capstone=system
  libcapstone-dev,
 # --enable-linux-aio	linux-*
