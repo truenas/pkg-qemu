@@ -323,7 +323,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 2.0.0+dfsg-7
 Recommends: qemu-utils,
 :ubuntu: cpu-checker
 Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}),
- kmod [linux-any], sgabios, ovmf
+ sgabios, ovmf
 Provides: ${sysprovides:x86}
 Description: QEMU full system emulation binaries (x86)
  QEMU is a fast processor emulator: currently the package supports
