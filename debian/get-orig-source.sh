@@ -38,6 +38,7 @@ rm -vf pc-bios/multiboot.bin
 rm -vf pc-bios/skiboot.lid	# roms/skiboot/
 rm -vf pc-bios/u-boot.e500	# roms/u-boot/
 rm -vf pc-bios/QEMU,*.bin	# roms/openbios/
+rm -vf pc-bios/qemu_vga.ndrv	# roms/QemuMacDrivers/
 
 # remove other software (git submodules)
 dir roms/ipxe
