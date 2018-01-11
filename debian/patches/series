@@ -1,2 +1,3 @@
 use-fixed-data-path.patch
 use-data-path.patch
+qapi-schema.json-spelling-independant-comparation.patch
