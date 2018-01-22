@@ -66,9 +66,11 @@ Build-Depends: debhelper (>= 9),
 # --enable-vnc-sasl
  libsasl2-dev,
 # note: libsdl2-dev is in universe on ubuntu
-# --enable-sdl --with-sdlabi=2.0
- libsdl2-dev,
-# --enable-seccomp	linux-amd64|linux-i386|linux-ppc64el
+:debian:# --enable-sdl --with-sdlabi=2.0
+:debian: libsdl2-dev,
+:ubuntu:# --enable-sdl --with-sdlabi=1.2
+:ubuntu: libsdl1.2-dev (>> 1.2.1),
+# --enable-seccomp     linux-amd64|linux-i386|linux-ppc64el
  libseccomp-dev (>= 2.3.0) [linux-amd64 linux-i386 linux-ppc64el],
 # --enable-spice	linux-amd64|linux-i386
  libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386],
