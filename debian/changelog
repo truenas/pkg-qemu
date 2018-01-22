@@ -52,6 +52,10 @@ qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
     - d/qemu-system-x86.README.Debian: document intention of nested being
       default is comfort, not full support
     - update Ubuntu machine types for qemu 2.11
+    - qemu-guest-agent: freeze-hook fixes (LP: #1484990)
+      - d/p/guest-agent-freeze-hook-skip-dpkg-artifacts.patch
+      - d/qemu-guest-agent.install: provide /etc/qemu/fsfreeze-hook
+      - d/qemu-guest-agent.dirs: provide /etc/qemu/fsfreeze-hook.d
   * Dropped changes (in Debian now):
     - ppc64[le] support
       - Enable seccomp for ppc64el
