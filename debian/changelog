@@ -56,6 +56,9 @@ qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
       - d/p/guest-agent-freeze-hook-skip-dpkg-artifacts.patch
       - d/qemu-guest-agent.install: provide /etc/qemu/fsfreeze-hook
       - d/qemu-guest-agent.dirs: provide /etc/qemu/fsfreeze-hook.d
+    - Create and install pxe netboot images for KVM s390x (LP: #1732094)
+      - d/rules enable install s390x-netboot.img
+      - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
   * Dropped changes (in Debian now):
     - ppc64[le] support
       - Enable seccomp for ppc64el
