@@ -65,6 +65,10 @@ qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
       - d/p/ubuntu/linux-headers-update-4.15-rc9.patch
       - d/p/ubuntu/lp1743560-s390x-kvm-Handle-bpb-feature.patch
       - d/p/ubuntu/lp1743560-s390x-kvm-provide-stfle.81.patch
+  * Dropped changes (no more needed):
+    - Dropped VHOST_NET_ENABLED and KVM_HUGEPAGES from /etc/default/qemu-kvm
+      The functionality is retained for upgraders, but is deprecated.
+      Post 18.04 the implementation for these configurations will be removed.
   * Dropped changes (in Debian now):
     - ppc64[le] support
       - Enable seccomp for ppc64el
