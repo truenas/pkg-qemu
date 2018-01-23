@@ -235,6 +235,7 @@ ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
 endif
 ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
 	install -D -m755 qemu-build/pc-bios/s390-ccw/s390-ccw.img debian/qemu-system-s390x/usr/share/qemu/s390-ccw.img
+	install -D -m755 qemu-build/pc-bios/s390-ccw/s390-netboot.img debian/qemu-system-s390x/usr/share/qemu/s390-netboot.img
 endif
 
 ifeq ($(VENDOR),UBUNTU)
