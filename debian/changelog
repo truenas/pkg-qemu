@@ -60,6 +60,11 @@ qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
       - d/rules enable install s390x-netboot.img
       - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
     - d/control-in: enable RDMA support in qemu (LP: #1692476)
+    - on s390x provide facility bits 81 (ppa15) and 82 (bpb) (LP: #1743560)
+      - d/p/ubuntu/linux-headers-update-to-4.15-rc1.patch
+      - d/p/ubuntu/linux-headers-update-4.15-rc9.patch
+      - d/p/ubuntu/lp1743560-s390x-kvm-Handle-bpb-feature.patch
+      - d/p/ubuntu/lp1743560-s390x-kvm-provide-stfle.81.patch
   * Dropped changes (in Debian now):
     - ppc64[le] support
       - Enable seccomp for ppc64el
