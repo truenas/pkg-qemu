@@ -2,10 +2,9 @@
 # After changing this setting restart the qemu-kvm service.
 KSM_ENABLED=AUTO
 SLEEP_MILLISECS=200
-# To load the vhost_net module, which in some cases can speed up
-# network performance, set VHOST_NET_ENABLED to 1.
-VHOST_NET_ENABLED=0
 
-# Set this to 1 if you want hugepages to be available to kvm under
-# /run/hugepages/kvm
-KVM_HUGEPAGES=0
+# Dropped VHOST_NET_ENABLED as this is auto-loaded in recent kernels
+# it still works, but is deprecated and will be removed in a later version
+
+# Dropped KVM_HUGEPAGES as systemd provides feasible hugepage moutpoints
+# it still works, but is deprecated and will be removed in a later version
