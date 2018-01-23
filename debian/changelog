@@ -59,6 +59,7 @@ qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
     - Create and install pxe netboot images for KVM s390x (LP: #1732094)
       - d/rules enable install s390x-netboot.img
       - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
+    - d/control-in: enable RDMA support in qemu (LP: #1692476)
   * Dropped changes (in Debian now):
     - ppc64[le] support
       - Enable seccomp for ppc64el
