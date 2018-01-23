@@ -6,3 +6,4 @@ ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
 ubuntu/define-ubuntu-machine-types.patch
 ubuntu/guest-agent-freeze-hook-skip-dpkg-artifacts.patch
+ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
