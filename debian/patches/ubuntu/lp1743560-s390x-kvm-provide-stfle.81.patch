@@ -1,0 +1,68 @@
+From 9f0d13f4f1de3cf9b70435cc4e87a301ee12471f Mon Sep 17 00:00:00 2001
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+Date: Thu, 18 Jan 2018 09:56:28 +0100
+Subject: [PATCH 2/2] s390x/kvm: provide stfle.81
+
+stfle.81 (ppa15) is a transparent facility that can be passed to the
+guest without the need to implement hypervisor support. As this feature
+can be provided by firmware we add it to all full models.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Christian Borntraeger <borntraeger@de.ibm.com>
+Message-Id: <20180118085628.40798-4-borntraeger@de.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.vnet.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+
+Forwarded: no (backport)
+Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Original-Author: Christian Borntraeger <borntraeger@de.ibm.com>
+Origin: upstream, https://github.com/cohuck/qemu/commit/9f0d13f4f1de3cf9b70435cc4e87a301ee12471f
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1743560
+Last-Update: 2018-01-23
+---
+ target/s390x/cpu_features.c     | 1 +
+ target/s390x/cpu_features_def.h | 1 +
+ target/s390x/gen-features.c     | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index b45ef09..85d10b5 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -89,6 +89,7 @@ static const S390FeatDef s390_features[] = {
+     FEAT_INIT("msa4-base", S390_FEAT_TYPE_STFL, 77, "Message-security-assist-extension-4 facility (excluding subfunctions)"),
+     FEAT_INIT("edat2", S390_FEAT_TYPE_STFL, 78, "Enhanced-DAT facility 2"),
+     FEAT_INIT("dfppc", S390_FEAT_TYPE_STFL, 80, "Decimal-floating-point packed-conversion facility"),
++    FEAT_INIT("ppa15", S390_FEAT_TYPE_STFL, 81, "PPA15 is installed"),
+     FEAT_INIT("bpb", S390_FEAT_TYPE_STFL, 82, "Branch prediction blocking"),
+     FEAT_INIT("vx", S390_FEAT_TYPE_STFL, 129, "Vector facility"),
+     FEAT_INIT("iep", S390_FEAT_TYPE_STFL, 130, "Instruction-execution-protection facility"),
+diff --git a/target/s390x/cpu_features_def.h b/target/s390x/cpu_features_def.h
+index 4487cfd..4d93087 100644
+--- a/target/s390x/cpu_features_def.h
++++ b/target/s390x/cpu_features_def.h
+@@ -80,6 +80,7 @@ typedef enum {
+     S390_FEAT_MSA_EXT_4,
+     S390_FEAT_EDAT_2,
+     S390_FEAT_DFP_PACKED_CONVERSION,
++    S390_FEAT_PPA15,
+     S390_FEAT_BPB,
+     S390_FEAT_VECTOR,
+     S390_FEAT_INSTRUCTION_EXEC_PROT,
+diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
+index 563aced..0570f59 100644
+--- a/target/s390x/gen-features.c
++++ b/target/s390x/gen-features.c
+@@ -352,6 +352,7 @@ static uint16_t base_GEN14_GA1[] = {
+  * support these features yet.
+  */
+ static uint16_t full_GEN7_GA1[] = {
++    S390_FEAT_PPA15,
+     S390_FEAT_BPB,
+     S390_FEAT_SIE_F2,
+     S390_FEAT_SIE_SKEY,
+-- 
+2.7.4
+
