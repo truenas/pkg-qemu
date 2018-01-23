@@ -58,6 +58,9 @@ Build-Depends: debhelper (>= 9),
  libpixman-1-dev,
 # --enable-rbd		linux-*
  librados-dev [linux-any], librbd-dev [linux-any],
+:ubuntu:# --enable-rdma		linux-*
+:ubuntu: librdmacm-dev,
+:ubuntu: libibverbs-dev,
 # glusterfs is debian-only since ubuntu/glusterfs is in universe (MIR LP: #1274247)
 :debian:# --enable-glusterfs
 :debian: glusterfs-common,
