@@ -65,6 +65,11 @@ qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
       - d/p/ubuntu/linux-headers-update-4.15-rc9.patch
       - d/p/ubuntu/lp1743560-s390x-kvm-Handle-bpb-feature.patch
       - d/p/ubuntu/lp1743560-s390x-kvm-provide-stfle.81.patch
+    - tolerate ipxe size change on migrations to >=18.04 (LP: #1713490)
+      - d/p/ubuntu/pre-bionic-256k-ipxe-efi-roms.patch: old machine types
+        reference 256k path
+      - d/control: depend on ipxe-qemu-256k-compat-efi-roms to be able to
+        handle incoming migrations from former releases.
   * Dropped changes (no more needed):
     - Dropped VHOST_NET_ENABLED and KVM_HUGEPAGES from /etc/default/qemu-kvm
       The functionality is retained for upgraders, but is deprecated.
