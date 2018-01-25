@@ -70,6 +70,7 @@ qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
         reference 256k path
       - d/control: depend on ipxe-qemu-256k-compat-efi-roms to be able to
         handle incoming migrations from former releases.
+    - d/control-in: enable seccomp on s390x
   * Dropped changes (no more needed):
     - Dropped VHOST_NET_ENABLED and KVM_HUGEPAGES from /etc/default/qemu-kvm
       The functionality is retained for upgraders, but is deprecated.
