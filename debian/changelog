@@ -2,6 +2,12 @@ qemu (1:2.11+dfsg-1ubuntu2) bionic; urgency=medium
 
   * d/p/ubuntu/pre-bionic-256k-ipxe-efi-roms.patch: refresh to just change the
     common compat.h header and some extra info in the patch header.
+  * Drop changes that are part of the upstream stable release in regard to
+    s390x providing facility bits 81 (ppa15) and 82 (bpb) (LP 1743560)
+      - d/p/ubuntu/linux-headers-update-to-4.15-rc1.patch
+      - d/p/ubuntu/linux-headers-update-4.15-rc9.patch
+      - d/p/ubuntu/lp1743560-s390x-kvm-Handle-bpb-feature.patch
+      - d/p/ubuntu/lp1743560-s390x-kvm-provide-stfle.81.patch
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 19 Feb 2018 11:03:11 +0100
 
