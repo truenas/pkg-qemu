@@ -15,23 +15,26 @@ essentially everything that does a full restart/init works without this
 indirection), so only map those whose default rom was on the efi-* roms
 that existed and now crossed 256k.
 
+Some more info and links can be found at:
+https://cpaelzer.github.io/blogs/002-migration-with-changed-roms
+
 Forwarded: yes (to Debian for a common solution, does not apply to upstream)
 Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/1713490
 Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=881263
-Last-Update: 2018-01-24
+Last-Update: 2018-02-19
 
 [diffstat]
- pc.h |   40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ compat.h |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -383,7 +383,48 @@ bool e820_get_entry(int, uint32_t, uint6
-         .driver   = "q35-pcihost",\
-         .property = "x-pci-hole64-fix",\
-         .value    = "off",\
-+    },\
+--- a/include/hw/compat.h
++++ b/include/hw/compat.h
+@@ -10,7 +10,48 @@
+         .driver   = "virtio-tablet-device",\
+         .property = "wheel-axis",\
+         .value    = "false",\
++    }, \
 +    { /* ipxe rom size change, see below for details */ \
 +        .driver   = "e1000",\
 +        .property = "romfile",\
@@ -74,113 +77,5 @@ Last-Update: 2018-01-24
 + * which now crossed 256k to use the newer roms for anything else.
 + */
  
- #define PC_COMPAT_2_9 \
-     HW_COMPAT_2_9 \
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1684,7 +1684,52 @@ static void virt_machine_2_11_options(Ma
- DEFINE_VIRT_MACHINE_AS_LATEST(2, 11)
- 
- #define VIRT_COMPAT_2_10 \
--    HW_COMPAT_2_10
-+    HW_COMPAT_2_10 \
-+    { /* ipxe rom size change, see below for details */ \
-+        .driver   = "e1000",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-e1000.rom",\
-+    },\
-+    {\
-+        .driver   = "ne2000",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-ne2k_pci.rom",\
-+    },\
-+    {\
-+        .driver   = "pcnet",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-pcnet.rom",\
-+    },\
-+    {\
-+        .driver   = "rtl8139",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-rtl8139.rom",\
-+    },\
-+    {\
-+        .driver   = "virtio-net-pci",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-virtio.rom",\
-+    },
-+/*
-+ * ^^ (LP: #1713490)
-+ * older IPXE roms were smaller, but just changing this size on ipxe upgrades
-+ * breaks migration and save/restore as the PCI bar sizes are not allowed to
-+ * change.
-+ * This is essentially a per Distribution release detail depending
-+ * on which ipxe roms (and which options on build) are bundled with an qemu.
-+ * To fix migrations define a compat for anything older than the bump of the
-+ * rom size (=pre-bionic = <=2.10) and map older machine types to filenames.
-+ * We can then provide compat-roms (essentially the old build on new paths) for
-+ * those.
-+ * We only support the defaults for migrations (shutdown, move, start and
-+ * essentially everything that does a full restart/init works without this
-+ * indirection), so only map those whose default rom was on the efi-* roms
-+ * which now crossed 256k to use the newer roms for anything else.
-+ *
-+ * ARM: arm has no default types, if anything the virt-x types can be considered
-+ * such, so virt-* is the type we make forward migratable by applying this
-+ * compat code.
-+ */
- 
- static void virt_2_10_instance_init(Object *obj)
- {
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -3735,6 +3735,49 @@ DEFINE_SPAPR_MACHINE(2_11, "2.11", false
-  */
- #define SPAPR_COMPAT_2_10                                              \
-     HW_COMPAT_2_10                                                     \
-+    { /* ipxe rom size change, see below for details */ \
-+        .driver   = "e1000",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-e1000.rom",\
-+    },\
-+    {\
-+        .driver   = "ne2000",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-ne2k_pci.rom",\
-+    },\
-+    {\
-+        .driver   = "pcnet",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-pcnet.rom",\
-+    },\
-+    {\
-+        .driver   = "rtl8139",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-rtl8139.rom",\
-+    },\
-+    {\
-+        .driver   = "virtio-net-pci",\
-+        .property = "romfile",\
-+        .value    = "compat-256k-efi-virtio.rom",\
-+    },
-+/*
-+ * ^^ (LP: #1713490)
-+ * older IPXE roms were smaller, but just changing this size on ipxe upgrades
-+ * breaks migration and save/restore as the PCI bar sizes are not allowed to
-+ * change.
-+ * This is essentially a per Distribution release detail depending
-+ * on which ipxe roms (and which options on build) are bundled with an qemu.
-+ * To fix migrations define a compat for anything older than the bump of the
-+ * rom size (=pre-bionic = <=2.10) and map older machine types to filenames.
-+ * We can then provide compat-roms (essentially the old build on new paths) for
-+ * those.
-+ * We only support the defaults for migrations (shutdown, move, start and
-+ * essentially everything that does a full restart/init works without this
-+ * indirection), so only map those whose default rom was on the efi-* roms
-+ * which now crossed 256k to use the newer roms for anything else.
-+ */
-+
-+
- 
- static void spapr_machine_2_10_instance_options(MachineState *machine)
- {
+ #define HW_COMPAT_2_9 \
+     {\
