@@ -2,6 +2,7 @@ use-fixed-data-path.patch
 use-data-path.patch
 
 # ubuntu patches
+ubuntu/qemu-stable-2.11.1.patch
 ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
 ubuntu/define-ubuntu-machine-types.patch
