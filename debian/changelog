@@ -1,3 +1,10 @@
+qemu (1:2.11+dfsg-1ubuntu2) bionic; urgency=medium
+
+  * d/p/ubuntu/pre-bionic-256k-ipxe-efi-roms.patch: refresh to just change the
+    common compat.h header and some extra info in the patch header.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 19 Feb 2018 11:03:11 +0100
+
 qemu (1:2.11+dfsg-1ubuntu1) bionic; urgency=medium
 
   * Merge with Debian testing, among other fixes this includes
