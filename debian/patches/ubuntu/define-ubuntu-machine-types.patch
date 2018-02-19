@@ -161,7 +161,7 @@ Forwarded: no
 +                   pc_q35_bionic_machine_options);
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -3685,12 +3685,12 @@ static const TypeInfo spapr_machine_info
+@@ -3738,12 +3738,12 @@ static const TypeInfo spapr_machine_info
      },
  };
  
@@ -176,7 +176,7 @@ Forwarded: no
          if (latest) {                                                \
              mc->alias = "pseries";                                   \
              mc->is_default = 1;                                      \
-@@ -3699,7 +3699,7 @@ static const TypeInfo spapr_machine_info
+@@ -3752,7 +3752,7 @@ static const TypeInfo spapr_machine_info
      static void spapr_machine_##suffix##_instance_init(Object *obj)  \
      {                                                                \
          MachineState *machine = MACHINE(obj);                        \
@@ -185,7 +185,7 @@ Forwarded: no
      }                                                                \
      static const TypeInfo spapr_machine_##suffix##_info = {          \
          .name = MACHINE_TYPE_NAME("pseries-" verstr),                \
-@@ -3713,6 +3713,9 @@ static const TypeInfo spapr_machine_info
+@@ -3766,6 +3766,9 @@ static const TypeInfo spapr_machine_info
      }                                                                \
      type_init(spapr_machine_register_##suffix)
  
@@ -193,18 +193,18 @@ Forwarded: no
 +    DEFINE_SPAPR_MACHINE_NAMED(suffix, suffix, verstr, latest)
 +
  /*
-  * pseries-2.11
+  * pseries-2.12
   */
-@@ -3725,7 +3728,7 @@ static void spapr_machine_2_11_class_opt
+@@ -3778,7 +3781,7 @@ static void spapr_machine_2_12_class_opt
      /* Defaults for the latest behaviour inherited from the base class */
  }
  
--DEFINE_SPAPR_MACHINE(2_11, "2.11", true);
-+DEFINE_SPAPR_MACHINE(2_11, "2.11", false);
+-DEFINE_SPAPR_MACHINE(2_12, "2.12", true);
++DEFINE_SPAPR_MACHINE(2_12, "2.12", false);
  
  /*
-  * pseries-2.10
-@@ -3898,12 +3901,7 @@ DEFINE_SPAPR_MACHINE(2_7, "2.7", false);
+  * pseries-2.11
+@@ -3974,12 +3977,7 @@ DEFINE_SPAPR_MACHINE(2_7, "2.7", false);
   * pseries-2.6
   */
  #define SPAPR_COMPAT_2_6 \
@@ -218,7 +218,7 @@ Forwarded: no
  
  static void spapr_machine_2_6_instance_options(MachineState *machine)
  {
-@@ -3922,12 +3920,21 @@ DEFINE_SPAPR_MACHINE(2_6, "2.6", false);
+@@ -3998,12 +3996,21 @@ DEFINE_SPAPR_MACHINE(2_6, "2.6", false);
  /*
   * pseries-2.5
   */
@@ -240,7 +240,7 @@ Forwarded: no
      },
  
  static void spapr_machine_2_5_instance_options(MachineState *machine)
-@@ -4034,6 +4041,13 @@ static void spapr_machine_2_1_class_opti
+@@ -4110,6 +4117,13 @@ static void spapr_machine_2_1_class_opti
  }
  DEFINE_SPAPR_MACHINE(2_1, "2.1", false);
  
