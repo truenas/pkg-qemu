@@ -10,12 +10,12 @@ advance of s->pc. Unfortunately we didn't notice that
 in one place the old code was deliberately not incrementing
 s->pc:
 
-@@ -4501,7 +4528,7 @@ static target_ulong disas_insn(DisasContext *s, CPUState *cpu)
+static target_ulong disas_insn(DisasContext *s, CPUState *cpu)
              static const int pp_prefix[4] = {
                  0, PREFIX_DATA, PREFIX_REPZ, PREFIX_REPNZ
              };
--            int vex3, vex2 = cpu_ldub_code(env, s->pc);
-+            int vex3, vex2 = x86_ldub_code(env, s);
+ -            int vex3, vex2 = cpu_ldub_code(env, s->pc);
+ +            int vex3, vex2 = x86_ldub_code(env, s);
 
              if (!CODE64(s) && (vex2 & 0xc0) != 0xc0) {
                  /* 4.1.4.6: In 32-bit mode, bits [7:6] must be 11b,
