@@ -1,18 +1,20 @@
 qemu (1:2.11+dfsg-1ubuntu2) bionic; urgency=medium
 
   * d/p/ubuntu/qemu-stable-2.11.1.patch: add stable release
-    - among other fixes this adds code to mitigate the Spectre/Meltdown
-      attacks (LP: #1744882). However, enabling this functionality requires
-      additional configuration beyond just updating QEMU. Also migrations
-      need special consideration. Details about that can be found at
-      https://www.qemu.org/2018/02/14/qemu-2-11-1-and-spectre-update/
-    - Drop changes that are part of the upstream stable release
-      - d/p/ubuntu/linux-headers-update-to-4.15-rc1.patch
-      - d/p/ubuntu/linux-headers-update-4.15-rc9.patch
-      - d/p/ubuntu/lp1743560-s390x-kvm-Handle-bpb-feature.patch
-      - d/p/ubuntu/lp1743560-s390x-kvm-provide-stfle.81.patch
-    - d/p/ubuntu/define-ubuntu-machine-types.patch: refresh for stable update
-  * d/p/ubuntu/pre-bionic-256k-ipxe-efi-roms.patch: unify to just change the
+    - among other fixes this adds code to:
+      - mitigate the Spectre/Meltdown attacks (LP: #1744882). However, enabling
+        this functionality requires additional configuration beyond just
+        updating QEMU. Also migrations need special consideration. Details
+        about that can be found at
+        https://www.qemu.org/2018/02/14/qemu-2-11-1-and-spectre-update/
+      - Power9 allocation of max 8 threads per core (LP: #1750526)
+  * Drop changes that are part of the upstream stable release
+    - d/p/ubuntu/linux-headers-update-to-4.15-rc1.patch
+    - d/p/ubuntu/linux-headers-update-4.15-rc9.patch
+    - d/p/ubuntu/lp1743560-s390x-kvm-Handle-bpb-feature.patch
+    - d/p/ubuntu/lp1743560-s390x-kvm-provide-stfle.81.patch
+  * d/p/ubuntu/define-ubuntu-machine-types.patch: refresh to match stable update
+  * d/p/ubuntu/pre-bionic-256k-ipxe-efi-roms.patch: unify to only change the
     common compat.h header and add some extra info in the patch header.
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 19 Feb 2018 11:03:11 +0100
