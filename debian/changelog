@@ -2,10 +2,10 @@ qemu (1:2.11+dfsg-1ubuntu2) bionic; urgency=medium
 
   * d/p/ubuntu/qemu-stable-2.11.1.patch: add stable release
     - among other fixes this adds code to:
-      - mitigate the Spectre/Meltdown attacks (LP: #1744882). However, enabling
-        this functionality requires additional configuration beyond just
-        updating QEMU. Also migrations need special consideration. Details
-        about that can be found at
+      - mitigate the Spectre/Meltdown attacks (LP: #1744882) (CVE-2017-5715)
+        However, enabling this functionality requires additional configuration
+        beyond just updating QEMU. Also migrations need special consideration.
+        Details about that can be found at:
         https://www.qemu.org/2018/02/14/qemu-2-11-1-and-spectre-update/
       - Power9 allocation of max 8 threads per core (LP: #1750526)
   * Drop changes that are part of the upstream stable release
