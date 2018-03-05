@@ -1,3 +1,10 @@
+qemu (1:2.11+dfsg-1ubuntu4) bionic; urgency=medium
+
+  * d/p/ubuntu/define-ubuntu-machine-types.patch: Disable HTM feature for
+    ppc64el in spapr to let the defaults not fail on Power9 HW (LP: #1752026).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 05 Mar 2018 16:43:01 +0100
+
 qemu (1:2.11+dfsg-1ubuntu3) bionic; urgency=medium
 
   * d/p/ubuntu/0001-slirp-Add-domainname-option-to-slirp-s-DHCP-server.patch,
