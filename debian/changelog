@@ -2,6 +2,8 @@ qemu (1:2.11+dfsg-1ubuntu4) bionic; urgency=medium
 
   * d/p/ubuntu/define-ubuntu-machine-types.patch: Disable HTM feature for
     ppc64el in spapr to let the defaults not fail on Power9 HW (LP: #1752026).
+  * d/p/ubuntu/lp1753826-memfd-fix-configure-test.patch: fix FTBFS with newer
+    versions of glibc >=2.27 (LP: #1753826)
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 05 Mar 2018 16:43:01 +0100
 
