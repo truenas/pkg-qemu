@@ -1,3 +1,12 @@
+qemu (1:2.11+dfsg-1ubuntu3) bionic; urgency=medium
+
+  * d/p/ubuntu/0001-slirp-Add-domainname-option-to-slirp-s-DHCP-server.patch,
+    d/p/ubuntu/0002-slirp-Add-classless-static-routes-support-to-DHCP-se.patch:
+    Add domainname option and classless static routes support to the user
+    networking's DHCP server
+
+ -- Benjamin Drung <benjamin.drung@profitbricks.com>  Fri, 02 Mar 2018 21:08:54 +0100
+
 qemu (1:2.11+dfsg-1ubuntu2) bionic; urgency=medium
 
   * d/p/ubuntu/qemu-stable-2.11.1.patch: add stable release
