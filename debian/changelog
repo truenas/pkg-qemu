@@ -1,3 +1,10 @@
+qemu (1:2.11+dfsg-1ubuntu5) bionic; urgency=medium
+
+  * Revert the slirp changes of 1:2.11+dfsg-1ubuntu3 until they are upstream
+    accepted to be better long term maintainable (LP: #1753938)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 22 Mar 2018 10:31:23 +0100
+
 qemu (1:2.11+dfsg-1ubuntu4) bionic; urgency=medium
 
   * d/p/ubuntu/define-ubuntu-machine-types.patch: Disable HTM feature for
