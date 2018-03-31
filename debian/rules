@@ -101,8 +101,9 @@ configure-stamp: configure
 		$(QEMU_CONFIGURE_OPTIONS) || \
 	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
 
-# switch UI and audio modules back to be built-ins, for now
-	sed -i -r 's/(CONFIG_(CURSES|GTK|SDL|AUDIO_.*))=m/\1=y/' \
+# switch some simple UI and simple audio modules to be built-ins,
+# but keep more complex to be modules to move to a separate package
+	sed -i -r 's/(CONFIG_(CURSES|-GTK|-SDL|AUDIO_(-PA|OSS|ALSA|-SDL)))=m/\1=y/' \
 		qemu-build/config-host.mak
 
 ifeq ($(enable_linux_user),enable)
