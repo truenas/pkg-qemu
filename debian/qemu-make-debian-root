@@ -11,6 +11,10 @@ which debootstrap >/dev/null || {
     echo "error: missing debootstrap package" >&2
     exit 1
 }
+which sfdisk >/dev/null || {
+    echo "error: missing fdisk package" >&2
+    exit 1
+}
 
 KEEPFS=0
 SPARSE=0
