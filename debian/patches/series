@@ -11,3 +11,4 @@ ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
 ubuntu/pre-bionic-256k-ipxe-efi-roms.patch
 ubuntu/lp1753826-memfd-fix-configure-test.patch
 ubuntu/lp1739665-SSE-AVX-AVX512-cpu-features.patch
+ubuntu/lp1740219-continuous-space-commpage.patch
