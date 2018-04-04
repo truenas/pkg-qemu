@@ -3,6 +3,8 @@ qemu (1:2.11+dfsg-1ubuntu6) bionic; urgency=medium
   * Remove LP: 1752026 changes to d/p/ubuntu/define-ubuntu-machine-types.patch.
     The Kernel fixes are preferred and already committed to the kernel.
     Therefore remove the default disabling of the HTM feature (LP: #1761175)
+  * d/p/ubuntu/lp1739665-SSE-AVX-AVX512-cpu-features.patch: Enable new
+    SSE/AVX/AVX512 cpu features (LP: #1739665)
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 04 Apr 2018 15:16:07 +0200
 
