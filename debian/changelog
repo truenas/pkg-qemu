@@ -8,6 +8,9 @@ qemu (1:2.11+dfsg-1ubuntu6) bionic; urgency=medium
   * d/p/ubuntu/lp1740219-continuous-space-commpage.patch: make Arm
     space+commpage continuous which avoids long startup times on
     qemu-user-static (LP: #1740219)
+  * d/p/ubuntu/lp-1761372-*: provide pseries-2.12-sxxm type as convenience
+    with all meltdown/spectre workarounds enabled by default (LP: #1761372).
+    This is not the default type (following upstream on that).
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 04 Apr 2018 15:16:07 +0200
 
