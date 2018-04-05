@@ -11,6 +11,8 @@ qemu (1:2.11+dfsg-1ubuntu6) bionic; urgency=medium
   * d/p/ubuntu/lp-1761372-*: provide pseries-2.12-sxxm type as convenience
     with all meltdown/spectre workarounds enabled by default (LP: #1761372).
     This is not the default type (following upstream on that).
+  * d/p/ubuntu/lp-1704312-1-* provide means to manually handle filesystem-dax
+    with pmem by backporting align and unarmed options (LP: #1704312).
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 04 Apr 2018 15:16:07 +0200
 
