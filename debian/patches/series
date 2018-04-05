@@ -12,3 +12,10 @@ ubuntu/pre-bionic-256k-ipxe-efi-roms.patch
 ubuntu/lp1753826-memfd-fix-configure-test.patch
 ubuntu/lp1739665-SSE-AVX-AVX512-cpu-features.patch
 ubuntu/lp1740219-continuous-space-commpage.patch
+ubuntu/lp-1761372-1-ppc-spapr-caps-Disallow-setting-workaround-for-spapr.patch
+ubuntu/lp-1761372-2-target-ppc-Check-mask-when-setting-cap_ppc_safe_indi.patch
+ubuntu/lp-1761372-3-ppc-spapr-caps-Add-support-for-custom-spapr_capabili.patch
+ubuntu/lp-1761372-4-ppc-spapr-caps-Convert-cap-cfpc-to-custom-spapr-cap.patch
+ubuntu/lp-1761372-5-ppc-spapr-caps-Convert-cap-sbbc-to-custom-spapr-cap.patch
+ubuntu/lp-1761372-6-ppc-spapr-caps-Convert-cap-ibs-to-custom-spapr-cap.patch
+ubuntu/lp-1761372-7-ppc-spapr-caps-Define-the-pseries-2.12-sxxm-machine-.patch
