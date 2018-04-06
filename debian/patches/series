@@ -19,6 +19,7 @@ ubuntu/lp-1761372-4-ppc-spapr-caps-Convert-cap-cfpc-to-custom-spapr-cap.patch
 ubuntu/lp-1761372-5-ppc-spapr-caps-Convert-cap-sbbc-to-custom-spapr-cap.patch
 ubuntu/lp-1761372-6-ppc-spapr-caps-Convert-cap-ibs-to-custom-spapr-cap.patch
 ubuntu/lp-1761372-7-ppc-spapr-caps-Define-the-pseries-2.12-sxxm-machine-.patch
+lp-1761372-extend-ubuntu-machine-types-ppc-2.11.patch
 ubuntu/lp-1704312-1-hostmem-file-add-align-option.patch
 ubuntu/lp-1704312-2-nvdimm-add-a-macro-for-property-label-size.patch
 ubuntu/lp-1704312-3-nvdimm-add-unarmed-option.patch
