@@ -2,7 +2,7 @@
 
 set -e
 
-base=http://wiki.qemu-project.org/download
+base=https://download.qemu.org/
 comp=.xz
 
 dir() {
