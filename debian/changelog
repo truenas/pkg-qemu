@@ -14,6 +14,8 @@ qemu (1:2.11+dfsg-1ubuntu6) bionic; urgency=medium
     (LP: #1761372).
   * d/p/ubuntu/lp-1704312-1-* provide means to manually handle filesystem-dax
     with pmem by backporting align and unarmed options (LP: #1704312).
+  * d/p/ubuntu/lp-1762315-slirp-Add-domainname.patch: slirp: Add domainname
+    option to slirp's DHCP server (LP: #1762315)
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 04 Apr 2018 15:16:07 +0200
 
