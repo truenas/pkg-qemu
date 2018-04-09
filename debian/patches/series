@@ -23,3 +23,4 @@ lp-1761372-extend-ubuntu-machine-types-ppc-2.11.patch
 ubuntu/lp-1704312-1-hostmem-file-add-align-option.patch
 ubuntu/lp-1704312-2-nvdimm-add-a-macro-for-property-label-size.patch
 ubuntu/lp-1704312-3-nvdimm-add-unarmed-option.patch
+ubuntu/lp-1762315-slirp-Add-domainname.patch
