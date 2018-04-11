@@ -1,3 +1,10 @@
+qemu (1:2.11+dfsg-1ubuntu7) bionic; urgency=medium
+
+  * d/p/ubuntu/lp-1762854-*: fix issue with SCSI-2 devices denying Protection
+    information (LP: #1762854).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 11 Apr 2018 07:46:18 +0200
+
 qemu (1:2.11+dfsg-1ubuntu6) bionic; urgency=medium
 
   * Remove LP: 1752026 changes to d/p/ubuntu/define-ubuntu-machine-types.patch.
