@@ -24,3 +24,5 @@ ubuntu/lp-1704312-1-hostmem-file-add-align-option.patch
 ubuntu/lp-1704312-2-nvdimm-add-a-macro-for-property-label-size.patch
 ubuntu/lp-1704312-3-nvdimm-add-unarmed-option.patch
 ubuntu/lp-1762315-slirp-Add-domainname.patch
+ubuntu/lp-1762854-scsi-disk-allow-customizing-the-SCSI-version.patch
+ubuntu/lp-1762854-hw-scsi-support-SCSI-2-passthrough-without-PI.patch
