@@ -2,6 +2,8 @@ qemu (1:2.11+dfsg-1ubuntu7) bionic; urgency=medium
 
   * d/p/ubuntu/lp-1762854-*: fix issue with SCSI-2 devices denying Protection
     information (LP: #1762854).
+  * d/p/ubuntu/lp-1763468-*: fix VSMT handling to fix ppc64el P8/P9 migration
+    (LP: #1763468).
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 11 Apr 2018 07:46:18 +0200
 
