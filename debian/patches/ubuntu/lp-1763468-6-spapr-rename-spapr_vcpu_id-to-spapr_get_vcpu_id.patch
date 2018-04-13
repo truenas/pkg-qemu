@@ -1,0 +1,116 @@
+From fd546b52d089973f711b2507b377c2b911997919 Mon Sep 17 00:00:00 2001
+From: Greg Kurz <groug@kaod.org>
+Date: Wed, 14 Feb 2018 20:40:44 +0100
+Subject: [PATCH 6/9] spapr: rename spapr_vcpu_id() to spapr_get_vcpu_id()
+
+The spapr_vcpu_id() function is an accessor actually. Let's rename it
+for symmetry with the recently added spapr_set_vcpu_id() helper.
+
+The motivation behind this is that a later patch will consolidate
+the VCPU id formula in a function and spapr_vcpu_id looks like an
+appropriate name.
+
+Signed-off-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
+
+Forwarded: no (backport)
+Origin: upstream, https://git.qemu.org/?p=qemu.git;a=commit;h=14bb4486
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1763468
+Last-Update: 2018-04-13
+---
+ hw/ppc/spapr.c         | 16 ++++++++--------
+ include/hw/ppc/spapr.h |  2 +-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 86e2f28..88178a1 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -210,7 +210,7 @@ static int spapr_fixup_cpu_smt_dt(void *fdt, int offset, PowerPCCPU *cpu,
+     int i, ret = 0;
+     uint32_t servers_prop[smt_threads];
+     uint32_t gservers_prop[smt_threads * 2];
+-    int index = spapr_vcpu_id(cpu);
++    int index = spapr_get_vcpu_id(cpu);
+ 
+     if (cpu->compat_pvr) {
+         ret = fdt_setprop_cell(fdt, offset, "cpu-version", cpu->compat_pvr);
+@@ -239,7 +239,7 @@ static int spapr_fixup_cpu_smt_dt(void *fdt, int offset, PowerPCCPU *cpu,
+ 
+ static int spapr_fixup_cpu_numa_dt(void *fdt, int offset, PowerPCCPU *cpu)
+ {
+-    int index = spapr_vcpu_id(cpu);
++    int index = spapr_get_vcpu_id(cpu);
+     uint32_t associativity[] = {cpu_to_be32(0x5),
+                                 cpu_to_be32(0x0),
+                                 cpu_to_be32(0x0),
+@@ -343,7 +343,7 @@ static int spapr_fixup_cpu_dt(void *fdt, sPAPRMachineState *spapr)
+     CPU_FOREACH(cs) {
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+         DeviceClass *dc = DEVICE_GET_CLASS(cs);
+-        int index = spapr_vcpu_id(cpu);
++        int index = spapr_get_vcpu_id(cpu);
+         int compat_smt = MIN(smp_threads, ppc_compat_max_threads(cpu));
+ 
+         if (index % spapr->vsmt != 0) {
+@@ -492,7 +492,7 @@ static void spapr_populate_cpu_dt(CPUState *cs, void *fdt, int offset,
+     PowerPCCPU *cpu = POWERPC_CPU(cs);
+     CPUPPCState *env = &cpu->env;
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
+-    int index = spapr_vcpu_id(cpu);
++    int index = spapr_get_vcpu_id(cpu);
+     uint32_t segs[] = {cpu_to_be32(28), cpu_to_be32(40),
+                        0xffffffff, 0xffffffff};
+     uint32_t tbfreq = kvm_enabled() ? kvmppc_get_tbfreq()
+@@ -626,7 +626,7 @@ static void spapr_populate_cpus_dt_node(void *fdt, sPAPRMachineState *spapr)
+      */
+     CPU_FOREACH_REVERSE(cs) {
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+-        int index = spapr_vcpu_id(cpu);
++        int index = spapr_get_vcpu_id(cpu);
+         DeviceClass *dc = DEVICE_GET_CLASS(cs);
+         int offset;
+ 
+@@ -3236,7 +3236,7 @@ static void *spapr_populate_hotplug_cpu_dt(CPUState *cs, int *fdt_offset,
+ {
+     PowerPCCPU *cpu = POWERPC_CPU(cs);
+     DeviceClass *dc = DEVICE_GET_CLASS(cs);
+-    int id = spapr_vcpu_id(cpu);
++    int id = spapr_get_vcpu_id(cpu);
+     void *fdt;
+     int offset, fdt_size;
+     char *nodename;
+@@ -3787,7 +3787,7 @@ static void spapr_pic_print_info(InterruptStatsProvider *obj,
+     ics_pic_print_info(spapr->ics, mon);
+ }
+ 
+-int spapr_vcpu_id(PowerPCCPU *cpu)
++int spapr_get_vcpu_id(PowerPCCPU *cpu)
+ {
+     CPUState *cs = CPU(cpu);
+ 
+@@ -3824,7 +3824,7 @@ PowerPCCPU *spapr_find_cpu(int vcpu_id)
+     CPU_FOREACH(cs) {
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+ 
+-        if (spapr_vcpu_id(cpu) == vcpu_id) {
++        if (spapr_get_vcpu_id(cpu) == vcpu_id) {
+             return cpu;
+         }
+     }
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index bdfa22a..1545165 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -743,7 +743,7 @@ void spapr_do_system_reset_on_cpu(CPUState *cs, run_on_cpu_data arg);
+ 
+ #define HTAB_SIZE(spapr)        (1ULL << ((spapr)->htab_shift))
+ 
+-int spapr_vcpu_id(PowerPCCPU *cpu);
++int spapr_get_vcpu_id(PowerPCCPU *cpu);
+ void spapr_set_vcpu_id(PowerPCCPU *cpu, int cpu_index, Error **errp);
+ PowerPCCPU *spapr_find_cpu(int vcpu_id);
+ 
+-- 
+2.7.4
+

@@ -1,0 +1,91 @@
+From 1d2c91169a861e50ecd09b94912d7ed7eb0dd60a Mon Sep 17 00:00:00 2001
+From: Greg Kurz <groug@kaod.org>
+Date: Fri, 16 Feb 2018 19:58:06 +0100
+Subject: [PATCH 8/9] spapr: fix missing CPU core nodes in DT when running with
+ TCG
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Commit 5d0fb1508e2d "spapr: consolidate the VCPU id numbering logic
+in a single place" introduced a helper to detect thread0 of a virtual
+core based on its VCPU id. This is used to create CPU core nodes in
+the DT, but it is broken in TCG.
+
+$ qemu-system-ppc64 -nographic -accel tcg -machine dumpdtb=dtb.bin \
+                    -smp cores=16,maxcpus=16,threads=1
+$ dtc -f -O dts dtb.bin | grep POWER8
+                PowerPC,POWER8@0 {
+                PowerPC,POWER8@8 {
+
+instead of the expected 16 cores that we get with KVM:
+
+$ dtc -f -O dts dtb.bin | grep POWER8
+                PowerPC,POWER8@0 {
+                PowerPC,POWER8@8 {
+                PowerPC,POWER8@10 {
+                PowerPC,POWER8@18 {
+                PowerPC,POWER8@20 {
+                PowerPC,POWER8@28 {
+                PowerPC,POWER8@30 {
+                PowerPC,POWER8@38 {
+                PowerPC,POWER8@40 {
+                PowerPC,POWER8@48 {
+                PowerPC,POWER8@50 {
+                PowerPC,POWER8@58 {
+                PowerPC,POWER8@60 {
+                PowerPC,POWER8@68 {
+                PowerPC,POWER8@70 {
+                PowerPC,POWER8@78 {
+
+This happens because spapr_get_vcpu_id() maps VCPU ids to
+cs->cpu_index in TCG mode. This confuses the code in
+spapr_is_thread0_in_vcore(), since it assumes thread0 VCPU
+ids to have a spapr->vsmt spacing.
+
+    spapr_get_vcpu_id(cpu) % spapr->vsmt == 0
+
+Actually, there's no real reason to expose cs->cpu_index instead
+of the VCPU id, since we also generate it with TCG. Also we already
+set it explicitly in spapr_set_vcpu_id(), so there's no real reason
+either to call kvm_arch_vcpu_id() with KVM.
+
+This patch unifies spapr_get_vcpu_id() to always return the computed
+VCPU id both in TCG and KVM. This is one step forward towards KVM<->TCG
+migration.
+
+Fixes: 5d0fb1508e2d
+Reported-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
+
+Forwarded: no (backport)
+Origin: upstream, https://git.qemu.org/?p=qemu.git;a=commit;h=b1a568c1
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1763468
+Last-Update: 2018-04-13
+---
+ hw/ppc/spapr.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 5810774..979f634 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -3806,13 +3806,7 @@ static void spapr_pic_print_info(InterruptStatsProvider *obj,
+ 
+ int spapr_get_vcpu_id(PowerPCCPU *cpu)
+ {
+-    CPUState *cs = CPU(cpu);
+-
+-    if (kvm_enabled()) {
+-        return kvm_arch_vcpu_id(cs);
+-    } else {
+-        return cs->cpu_index;
+-    }
++    return cpu->vcpu_id;
+ }
+ 
+ void spapr_set_vcpu_id(PowerPCCPU *cpu, int cpu_index, Error **errp)
+-- 
+2.7.4
+

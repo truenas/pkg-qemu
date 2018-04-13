@@ -26,3 +26,12 @@ ubuntu/lp-1704312-3-nvdimm-add-unarmed-option.patch
 ubuntu/lp-1762315-slirp-Add-domainname.patch
 ubuntu/lp-1762854-scsi-disk-allow-customizing-the-SCSI-version.patch
 ubuntu/lp-1762854-hw-scsi-support-SCSI-2-passthrough-without-PI.patch
+ubuntu/lp-1763468-1-spapr-Allow-some-cases-where-we-can-t-set-VSMT-mode-.patch
+ubuntu/lp-1763468-2-spapr-Adjust-default-VSMT-value-for-better-migration.patch
+ubuntu/lp-1763468-3-spapr-set-vsmt-to-MAX-8-smp_threads.patch
+ubuntu/lp-1763468-4-spapr-use-spapr-vsmt-to-compute-VCPU-ids.patch
+ubuntu/lp-1763468-5-spapr-move-VCPU-calculation-to-core-machine-code.patch
+ubuntu/lp-1763468-6-spapr-rename-spapr_vcpu_id-to-spapr_get_vcpu_id.patch
+ubuntu/lp-1763468-7-spapr-consolidate-the-VCPU-id-numbering-logic-in-a-s.patch
+ubuntu/lp-1763468-8-spapr-fix-missing-CPU-core-nodes-in-DT-when-running-.patch
+ubuntu/lp-1763468-9-spapr-register-dummy-ICPs-later.patch
