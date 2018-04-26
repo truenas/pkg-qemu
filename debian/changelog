@@ -1,6 +1,6 @@
-qemu (1:2.12~rc4+dfsg-1) UNRELEASED; urgency=medium
+qemu (1:2.12+dfsg-1) UNRELEASED; urgency=medium
 
-  * new RC
+  * new upstream release
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 19 Apr 2018 07:53:07 +0300
 
