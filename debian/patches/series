@@ -59,3 +59,4 @@ CVE-2017-5715/s390x-kvm-introduce-branch-prediction-blocking-contr.patch
 CVE-2017-5715/s390x-kvm-handle-bpb-feature.patch
 vga-check-the-validation-of-memory-addr-when-draw-text-CVE-2018-5683.patch
 osdep-fix-ROUND_UP-64-bit-32-bit-CVE-2017-18043.patch
+virtio-check-VirtQueue-Vring-object-is-set-CVE-2017-17381.patch
