@@ -47,6 +47,7 @@ usb-redir-fix-stack-overflow-in-usbredir_log_data-CVE-2017-10806.patch
 ide-do-not-flush-empty-CDROM-drives-CVE-2017-12809.patch
 vga-stop-passing-pointers-to-vga_draw_line-functions-CVE-2017-13672.patch
 multiboot-validate-multiboot-header-address-values-CVE-2017-14167.patch
+multiboot-bss_end_addr-can-be-zero-CVE-2018-7550.patch
 slirp-fix-clearing-ifq_so-from-pending-packets-CVE-2017-13711.patch
 # CVE-2017-5715 (spectre/meltdown) mitigation support
 CVE-2017-5715/i386-increase-X86CPUDefinition-model_id-to-49.patch
