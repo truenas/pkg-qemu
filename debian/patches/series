@@ -49,7 +49,7 @@ vga-stop-passing-pointers-to-vga_draw_line-functions-CVE-2017-13672.patch
 multiboot-validate-multiboot-header-address-values-CVE-2017-14167.patch
 slirp-fix-clearing-ifq_so-from-pending-packets-CVE-2017-13711.patch
 # CVE-2017-5715 (spectre/meltdown) mitigation support
-CVE-2017-5715/i386-change-X86CPUDefinition-model_id-to-const-char.patch
+CVE-2017-5715/i386-increase-X86CPUDefinition-model_id-to-49.patch
 CVE-2017-5715/i386-add-support-for-SPEC_CTRL-MSR.patch
 CVE-2017-5715/i386-add-spec-ctrl-CPUID-bit.patch
 CVE-2017-5715/i386-add-FEAT_8000_0008_EBX-CPUID-feature-word.patch
