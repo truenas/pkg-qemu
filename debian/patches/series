@@ -63,3 +63,4 @@ virtio-check-VirtQueue-Vring-object-is-set-CVE-2017-17381.patch
 ps2-check-PS2Queue-pointers-in-post_load-routine-CVE-2017-16845.patch
 cirrus-fix-oob-access-in-mode4and5-write-functions-CVE-2017-15289.patch
 io-monitor-encoutput-buffer-size-from-websocket-GSource-CVE-2017-15268.patch
+nbd-server-CVE-2017-15119-Reject-options-larger-than-32M.patch
