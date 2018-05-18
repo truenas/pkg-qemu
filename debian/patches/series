@@ -57,3 +57,4 @@ CVE-2017-5715/i386-add-FEAT_8000_0008_EBX-CPUID-feature-word.patch
 CVE-2017-5715/i386-add-new-IBRS-versions-of-Intel-CPU-models.patch
 CVE-2017-5715/s390x-kvm-introduce-branch-prediction-blocking-contr.patch
 CVE-2017-5715/s390x-kvm-handle-bpb-feature.patch
+vga-check-the-validation-of-memory-addr-when-draw-text-CVE-2018-5683.patch
