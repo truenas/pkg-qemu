@@ -65,8 +65,8 @@ Build-Depends: debhelper (>= 9),
  libsasl2-dev,
 # --disable-sdl --with-sdlabi=2.0
 # libsdl1.2-dev,
-# --enable-seccomp	linux-amd64|linux-i386|linux-ppc64el
- libseccomp-dev (>= 2.3.0) [linux-amd64 linux-i386 linux-ppc64el],
+# --enable-seccomp	linux-*
+ libseccomp-dev (>= 2.3.0) [linux-any],
 # --enable-spice	linux-amd64|linux-i386
  libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386],
  libspice-protocol-dev (>= 0.12.3~) [linux-amd64 linux-i386],
