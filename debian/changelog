@@ -42,16 +42,8 @@ qemu (1:2.8+dfsg-6+deb9u4) stretch-security; urgency=high
     CVE-2017-15124/12-ui-add-trace-events-related-to-VNC-client-throttling.patch
     CVE-2017-15124/13-ui-mix-misleading-comments-return-types-of-VNC-I-O-h.patch
     Closes: #884806, CVE-2017-15124
-  * CVE-2017-9503 (megasas: TOCTOU and segmentation fault bugs):
-    CVE-2017-9503/1-megasas-do-not-read-sense-length-more-than-once-from.patch
-    CVE-2017-9503/2-megasas-do-not-read-iovec-count-more-than-once-from-.patch
-    CVE-2017-9503/3-megasas-do-not-read-DCMD-opcode-more-than-once-from-.patch
-    CVE-2017-9503/4-megasas-do-not-read-command-more-than-once-from-fram.patch
-    CVE-2017-9503/5-megasas-do-not-read-SCSI-req-parameters-more-than-on.patch
-    CVE-2017-9503/6-megasas-always-store-SCSIRequest-into-MegasasCmd.patch
-    Closes: #865754, CVE-2017-9503
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 18 May 2018 19:40:14 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 26 May 2018 13:06:04 +0300
 
 qemu (1:2.8+dfsg-6+deb9u3) stretch-security; urgency=high
 
