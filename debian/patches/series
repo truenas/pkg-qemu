@@ -1,2 +1,3 @@
 use-fixed-data-path.patch
 ccid-card-passthru-fix-regression-in-realize.patch
+ahci-fix-PxCI-register-race.patch
