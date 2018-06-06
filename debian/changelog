@@ -1,3 +1,20 @@
+qemu (1:2.11+dfsg-1ubuntu7.1) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: out-of-bounds access during migration via ps2
+    - debian/patches/ubuntu/CVE-2017-16845.patch: check PS2Queue pointers
+      in post_load routine in hw/input/ps2.c.
+    - CVE-2017-16845
+  * SECURITY UPDATE: arbitrary code execution via load_multiboot
+    - debian/patches/ubuntu/CVE-2018-7550.patch: handle bss_end_addr being
+      zero in hw/i386/multiboot.c.
+    - CVE-2018-7550
+  * SECURITY UPDATE: denial of service in Cirrus CLGD 54xx VGA
+    - debian/patches/ubuntu/CVE-2018-7858.patch: fix region calculation in
+      hw/display/vga.c.
+    - CVE-2018-7858
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 11 May 2018 13:26:42 -0400
+
 qemu (1:2.11+dfsg-1ubuntu7) bionic; urgency=medium
 
   * d/p/ubuntu/lp-1762854-*: fix issue with SCSI-2 devices denying Protection
