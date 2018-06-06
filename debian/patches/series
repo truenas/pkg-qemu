@@ -8,3 +8,4 @@ ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
 ubuntu/define-ubuntu-machine-types.patch
 ubuntu/lp-1761372-extend-ubuntu-machine-types-ppc-2.11.patch
+ubuntu/machine-type-hpb.patch
