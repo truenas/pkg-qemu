@@ -119,7 +119,7 @@ endif
 
 build: build-arch build-indep
 build-arch: b/build-stamp
-build-indep: b/build-stamp
+build-indep:
 b/build-stamp: b/configure-stamp
 	dh_testdir
 
