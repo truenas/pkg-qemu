@@ -1,3 +1,15 @@
+qemu (1:2.11+dfsg-1ubuntu7.3) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: Speculative Store Bypass
+    - debian/patches/ubuntu/CVE-2018-3639-2.patch: define the AMD
+      'virt-ssbd' CPUID feature bit in target/i386/cpu.c.
+    - debian/patches/ubuntu/CVE-2018-3639-3.patch: define the Virt SSBD MSR
+      and handling of it in target/i386/cpu.h, target/i386/kvm.c,
+      target/i386/machine.c.
+    - CVE-2018-3639
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 23 May 2018 07:57:07 -0400
+
 qemu (1:2.11+dfsg-1ubuntu7.2) bionic-security; urgency=medium
 
   * SECURITY UPDATE: Speculative Store Bypass
