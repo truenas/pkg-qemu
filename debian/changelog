@@ -1,3 +1,17 @@
+qemu (1:2.11+dfsg-1ubuntu10) cosmic; urgency=medium
+
+  * SECURITY UPDATE: Speculative Store Bypass
+    - debian/patches/ubuntu/CVE-2018-3639/0001*.patch: define the 'ssbd'
+      CPUID feature bit in target/i386/cpu.*.
+    - debian/patches/ubuntu/CVE-2018-3639/0002*.patch: define the AMD
+      'virt-ssbd' CPUID feature bit in target/i386/cpu.c.
+    - debian/patches/ubuntu/CVE-2018-3639/0003*.patch: define the Virt SSBD
+      MSR and handling of it in target/i386/cpu.h, target/i386/kvm.c,
+      target/i386/machine.c.
+    - CVE-2018-3639
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 22 May 2018 09:34:52 -0400
+
 qemu (1:2.11+dfsg-1ubuntu9) cosmic; urgency=medium
 
   * SECURITY UPDATE: out-of-bounds access during migration via ps2
