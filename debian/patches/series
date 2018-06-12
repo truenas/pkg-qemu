@@ -35,3 +35,5 @@ ubuntu/CVE-2017-16845.patch
 ubuntu/CVE-2018-7550.patch
 ubuntu/CVE-2018-7858.patch
 ubuntu/CVE-2018-3639.patch
+ubuntu/CVE-2018-3639-2.patch
+ubuntu/CVE-2018-3639-3.patch
