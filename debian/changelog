@@ -1,3 +1,9 @@
+qemu (1:2.11+dfsg-1ubuntu8) cosmic; urgency=medium
+
+  * No-change rebuild for ncurses soname changes.
+
+ -- Matthias Klose <doko@ubuntu.com>  Thu, 03 May 2018 14:18:39 +0000
+
 qemu (1:2.11+dfsg-1ubuntu7) bionic; urgency=medium
 
   * d/p/ubuntu/lp-1762854-*: fix issue with SCSI-2 devices denying Protection
