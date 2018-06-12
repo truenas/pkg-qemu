@@ -11,4 +11,7 @@ ubuntu/guest-agent-freeze-hook-skip-dpkg-artifacts.patch
 ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
 ubuntu/pre-bionic-256k-ipxe-efi-roms.patch
 ubuntu/lp-1761372-extend-ubuntu-machine-types-ppc-2.11.patch
+ubuntu/CVE-2018-3639/0001-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch
+ubuntu/CVE-2018-3639/0002-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
+ubuntu/CVE-2018-3639/0003-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.patch
 ubuntu/machine-type-hpb.patch
