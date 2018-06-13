@@ -1,4 +1,4 @@
-qemu (1:2.11+dfsg-1ubuntu11) cosmic; urgency=medium
+qemu (1:2.11+dfsg-1ubuntu7.4) bionic; urgency=medium
 
   Summary:
   Adding new Ubuntu machine types with -hpb suffix to allow users to run
