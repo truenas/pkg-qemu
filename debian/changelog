@@ -1,3 +1,11 @@
+qemu (1:2.11+dfsg-1ubuntu7.4) bionic; urgency=medium
+
+  * d/p/ubuntu/machine-type-hpb.patch: add -hpb machine type
+    for host-phys-bits=true (LP: #1776189)
+    - add an info about this change in debian/qemu-system-x86.NEWS
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 13 Jun 2018 10:41:34 +0200
+
 qemu (1:2.11+dfsg-1ubuntu7.3) bionic-security; urgency=medium
 
   * SECURITY UPDATE: Speculative Store Bypass
