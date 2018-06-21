@@ -33,43 +33,80 @@ Last-Update: 2018-06-06
 
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -1181,6 +1181,16 @@ static void pc_bionic_machine_options(Ma
+@@ -1185,9 +1185,18 @@ static void pc_bionic_machine_options(Ma
  DEFINE_I440FX_MACHINE(bionic, "pc-i440fx-bionic", NULL,
                        pc_bionic_machine_options);
  
+-static void pc_cosmic_machine_options(MachineClass *m)
 +static void pc_bionic_hpb_machine_options(MachineClass *m)
-+{
-+    pc_i440fx_2_11_machine_options(m);
+ {
+     pc_i440fx_2_11_machine_options(m);
 +    m->desc = "Ubuntu 18.04 PC (i440FX + PIIX, +host-phys-bits=true, 1996)";
-+    m->alias = NULL;
 +    SET_MACHINE_COMPAT(m, PC_HOST_PHYS_BITS_TRUE);
 +}
 +DEFINE_I440FX_MACHINE(bionic_hpb, "pc-i440fx-bionic-hpb", NULL,
 +                      pc_bionic_hpb_machine_options);
++
++static void pc_cosmic_machine_options(MachineClass *m)
++{
++    pc_i440fx_2_12_machine_options(m);
+     m->desc = "Ubuntu 18.10 PC (i440FX + PIIX, 1996)";
+     m->alias = "ubuntu";
+     m->is_default = 1;
+@@ -1195,6 +1204,16 @@ static void pc_cosmic_machine_options(Ma
+ DEFINE_I440FX_MACHINE(cosmic, "pc-i440fx-cosmic", NULL,
+                       pc_cosmic_machine_options);
+ 
++static void pc_cosmic_hpb_machine_options(MachineClass *m)
++{
++    pc_i440fx_2_12_machine_options(m);
++    m->desc = "Ubuntu 18.10 PC (i440FX + PIIX +host-phys-bits=true, 1996)";
++    m->alias = NULL;
++    SET_MACHINE_COMPAT(m, PC_HOST_PHYS_BITS_TRUE);
++}
++DEFINE_I440FX_MACHINE(cosmic_hpb, "pc-i440fx-cosmic-hpb", NULL,
++                      pc_cosmic_hpb_machine_options);
 +
  /*
   * Due to bug 1621042 we have to consider the broken old wily machine
   * type as valid xenial type to ensure older VMs that got created prio
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -432,3 +432,14 @@ static void pc_q35_bionic_machine_option
- }
+@@ -446,6 +446,15 @@ static void pc_q35_bionic_machine_option
  DEFINE_Q35_MACHINE(bionic, "pc-q35-bionic", NULL,
                     pc_q35_bionic_machine_options);
-+
+ 
 +static void pc_q35_bionic_hpb_machine_options(MachineClass *m)
 +{
 +    pc_q35_2_11_machine_options(m);
 +    m->desc = "Ubuntu 18.04 PC (Q35 + ICH9, +host-phys-bits=true, 2009)";
-+    /* The ubuntu alias and default is on the i440fx type */
-+    m->alias = NULL;
 +    SET_MACHINE_COMPAT(m, PC_HOST_PHYS_BITS_TRUE);
 +}
 +DEFINE_Q35_MACHINE(bionic_hpb, "pc-q35-bionic-hpb", NULL,
 +                   pc_q35_bionic_hpb_machine_options);
++
+ static void pc_q35_cosmic_machine_options(MachineClass *m)
+ {
+     pc_q35_2_11_machine_options(m);
+@@ -456,3 +465,15 @@ static void pc_q35_cosmic_machine_option
+ }
+ DEFINE_Q35_MACHINE(cosmic, "pc-q35-cosmic", NULL,
+                    pc_q35_cosmic_machine_options);
++
++static void pc_q35_cosmic_hpb_machine_options(MachineClass *m)
++{
++    pc_q35_2_12_machine_options(m);
++    m->desc = "Ubuntu 18.10 PC (Q35 + ICH9, +host-phys-bits=true, 2009)";
++    m->alias = NULL;
++    SET_MACHINE_COMPAT(m, PC_HOST_PHYS_BITS_TRUE);
++}
++DEFINE_Q35_MACHINE(cosmic_hpb, "pc-q35-cosmic-hpb", NULL,
++                   pc_q35_cosmic_hpb_machine_options);
++
++
 --- a/include/hw/i386/pc.h
 +++ b/include/hw/i386/pc.h
-@@ -1002,5 +1002,16 @@ bool e820_get_entry(int, uint32_t, uint6
+@@ -946,5 +946,16 @@ bool e820_get_entry(int, uint32_t, uint6
      } \
      type_init(pc_machine_init_##suffix)
  
