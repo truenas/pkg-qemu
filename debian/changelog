@@ -1,3 +1,109 @@
+qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
+
+  * Merge with Debian testing, Remaining Changes:
+    - qemu-kvm to systemd unit
+      - d/qemu-kvm-init: script for QEMU KVM preparation modules, ksm,
+        hugepages and architecture specifics
+      - d/qemu-kvm.service: systemd unit to call qemu-kvm-init
+      - d/qemu-system-common.install: install systemd unit and helper script
+      - d/qemu-system-common.maintscript: clean old sysv and upstart scripts
+      - d/qemu-system-common.qemu-kvm.default: defaults for
+        /etc/default/qemu-kvm
+      - d/rules: install /etc/default/qemu-kvm
+    - Enable nesting by default
+      - set nested=1 module option on intel. (is default on amd)
+      - re-load kvm_intel.ko if it was loaded without nested=1
+      - d/p/ubuntu/expose-vmx_qemu64cpu.patch: expose nested kvm by default
+        in qemu64 cpu type.
+      - d/p/ubuntu/enable-svm-by-default.patch: Enable nested svm by default
+        in qemu64 on amd
+      - d/qemu-system-x86.README.Debian: document intention of nested being
+        default is comfort, not full support
+    - libvirt/qemu user/group support
+      - qemu-system-common.postinst: remove acl placed by udev, and add udevadm
+        trigger.
+      - qemu-system-common.preinst: add kvm group if needed
+    - Distribution specific machine type
+      - d/p/ubuntu/define-ubuntu-machine-types.patch: define distro machine
+        types to ease future live vm migration.
+      - d/qemu-system-x86.NEWS Info on fixed machine type defintions
+      - d/p/ubuntu/machine-type-hpb.patch: add -hpb machine type
+        for host-phys-bits=true (LP: 1776189)
+      - add an info about -hpb machine type in debian/qemu-system-x86.NEWS
+      - d/p/ubuntu/lp-1761372-*: provide pseries-bionic-2.11-sxxm type as
+        convenience with all meltdown/spectre workarounds enabled by default.
+        (LP: 1761372).
+    - improved dependencies
+      - Make qemu-system-common depend on qemu-block-extra
+      - Make qemu-utils depend on qemu-block-extra
+      - let qemu-utils recommend sharutils
+    - s390x support
+      - Create qemu-system-s390x package
+      - Include s390-ccw.img firmware
+      - Enable numa support for s390x
+    - arch aware kvm wrappers
+    - update VCS-git (updated to match cosmic)
+    - qemu-guest-agent: freeze-hook fixes (LP: 1484990)
+      - d/p/guest-agent-freeze-hook-skip-dpkg-artifacts.patch
+      - d/qemu-guest-agent.install: provide /etc/qemu/fsfreeze-hook
+      - d/qemu-guest-agent.dirs: provide /etc/qemu/fsfreeze-hook.d
+    - Create and install pxe netboot images for KVM s390x (LP: 1732094)
+      - d/rules enable install s390x-netboot.img
+      - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
+    - d/control-in: enable RDMA support in qemu (LP: 1692476)
+    - tolerate ipxe size change on migrations to >=18.04 (LP: 1713490)
+      - d/p/ubuntu/pre-bionic-256k-ipxe-efi-roms.patch: old machine types
+        reference 256k path
+      - d/control: depend on ipxe-qemu-256k-compat-efi-roms to be able to
+        handle incoming migrations from former releases.
+    - SECURITY UPDATE: Speculative Store Bypass
+      - debian/patches/ubuntu/CVE-2018-3639/0001*.patch: define the 'ssbd'
+        CPUID feature bit in target/i386/cpu.*.
+      - debian/patches/ubuntu/CVE-2018-3639/0002*.patch: define the AMD
+        'virt-ssbd' CPUID feature bit in target/i386/cpu.c.
+      - debian/patches/ubuntu/CVE-2018-3639/0003*.patch: define the Virt SSBD
+        MSR and handling of it in target/i386/cpu.h, target/i386/kvm.c,
+        target/i386/machine.c.
+      - CVE-2018-3639
+  * Dropped Changes:
+    - sdl2 is yet too unstable for the LTS Ubuntu release given the reports
+      we still see upstream and in Debian - furthermore sdl2 isn't in main yet,
+      so we revert related changes to stick with the proven for now:
+      - 0fd25810 - do not build-depend on libx11-dev (libsdl2-dev already
+                   depends on it)
+      - 9594f820 - switch from sdl1.2 to sdl2 (#870025)
+      (Debian switched to gtk which seems to work better and has all
+      dependencies in main.)
+    - d/control-in: enable seccomp on s390x (in Debian for Linux-any)
+    - Changes that are now upstream with qemu 2.12
+      - d/p/ubuntu/lp1753826-memfd-fix-configure-test.patch: fix FTBFS with
+        newer versions of glibc >=2.27 (LP: 1753826)
+      - on s390x provide facility bits 81 (ppa15) and 82 (bpb) (LP: 1743560)
+      - d/p/ubuntu/qemu-stable-2.11.1.patch: add stable release
+      - d/p/ubuntu/lp1739665-SSE-AVX-AVX512-cpu-features.patch: Enable new
+        SSE/AVX/AVX512 cpu features (LP: 1739665)
+      - d/p/ubuntu/lp1740219-continuous-space-commpage.patch: make Arm
+        space+commpage continuous which avoids long startup times on
+        qemu-user-static (LP: 1740219)
+      - provide pseries-2.12-sxxm type (LP: 1761372)
+      - d/p/ubuntu/lp-1704312-1-* provide means to manually handle
+        filesystem-dax with pmem by backporting align and unarmed options
+        (LP: 1704312).
+      - d/p/ubuntu/lp-1762315-slirp-Add-domainname.patch: slirp: Add domainname
+        option to slirp's DHCP server (LP: 1762315)
+      - d/p/ubuntu/lp-1762854-*: fix issue with SCSI-2 devices denying
+        Protection information (LP: 1762854).
+      - d/p/ubuntu/lp-1763468-*: fix VSMT handling to fix ppc64el P8/P9
+        migration (LP: 1763468).
+      - SECURITY UPDATE: out-of-bounds access during migration via ps2
+        CVE-2017-16845
+      - SECURITY UPDATE: arbitrary code execution via load_multiboot
+        CVE-2018-7550
+      - SECURITY UPDATE: denial of service in Cirrus CLGD 54xx VGA
+        CVE-2018-7858
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 21 Jun 2018 14:24:06 +0200
+
 qemu (1:2.12+dfsg-3) unstable; urgency=medium
 
   * make qemu-system-foo depending
