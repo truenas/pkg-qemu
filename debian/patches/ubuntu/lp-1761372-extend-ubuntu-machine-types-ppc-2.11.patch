@@ -21,9 +21,9 @@ Last-Update: 2018-04-06
 
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -4141,6 +4141,24 @@ DEFINE_SPAPR_MACHINE_NAMED(2_8, ubuntu_z
- DEFINE_SPAPR_MACHINE_NAMED(2_10, ubuntu_artful, "artful", false);
- DEFINE_SPAPR_MACHINE_NAMED(2_11, ubuntu_bionic, "bionic", true);
+@@ -4360,6 +4360,24 @@ DEFINE_SPAPR_MACHINE_NAMED(2_10, ubuntu_
+ DEFINE_SPAPR_MACHINE_NAMED(2_11, ubuntu_bionic, "bionic", false);
+ DEFINE_SPAPR_MACHINE_NAMED(2_12, ubuntu_cosmic, "cosmic", true);
  
 +/* Special 2.11 type for 1761372, since 2.12 is unreleased and 18.04 is 2.11 */
 +static void spapr_machine_2_11_sxxm_instance_options(MachineState *machine)
