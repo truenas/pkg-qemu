@@ -65,6 +65,11 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
         MSR and handling of it in target/i386/cpu.h, target/i386/kvm.c,
         target/i386/machine.c.
       - CVE-2018-3639
+  * Added Changes:
+    - update machine type changes for qemu 2.12 and the Ubuntu Cosmic release
+      - add cosmic types for base and -hpb
+      - drop no more supported types (zesty and yakkety)
+      - d/p/series: group machine type changes
   * Dropped Changes:
     - sdl2 is yet too unstable for the LTS Ubuntu release given the reports
       we still see upstream and in Debian - furthermore sdl2 isn't in main yet,
