@@ -70,6 +70,8 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
       - add cosmic types for base and -hpb
       - drop no more supported types (zesty and yakkety)
       - d/p/series: group machine type changes
+    - d/p/ubuntu/CVE-2018-3639/* update for qemu 2.12 using the final patches
+      merged upstream
   * Dropped Changes:
     - sdl2 is yet too unstable for the LTS Ubuntu release given the reports
       we still see upstream and in Debian - furthermore sdl2 isn't in main yet,
