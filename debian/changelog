@@ -49,7 +49,6 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
       - d/qemu-guest-agent.dirs: provide /etc/qemu/fsfreeze-hook.d
     - Create and install pxe netboot images for KVM s390x (LP: 1732094)
       - d/rules enable install s390x-netboot.img
-      - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
     - d/control-in: enable RDMA support in qemu (LP: 1692476)
     - tolerate ipxe size change on migrations to >=18.04 (LP: 1713490)
       - d/p/ubuntu/pre-bionic-256k-ipxe-efi-roms.patch: old machine types
@@ -83,6 +82,8 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
       to POWER8
     - d/kvm.powerpc: drop old powerpc (non-ppc64el) code.
   * Dropped Changes:
+    - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
+      (No more removed when building DFSG orig tarball in Debian)
     - sdl2 is yet too unstable for the LTS Ubuntu release given the reports
       we still see upstream and in Debian - furthermore sdl2 isn't in main yet,
       so we revert related changes to stick with the proven for now:
