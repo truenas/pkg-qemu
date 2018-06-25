@@ -56,16 +56,6 @@ start() {
     IS_VM=0
     if type systemd-detect-virt 2>&1 >/dev/null; then
         systemd-detect-virt -vq && IS_VM=1
-    else
-        VM_STRINGS="KVM QEMU VMware VirtualBox Xen"
-        VM_DETECT="$(dmesg | egrep -e '(Hypervisor detected|Booting paravirtualized kernel)' || true)"
-        VM_DMIDECODE="$(cat /sys/class/dmi/id/*_vendor || true)"
-        VM_SEARCH="${VM_DETECT}${VM_DMIDECODE} "
-        for vm_string in $VM_STRINGS; do
-            if [ -z "${VM_SEARCH##*$vm_string*}" ]; then
-                IS_VM=1; break;
-            fi
-        done
     fi
 
     # Enable KSM, respecting the default configuration file. If 'AUTO' is
