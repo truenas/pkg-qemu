@@ -61,6 +61,7 @@ Build-Depends: debhelper (>= 9),
 :ubuntu:# --enable-rdma		linux-*
 :ubuntu: librdmacm-dev,
 :ubuntu: libibverbs-dev,
+:ubuntu: libibumad-dev,
 # glusterfs is debian-only since ubuntu/glusterfs is in universe (MIR LP: #1274247)
 :debian:# --enable-glusterfs
 :debian: glusterfs-common,
