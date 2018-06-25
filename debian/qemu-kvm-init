@@ -15,7 +15,7 @@ case "$arch" in
         fi
         ;;
     ppc*)
-        SMT=$(/usr/sbin/ppc64_cpu --smt 2>&1 | grep -q "SMT=[248]")
+        SMT=$(/usr/sbin/ppc64_cpu --smt 2>&1 | grep "SMT=[248]")
         if [ -n "$SMT" ]
         then
           if grep -q -e '^cpu\s*:\s*POWER8'  /proc/cpuinfo; then
