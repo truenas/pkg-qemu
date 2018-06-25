@@ -75,6 +75,8 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
     - d/p/ubuntu/CVE-2018-11806-slirp-correct-size.patch: slirp: correct size
       computation while concatenating mbuf.
       CVE-2018-11806
+    - d/qemu-kvm-init, d/qemu-system-common.qemu-kvm.default: drop the
+      deprecated handling of VHOST_NET_ENABLED and KVM_HUGEPAGES.
   * Dropped Changes:
     - sdl2 is yet too unstable for the LTS Ubuntu release given the reports
       we still see upstream and in Debian - furthermore sdl2 isn't in main yet,
