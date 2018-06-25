@@ -137,7 +137,7 @@ ifeq ($(enable_linux_user),enable)
 endif
 
 ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
-	$(MAKE) -C qemu-build/pc-bios/s390-ccw V=${V}
+	$(MAKE) -C b/qemu/pc-bios/s390-ccw V=${V}
 endif
 	touch $@
 
@@ -234,8 +234,8 @@ ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
 	install -D -m755 debian/kvm.s390x debian/qemu-kvm/usr/bin/kvm
 endif
 ifneq ($(filter $(DEB_HOST_ARCH),s390 s390x),)
-	install -D -m755 qemu-build/pc-bios/s390-ccw/s390-ccw.img debian/qemu-system-s390x/usr/share/qemu/s390-ccw.img
-	install -D -m755 qemu-build/pc-bios/s390-ccw/s390-netboot.img debian/qemu-system-s390x/usr/share/qemu/s390-netboot.img
+	install -D -m755 b/qemu/pc-bios/s390-ccw/s390-ccw.img debian/qemu-system-s390x/usr/share/qemu/s390-ccw.img
+	install -D -m755 b/qemu/pc-bios/s390-ccw/s390-netboot.img debian/qemu-system-s390x/usr/share/qemu/s390-netboot.img
 endif
 
 ifeq ($(VENDOR),UBUNTU)
