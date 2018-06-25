@@ -18,8 +18,10 @@ case "$arch" in
         SMT=$(/usr/sbin/ppc64_cpu --smt 2>&1 | grep -q "SMT=[248]")
         if [ -n "$SMT" ]
         then
-          echo "Error: You must disable SMT if you want to run QEMU/KVM on ppc64le architecture"
-          echo "In order to disable SMT, run: # ppc64_cpu --smt=off"
+          if grep -q -e '^cpu\s*:\s*POWER8'  /proc/cpuinfo; then
+            echo "Error: You must disable SMT if you want to run QEMU/KVM on Power8 based ppc64le architecture"
+            echo "In order to disable SMT, run: # ppc64_cpu --smt=off"
+          fi
         fi
         kvm=/usr/bin/qemu-system-ppc64
         if [ `uname -m` != "ppc64le" ]; then
