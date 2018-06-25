@@ -81,25 +81,6 @@ start() {
     else
         [ -w /sys/kernel/mm/ksm/run ] && echo 0 > /sys/kernel/mm/ksm/run || true
     fi
-
-    # If /etc/default/qemu-kvm says to, load vhost_net.  Default is not to.
-    if [ "$VHOST_NET_ENABLED" = "1" ]; then
-        modprobe -b vhost_net || true
-    fi
-
-    # mount hugepages if available and requested
-    if [ "x$KVM_HUGEPAGES" = "x1" ]; then
-        if ! grep -q hugetlbfs /proc/filesystems; then
-            logger -t qemu-kvm "Error: hugepages not available in the kernel!"
-        elif grep -q /run/hugepages/kvm /proc/mounts; then
-            logger -t qemu-kvm "/run/hugepages/kvm already mounted"
-        elif ! getent group kvm > /dev/null 2>&1; then
-            logger -t qemu-kvm "Error: group kvm does not exist!"
-        else
-            mkdir -p /run/hugepages/kvm
-            mount -t hugetlbfs hugetlbfs-kvm -o mode=775,gid=kvm /run/hugepages/kvm
-        fi
-    fi
 }
 
 # See how we were called.
