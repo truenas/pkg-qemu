@@ -10,7 +10,6 @@ ubuntu/machine-type-hpb.patch
 ubuntu/expose-vmx_qemu64cpu.patch
 ubuntu/enable-svm-by-default.patch
 ubuntu/guest-agent-freeze-hook-skip-dpkg-artifacts.patch
-ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
 ubuntu/pre-bionic-256k-ipxe-efi-roms.patch
 ubuntu/CVE-2018-3639/0001-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch
 ubuntu/CVE-2018-3639/0002-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
