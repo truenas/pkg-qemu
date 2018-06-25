@@ -4,8 +4,7 @@ set -f
 getcpu() {
    CPU="unknown"
    [ -r /proc/cpuinfo ] || return
-   local line
-   while read line; do
+   while read -r line; do
       set -- $line
       [ "$1" = "cpu" ] && CPU="$3" && return 0;
    done < /proc/cpuinfo
@@ -15,7 +14,7 @@ getcpu() {
 getcpu
 case "$CPU" in
   e500*|e6500*|e5500*)
-    qemu=qemu-system-ppcemb
+    qemu="qemu-system-ppcemb"
     ;;
   *)
     case "$(uname -m)" in
@@ -28,10 +27,10 @@ case "$CPU" in
             echo "In order to disable SMT, run: # ppc64_cpu --smt=off"
           fi
         fi
-        qemu=qemu-system-ppc64
+        qemu="qemu-system-ppc64"
         ;;
       *)
-        qemu=qemu-system-ppc
+        qemu="qemu-system-ppc"
         ;;
     esac
   ;;

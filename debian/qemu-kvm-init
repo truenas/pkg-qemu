@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Detect our host arch
-arch=`arch`
+arch=$(arch)
 test -z "$arch" && exit 0
 
 modlist=""
@@ -24,7 +24,7 @@ case "$arch" in
           fi
         fi
         kvm=/usr/bin/qemu-system-ppc64
-        if [ `uname -m` != "ppc64le" ]; then
+        if [ "$(uname -m)" != "ppc64le" ]; then
             exit 0
         fi
         if systemd-detect-virt --quiet --vm; then
@@ -39,6 +39,7 @@ if [ -z "$kvm" -o ! -e "$kvm" ]; then
     exit 0
 fi
 
+# shellcheck disable=SC1091
 [ -r /etc/default/qemu-kvm ] && . /etc/default/qemu-kvm
 
 start() {
@@ -54,13 +55,14 @@ start() {
 
     # Determine if we are running inside a VM
     IS_VM=0
-    if type systemd-detect-virt 2>&1 >/dev/null; then
+    if command -v systemd-detect-virt >/dev/null 2>&1; then
         systemd-detect-virt -vq && IS_VM=1
     fi
 
     # Enable KSM, respecting the default configuration file. If 'AUTO' is
     # set, enable only if we aren't running inside a VM.
-    if [ "$KSM_ENABLED" = "1" -o \( "$KSM_ENABLED" = "AUTO" -a "$IS_VM" = "0" \) ]; then
+    if [ "$KSM_ENABLED" = "1" ] || [ "$KSM_ENABLED" = "AUTO" ] && [ "$IS_VM" = "0" ]; then
+        # shellcheck disable=SC2015
         [ -w /sys/kernel/mm/ksm/run ] && echo 1 > /sys/kernel/mm/ksm/run || true
         if [ -w /sys/kernel/mm/ksm/sleep_millisecs ]; then
             if [ -n "$SLEEP_MILLISECS" ]; then
@@ -68,6 +70,7 @@ start() {
             fi
         fi
     else
+        # shellcheck disable=SC2015
         [ -w /sys/kernel/mm/ksm/run ] && echo 0 > /sys/kernel/mm/ksm/run || true
     fi
 }
