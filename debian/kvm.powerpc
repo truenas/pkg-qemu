@@ -1,38 +1,13 @@
 #!/bin/sh
 set -f
 
-getcpu() {
-   CPU="unknown"
-   [ -r /proc/cpuinfo ] || return
-   while read -r line; do
-      set -- $line
-      [ "$1" = "cpu" ] && CPU="$3" && return 0;
-   done < /proc/cpuinfo
-   return
-}
+SMT=$(/usr/sbin/ppc64_cpu --smt 2>&1 | grep "SMT=[248]")
+if [ -n "$SMT" ]
+then
+  if grep -q -e '^cpu\s*:\s*POWER8'  /proc/cpuinfo; then
+    echo "Error: You must disable SMT if you want to run QEMU/KVM on Power8 based ppc64le architecture"
+    echo "In order to disable SMT, run: # ppc64_cpu --smt=off"
+  fi
+fi
 
-getcpu
-case "$CPU" in
-  e500*|e6500*|e5500*)
-    qemu="qemu-system-ppcemb"
-    ;;
-  *)
-    case "$(uname -m)" in
-      ppc64*)
-        SMT=$(/usr/sbin/ppc64_cpu --smt 2>&1 | grep "SMT=[248]")
-        if [ -n "$SMT" ]
-        then
-          if grep -q -e '^cpu\s*:\s*POWER8'  /proc/cpuinfo; then
-            echo "Error: You must disable SMT if you want to run QEMU/KVM on Power8 based ppc64le architecture"
-            echo "In order to disable SMT, run: # ppc64_cpu --smt=off"
-          fi
-        fi
-        qemu="qemu-system-ppc64"
-        ;;
-      *)
-        qemu="qemu-system-ppc"
-        ;;
-    esac
-  ;;
-esac
-exec "$qemu" -enable-kvm "$@"
+exec qemu-system-ppc64 -enable-kvm "$@"
