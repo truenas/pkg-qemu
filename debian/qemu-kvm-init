@@ -4,6 +4,7 @@
 arch=`arch`
 test -z "$arch" && exit 0
 
+modlist=""
 case "$arch" in
     x86_64 | i686)
         kvm=/usr/bin/qemu-system-x86_64
@@ -28,10 +29,6 @@ case "$arch" in
             echo "Info: second level virtualization not supported, kvm-hv load might fail"
         fi
         modlist="kvm-hv"
-        ;;
-    *)
-        # not supported on other arches
-        exit 0
         ;;
 esac
 
