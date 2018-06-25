@@ -77,6 +77,7 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
       CVE-2018-11806
     - d/qemu-kvm-init, d/qemu-system-common.qemu-kvm.default: drop the
       deprecated handling of VHOST_NET_ENABLED and KVM_HUGEPAGES.
+    - d/qemu-kvm-init: do not exit early on non x86/ppc64el (LP: #1763275)
   * Dropped Changes:
     - sdl2 is yet too unstable for the LTS Ubuntu release given the reports
       we still see upstream and in Debian - furthermore sdl2 isn't in main yet,
