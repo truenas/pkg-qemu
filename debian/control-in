@@ -106,6 +106,8 @@ Build-Depends: debhelper (>= 9),
 ##--enable-netmap todo bsd
 ##--enable-quorum todo needs gcrypt
 ##--enable-xen-pci-passthrough todo
+Build-Depends-Indep:
+ gcc-s390x-linux-gnu,
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.8
 Homepage: http://www.qemu.org/

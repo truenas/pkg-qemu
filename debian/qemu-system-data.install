@@ -1,3 +1,5 @@
 pc-bios/keymaps usr/share/qemu
 pc-bios/qemu-icon.bmp usr/share/qemu
 pc-bios/qemu_logo_no_text.svg usr/share/qemu
+# s390x firmware
+b/fw/s390*.img usr/share/qemu
