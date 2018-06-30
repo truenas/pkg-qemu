@@ -132,7 +132,7 @@ endif
 ifeq ($(enable_linux_user),enable)
 	# user-static build
 	# we use this invocation to build just the binaries
-	$(MAKE) -C b/user-static V=${V} $(foreach t,${user_targets},subdir-${t}-linux-user)
+	$(MAKE) -C b/user-static V=${V} $(patsubst %,subdir-%-linux-user,${user_targets})
 endif
 	touch $@
 
@@ -236,22 +236,16 @@ endif # linux
 endif # enable_system
 
 ifeq ($(enable_linux_user),enable)
-	# qemu-user
-	mkdir -p debian/qemu-user/usr/bin debian/qemu-user/usr/share/man/man1
-	for t in ${user_targets}; do \
-	    mv debian/tmp/usr/bin/qemu-$$t \
-		debian/qemu-user/usr/bin ; \
-	    ln -s qemu-user.1 \
-		debian/qemu-user/usr/share/man/man1/qemu-$$t.1 ; \
-	done
+	dh_movefiles -p qemu-user $(patsubst %,usr/bin/qemu-%,${user_targets})
+	dh_link -p qemu-user $(patsubst %,usr/share/man/man1/qemu-user.1 usr/share/man/man1/qemu-%.1,${user_targets})
 
 	# qemu-user-static
 	mkdir -p debian/qemu-user-static/usr/bin debian/qemu-user-static/usr/share/man/man1
 	for t in ${user_targets}; do \
-	    cp -p b/user-static/$$t-linux-user/qemu-$$t \
-		debian/qemu-user-static/usr/bin/qemu-$$t-static ; \
-	    ln -s qemu-user-static.1 \
-		    debian/qemu-user-static/usr/share/man/man1/qemu-$$t-static.1 ; \
+	   cp -p b/user-static/$$t-linux-user/qemu-$$t \
+	       debian/qemu-user-static/usr/bin/qemu-$$t-static ; \
+	   ln -s qemu-user-static.1 \
+	       debian/qemu-user-static/usr/share/man/man1/qemu-$$t-static.1 ; \
 	done
 
 	# binfmt support
