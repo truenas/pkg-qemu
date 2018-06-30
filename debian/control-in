@@ -71,9 +71,9 @@ Build-Depends: debhelper (>= 9),
 # libsdl1.2-dev,
 # --enable-seccomp	linux-*
  libseccomp-dev (>= 2.3.0) [linux-any],
-# --enable-spice	linux-amd64|linux-i386
- libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386],
- libspice-protocol-dev (>= 0.12.3~) [linux-amd64 linux-i386],
+# --enable-spice	linux-amd64|linux-i386|linux-arm64
+ libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386 linux-arm64],
+ libspice-protocol-dev (>= 0.12.3~) [linux-amd64 linux-i386 linux-arm64],
 # --enable-libusb	linux-*
  libusb-1.0-0-dev (>= 2:1.0.13~) [linux-any],
 # --enable-usb-redir	linux-*
