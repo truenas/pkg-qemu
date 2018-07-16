@@ -40,3 +40,4 @@ ubuntu/CVE-2018-3639-3.patch
 ubuntu/machine-type-hpb.patch
 ubuntu/lp-1755912-qxl-fix-local-renderer-crash.patch
 ubuntu/lp-1787408-target-ppc-extend-eieio-for-POWER9.patch
+ubuntu/lp-1780773-s390x-cpumodels-add-z14-Model-ZR1.patch
