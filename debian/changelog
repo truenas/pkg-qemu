@@ -88,6 +88,8 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
       for powerpc64 to speed up translation (LP: #1781526)
     - d/p/ubuntu/lp-1780773-s390x-cpumodels-add-z14-Model-ZR1.patch: Add
       cpu model for z14 ZR1 (LP: #1780773).
+    - Mark qemu-system-data foreign to be able to install it e.g. on i386
+      (Closes: 903562)
   * Dropped Changes:
     - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
       (No more removed when building DFSG orig tarball in Debian)
