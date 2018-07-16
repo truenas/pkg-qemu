@@ -83,6 +83,8 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
     - d/kvm.powerpc: drop old powerpc (non-ppc64el) code.
     - d/control-in: add libibumad-dev which is now needed for rdma
     - d/rules: update s390x delta to match new Debian packaging
+    - d/p/ubuntu/lp-1781526-powerpc64-align-memory-THP.patch: align to 2MB
+      for powerpc64 to speed up translation (LP: #1781526)
   * Dropped Changes:
     - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
       (No more removed when building DFSG orig tarball in Debian)
