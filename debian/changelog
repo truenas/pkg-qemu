@@ -86,6 +86,8 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
     - d/rules: update s390x delta to match new Debian packaging
     - d/p/ubuntu/lp-1781526-powerpc64-align-memory-THP.patch: align to 2MB
       for powerpc64 to speed up translation (LP: #1781526)
+    - d/p/ubuntu/lp-1780773-s390x-cpumodels-add-z14-Model-ZR1.patch: Add
+      cpu model for z14 ZR1 (LP: #1780773).
   * Dropped Changes:
     - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
       (No more removed when building DFSG orig tarball in Debian)
