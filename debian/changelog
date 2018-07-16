@@ -90,6 +90,8 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
       cpu model for z14 ZR1 (LP: #1780773).
     - Mark qemu-system-data foreign to be able to install it e.g. on i386
       (Closes: 903562)
+    - d/control-in: qemu-keymaps is provided by qemu-system-data now (from yet
+      unreleased Debian version)
   * Dropped Changes:
     - debian/patches/ubuntu/partial-SLOF-for-s390x-netboot-compilation.patch
       (No more removed when building DFSG orig tarball in Debian)
