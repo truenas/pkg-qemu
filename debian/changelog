@@ -81,6 +81,9 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
     - d/qemu-kvm-init, d/kvm.powerpc: clean up typos and shellcheck warnings
     - d/qemu-kvm-init, d/kvm.powerpc: fix SMT detection and make it only apply
       to POWER8
+    - d/qemu-kvm-init: drop old VM detection that was broken in some cases and
+      is no more needed with systemd-detect-virt being more mature and always
+      present.
     - d/kvm.powerpc: drop old powerpc (non-ppc64el) code.
     - d/control-in: add libibumad-dev which is now needed for rdma
     - d/rules: update s390x delta to match new Debian packaging
