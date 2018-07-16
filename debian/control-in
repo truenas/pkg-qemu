@@ -108,10 +108,10 @@ Build-Conflicts: oss4-dev
 Standards-Version: 3.9.8
 Homepage: http://www.qemu.org/
 :debian:Vcs-Browser: https://salsa.debian.org/qemu-team/qemu
-:ubuntu:Vcs-Browser: https://salsa.debian.org/qemu-team/qemu/commits/ubuntu-bionic-2.12
+:ubuntu:Vcs-Browser: https://salsa.debian.org/qemu-team/qemu/commits/ubuntu-cosmic-2.12
 :ubuntu:XS-Debian-Vcs-Browser: https://salsa.debian.org/qemu-team/qemu
 :debian:Vcs-Git: git@salsa.debian.org:qemu-team/qemu.git
-:ubuntu:Vcs-Git: git@salsa.debian.org:qemu-team/qemu.git -b ubuntu-bionic-2.12
+:ubuntu:Vcs-Git: git@salsa.debian.org:qemu-team/qemu.git -b ubuntu-cosmic-2.12
 :ubuntu:XS-Debian-Vcs-Git: git@salsa.debian.org:qemu-team/qemu.git
 
 Package: qemu
