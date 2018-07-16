@@ -15,3 +15,4 @@ ubuntu/CVE-2018-3639/0001-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.p
 ubuntu/CVE-2018-3639/0002-i386-define-the-AMD-virt-ssbd-CPUID-feature-bit-CVE-.patch
 ubuntu/CVE-2018-3639/0003-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.patch
 ubuntu/CVE-2018-11806-slirp-correct-size.patch
+ubuntu/lp-1781526-powerpc64-align-memory-THP.patch
