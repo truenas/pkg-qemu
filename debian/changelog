@@ -1,6 +1,7 @@
 qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
 
   * Merge with Debian testing, Remaining Changes:
+    - Among other things this fixes (LP: #1780768, LP: #1780769, LP: #1780772)
     - qemu-kvm to systemd unit
       - d/qemu-kvm-init: script for QEMU KVM preparation modules, ksm,
         hugepages and architecture specifics
