@@ -110,7 +110,6 @@ qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
     - Changes that are now upstream with qemu 2.12
       - d/p/ubuntu/lp1753826-memfd-fix-configure-test.patch: fix FTBFS with
         newer versions of glibc >=2.27 (LP: 1753826)
-      - on s390x provide facility bits 81 (ppa15) and 82 (bpb) (LP: 1743560)
       - d/p/ubuntu/qemu-stable-2.11.1.patch: add stable release
       - d/p/ubuntu/lp1739665-SSE-AVX-AVX512-cpu-features.patch: Enable new
         SSE/AVX/AVX512 cpu features (LP: 1739665)
