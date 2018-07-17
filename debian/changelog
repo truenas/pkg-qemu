@@ -1,3 +1,9 @@
+qemu (1:2.12+dfsg-3ubuntu2) cosmic; urgency=medium
+
+  * Disable capstone disassembler library support (universe dependency)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 17 Jul 2018 08:35:32 +0200
+
 qemu (1:2.12+dfsg-3ubuntu1) cosmic; urgency=medium
 
   * Merge with Debian testing, Remaining Changes:
