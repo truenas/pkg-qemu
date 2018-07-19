@@ -1,3 +1,11 @@
+qemu (1:2.12+dfsg-3ubuntu3) cosmic; urgency=medium
+
+  * d/p/lp-1755912-qxl-fix-local-renderer-crash.patch: Fix an issue triggered
+    by migrations with UI frontends or frequent guest resolution changes
+    (LP: #1755912)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 19 Jul 2018 08:26:52 +0200
+
 qemu (1:2.12+dfsg-3ubuntu2) cosmic; urgency=medium
 
   * Disable capstone disassembler library support (universe dependency)
