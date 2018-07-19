@@ -17,3 +17,4 @@ ubuntu/CVE-2018-3639/0003-i386-Define-the-Virt-SSBD-MSR-and-handling-of-it-CVE.p
 ubuntu/CVE-2018-11806-slirp-correct-size.patch
 ubuntu/lp-1781526-powerpc64-align-memory-THP.patch
 ubuntu/lp-1780773-s390x-cpumodels-add-z14-Model-ZR1.patch
+lp-1755912-qxl-fix-local-renderer-crash.patch
