@@ -1,3 +1,11 @@
+qemu (1:2.12+dfsg-3ubuntu4) cosmic; urgency=medium
+
+  [ Murilo Opsfelder Araujo ]
+  * d//ubuntu/target-ppc-extend-eieio-for-POWER9.patch: Backport to
+    extend eieio for POWER9 emulation (LP: #1787408).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 20 Aug 2018 11:52:39 +0200
+
 qemu (1:2.12+dfsg-3ubuntu3) cosmic; urgency=medium
 
   * d/p/lp-1755912-qxl-fix-local-renderer-crash.patch: Fix an issue triggered
