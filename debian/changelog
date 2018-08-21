@@ -1,3 +1,16 @@
+qemu (1:2.11+dfsg-1ubuntu7.5) bionic; urgency=medium
+
+  [Christian Ehrhardt]
+  * d/p/lp-1755912-qxl-fix-local-renderer-crash.patch: Fix an issue triggered
+    by migrations with UI frontends or frequent guest resolution changes
+    (LP: #1755912)
+
+  [ Murilo Opsfelder Araujo ]
+  * d/p/ubuntu/target-ppc-extend-eieio-for-POWER9.patch: Backport to
+    extend eieio for POWER9 emulation (LP: #1787408).
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 21 Aug 2018 11:25:45 +0200
+
 qemu (1:2.11+dfsg-1ubuntu7.4) bionic; urgency=medium
 
   * d/p/ubuntu/machine-type-hpb.patch: add -hpb machine type
