@@ -1,3 +1,11 @@
+qemu (1:2.12+dfsg-3ubuntu5) cosmic; urgency=medium
+
+  * d/p/ubuntu/lp-1789551-seccomp-set-the-seccomp-filter-to-all-threads.patch:
+    ensure that the seccomp blacklist is applied to all threads (LP: #1789551)
+    - CVE-2018-15746
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 29 Aug 2018 08:50:36 +0200
+
 qemu (1:2.12+dfsg-3ubuntu4) cosmic; urgency=medium
 
   [ Murilo Opsfelder Araujo ]
