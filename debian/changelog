@@ -1,3 +1,9 @@
+qemu (1:2.11+dfsg-1ubuntu7.6) bionic; urgency=medium
+
+  * Add cpu model for z14 ZR1 (LP: #1780773)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 29 Aug 2018 11:46:37 +0200
+
 qemu (1:2.11+dfsg-1ubuntu7.5) bionic; urgency=medium
 
   [Christian Ehrhardt]
