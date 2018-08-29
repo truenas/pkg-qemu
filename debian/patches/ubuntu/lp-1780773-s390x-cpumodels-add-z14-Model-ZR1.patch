@@ -21,8 +21,6 @@ Last-Update: 2018-06-16
  target/s390x/cpu_models.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index e10035aaa8..cfdbccf46d 100644
 --- a/target/s390x/cpu_models.c
 +++ b/target/s390x/cpu_models.c
 @@ -79,6 +79,7 @@ static S390CPUDef s390_cpu_defs[] = {
@@ -32,7 +30,4 @@ index e10035aaa8..cfdbccf46d 100644
 +    CPUDEF_INIT(0x3907, 14, 1, 47, 0x08000000U, "z14ZR1", "IBM z14 Model ZR1 GA1"),
  };
  
- #define QEMU_MAX_CPU_TYPE 0x2827
--- 
-2.17.1
-
+ /* features part of a base model but not relevant for finding a base model */
