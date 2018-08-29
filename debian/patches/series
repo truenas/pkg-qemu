@@ -19,3 +19,4 @@ ubuntu/lp-1781526-powerpc64-align-memory-THP.patch
 ubuntu/lp-1780773-s390x-cpumodels-add-z14-Model-ZR1.patch
 lp-1755912-qxl-fix-local-renderer-crash.patch
 ubuntu/target-ppc-extend-eieio-for-POWER9.patch
+ubuntu/lp-1789551-seccomp-set-the-seccomp-filter-to-all-threads.patch
