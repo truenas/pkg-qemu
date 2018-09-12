@@ -42,3 +42,5 @@ ubuntu/lp-1755912-qxl-fix-local-renderer-crash.patch
 ubuntu/lp-1787408-target-ppc-extend-eieio-for-POWER9.patch
 ubuntu/lp-1780773-s390x-cpumodels-add-z14-Model-ZR1.patch
 ubuntu/lp-1789551-seccomp-set-the-seccomp-filter-to-all-threads.patch
+ubuntu/lp-1790457-partial-s390x-linux-headers-update.patch
+ubuntu/lp-1790457-s390x-kvm-add-etoken-facility.patch
