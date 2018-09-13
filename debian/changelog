@@ -1,6 +1,9 @@
 qemu (1:2.11+dfsg-1ubuntu7.6) bionic; urgency=medium
 
   * Add cpu model for z14 ZR1 (LP: #1780773)
+  * d/p/ubuntu/lp-1789551-seccomp-set-the-seccomp-filter-to-all-threads.patch:
+    ensure that the seccomp blacklist is applied to all threads (LP: #1789551)
+    - CVE-2018-15746
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 29 Aug 2018 11:46:37 +0200
 
