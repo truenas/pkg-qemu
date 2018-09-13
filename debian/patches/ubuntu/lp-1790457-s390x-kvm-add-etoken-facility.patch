@@ -109,7 +109,7 @@ index 2ca5ededb3..384b61cd67 100644
 +    S390_FEAT_ETOKEN,
      S390_FEAT_HPMA2,
      S390_FEAT_SIE_KSS,
-     S390_FEAT_GROUP_MULTIPLE_EPOCH_PTFF,
+ };
 diff --git a/target/s390x/kvm.c b/target/s390x/kvm.c
 index d923cf4240..af83955e5f 100644
 --- a/target/s390x/kvm.c
