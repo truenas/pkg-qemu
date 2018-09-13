@@ -4,6 +4,9 @@ qemu (1:2.11+dfsg-1ubuntu7.6) bionic; urgency=medium
   * d/p/ubuntu/lp-1789551-seccomp-set-the-seccomp-filter-to-all-threads.patch:
     ensure that the seccomp blacklist is applied to all threads (LP: #1789551)
     - CVE-2018-15746
+  * improve s390x spectre mitigation with etoken facility (LP: #1790457)
+    - debian/patches/ubuntu/lp-1790457-s390x-kvm-add-etoken-facility.patch
+    - debian/patches/ubuntu/lp-1790457-partial-s390x-linux-headers-update.patch
 
  -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 29 Aug 2018 11:46:37 +0200
 
