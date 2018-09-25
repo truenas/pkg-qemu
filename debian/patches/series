@@ -45,3 +45,4 @@ ubuntu/lp-1789551-seccomp-set-the-seccomp-filter-to-all-threads.patch
 ubuntu/lp-1790457-partial-s390x-linux-headers-update.patch
 ubuntu/lp-1790457-s390x-kvm-add-etoken-facility.patch
 ubuntu/lp-1787267-fix-en_us-vnc-pipe.patch
+ubuntu/lp-1790901-partial-SLOF-for-s390x-netboot-2.11-to-3.0.patch
