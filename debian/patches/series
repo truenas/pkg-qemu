@@ -46,3 +46,14 @@ ubuntu/lp-1790457-partial-s390x-linux-headers-update.patch
 ubuntu/lp-1790457-s390x-kvm-add-etoken-facility.patch
 ubuntu/lp-1787267-fix-en_us-vnc-pipe.patch
 ubuntu/lp-1790901-partial-SLOF-for-s390x-netboot-2.11-to-3.0.patch
+ubuntu/lp-1790901-0001-ccw-update-libc.patch
+ubuntu/lp-1790901-0002-s390-ccw-move-auxiliary-IPL-data-to-separate-locatio.patch
+ubuntu/lp-1790901-0101-s390-Do-not-pass-inofficial-IPL-type-to-the-guest.patch
+ubuntu/lp-1790901-0102-s390-ccw-force-diag-308-subcode-to-unsigned-long.patch
+ubuntu/lp-1790901-0201-pc-bios-s390-ccw-net-Split-up-net_load-into-init-loa.patch
+ubuntu/lp-1790901-0202-pc-bios-s390-ccw-net-Use-diag308-to-reset-machine-be.patch
+ubuntu/lp-1790901-0203-pc-bios-s390-ccw-net-Add-support-for-.INS-config-fil.patch
+ubuntu/lp-1790901-0204-pc-bios-s390-ccw-net-Update-code-for-the-latest-chan.patch
+ubuntu/lp-1790901-0205-pc-bios-s390-ccw-net-Add-support-for-pxelinux-style-.patch
+ubuntu/lp-1790901-0206-pc-bios-s390-ccw-net-Try-to-load-pxelinux.cfg-file-a.patch
+ubuntu/lp-1790901-0207-pc-bios-s390-ccw-Optimize-the-s390-netboot.img-for-s.patch
