@@ -1,3 +1,15 @@
+qemu (1:2.11+dfsg-1ubuntu7.7) bionic; urgency=medium
+
+  * Update pxe netboot images for KVM s390x to qemu 3.0 level (LP: #1790901)
+    The SLOF source pieces in src:qemu are only used for s390x netboot,
+    which are independent ROMs (no linking). All other binaries out of this
+    are part of src:slof and independent.
+    - d/p/ubuntu/lp-1790901-partial-SLOF-for-s390x-netboot-2.11-to-3.0.patch
+    - d/p/ubuntu/lp-1790901-0*: backport s390x pxelinux netboot capabilities
+      and related fixes
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 25 Sep 2018 13:31:15 +0200
+
 qemu (1:2.11+dfsg-1ubuntu7.6) bionic; urgency=medium
 
   [ Christian Ehrhardt ]
