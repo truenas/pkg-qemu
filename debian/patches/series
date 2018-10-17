@@ -22,3 +22,12 @@ ubuntu/target-ppc-extend-eieio-for-POWER9.patch
 ubuntu/lp-1789551-seccomp-set-the-seccomp-filter-to-all-threads.patch
 ubuntu/lp-1790457-partial-s390x-linux-headers-update.patch
 ubuntu/lp-1790457-s390x-kvm-add-etoken-facility.patch
+ubuntu/lp-1790901-partial-SLOF-for-s390x-netboot-2.12-to-3.0.patch
+ubuntu/lp-1790901-0102-s390-ccw-force-diag-308-subcode-to-unsigned-long.patch
+ubuntu/lp-1790901-0201-pc-bios-s390-ccw-net-Split-up-net_load-into-init-loa.patch
+ubuntu/lp-1790901-0202-pc-bios-s390-ccw-net-Use-diag308-to-reset-machine-be.patch
+ubuntu/lp-1790901-0203-pc-bios-s390-ccw-net-Add-support-for-.INS-config-fil.patch
+ubuntu/lp-1790901-0204-pc-bios-s390-ccw-net-Update-code-for-the-latest-chan.patch
+ubuntu/lp-1790901-0205-pc-bios-s390-ccw-net-Add-support-for-pxelinux-style-.patch
+ubuntu/lp-1790901-0206-pc-bios-s390-ccw-net-Try-to-load-pxelinux.cfg-file-a.patch
+ubuntu/lp-1790901-0207-pc-bios-s390-ccw-Optimize-the-s390-netboot.img-for-s.patch
