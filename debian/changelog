@@ -1,3 +1,10 @@
+qemu (1:2.12+dfsg-3ubuntu8) cosmic; urgency=medium
+
+  * d/control-in: our addition of a qemu-system-s390x package needs to follow
+    the split of qemu-system-data by adding a dependency to it (LP: #1798084)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 17 Oct 2018 10:50:27 +0200
+
 qemu (1:2.12+dfsg-3ubuntu7) cosmic; urgency=medium
 
   * Update pxe netboot images for KVM s390x to qemu 3.0 level (LP: #1790901)
