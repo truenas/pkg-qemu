@@ -41,3 +41,9 @@ CVE-2018-18849.patch
 CVE-2018-18954.patch
 CVE-2018-19364-1.patch
 CVE-2018-19364-2.patch
+ubuntu/lp1787405-0001-linux-headers-update.patch
+ubuntu/lp1787405-0002-s390x-cpumodel-Set-up-CPU-model-for-AP-device-suppor.patch
+ubuntu/lp1787405-0003-s390x-kvm-enable-AP-instruction-interpretation-for-g.patch
+ubuntu/lp1787405-0004-s390x-ap-base-Adjunct-Processor-AP-object-model.patch
+ubuntu/lp1787405-0005-s390x-vfio-ap-Introduce-VFIO-AP-device.patch
+ubuntu/lp1787405-0006-s390-doc-detailed-specifications-for-AP-virtualizati.patch
