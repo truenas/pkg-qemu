@@ -122,6 +122,8 @@ Build-Depends-Indep:
  gcc-alpha-linux-gnu, libc6.1-dev-alpha-cross,
 # for qboot some system headers are needed
  libc6-dev-i386,
+# skiboot firmware
+ gcc-powerpc64-linux-gnu,
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.8
 Homepage: http://www.qemu.org/
