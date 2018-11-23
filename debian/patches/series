@@ -57,3 +57,14 @@ ubuntu/lp-1790901-0204-pc-bios-s390-ccw-net-Update-code-for-the-latest-chan.patc
 ubuntu/lp-1790901-0205-pc-bios-s390-ccw-net-Add-support-for-pxelinux-style-.patch
 ubuntu/lp-1790901-0206-pc-bios-s390-ccw-net-Try-to-load-pxelinux.cfg-file-a.patch
 ubuntu/lp-1790901-0207-pc-bios-s390-ccw-Optimize-the-s390-netboot.img-for-s.patch
+CVE-2018-10839.patch
+CVE-2018-11806.patch
+CVE-2018-12617.patch
+CVE-2018-16847.patch
+CVE-2018-17958.patch
+CVE-2018-17962.patch
+CVE-2018-17963.patch
+CVE-2018-18849.patch
+CVE-2018-18954.patch
+CVE-2018-19364-1.patch
+CVE-2018-19364-2.patch
