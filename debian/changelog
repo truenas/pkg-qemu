@@ -1,3 +1,48 @@
+qemu (1:2.11+dfsg-1ubuntu7.8) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: integer overflow in NE2000 NIC emulation
+    - debian/patches/CVE-2018-10839.patch: use proper type in
+      hw/net/ne2000.c.
+    - CVE-2018-10839
+  * SECURITY UPDATE: buffer overflow via incoming fragmented datagrams
+    - debian/patches/CVE-2018-11806.patch: correct size computation in
+      slirp/mbuf.c, slirp/mbuf.h.
+    - CVE-2018-11806
+  * SECURITY UPDATE: integer overflow via crafted QMP command
+    - debian/patches/CVE-2018-12617.patch: check bytes count read by
+      guest-file-read in qga/commands-posix.c.
+    - CVE-2018-12617
+  * SECURITY UPDATE: OOB heap buffer r/w access in NVM Express Controller
+    - debian/patches/CVE-2018-16847.patch: check size in hw/block/nvme.c.
+    - CVE-2018-16847
+  * SECURITY UPDATE: buffer overflow in rtl8139
+    - debian/patches/CVE-2018-17958.patch: use proper type in
+      hw/net/rtl8139.c.
+    - CVE-2018-17958
+  * SECURITY UPDATE: buffer overflow in pcnet
+    - debian/patches/CVE-2018-17962.patch: use proper type in
+      hw/net/pcnet.c.
+    - CVE-2018-17962
+  * SECURITY UPDATE: DoS via large packet sizes
+    - debian/patches/CVE-2018-17963.patch: check size in net/net.c.
+    - CVE-2018-17963
+  * SECURITY UPDATE: DoS in lsi53c895a
+    - debian/patches/CVE-2018-18849.patch: check message length value is
+      valid in hw/scsi/lsi53c895a.c.
+    - CVE-2018-18849
+  * SECURITY UPDATE: Out-of-bounds r/w stack access in ppc64
+    - debian/patches/CVE-2018-18954.patch: check size before data buffer
+      access in hw/ppc/pnv_lpc.c.
+    - CVE-2018-18954
+  * SECURITY UPDATE: race condition in 9p
+    - debian/patches/CVE-2018-19364-1.patch: use write lock in
+      hw/9pfs/cofile.c.
+    - debian/patches/CVE-2018-19364-2.patch: use write lock in
+      hw/9pfs/9p.c.
+    - CVE-2018-19364
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 21 Nov 2018 14:17:51 -0500
+
 qemu (1:2.11+dfsg-1ubuntu7.7) bionic; urgency=medium
 
   * Update pxe netboot images for KVM s390x to qemu 3.0 level (LP: #1790901)
