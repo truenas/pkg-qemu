@@ -78,7 +78,7 @@ case "$#$1" in
     echo "apparently not a qemu source dir" >&2; exit 1
     ;;
 
-  1[012].*) ;;
+  1[01234].*) ;;
 
   *)
     echo "unknown arguments.  Should be either 'dfsg' or a version number" >&2
@@ -92,7 +92,7 @@ case "$upstream" in
    *~rc*) upstream=$(echo "$upstream" | sed 's/~rc/-rc/') ;;
 esac
 case "$upstream" in
-   2.[0-9] | 2.[0-9][!0-9.]* ) # add .0 to a version number
+   [234].[0-9] | [234].[0-9][!0-9.]* ) # add .0 to a version number
      upstream=$(echo "$upstream" | sed 's/^.\../&.0/') ;;
 esac
 
