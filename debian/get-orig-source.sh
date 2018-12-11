@@ -43,23 +43,23 @@ rm -vf pc-bios/QEMU,*.bin	# roms/openbios/
 rm -vf pc-bios/qemu_vga.ndrv	# roms/QemuMacDrivers/
 
 # remove other software (git submodules)
-#dir roms/ipxe
-#dir roms/openbios
-#dir roms/openhackware
+dir roms/ipxe
+dir roms/openbios
+dir roms/openhackware
 #dir roms/qemu-palcode
-#dir roms/seabios
-#dir roms/seabios-hppa
+dir roms/seabios
+dir roms/seabios-hppa
 #dir roms/sgabios
-#dir roms/SLOF
-rm -vf roms/SLOF/board-js2x/rtas/i2c_bmc.oco
-rm -vf roms/SLOF/board-js2x/rtas/ipmi_oem.oco
-rm -vf roms/SLOF/clients/takeover/takeover.oco
-rm -vf roms/SLOF/lib/libipmi/libipmi.oco
-#dir roms/skiboot
-#dir roms/vgabios
-#dir roms/u-boot
-#rm -vf roms/u-boot.tar.*
-#dir roms/u-boot-sam460ex
+dir roms/SLOF
+#rm -vf roms/SLOF/board-js2x/rtas/i2c_bmc.oco
+#rm -vf roms/SLOF/board-js2x/rtas/ipmi_oem.oco
+#rm -vf roms/SLOF/clients/takeover/takeover.oco
+#rm -vf roms/SLOF/lib/libipmi/libipmi.oco
+dir roms/skiboot
+dir roms/vgabios
+dir roms/u-boot
+rm -vf roms/u-boot.tar.*
+dir roms/u-boot-sam460ex
 dir roms/QemuMacDrivers
 
 dir dtc
