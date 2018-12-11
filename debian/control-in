@@ -93,6 +93,8 @@ Build-Depends: debhelper (>= 9),
 # always needed
  zlib1g-dev,
 # other optional features we enable
+# no configure flag, needed for qga
+ libudev-dev,
 # --enable-vnc
 # --enable-vnc-jpeg
  libjpeg-dev,
