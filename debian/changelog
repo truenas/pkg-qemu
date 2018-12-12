@@ -1,3 +1,12 @@
+qemu (1:2.8+dfsg-6+deb9u5) stretch-security; urgency=medium
+
+  * Backport SSBD support (Closes: #908682)
+  * CVE-2018-10839 (Closes: #910431)
+  * CVE-2018-17962 (Closes: #911468)
+  * CVE-2018-17963 (Closes: #911469)
+
+ -- Moritz Mühlenhoff <jmm@debian.org>  Thu, 08 Nov 2018 16:41:45 +0100
+
 qemu (1:2.8+dfsg-6+deb9u4) stretch-security; urgency=high
 
   * CVE-2017-5715 (spectre/meltdown) fixes for i386 and s390x:

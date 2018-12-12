@@ -79,3 +79,7 @@ CVE-2017-15124/10-ui-fix-VNC-client-throttling-when-forced-update-is-r.patch
 CVE-2017-15124/11-ui-place-a-hard-cap-on-VNC-server-output-buffer-size.patch
 CVE-2017-15124/12-ui-add-trace-events-related-to-VNC-client-throttling.patch
 CVE-2017-15124/13-ui-mix-misleading-comments-return-types-of-VNC-I-O-h.patch
+ssbd-support.patch
+CVE-2018-10839.patch
+CVE-2018-17962.patch
+CVE-2018-17963.patch
