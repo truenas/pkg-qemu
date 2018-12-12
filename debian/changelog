@@ -34,6 +34,8 @@ qemu (1:3.1+dfsg-1) unstable; urgency=medium
      Use-after-free due to race condition while updating fid path
     Closes: #914727, CVE-2018-19489
      9pfs: crash due to race condition in renaming files
+    Closes: #912655, CVE-2018-16847
+     Out-of-bounds r/w buffer access in cmb operations
   * remove patches which were applied upstream
   * add new manpage qemu-cpu-models.7
   * qemu-system-ppcemb is gone, use qemu-system-ppc[64]
