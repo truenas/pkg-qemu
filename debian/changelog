@@ -230,6 +230,9 @@ qemu (1:2.10.0-1) unstable; urgency=medium
      #867751, CVE-2017-10806
      #866674, CVE-2017-10664
      #873849, CVE-2017-12809
+     #849798, CVE-2016-10028
+     CVE-2017-9060
+     CVE-2017-8284
   * dropped all fixes, applied upstream
   * dropped 02_kfreebsd.patch - apparently not relevant anymore
   * dropped +dfsg, use upstream tarball directly: we do not use
