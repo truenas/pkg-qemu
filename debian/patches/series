@@ -1,2 +1,3 @@
 use-fixed-data-path.patch
 do-not-link-everything-with-xen.patch
+usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC-CVE-2018-16872.patch
