@@ -257,6 +257,7 @@ ifeq (${enable_system},enable)
 		debian/qemu-system-common/etc/qemu-ifup
 endif
 	dh_installinit -a -pqemu-guest-agent
+	dh_installsystemd -a -pqemu-guest-agent --no-start --no-enable
 	dh_link -a
 	dh_lintian -a
 	dh_strip -a
