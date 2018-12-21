@@ -244,8 +244,8 @@ ifeq ($(enable_linux_user),enable)
 
 endif	# enable_linux_user
 
-	dh_install -a --list-missing
-# install the rest for arch/indep as needed
+	dh_install -a
+	dh_missing --list-missing
 	dh_installdocs -a -Nqemu-user-binfmt
 	dh_installchangelogs -a -Nqemu-user-binfmt
 	dh_installdocs -a -pqemu-user-binfmt --link-doc=qemu-user
