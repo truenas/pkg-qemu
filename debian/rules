@@ -299,6 +299,9 @@ build-indep:
 
 	mkdir -p b/fw
 
+# x86 optionrom
+	${MAKE} -f ${CURDIR}/debian/optionrom.mak -C ${CURDIR}/b/fw SRC_PATH=${CURDIR}
+
 # s390x firmware in pc-bios/s390-ccw
 	${S390X_CROSSPFX}gcc -Wl,-pie -fPIE -nostdlib -o b/fw/s390-ccw.img \
 	  -ffreestanding -fno-delete-null-pointer-checks -msoft-float \
