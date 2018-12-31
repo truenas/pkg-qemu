@@ -108,6 +108,9 @@ Build-Depends: debhelper (>= 11),
 ##--enable-xen-pci-passthrough todo
 Build-Depends-Indep:
  gcc-s390x-linux-gnu,
+# libc6.1-dev-alpha-cross isn't really needed but the code,
+# for whatever reason, #include's string.h which needs libc6.1-dev
+ gcc-alpha-linux-gnu, libc6.1-dev-alpha-cross,
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.8
 Homepage: http://www.qemu.org/
