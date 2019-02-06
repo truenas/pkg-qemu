@@ -134,6 +134,7 @@ ifeq ($(enable_linux_user),enable)
 	# user-static build
 	# we use this invocation to build just the binaries
 	$(MAKE) -C b/user-static V=${V} $(patsubst %,subdir-%-linux-user,${user_targets})
+	sed 's/qemu\\-user\\-static/qemu\\-user/g' debian/qemu-user-static.1 > debian/qemu-user.1
 endif
 	touch $@
 
@@ -340,6 +341,7 @@ clean:	debian/control
 	dh_testdir
 	rm -rf b
 	find scripts/ -name '*.pyc' -delete || :
+	rm -f debian/qemu-user.1
 	dh_clean
 
 .PHONY: build clean binary-arch binary-indep binary build-arch build-indep build
