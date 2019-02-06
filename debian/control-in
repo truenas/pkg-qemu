@@ -63,8 +63,9 @@ Build-Depends: debhelper (>= 11),
 # --enable-rbd		linux-*
  librados-dev [linux-any], librbd-dev [linux-any],
 # glusterfs is debian-only since ubuntu/glusterfs is in universe (MIR LP: #1274247)
+# before buster it was glusterfs-common so keep it for now for bpo
 :debian:# --enable-glusterfs
-:debian: glusterfs-common,
+:debian: libglusterfs-dev|glusterfs-common,
 # --enable-vnc-sasl
  libsasl2-dev,
 # --disable-sdl --with-sdlabi=2.0
