@@ -3,7 +3,7 @@ qemu (1:3.1+dfsg-3) unstable; urgency=medium
   [ Michael Tokarev ]
   * mention #696289 closed by 2.10
   * move ovmf to recommends on debian and update aarch ovmf refs
-    (Closes: #889885)
+    (Closes: #889885, #855043)
   * remove /dev/kvm permission handling (moved to systemd 239-6)
     (Closes: #892945)
   * build qemu-palcode using alpha cross-compiler
