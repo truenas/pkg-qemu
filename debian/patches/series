@@ -10,3 +10,4 @@ i2c-ddc-fix-oob-read-CVE-2019-3812.patch
 slirp-check-sscanf-result-when-emulating-ident-CVE-2019-9824.patch
 device_tree-don-t-use-load_image-CVE-2018-20815.patch
 sun4u-add-power_mem_read-routine-CVE-2019-5008.patch
+aarch32-exception-return-to-switch-from-hyp-mon.patch
