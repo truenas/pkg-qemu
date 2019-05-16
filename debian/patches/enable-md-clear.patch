@@ -1,0 +1,48 @@
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 1 Mar 2019 21:40:52 +0100
+Subject: target/i386: define md-clear bit
+Bug-Debian: http://bugs.debian.org/929067
+
+md-clear is a new CPUID bit which is set when microcode provides the
+mechanism to invoke a flush of various exploitable CPU buffers by invoking
+the VERW instruction.  Add the new feature, and pass it down to
+Hypervisor.framework guests.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+[Backported to qemu 2.8 mjt]
+
+CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091
+---
+ target-i386/cpu.c | 2 +-
+ target-i386/cpu.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/target-i386/cpu.c b/target-i386/cpu.c
+index de1f30eeda6..bbb4526a043 100644
+--- a/target-i386/cpu.c
++++ b/target-i386/cpu.c
+@@ -501,7 +501,7 @@ static FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
++            NULL, NULL, "md-clear", NULL,
+             NULL, NULL, NULL, NULL,
+         },
+         .cpuid_eax = 6, .cpuid_reg = R_EAX,
+diff --git a/target-i386/cpu.h b/target-i386/cpu.h
+index c6057240227..c9c7f60a54d 100644
+--- a/target-i386/cpu.h
++++ b/target-i386/cpu.h
+@@ -632,6 +632,7 @@ typedef uint32_t FeatureWordArray[FEATURE_WORDS];
+ 
+ #define CPUID_7_0_EDX_AVX512_4VNNIW (1U << 2) /* AVX512 Neural Network Instructions */
+ #define CPUID_7_0_EDX_AVX512_4FMAPS (1U << 3) /* AVX512 Multiply Accumulation Single Precision */
++#define CPUID_7_0_EDX_MD_CLEAR      (1U << 10) /* Microarchitectural Data Clear */
+ #define CPUID_7_0_EDX_SPEC_CTRL     (1U << 26) /* Speculation Control */
+ #define CPUID_7_0_EDX_SPEC_CTRL_SSBD  (1U << 31) /* Speculative Store Bypass Disable */
+ 
+-- 
+2.11.0
+
