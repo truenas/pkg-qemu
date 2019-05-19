@@ -83,3 +83,15 @@ ssbd-support.patch
 CVE-2018-10839.patch
 CVE-2018-17962.patch
 CVE-2018-17963.patch
+slirp-correct-size-computation-concatenating-mbuf-CVE-2018-11806.patch
+qga-check-bytes-count-read-by-guest-file-read-CVE-2018-12617.patch
+usb-mtp-use-O_NOFOLLOW-and-O_CLOEXEC-CVE-2018-16872.patch
+rtl8139-fix-possible-out-of-bound-access-CVE-2018-17958.patch
+lsi53c895a-check-message-length-value-is-valid-CVE-2018-18849.patch
+ppc-pnv-check-size-before-data-buffer-access-CVE-2018-18954.patch
+9p-write-lock-path-in-v9fs-co_open2.patch
+9p-take-write-lock-on-fid-path-updates-CVE-2018-19364.patch
+9p-fix-QEMU-crash-when-renaming-files-CVE-2018-19489.patch
+i2c-ddc-fix-oob-read-CVE-2019-3812.patch
+slirp-check-data-length-while-emulating-ident-function-CVE-2019-6778.patch
+slirp-check-sscanf-result-when-emulating-ident-CVE-2019-9824.patch
