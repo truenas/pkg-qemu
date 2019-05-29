@@ -1,6 +1,6 @@
 qemu (1:2.8+dfsg-6+deb9u6) UNRELEASED; urgency=medium
 
-  [ Moritz Mühlenhoff <jmm@debian.org> ]
+  [ Moritz MÃ¼hlenhoff <jmm@debian.org> ]
   * slirp-correct-size-computation-concatenating-mbuf-CVE-2018-11806.patch
     (Closes: #901017, CVE-2018-11806)
   * qga-check-bytes-count-read-by-guest-file-read-CVE-2018-12617.patch
@@ -25,7 +25,7 @@ qemu (1:2.8+dfsg-6+deb9u6) UNRELEASED; urgency=medium
   * slirp-check-sscanf-result-when-emulating-ident-CVE-2019-9824.patch
     (Closes: CVE-2019-9824)
 
- -- Moritz Mühlenhoff <jmm@debian.org>  Fri, 22 Mar 2019 23:30:56 +0100
+ -- Moritz MÃ¼hlenhoff <jmm@debian.org>  Fri, 22 Mar 2019 23:30:56 +0100
 
 qemu (1:2.8+dfsg-6+deb9u5) stretch-security; urgency=medium
 
@@ -34,7 +34,7 @@ qemu (1:2.8+dfsg-6+deb9u5) stretch-security; urgency=medium
   * CVE-2018-17962 (Closes: #911468)
   * CVE-2018-17963 (Closes: #911469)
 
- -- Moritz Mühlenhoff <jmm@debian.org>  Thu, 08 Nov 2018 16:41:45 +0100
+ -- Moritz MÃ¼hlenhoff <jmm@debian.org>  Thu, 08 Nov 2018 16:41:45 +0100
 
 qemu (1:2.8+dfsg-6+deb9u4) stretch-security; urgency=high
 
