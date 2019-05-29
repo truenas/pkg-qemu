@@ -1,4 +1,4 @@
-qemu (1:2.8+dfsg-6+deb9u6) UNRELEASED; urgency=medium
+qemu (1:2.8+dfsg-6+deb9u6) stretch-security; urgency=medium
 
   [ Moritz Mühlenhoff <jmm@debian.org> ]
   * slirp-correct-size-computation-concatenating-mbuf-CVE-2018-11806.patch
@@ -25,7 +25,16 @@ qemu (1:2.8+dfsg-6+deb9u6) UNRELEASED; urgency=medium
   * slirp-check-sscanf-result-when-emulating-ident-CVE-2019-9824.patch
     (Closes: CVE-2019-9824)
 
- -- Moritz Mühlenhoff <jmm@debian.org>  Fri, 22 Mar 2019 23:30:56 +0100
+  [ Michael Tokarev ]
+  * enable-md-clear.patch
+    define new CPUID for MDS
+    (Closes: #929067)
+    (Closes: CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091)
+  * qxl-check-release-info-object-CVE-2019-12155.patch
+    fixes null-pointer deref in qxl cleanup code
+    (Closes: #929353, CVE-2019-12155)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 29 May 2019 14:39:09 +0300
 
 qemu (1:2.8+dfsg-6+deb9u5) stretch-security; urgency=medium
 
