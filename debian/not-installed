@@ -1,3 +1,4 @@
 usr/share/doc/qemu/interop
 usr/share/icons
 usr/share/applications/qemu.desktop
+usr/bin/elf2dmp
