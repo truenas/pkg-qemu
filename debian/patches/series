@@ -14,3 +14,4 @@ aarch32-exception-return-to-switch-from-hyp-mon.patch
 enable-md-no.patch
 enable-md-clear.patch
 qxl-check-release-info-object-CVE-2019-12155.patch
+qemu-bridge-helper-restrict-interface-name-to-IFNAMSIZ-CVE-2019-13164.patch
