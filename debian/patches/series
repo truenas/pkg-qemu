@@ -98,3 +98,4 @@ slirp-check-sscanf-result-when-emulating-ident-CVE-2019-9824.patch
 enable-md-clear.patch
 qxl-check-release-info-object-CVE-2019-12155.patch
 fix-md-clear-backport.patch
+qemu-bridge-helper-restrict-interface-name-to-IFNAMSIZ-CVE-2019-13164.patch
