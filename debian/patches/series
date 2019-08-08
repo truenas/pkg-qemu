@@ -99,3 +99,4 @@ enable-md-clear.patch
 qxl-check-release-info-object-CVE-2019-12155.patch
 fix-md-clear-backport.patch
 qemu-bridge-helper-restrict-interface-name-to-IFNAMSIZ-CVE-2019-13164.patch
+slirp-fix-heap-overflow-in-ip_reass-on-big-packet-input-CVE-2019-14378.patch
