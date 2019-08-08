@@ -1,0 +1,53 @@
+From: Daniel Santos <daniel.santos@pobox.com>
+Date: Sun, 19 May 2019 18:15:26 +0200
+Subject: linux-user: Sanitize interp_info and, for mips only, init field fp_abi
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Commit-Id: abcac736c1505254ec3f9587aff04fbe4705a55e
+Bug-Debian: http://bugs.debian.org/933650
+
+Sanitize interp_info structure in load_elf_binary() and, for MIPS only,
+init its field fp_abi to MIPS_ABI_FP_UNKNOWN. This fixes appearances of
+"Unexpected FPU mode" message in some MIPS use cases. Currently, this
+bug is a complete stopper for some MIPS binaries.
+
+In load_elf_binary(), struct image_info interp_info is used without
+being properly initialized. One result is that when the ELF's program
+header doesn't contain an entry for the ABI flags, then the value of
+the struct image_info's fp_abi field is set to whatever happened to
+be in stack memory at the time.
+
+Backporting to 4.0 and, if possible, to 3.1 is recommended.
+
+Fixes: https://bugs.launchpad.net/qemu/+bug/1825002
+
+Signed-off-by: Daniel Santos <daniel.santos@pobox.com>
+Signed-off-by: Aleksandar Markovic <amarkovic@wavecomp.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@redhat.com>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Message-Id: <1558282527-22183-6-git-send-email-aleksandar.markovic@rt-rk.com>
+Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+---
+ linux-user/elfload.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index ef42e02d82..02832adfbc 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -2706,6 +2706,11 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+     char *elf_interpreter = NULL;
+     char *scratch;
+ 
++    memset(&interp_info, 0, sizeof(interp_info));
++#ifdef TARGET_MIPS
++    interp_info.fp_abi = MIPS_ABI_FP_UNKNOWN;
++#endif
++
+     info->start_mmap = (abi_ulong)ELF_START_MMAP;
+ 
+     load_elf_image(bprm->filename, bprm->fd, info,
+-- 
+2.20.1
+
