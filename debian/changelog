@@ -1,3 +1,14 @@
+qemu (1:2.8+dfsg-6+deb9u8) stretch-security; urgency=medium
+
+  * Fix improper backport of CVE-2017-9524 fix that caused NBD
+    connections to hang (Closes: #873012). Thanks to Geoffrey Thomas.
+    - nbd-fully-initialize-client-in-case-of-failed-negotiation-CVE-2017-9524.patch:
+      Don't move nbd_set_handlers before nbd_negotiate.
+    - nbd-fix-regression-on-resiliency-to-port-scan-CVE-2017-9524.patch:
+      Refresh.
+
+ -- Michal Arbet <michal.arbet@ultimum.io>  Wed, 07 Aug 2019 16:54:15 +0200
+
 qemu (1:2.8+dfsg-6+deb9u7) stretch-security; urgency=medium
 
   * Fix the md_clear backport, thanks to Vincent Tondellier (Closes: #929067)
