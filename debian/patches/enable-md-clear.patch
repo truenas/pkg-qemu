@@ -22,15 +22,15 @@ diff --git a/target-i386/cpu.c b/target-i386/cpu.c
 index de1f30eeda6..bbb4526a043 100644
 --- a/target-i386/cpu.c
 +++ b/target-i386/cpu.c
-@@ -501,7 +501,7 @@ static FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
+@@ -449,7 +449,7 @@ static FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .feat_names = {
+             NULL, NULL, "avx512-4vnniw", "avx512-4fmaps",
              NULL, NULL, NULL, NULL,
 -            NULL, NULL, NULL, NULL,
 +            NULL, NULL, "md-clear", NULL,
              NULL, NULL, NULL, NULL,
-         },
-         .cpuid_eax = 6, .cpuid_reg = R_EAX,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
 diff --git a/target-i386/cpu.h b/target-i386/cpu.h
 index c6057240227..c9c7f60a54d 100644
 --- a/target-i386/cpu.h
