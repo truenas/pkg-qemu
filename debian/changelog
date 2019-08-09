@@ -1,5 +1,6 @@
 qemu (1:2.8+dfsg-6+deb9u8) stretch-security; urgency=medium
 
+  [ Michal Arbet ]
   * Fix improper backport of CVE-2017-9524 fix that caused NBD
     connections to hang (Closes: #873012). Thanks to Geoffrey Thomas.
     - nbd-fully-initialize-client-in-case-of-failed-negotiation-CVE-2017-9524.patch:
@@ -7,7 +8,19 @@ qemu (1:2.8+dfsg-6+deb9u8) stretch-security; urgency=medium
     - nbd-fix-regression-on-resiliency-to-port-scan-CVE-2017-9524.patch:
       Refresh.
 
- -- Michal Arbet <michal.arbet@ultimum.io>  Wed, 07 Aug 2019 16:54:15 +0200
+  [ Michael Tokarev ]
+  * slirp-fix-heap-overflow-in-ip_reass-on-big-packet-input-CVE-2019-14378.patch
+    bugfix in user-level networking
+    Closes: #933741, CVE-2019-14378
+  * qemu-bridge-helper-restrict-interface-name-to-IFNAMSIZ-CVE-2019-13164.patch
+    Closes: #931351, CVE-2019-13164
+  * integrate fix-md-clear-backport.patch into enable-md-clear.patch
+    Thanks Moritz Mühlenhoff and Vincent Tondellier
+  * device_tree-dont-use-load_image-CVE-2018-20815.patch
+    fix unlikely overflow via saved image file size
+    Closes: CVE-2018-20815
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Fri, 09 Aug 2019 13:41:43 +0300
 
 qemu (1:2.8+dfsg-6+deb9u7) stretch-security; urgency=medium
 
