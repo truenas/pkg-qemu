@@ -1,3 +1,9 @@
+qemu (1:2.8+dfsg-6+deb9u7) stretch-security; urgency=medium
+
+  * Fix the md_clear backport, thanks to Vincent Tondellier (Closes: #929067)
+
+ -- Moritz Mühlenhoff <jmm@debian.org>  Wed, 05 Jun 2019 23:33:57 +0200
+
 qemu (1:2.8+dfsg-6+deb9u6) stretch-security; urgency=medium
 
   [ Moritz Mühlenhoff <jmm@debian.org> ]
