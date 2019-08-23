@@ -83,9 +83,8 @@ Build-Depends: debhelper (>= 11),
  libusb-1.0-0-dev (>= 2:1.0.13~) [linux-any],
 # --enable-usb-redir	linux-*
  libusbredirparser-dev (>= 0.6~) [linux-any],
-# libssh2 is debian-only since ubuntu/libssh2 is in universe
-:debian:# --enable-libssh2
-:debian: libssh2-1-dev,
+# --enable-libssh
+ libssh-dev,
 # vde is debian-only since ubuntu/vde2 is in universe
 :debian:# --enable-vde
 :debian: libvdeplug-dev,
