@@ -73,7 +73,7 @@ Build-Depends: debhelper (>= 11),
 # --enable-seccomp	linux-*
  libseccomp-dev (>= 2.3.0) [linux-any],
 # --enable-spice	linux-amd64|linux-i386|linux-arm64
- libspice-server-dev (>= 0.12.2~) [linux-amd64 linux-i386 linux-arm64],
+ libspice-server-dev (>= 0.12.5~) [linux-amd64 linux-i386 linux-arm64],
  libspice-protocol-dev (>= 0.12.3~) [linux-amd64 linux-i386 linux-arm64],
 # --enable-rdma
  librdmacm-dev, libibverbs-dev, libibumad-dev,
