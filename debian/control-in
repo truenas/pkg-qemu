@@ -14,7 +14,7 @@ Build-Depends: debhelper (>= 11),
 # pc-bios/*.dts => *.dtb (PPC firmware)
  device-tree-compiler,
  texinfo,
- python:any,
+ python3:any,
 # iasl (from acpica-tools) is used only in a single test these days, not for building
 # acpica-tools,
 # --enable-capstone=system

@@ -18,7 +18,7 @@ all: ${BINS}
 %.raw: %.img
 	${OBJCOPY} -O binary -j .text $< $@
 %.bin: %.raw
-	python ${SRC_PATH}/scripts/signrom.py $< $@
+	python3 ${SRC_PATH}/scripts/signrom.py $< $@
 
 clean:
 	rm -f ${BINS}
