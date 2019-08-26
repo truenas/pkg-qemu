@@ -68,8 +68,7 @@ Build-Depends: debhelper (>= 11),
 :debian: libglusterfs-dev|glusterfs-common,
 # --enable-vnc-sasl
  libsasl2-dev,
-# --disable-sdl --with-sdlabi=2.0
-# libsdl1.2-dev,
+# --disable-sdl
 # --enable-seccomp	linux-*
  libseccomp-dev (>= 2.3.0) [linux-any],
 # --enable-spice	linux-amd64|linux-i386|linux-arm64
