@@ -164,7 +164,8 @@ binary-arch:
 	dh_installdirs -a
 
 	# system and utils install
-	$(MAKE) -C b/qemu DESTDIR=$(CURDIR)/debian/tmp install KEYMAPS=
+	$(MAKE) -C b/qemu DESTDIR=$(CURDIR)/debian/tmp install \
+	  KEYMAPS= ICON_SIZES=
 
 ifeq (${enable_system},enable)
 
