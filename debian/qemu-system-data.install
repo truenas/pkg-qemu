@@ -1,4 +1,5 @@
 pc-bios/keymaps usr/share/qemu
+ui/qemu.desktop usr/share/applications
 ui/icons/qemu.svg usr/share/icons/highcolor/scalable/apps
 # x86 optionrom and other firmware files
 b/fw/*.bin usr/share/qemu
