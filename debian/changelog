@@ -10,6 +10,12 @@ qemu (1:4.1+dfsg-1) UNRELEASED; urgency=medium
     Closes: #927924 (new upstream version)
     Closes: #897054 (AMD Zen CPU support)
     Closes: #935324 (FTBFS due to gluster API change)
+    Closes: #916442, CVE-2018-20123 (pvrdma: memleak after init error)
+    Closes: #922461, CVE-2018-20124 (pvrdma: OOB access with large num_sge)
+    Closes: CVE-2018-20125 (pvrdma: DoS in create_cq_ring|create_qp_rings)
+    Closes: CVE-2018-20126 (pvrdma: memleaks in create_cq_ring|create_qp_rings)
+    Closes: CVE-2018-20191 (pvrdma: DoS due to missing read operation impl.)
+    Closes: CVE-2018-20216 (pvrdma: infinite loop in pvrdma_dev_ring.c)
   * remove patches which are applied upstream, refresh remaining patches
     (bt-use-size_t-...-CVE-2018-19665.patch hasn't been applied upstream,
     bluetooth subsystem is going to be removed, we keep it for now)
