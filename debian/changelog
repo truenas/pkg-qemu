@@ -1,4 +1,4 @@
-qemu (1:1.1+dfsg-1) UNRELEASED; urgency=medium
+qemu (1:4.1+dfsg-1) UNRELEASED; urgency=medium
 
   * new upstream release v4.1
     Closes: #933741, CVE-2019-14378 (slirp buff overflow in packet reassembly)
