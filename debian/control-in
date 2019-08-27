@@ -188,7 +188,8 @@ Description: extra block backend modules for qemu-system and qemu-utils
 Package: qemu-system-data
 Architecture: all
 Multi-Arch: foreign
-Replaces: qemu-system-common (<< 1:2.12+dfsg-2~)
+Conflicts: sgabios
+Replaces: qemu-system-common (<< 1:2.12+dfsg-2~), sgabios
 Provides: qemu-keymaps
 Depends: ${misc:Depends}
 Description: QEMU full system emulation (data files)
