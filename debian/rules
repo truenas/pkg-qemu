@@ -127,8 +127,9 @@ b/build-stamp: b/configure-stamp
 	# system and utils build
 	$(MAKE) -C b/qemu V=${V}
 ifeq (${enable_system},enable)
-	rm -f b/qemu/pc-bios/bamboo.dtb
+	rm -f b/qemu/pc-bios/bamboo.dtb b/qemu/pc-bios/canyonlands.dtb
 	dtc -o b/qemu/pc-bios/bamboo.dtb pc-bios/bamboo.dts
+	dtc -o b/qemu/pc-bios/canyonlands.dtb pc-bios/canyonlands.dts
 endif
 
 ifeq ($(enable_linux_user),enable)
