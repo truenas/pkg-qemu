@@ -10,8 +10,6 @@ qemu (1:4.1-1) unstable; urgency=medium
     Closes: #927924 (new upstream version)
     Closes: #897054 (AMD Zen CPU support)
     Closes: #935324 (FTBFS due to gluster API change)
-    Closes: #916442, CVE-2018-20123 (pvrdma: memleak after init error)
-    Closes: #922461, CVE-2018-20124 (pvrdma: OOB access with large num_sge)
     Closes: CVE-2018-20125 (pvrdma: DoS in create_cq_ring|create_qp_rings)
     Closes: CVE-2018-20126 (pvrdma: memleaks in create_cq_ring|create_qp_rings)
     Closes: CVE-2018-20191 (pvrdma: DoS due to missing read operation impl.)
