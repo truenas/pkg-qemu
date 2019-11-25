@@ -88,6 +88,8 @@ Build-Depends: debhelper (>= 11),
 :debian: libvdeplug-dev,
 # --enable-xen	linux-amd64|linux-i386
  libxen-dev [linux-amd64 linux-i386],
+# --enable-nettle
+ nettle-dev,
 ## always enabled: --enable-uuid
  uuid-dev,
 # --enable-xfsctl	linux-*
@@ -104,14 +106,11 @@ Build-Depends: debhelper (>= 11),
  libpng-dev,
 # --enable-kvm		linux-*
 # --enable-vhost-net	linux-*	# is it really linux-specific?
-##--enable-lzo todo
+##--enable-lzo todo, for (memory) dumps
 ##--enable-netmap todo bsd
-##--enable-quorum todo needs gcrypt
 ##--enable-xen-pci-passthrough todo
 ##--with-iconv (libiconv for curses wide char support)
 ## libudev?
-## nettle?
-## gcrypt?
 ## auth-pam - for auth for vnc&Co using PAM
 ## gio-2.0 - for -display=spice-app
 Build-Depends-Indep:
