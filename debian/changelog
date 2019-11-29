@@ -12,7 +12,7 @@ qemu (1:4.1-2) unstable; urgency=medium
     Closes: #944623
   * build-depend on nettle-dev, enable nettle, and clarify --enable-lzo
   * switch to system libslirp, build-depend on libslirp-dev
-    Closes: CVE-2019-15890
+    Closes: #939869, CVE-2019-15890
 
  -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 25 Nov 2019 12:54:05 +0300
 
