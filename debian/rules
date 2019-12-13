@@ -289,6 +289,12 @@ build-indep:
 # x86 optionrom
 	${MAKE} -f ${CURDIR}/debian/optionrom.mak -C ${CURDIR}/b/fw SRC_PATH=${CURDIR}
 
+# qboot, aka bios-microvm
+	cp -al roms/qboot b/
+	${MAKE} -C ${CURDIR}/b/qboot
+	cp b/qboot/bios.bin b/fw/bios-microvm.bin
+	chmod 0644 b/fw/bios-microvm.bin
+
 # sgabios. The Makefile is too complex and forces current date to be embedded to binary
 	cc -c -o b/fw/sgabios.o roms/sgabios/sgabios.S -Wall -Os -m32 -nostdlib \
 	  -DBUILD_DATE="\"$$(LC_ALL=C date -u -r roms/sgabios/sgabios.S)\"" \
