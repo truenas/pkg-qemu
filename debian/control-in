@@ -120,8 +120,6 @@ Build-Depends-Indep:
 # libc6.1-dev-alpha-cross isn't really needed but the code,
 # for whatever reason, #include's string.h which needs libc6.1-dev
  gcc-alpha-linux-gnu, libc6.1-dev-alpha-cross,
-# for qboot some system headers are needed
- libc6-dev-i386,
 Build-Conflicts: oss4-dev
 Standards-Version: 3.9.8
 Homepage: http://www.qemu.org/
