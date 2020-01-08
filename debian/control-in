@@ -29,8 +29,8 @@ Build-Depends: debhelper (>= 12),
 # for virtfs
 # --enable-attr
  libattr1-dev,
-# --enable-bluez	linux-*
- libbluetooth-dev [linux-any],
+# bluetooth subsystem got deprecated by upstream
+# --disable-bluez
 # --enable-brlapi
  libbrlapi-dev,
 # --enable-virtfs	linux-*
