@@ -258,9 +258,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 1:2.12~), qe
 Recommends: qemu-system-gui (= ${binary:Version}), qemu-utils,
 # aarch64 arm uses bootroms
  ipxe-qemu (>= 1.0.0+git-20131111.c3d1e78-1~),
-:debian: qemu-efi-aarch64, qemu-efi-arm
+ qemu-efi-aarch64, qemu-efi-arm
 Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}),
-:ubuntu: qemu-efi-aarch64, qemu-efi-arm
 Provides: ${sysprovides:arm}
 Description: QEMU full system emulation binaries (arm)
  QEMU is a fast processor emulator: currently the package supports
@@ -354,12 +353,10 @@ Multi-Arch: foreign
 Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 1:2.12~), qemu-system-data (>> ${source:Version}~),
  seabios (>= 1.10.2-1~), ipxe-qemu (>= 1.0.0+git-20131111.c3d1e78-1~)
 Recommends: qemu-system-gui (= ${binary:Version}), qemu-utils,
-:debian: ovmf,
+ ovmf,
 :ubuntu: cpu-checker
 Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}),
  sgabios,
-# can we recommend ovmf on ubuntu the same way as on debian?
-:ubuntu: ovmf,
 Provides: ${sysprovides:x86}
 Description: QEMU full system emulation binaries (x86)
  QEMU is a fast processor emulator: currently the package supports
