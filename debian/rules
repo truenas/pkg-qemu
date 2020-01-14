@@ -32,6 +32,7 @@ enable_linux_user = $(if $(filter qemu-user,${BUILD_PACKAGES}),enable,disable)
 FIRMWAREPATH = /usr/share/qemu:/usr/share/seabios:/usr/lib/ipxe/qemu
 
 ALPHAEV67_CROSSPFX = alpha-linux-gnu-
+PPC64_CROSSPFX = powerpc64-linux-gnu-
 
 # we add another set of configure options from debian/control
 common_configure_opts = \
@@ -313,6 +314,10 @@ build-indep:
 
 # s390x firmware in pc-bios/s390-ccw
 	${MAKE} -f debian/s390fw.mak OUT=b/fw/
+
+# powernv firmware in roms/skiboot
+	cp -al roms/skiboot b/
+	${MAKE} -C ${CURDIR}/b/skiboot CROSS=${PPC64_CROSSPFX} V=1
 
 binary-indep:
 	dh_testdir
