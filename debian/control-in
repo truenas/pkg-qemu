@@ -145,7 +145,7 @@ Description: fast processor emulator, dummy package
  .
  If you want full system emulation of some architecture, install one or more
  of qemu-system-ARCH packages. If you want user-mode emulation, install
- qemu-user pr qemu-user-static package. If you need utilities, use qemu-utils
+ qemu-user or qemu-user-static package. If you need utilities, use qemu-utils
  package.
  .
  This package can safely be removed.
@@ -156,8 +156,8 @@ Multi-Arch: foreign
 Depends: ${misc:Depends},
  qemu-system-arm,
  qemu-system-mips,
- qemu-system-ppc, 
- qemu-system-sparc, 
+ qemu-system-ppc,
+ qemu-system-sparc,
  qemu-system-x86,
  qemu-system-misc
 Description: QEMU full system emulation binaries
@@ -330,7 +330,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (>> 1:2.12~), qe
 Recommends: qemu-system-gui (= ${binary:Version}), qemu-utils,
 # sparc64 uses vgabios-stdvga and bootroms
  seabios, ipxe-qemu (>= 1.0.0+git-20131111.c3d1e78-1~)
-Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}), 
+Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}),
 :ubuntu: openbios-sparc (>> 1.1+svn1395-1~)
 Provides: ${sysprovides:sparc}
 Description: QEMU full system emulation binaries (sparc)
