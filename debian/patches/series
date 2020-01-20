@@ -100,3 +100,6 @@ qxl-check-release-info-object-CVE-2019-12155.patch
 qemu-bridge-helper-restrict-interface-name-to-IFNAMSIZ-CVE-2019-13164.patch
 slirp-fix-heap-overflow-in-ip_reass-on-big-packet-input-CVE-2019-14378.patch
 device_tree-dont-use-load_image-CVE-2018-20815.patch
+tcp_emu-fix-OOB-access-CVE-2020-7039.patch
+slirp-use-correct-size-while-emulating-commands-CVE-2020-7039.patch
+slirp-use-correct-size-while-emulating-IRC-commands-CVE-2020-7039.patch
