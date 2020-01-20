@@ -1,0 +1,77 @@
+Commit-Id: 73564c407caedf992a1c688b5fea776a8b56ba2a Mon Sep 17 00:00:00 2001
+From: Daniel P. Berrangé <berrange@redhat.com>
+Date: Mon, 14 Jan 2019 11:33:18 +0000
+Subject: io: ensure UNIX client doesn't unlink server socket
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Bug-Debian: http://bugs.debian.org/946210
+
+The qio_channel_socket_close method for was mistakenly unlinking the
+UNIX server socket, even if the channel was a client connection. This
+was not noticed with chardevs, since they never call close, but with the
+VNC server, this caused the VNC server socket to be deleted after the
+first client quit.
+
+The qio_channel_socket_close method also needlessly reimplemented the
+logic that already exists in socket_listen_cleanup(). Just call that
+method directly, for listen sockets only.
+
+This fixes a regression introduced in QEMU 3.0.0 with
+
+  commit d66f78e1eaa832f73c771d9df1b606fe75d52a50
+  Author: Pavel Balaev <mail@void.so>
+  Date:   Mon May 21 19:17:35 2018 +0300
+
+    Delete AF_UNIX socket after close
+
+Fixes launchpad #1795100
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ io/channel-socket.c            | 19 ++------
+
+diff --git a/io/channel-socket.c b/io/channel-socket.c
+index b50e63a053a..bc5f80e780e 100644
+--- a/io/channel-socket.c
++++ b/io/channel-socket.c
+@@ -688,10 +688,13 @@ qio_channel_socket_close(QIOChannel *ioc,
+     int rc = 0;
+ 
+     if (sioc->fd != -1) {
+-        SocketAddress *addr = socket_local_address(sioc->fd, errp);
+ #ifdef WIN32
+         WSAEventSelect(sioc->fd, NULL, 0);
+ #endif
++        if (qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_LISTEN)) {
++            socket_listen_cleanup(sioc->fd, errp);
++        }
++
+         if (closesocket(sioc->fd) < 0) {
+             sioc->fd = -1;
+             error_setg_errno(errp, errno,
+@@ -699,20 +702,6 @@ qio_channel_socket_close(QIOChannel *ioc,
+             return -1;
+         }
+         sioc->fd = -1;
+-
+-        if (addr && addr->type == SOCKET_ADDRESS_TYPE_UNIX
+-            && addr->u.q_unix.path) {
+-            if (unlink(addr->u.q_unix.path) < 0 && errno != ENOENT) {
+-                error_setg_errno(errp, errno,
+-                                 "Failed to unlink socket %s",
+-                                 addr->u.q_unix.path);
+-                rc = -1;
+-            }
+-        }
+-
+-        if (addr) {
+-            qapi_free_SocketAddress(addr);
+-        }
+     }
+     return rc;
+ }
+-- 
+2.20.1
+
