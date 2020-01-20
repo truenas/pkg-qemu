@@ -14,7 +14,10 @@ sun4u-add-power_mem_read-routine-CVE-2019-5008.patch
 aarch32-exception-return-to-switch-from-hyp-mon.patch
 enable-md-no.patch
 enable-md-clear.patch
+enable-pschange-mc-no.patch
 qxl-check-release-info-object-CVE-2019-12155.patch
 qemu-bridge-helper-restrict-interface-name-to-IFNAMSIZ-CVE-2019-13164.patch
 slirp-fix-heap-overflow-in-ip_reass-on-big-packet-input-CVE-2019-14378.patch
-enable-pschange-mc-no.patch
+tcp_emu-fix-OOB-access-CVE-2020-7039.patch
+slirp-use-correct-size-while-emulating-commands-CVE-2020-7039.patch
+slirp-use-correct-size-while-emulating-IRC-commands-CVE-2020-7039.patch
