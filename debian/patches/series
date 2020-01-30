@@ -23,3 +23,4 @@ tcp_emu-fix-OOB-access-CVE-2020-7039.patch
 slirp-use-correct-size-while-emulating-commands-CVE-2020-7039.patch
 slirp-use-correct-size-while-emulating-IRC-commands-CVE-2020-7039.patch
 io-ensure-UNIX-client-doesn-t-unlink-server-socket.patch
+iscsi-cap-block-count-from-GET-LBA-STATUS-CVE-2020-1711.patch
