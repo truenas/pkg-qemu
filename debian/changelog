@@ -1,3 +1,15 @@
+qemu (1:2.8+dfsg-6+deb9u9) stretch-security; urgency=medium
+
+  * slirp possible use-after-free in ip_reass(),
+    slirp-ip_reass-fix-use-after-free-CVE-CVE-2019-15890.patch
+    Closes: #939869, CVE-2019-15890
+  * slirp emulation fixes, Closes: CVE-2020-7039
+    tcp_emu-fix-OOB-access-CVE-2020-7039.patch
+    slirp-use-correct-size-while-emulating-commands-CVE-2020-7039.patch
+    slirp-use-correct-size-while-emulating-IRC-commands-CVE-2020-7039.patch
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 30 Jan 2020 23:16:06 +0300
+
 qemu (1:2.8+dfsg-6+deb9u8) stretch-security; urgency=medium
 
   [ Michal Arbet ]
