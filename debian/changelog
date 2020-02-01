@@ -7,7 +7,7 @@ qemu (1:4.2-2) unstable; urgency=medium
   * Enable powernv emulation with skiboot firmware
 
   [ Michael R. Crusoe ]
-  * Modernize watch file
+  * Modernize watch file (Closes: #909743)
 
   [ Christian Ehrhardt ]
   * d/control-in: promote qemu-efi/ovmf in Ubuntu
