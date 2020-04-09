@@ -1,3 +1,10 @@
+qemu (1:4.2-4~truenas+1) bullseye-truenas-unstable; urgency=medium
+
+  * d/control-in: remove spice dependencies
+  * d/rules: add --disable-spice
+
+ --  <william@grzy.org>  Thu, 09 Apr 2020 13:05:33 +0000
+
 qemu (1:4.2-3) unstable; urgency=medium
 
   * mention closing of #909743 in previous changelog (Closes: #909743)
